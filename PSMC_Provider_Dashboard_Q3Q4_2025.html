@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PSMC Provider 1:1 Dashboard — Q3/Q4 2025</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  :root {
+    --teal:#0F6E56;--teal-md:#1D9E75;--teal-lt:#E1F5EE;--teal-bd:#9FE1CB;
+    --gold:#BA7517;--gold-lt:#FAEEDA;--gold-bd:#FAC775;
+    --slate:#4A5568;--grey-lt:#F4F4F4;--grey-md:#888888;--grey-dk:#333333;
+    --red:#A32D2D;--red-lt:#FADBD8;--red-bd:#F7C1C1;
+    --grn:#1E8449;--grn-lt:#D5F5E3;--grn-bd:#A9DFBF;
+    --amb:#D4830A;--amb-lt:#FDEBD0;
+    --blue:#185FA5;--blue-lt:#E6F1FB;
+    --pur:#534AB7;--pur-lt:#EEEDFE;
+    --bg:#FAFAFA;--surface:#FFFFFF;--border:#E2E8F0;
+    --text:#1A202C;--text-2:#718096;--text-3:#A0AEC0;
+    --radius:8px;--radius-lg:12px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);font-size:14px;line-height:1.5}
+  /* Layout */
+  .shell{max-width:1280px;margin:0 auto;padding:0 24px 48px}
+  /* Top bar */
+  .topbar{background:var(--teal);color:#fff;padding:16px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+  .topbar-title{font-size:15px;font-weight:600;letter-spacing:.01em}
+  .topbar-sub{font-size:12px;opacity:.75;margin-top:2px}
+  /* Tabs */
+  .tabs{display:flex;background:var(--surface);border-bottom:1px solid var(--border);position:sticky;top:56px;z-index:99}
+  .tab{padding:13px 24px;font-size:13px;font-weight:500;cursor:pointer;border:none;background:none;color:var(--text-2);border-bottom:2px solid transparent;transition:all .15s}
+  .tab.on{color:var(--teal);border-bottom-color:var(--teal)}
+  .tab:hover:not(.on){color:var(--text);background:var(--grey-lt)}
+  /* Panes */
+  .pane{display:none;padding:24px 0}.pane.on{display:block}
+  /* KPI grid */
+  .kgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:24px}
+  .kcard{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:16px 18px}
+  .klabel{font-size:11px;font-weight:500;color:var(--text-2);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px}
+  .kval{font-size:28px;font-weight:600;line-height:1;color:var(--text)}
+  .kval.g{color:var(--grn)}.kval.a{color:var(--amb)}.kval.r{color:var(--red)}
+  .ksub{font-size:11px;color:var(--text-3);margin-top:4px}
+  /* Section headers */
+  .shdr{font-size:11px;font-weight:600;color:var(--text-2);text-transform:uppercase;letter-spacing:.07em;margin:28px 0 12px;padding-bottom:8px;border-bottom:1px solid var(--border)}
+  /* Chart grids */
+  .cgrid1{display:grid;grid-template-columns:1fr;gap:16px;margin-bottom:20px}
+  .cgrid2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px}
+  @media(max-width:900px){.cgrid2{grid-template-columns:1fr}}
+  .cc{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:18px 20px}
+  .ctitle{font-size:12px;font-weight:600;color:var(--text-2);margin-bottom:14px}
+  .cw{position:relative;width:100%}
+  .leg{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px;font-size:11px;color:var(--text-2)}
+  .legitem{display:flex;align-items:center;gap:5px}
+  .legsq{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+  /* Theme bars */
+  .trow{display:flex;align-items:center;gap:10px;margin-bottom:7px}
+  .tname{font-size:12px;color:var(--text);min-width:220px}
+  .tbw{flex:1;height:7px;background:var(--grey-lt);border-radius:4px;overflow:hidden}
+  .tb{height:7px;border-radius:4px;background:var(--teal-md)}
+  .tn{font-size:13px;font-weight:600;color:var(--teal);min-width:22px;text-align:right}
+  .tcat{font-size:10px;padding:2px 8px;border-radius:99px;font-weight:600;min-width:68px;text-align:center}
+  /* Sentiment */
+  .sgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:24px}
+  .scard{border-radius:var(--radius-lg);padding:14px 16px;border:1px solid transparent}
+  .slabel{font-size:11px;font-weight:600;margin-bottom:6px}
+  .snames{font-size:11px;color:var(--text-2);line-height:1.6}
+  /* Analysis cards */
+  .analysis{display:flex;flex-direction:column;gap:12px;margin-bottom:28px}
+  .acard{border-radius:var(--radius-lg);padding:18px 20px;border:1px solid}
+  .ahead{font-size:13px;font-weight:600;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+  .aitems{display:flex;flex-direction:column;gap:8px}
+  .aitem{font-size:12px;line-height:1.6;padding-left:16px;position:relative}
+  .aitem::before{content:'';position:absolute;left:0;top:7px;width:6px;height:6px;border-radius:50%}
+  .acard.good .aitem::before{background:var(--grn)}
+  .acard.warn .aitem::before{background:var(--amb)}
+  .acard.bad  .aitem::before{background:var(--red)}
+  /* Provider grid */
+  .pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(152px,1fr));gap:8px;margin-bottom:24px}
+  .grp-hdr{grid-column:1/-1;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--text-2);padding:6px 0 3px;border-bottom:1px solid var(--border);margin-bottom:2px}
+  .pbtn{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:13px 15px;cursor:pointer;text-align:left;transition:all .12s;display:block;width:100%}
+  .pbtn:hover{background:var(--teal-lt);border-color:var(--teal-bd)}
+  .pbtn.on{background:var(--teal-lt);border-color:var(--teal);box-shadow:0 0 0 2px var(--teal)25}
+  .pname{font-size:13px;font-weight:600;color:var(--text)}
+  .prole{font-size:11px;color:var(--text-2);margin-top:2px}
+  .pspec{font-size:10px;color:var(--text-3);margin-top:1px;font-style:italic}
+  .dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:5px;vertical-align:middle}
+  /* Report */
+  #rpt{display:none}#rpt.on{display:block}
+  .rh{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid var(--border)}
+  .rname{font-size:22px;font-weight:700;color:var(--text)}
+  .rmeta{font-size:13px;color:var(--text-2);margin-top:4px}
+  .rsent{font-size:12px;font-weight:600;padding:5px 14px;border-radius:99px;white-space:nowrap}
+  .mtbl{width:100%;border-collapse:collapse;font-size:12px}
+  .mtbl th{text-align:center;padding:8px 10px;font-weight:600;font-size:11px;color:var(--text-2);background:var(--grey-lt);border-bottom:1px solid var(--border)}
+  .mtbl th:first-child{text-align:left}
+  .mtbl td{padding:8px 10px;border-bottom:1px solid var(--border);text-align:center;color:var(--text)}
+  .mtbl td:first-child{text-align:left;font-weight:500;font-size:11px;color:var(--text-2)}
+  .mtbl tr:last-child td{border-bottom:none}
+  .up{color:var(--grn);font-weight:600}.dn{color:var(--red);font-weight:600}.st{color:var(--amb)}
+  .rcgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px}
+  @media(max-width:700px){.rcgrid{grid-template-columns:1fr}}
+  .rcc{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:16px}
+  .qblock{border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;margin-bottom:16px}
+  .qrow{display:grid;grid-template-columns:148px 1fr;border-bottom:1px solid var(--border)}
+  .qrow:last-child{border-bottom:none}
+  .qk{font-size:11px;font-weight:600;color:var(--text-2);padding:11px 12px;background:var(--grey-lt);border-right:1px solid var(--border)}
+  .qv{font-size:12px;color:var(--text);padding:11px 14px;line-height:1.6}
+  .back{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:8px 16px;font-size:12px;font-weight:500;cursor:pointer;color:var(--text-2);display:inline-flex;align-items:center;gap:6px;margin-bottom:18px;transition:all .12s}
+  .back:hover{background:var(--grey-lt);color:var(--text)}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div>
+    <div class="topbar-title">PSMC Provider 1:1 Interview Dashboard</div>
+    <div class="topbar-sub">Pagosa Springs Medical Center &nbsp;·&nbsp; Q3 &amp; Q4 2025</div>
+  </div>
+  <div style="font-size:11px;opacity:.65">Prepared by Vicki &nbsp;·&nbsp; Confidential</div>
+</div>
+
+<div class="shell">
+  <div class="tabs">
+    <button class="tab on" onclick="sw('col')">Collective Dashboard</button>
+    <button class="tab" onclick="sw('cmp')">Provider Comparison</button>
+    <button class="tab" onclick="sw('ind')">Individual Reports</button>
+  </div>
+
+  <!-- ═══════════════ COLLECTIVE ═══════════════ -->
+  <div id="pane-col" class="pane on">
+    <div class="kgrid">
+      <div class="kcard"><div class="klabel">Providers interviewed</div><div class="kval">14</div><div class="ksub">Q3 + Q4 2025</div></div>
+      <div class="kcard"><div class="klabel">Positive sentiment</div><div class="kval g">8</div><div class="ksub">57% of providers</div></div>
+      <div class="kcard"><div class="klabel">Concerns flagged</div><div class="kval a">2</div><div class="ksub">Zappone, Tinguely</div></div>
+      <div class="kcard"><div class="klabel">Using AI tools</div><div class="kval g">5</div><div class="ksub">Freed · Dragon · Cerner AI</div></div>
+      <div class="kcard"><div class="klabel">Top theme (providers)</div><div class="kval a">8</div><div class="ksub">Registration delays</div></div>
+      <div class="kcard"><div class="klabel">Open action items</div><div class="kval a">19</div><div class="ksub">Q3 + Q4 combined</div></div>
+      <div class="kcard"><div class="klabel">Total 2025 encounters</div><div class="kval">21,776</div><div class="ksub">through Nov 2025</div></div>
+      <div class="kcard"><div class="klabel">Avg visits/day (PC)</div><div class="kval g">12.1</div><div class="ksub">Q4 avg, primary care</div></div>
+    </div>
+
+    <div class="shdr">Primary care — visits per day &amp; panel growth</div>
+    <div class="cgrid2">
+      <div class="cc"><div class="ctitle">Avg visits per day — Q4 2025 (primary care)</div><div class="cw" style="height:280px"><canvas id="c1"></canvas></div><div class="leg" id="l1"></div></div>
+      <div class="cc"><div class="ctitle">Panel size growth — Jul → Oct 2025</div><div class="cw" style="height:280px"><canvas id="c2"></canvas></div><div class="leg" id="l2"></div></div>
+    </div>
+
+    <div class="shdr">After-hours &amp; message center burden — all providers</div>
+    <div class="cgrid2">
+      <div class="cc"><div class="ctitle">After-hours EHR % — Q4 average (ranked)</div><div class="cw" style="height:340px"><canvas id="c3"></canvas></div></div>
+      <div class="cc"><div class="ctitle">Message center % — Q4 average (ranked)</div><div class="cw" style="height:340px"><canvas id="c4"></canvas></div></div>
+    </div>
+
+    <div class="shdr">Specialty provider encounters — full year 2025</div>
+    <div class="cgrid1">
+      <div class="cc"><div class="ctitle">Monthly encounters — Holcomb (Pulmonology), Steed (Orthopedics), Tinguely (General Surgery), Webb (Orthopedics)</div><div class="cw" style="height:300px"><canvas id="c5"></canvas></div><div class="leg" id="l5"></div></div>
+    </div>
+    <div class="cgrid2">
+      <div class="cc"><div class="ctitle">Surgical cases YTD — Webb vs Steed: 2024 vs 2025</div><div class="cw" style="height:240px"><canvas id="c6"></canvas></div><div class="leg" id="l6"></div></div>
+      <div class="cc"><div class="ctitle">Behavioral health encounters — Abbas &amp; Newth monthly 2025</div><div class="cw" style="height:240px"><canvas id="c7"></canvas></div><div class="leg" id="l7"></div></div>
+    </div>
+
+    <div class="shdr">Cross-cutting themes</div>
+    <div id="themes" style="margin-bottom:24px"></div>
+
+    <div class="shdr">Provider sentiment by group</div>
+    <div class="sgrid">
+      <div class="scard" style="background:var(--grn-lt);border-color:var(--grn-bd)"><div class="slabel" style="color:var(--grn)">&#10003; Positive (8)</div><div class="snames">Aragon, Brown, Holcomb, McIntyre, RSM, Steed, Webb, Abbas</div></div>
+      <div class="scard" style="background:var(--amb-lt);border-color:var(--gold-bd)"><div class="slabel" style="color:var(--amb)">&#9651; Mixed (2)</div><div class="snames">Liverett, Nobles</div></div>
+      <div class="scard" style="background:var(--grey-lt);border-color:var(--border)"><div class="slabel" style="color:var(--grey-md)">&#8212; Neutral (2)</div><div class="snames">Brown, Newth</div></div>
+      <div class="scard" style="background:var(--red-lt);border-color:var(--red-bd)"><div class="slabel" style="color:var(--red)">&#9650; Concern (2)</div><div class="snames">Zappone, Tinguely</div></div>
+    </div>
+
+    <div class="shdr">Director analysis — summary for leadership review</div>
+    <div class="analysis">
+      <div class="acard good" style="background:var(--grn-lt);border-color:var(--grn-bd)">
+        <div class="ahead" style="color:var(--grn)"><span style="font-size:18px">&#10003;</span> Doing well</div>
+        <div class="aitems">
+          <div class="aitem"><strong>Clinical volume is strong.</strong> Primary care Q4 avg 12.1 visits/day; RSM (13.3), Nobles (13.8), and Zappone (13.8) all performing above benchmark. McIntyre's panel grew +32.7% in 4 months — fastest in the group.</div>
+          <div class="aitem"><strong>Steed (Orthopedics) ramping effectively.</strong> Surgical cases grew from 16 YTD in 2024 to 92 YTD in 2025 — a 475% increase in first full year. Provider is engaged, positive, and wants more volume.</div>
+          <div class="aitem"><strong>Abbas (Behavioral Health) building steadily.</strong> BH visits grew from 39 in July to 76 in October — 95% growth in 4 months. Zero after-hours EHR time. High satisfaction with support and team culture.</div>
+          <div class="aitem"><strong>AI adoption gaining traction.</strong> 5 providers actively using documentation tools (Freed, Dragon, Cerner AI). Multiple others expressed interest. Measurable after-hours reduction reported by Aragon and Liverett.</div>
+          <div class="aitem"><strong>Support staff praised consistently across the practice.</strong> Kinsey, Katy, Peyton, David, Charlene, Priscilla, and Tori received specific positive mentions across multiple providers — a retention and morale asset.</div>
+          <div class="aitem"><strong>Brown and Holcomb maintain zero after-hours EHR time.</strong> Brown's visit volume grew 75% Jul→Oct. Holcomb happy, praises team, wants more patient volume.</div>
+        </div>
+      </div>
+      <div class="acard warn" style="background:var(--amb-lt);border-color:var(--gold-bd)">
+        <div class="ahead" style="color:var(--amb)"><span style="font-size:18px">&#9888;</span> Monitor closely</div>
+        <div class="aitems">
+          <div class="aitem"><strong>McIntyre after-hours charting is climbing.</strong> Went from 6.2% in July to 13.8% in October — a 121% increase in one quarter. Panel growth (+32.7%) is outpacing documentation support. Without intervention this trajectory leads to burnout.</div>
+          <div class="aitem"><strong>Nobles after-hours consistently high.</strong> Averaging 18.8% after-hours EHR time in Q4, spiking to 22.5% in September. Over-documentation habit driven by prior malpractice case. AI pilot could be high-impact here.</div>
+          <div class="aitem"><strong>Mashburn and Zappone message center % elevated.</strong> Zappone averaging 25.2% and Mashburn 24.7% of total EHR time in message center — well above peers (RSM 18.3%, McIntyre 8.7%). RN triage quality is a likely contributor.</div>
+          <div class="aitem"><strong>Webb (Orthopedics) surgical volume declining.</strong> Down from 153 cases YTD in 2024 to 109 in 2025 (−29%). October dropped to just 1 case. Provider did not flag this in interview — needs clarification: scheduling, referral patterns, or capacity choice?</div>
+          <div class="aitem"><strong>Tinguely (General Surgery) shared RN model is unsustainable.</strong> Provider explicitly stated RN divided among 3 providers is not feasible. Room stocking failures. Encounter volume dropped to 9 in October — low.</div>
+          <div class="aitem"><strong>Liverett visit ramp may mask fragility.</strong> Visits/day grew 9.3→13.0 Jul→Oct (fastest growth in group) but provider flagged turnover stress, no retention incentives, and after-hours compensation concerns.</div>
+          <div class="aitem"><strong>19 open action items from Q3/Q4.</strong> Several (refill workflow, PDMP access, TCM billing, pediatric screening training, BH visit limits) remain unstarted. Providers will notice if items raised in 1:1s are not visibly progressed before the next cycle.</div>
+        </div>
+      </div>
+      <div class="acard bad" style="background:var(--red-lt);border-color:var(--red-bd)">
+        <div class="ahead" style="color:var(--red)"><span style="font-size:18px">&#10007;</span> Genuine concern — action required</div>
+        <div class="aitems">
+          <div class="aitem"><strong>Leadership/c-suite disconnect is a retention risk.</strong> Zappone, Nobles, Liverett, Tinguely, and Mashburn independently cited feeling disconnected from, undervalued by, or unheard by c-suite. This pattern across 5 providers — spanning Primary Care, Specialty, and multiple tenures — is systemic, not individual.</div>
+          <div class="aitem"><strong>Registration/check-in dysfunction is clinic-wide and unresolved.</strong> 8 of 14 providers named it as a primary bottleneck. No provider reported it as resolved. The PI project started Q3 has not yet produced perceptible improvement at the provider level.</div>
+          <div class="aitem"><strong>Tinguely (General Surgery) expresses no confidence in feedback channels.</strong> "No one has power to change anything. Who is looking out for the doctors?" Combined with room stocking failures and an October encounter count of 9 — this provider's engagement is at risk.</div>
+          <div class="aitem"><strong>Compensation equity for after-hours work is unresolved.</strong> Nobles and Liverett specifically cited hourly pay structure and lack of compensation for work outside scheduled hours. Nobles framed it as a contract fairness issue. This is a retention vulnerability.</div>
+          <div class="aitem"><strong>Zappone's disengagement signal should not be dismissed.</strong> Long-tenured, multi-role provider. "It feels unsafe/threatening to speak up." Still engaged with patient care but organizational loyalty is eroding. Both a turnover risk and a culture signal for peers who observe it.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════ COMPARISON ═══════════════ -->
+  <div id="pane-cmp" class="pane">
+    <div class="kgrid" style="grid-template-columns:repeat(auto-fit,minmax(160px,1fr))">
+      <div class="kcard"><div class="klabel">Fastest panel growth</div><div class="kval g">+32.7%</div><div class="ksub">McIntyre Jul–Oct</div></div>
+      <div class="kcard"><div class="klabel">Largest panel</div><div class="kval">1,457</div><div class="ksub">RSM (Oct)</div></div>
+      <div class="kcard"><div class="klabel">Highest after-hrs %</div><div class="kval a">18.8%</div><div class="ksub">Nobles Q4 avg</div></div>
+      <div class="kcard"><div class="klabel">Highest msg ctr %</div><div class="kval a">25.2%</div><div class="ksub">Zappone Q4 avg</div></div>
+      <div class="kcard"><div class="klabel">Lowest after-hrs %</div><div class="kval g">0%</div><div class="ksub">Brown, Holcomb, Abbas</div></div>
+      <div class="kcard"><div class="klabel">Steed surg growth</div><div class="kval g">+475%</div><div class="ksub">2024 → 2025 YTD</div></div>
+    </div>
+
+    <div class="shdr">Visits per day — monthly trend Jul–Oct (primary care)</div>
+    <div class="cgrid1"><div class="cc"><div class="ctitle">Visits per day by provider — all primary care, Jul–Oct 2025</div><div class="cw" style="height:340px"><canvas id="d1"></canvas></div><div class="leg" id="ld1"></div></div></div>
+
+    <div class="cgrid2">
+      <div class="cc"><div class="ctitle">After-hours EHR % — monthly trend Jul–Oct</div><div class="cw" style="height:300px"><canvas id="d2"></canvas></div><div class="leg" id="ld2"></div></div>
+      <div class="cc"><div class="ctitle">Message center % — monthly trend Jul–Oct</div><div class="cw" style="height:300px"><canvas id="d3"></canvas></div><div class="leg" id="ld3"></div></div>
+    </div>
+
+    <div class="cgrid2">
+      <div class="cc"><div class="ctitle">No-shows vs visits/day — bubble size = panel (Oct)</div><div class="cw" style="height:300px"><canvas id="d4"></canvas></div><div class="leg" id="ld4"></div></div>
+      <div class="cc"><div class="ctitle">EHR doc time (min/patient) — Q4 monthly by provider</div><div class="cw" style="height:300px"><canvas id="d5"></canvas></div><div class="leg" id="ld5"></div></div>
+    </div>
+
+    <div class="shdr">Specialty — encounter volume comparison full year 2025</div>
+    <div class="cgrid1"><div class="cc"><div class="ctitle">Monthly encounters — Holcomb (Pulmonology), Steed (Orthopedics), Tinguely (General Surgery), Webb (Orthopedics)</div><div class="cw" style="height:320px"><canvas id="d6"></canvas></div><div class="leg" id="ld6"></div></div></div>
+  </div>
+
+  <!-- ═══════════════ INDIVIDUAL ═══════════════ -->
+  <div id="pane-ind" class="pane">
+    <div id="sel">
+      <p style="font-size:13px;color:var(--text-2);margin-bottom:16px">Select a provider to view their full report.</p>
+      <div class="pgrid" id="pg"></div>
+    </div>
+    <div id="rpt"></div>
+  </div>
+</div>
+
+<script>
+const MO=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov'];
+const Q4=['Jul','Aug','Sep','Oct'];
+
+const P={
+  Aragon:{full:'Aragon, Shelby',role:'FNP-C',specialty:'Primary Care',start:'7/25/2024',sentiment:'Positive',
+    panel:[304,317,341,371],visits:[108,120,77,82],vpd:[10.3,10.8,10.0,9.4],
+    after:[11.4,16.79,14.5,4.56],msg:[17.0,15.2,18.9,18.8],no_show:38,panel_chg:22.0,
+    ehr_q3:27.02,ehr_q4:[25.27,23.01,26.05,27.48],days:[8,6,10,8],
+    next_appt:'Dec 11, 2025',next_np:'Mar 26, 2026',
+    bottleneck:'Rooming delays — patient arrived but still at check-in. Unsure where delay occurs.',
+    scheduling:'60-min NP blocks helpful. Plans to go to 2 blocks/day starting Sept.',
+    staffing:'David great, Tori great, Rachel amazing. Positive about front-end team.',
+    feedback:'Yes — feels supported and heard.',leadership:'None.',
+    wellbeing:'Feeling lighter with extra blocks. Uses AI as outline/copy+paste; Dragon helpful.',
+    support:'Lab interpretation resource; well-child vision screen app.',
+    strategic:'Retain providers long-term. Regular performance feedback. Needs IUD & procedure training.',
+    ai:'Freed AI (outline/copy-paste), Dragon'},
+  Brown:{full:'Brown, Robert',role:'MD',specialty:'Primary Care',start:'—',sentiment:'Neutral',
+    panel:[17,19,21,24],visits:[82,112,101,144],vpd:[11.2,11.7,11.6,10.7],
+    after:[0,0,0,0],msg:[11.9,12.8,14.5,14.6],no_show:null,panel_chg:null,
+    ehr_q3:9.0,ehr_q4:[9.6,7.1,7.9,7.7],days:[13,12,12,15],
+    next_appt:'Dec 4, 2025',next_np:null,
+    bottleneck:'Rooms chronically not stocked. Forms should be pre-filled by MA/RN.',
+    scheduling:'N/A',staffing:'Good.',feedback:'N/A',leadership:'Communicate with Jo/Vicki/Megan.',
+    wellbeing:'Two days/week is perfect; 3rd day cramped style.',support:'N/A',
+    strategic:'ED follow-up no-shows are a recurring issue.',ai:'None noted'},
+  Mashburn:{full:'Mashburn, Kaela',role:'PA-C',specialty:'Primary Care',start:'7/1/2021',sentiment:'Positive',
+    panel:[979,999,1005,1014],visits:[120,154,127,208],vpd:[10.6,10.9,10.6,10.9],
+    after:[2.32,0,0.21,0],msg:[21.2,26.7,26.8,24.2],no_show:49,panel_chg:3.6,
+    ehr_q3:14.12,ehr_q4:[14.3,11.2,12.0,10.5],days:[10.5,13,12,16.5],
+    next_appt:'Dec 2, 2025',next_np:'Jul 8, 2025',
+    bottleneck:'Registration always slow — one day no patients in arrived status for 12 min.',
+    scheduling:'Totally fine.',staffing:'Kinsey amazing. Katy amazing. All on task.',
+    feedback:'Yes within clinic. Registration outside frustrating.',
+    leadership:"Higher-ups don't always understand clinic reality.",
+    wellbeing:'Feeling good.',support:'N/A',
+    strategic:'Bring PSRs back. Pediatric screening: ASQ completion, eye/hearing screen.',ai:'None noted'},
+  McIntyre:{full:'McIntyre, Emilie',role:'MD',specialty:'Primary Care',start:'9/1/2024',sentiment:'Positive',
+    panel:[449,502,564,596],visits:[220,183,206,179],vpd:[12.2,12.1,12.1,12.0],
+    after:[6.24,7.91,12.23,13.82],msg:[6.8,8.4,10.6,9.0],no_show:28,panel_chg:32.7,
+    ehr_q3:28.54,ehr_q4:[25.27,23.01,26.05,27.48],days:[18,16,17,15],
+    next_appt:'Jan 15, 2026',next_np:'Apr 14, 2026',
+    bottleneck:'Check-in unpredictable. Results audit gap (sleep study, CT follow-up).',
+    scheduling:'45-min new pt better. Wants phone F/U slots for BP mgt and lab review.',
+    staffing:'Peyton amazing and proactive. Kinsey goes out of her way. Feels the vacant PSR role.',
+    feedback:'Yes.',leadership:'None.',
+    wellbeing:'Better than spring. Charting coaching every 1-2 weeks. Running before work.',
+    support:'Check-in remains main issue.',
+    strategic:'Phone F/U visits. Portal message billing. IUD order set. Updated PAP/USPSTF in Cerner.',
+    ai:'Freed AI, Dragon'},
+  Nobles:{full:'Nobles, Heather',role:'FNP-C',specialty:'Primary Care',start:'1/1/2023',sentiment:'Mixed',
+    panel:[712,721,722,725],visits:[122,112,125,97],vpd:[13.4,14.0,13.8,13.9],
+    after:[12.17,21.36,22.46,19.04],msg:[18.4,21.7,25.5,25.5],no_show:29,panel_chg:1.8,
+    ehr_q3:34.0,ehr_q4:[24.5,22.4,29.7,25.25],days:[9,8,9,7],
+    next_appt:'Jan 15, 2026',next_np:'Apr 14, 2026',
+    bottleneck:'Registration dependent on staffing levels. Patients can be arrived but still 10 min to check in.',
+    scheduling:'No huge issues. Working.',
+    staffing:'MA inconsistent. Madi gone makes things worse. Haley CMS helpful.',
+    feedback:"Yes, usually — always received even if can't always act.",
+    leadership:'Disconnect from c-suite. Patient legal letter unanswered. Unclear reporting lines.',
+    wellbeing:'Part-time helps but works >20 hrs for quality care. Hourly pay makes after-hours feel bad.',
+    support:'Compensation for hours outside scheduled work.',
+    strategic:'Risk stratification for panel. Top-of-license staff efficiency.',
+    ai:'Considering AI (over-documentation habit from prior malpractice case is a barrier)'},
+  RSM:{full:'Stopher-Mitchell, Ryan',role:'DO',specialty:'Primary Care',start:'—',sentiment:'Positive',
+    panel:[1467,1468,1467,1457],visits:[180,182,227,203],vpd:[13.6,12.9,13.4,13.4],
+    after:[6.27,10.62,7.2,7.61],msg:[18.7,17.7,17.2,19.6],no_show:29,panel_chg:-0.7,
+    ehr_q3:19.22,ehr_q4:[19.6,15.4,14.7,16.2],days:[13,14,17,15],
+    next_appt:'Jan 19, 2026',next_np:'Dec 24, 2026',
+    bottleneck:'Registration/check-in slow. Portal messages sometimes reaching providers late.',
+    scheduling:'Good. Block slots working. Wants risk stratification for panel sizing.',
+    staffing:'Kinsey amazing. Whole team doing well.',
+    feedback:"You hear us. Some problems not easily fixed (check-in, raises).",
+    leadership:'No bad experience. Incomplete info sometimes passed along.',
+    wellbeing:'Fine.',support:'N/A',
+    strategic:'No-show policy — cut off then add walk-in. DV screening for intakes.',
+    ai:'Not using. Wants to see what Emilie is using.'},
+  Zappone:{full:'Zappone, Phil',role:'FNP-C',specialty:'Primary Care',start:'3/2023',sentiment:'Concern',
+    panel:[783,795,790,788],visits:[101,112,97,92],vpd:[14.3,13.9,13.7,13.1],
+    after:[2.87,24.34,7.73,9.29],msg:[18.1,29.9,25.0,27.6],no_show:24,panel_chg:0.6,
+    ehr_q3:15.35,ehr_q4:[13.5,11.7,11.5,11.8],days:[7,8,8,6],
+    next_appt:'Nov 26, 2025',next_np:'Apr 1, 2026',
+    bottleneck:"Everything fine on my end. Need a clear late policy.",
+    scheduling:'Appointments overrun. Looking forward to admin block in afternoon.',
+    staffing:'Team is awesome.',
+    feedback:"In clinic yes. Outside — no. Don't think leadership cares about us as people.",
+    leadership:"Yes — with c-suite. Long-tenured, many roles, don't feel seen or valued.",
+    wellbeing:'Likes medicine and helping people.',
+    support:"Genuine check-ins from c-suite. Don't gloss over hardships like provider departures.",
+    strategic:'Admin time in afternoon. Monthly education from providers — case studies.',
+    ai:'Cerner AI (switched from Freed)'},
+  Liverett:{full:'Liverett, Rachel',role:'FNP-C',specialty:'Primary Care',start:'—',sentiment:'Mixed',
+    panel:[null,null,null,null],visits:[56,117,151,129],vpd:[9.3,11.7,13.7,13.0],
+    after:[7.22,6.73,8.75,6.58],msg:[11.4,12.0,12.4,10.1],no_show:null,panel_chg:null,
+    ehr_q3:20.0,ehr_q4:[18.3,10.8,11.2,10.2],days:[5,9,11,10],
+    next_appt:null,next_np:null,
+    bottleneck:'Rooms not always stocked (wipes, ear curettes, scope covers).',
+    scheduling:'Great. Sometimes waiting for PSR to get patient on.',
+    staffing:'Tori and Megan awesome. Remy disengaged. Katy amazing.',
+    feedback:'Yes — some things could be different (pay outside hours).',
+    leadership:'Gaps with leadership/c-suite. ED relationship great.',
+    wellbeing:'AI reducing chart time. Spending less time after hours.',
+    support:'People leaving is stressful. No retention incentives/raises for providers.',
+    strategic:'Retain providers long-term. Straight cath ability for peds UA.',
+    ai:'AI tools — chart time noticeably reduced'},
+  Holcomb:{full:'Holcomb',role:'MD',specialty:'Pulmonology',start:'12/1/2024',sentiment:'Positive',
+    panel:[null,null,null,null],visits:[115,121,110,149],vpd:[null,null,null,null],
+    after:[0,0,0,0],msg:[15.0,16.7,18.1,14.0],no_show:null,panel_chg:null,
+    ehr_q3:8.03,ehr_q4:[8.0,7.0,7.0,6.0],days:[null,null,null,null],
+    monthly_enc:[48,69,102,108,100,112,115,121,110,149,90],
+    next_appt:'Nov 20, 2025',next_np:'Nov 21, 2025',
+    bottleneck:'PFT scheduling or lack thereof.',
+    scheduling:'Light schedule; 12-14 patients is the sweet spot.',
+    staffing:'Charlene fantastic. Megan fantastic. Concerned if Charlene leaves.',
+    feedback:'No complaints whatsoever.',
+    leadership:'CEO stopping in and encouraging is very positive.',
+    wellbeing:'N/A',support:'N/A',
+    strategic:'RN refill protocol for pulmonary meds. Monthly volumes/data report needed.',
+    ai:'None noted'},
+  Steed:{full:'Steed',role:'MD',specialty:'Orthopedics',start:'7/31/2024',sentiment:'Positive',
+    panel:[null,null,null,null],visits:[169,144,120,195],vpd:[null,null,null,null],
+    after:[1.28,2.34,1.03,1.34],msg:[5.3,10.0,9.1,8.8],no_show:null,panel_chg:null,
+    ehr_q3:9.22,ehr_q4:[9.2,6.6,8.1,6.4],days:[null,null,null,null],
+    surg:[10,5,8,5],surg_ytd:92,surg_ytd_prev:16,
+    monthly_enc:[105,124,161,153,175,158,169,144,120,195,124],
+    next_appt:'Nov 21, 2025',next_np:null,
+    bottleneck:'Some patients not healthy enough for surgery (anesthesia concerns).',
+    scheduling:'Getting busier. Thinking about Friday surgery. OR/clinic communication gap.',
+    staffing:'Priscilla great. Few issues with Cathy.',
+    feedback:'Yes — very responsive.',leadership:'No.',wellbeing:'Very happy.',support:'N/A',
+    strategic:'Surgery profitability data. Education on equipment choices and margin impact.',
+    ai:'None noted'},
+  Tinguely:{full:'Tinguely',role:'MD',specialty:'General Surgery',start:'8/2017',sentiment:'Concern',
+    panel:[null,null,null,null],visits:[56,117,151,129],vpd:[null,null,null,null],
+    after:[13.0,null,null,null],msg:[9.0,null,null,null],no_show:null,panel_chg:null,
+    ehr_q3:10.56,ehr_q4:[10.56,null,null,null],days:[null,null,null,null],
+    monthly_enc:[52,66,81,95,78,81,106,71,47,9,0],
+    next_appt:null,next_np:null,
+    bottleneck:'RN divided among 3 providers — not feasible. Rooms not stocked when Leah absent.',
+    scheduling:'Patients say phones go unanswered. Outside scheduling does same-day late adds without asking.',
+    staffing:'Shared RN model is no longer workable. MA replacement acceptable.',
+    feedback:"No — can't give feedback and no one cares. No one has power to change anything.",
+    leadership:'"Who is looking out for the doctors?" Feels powerless to change anything.',
+    wellbeing:'N/A',support:'N/A',
+    strategic:'Ultrasound in clinic for thyroid/breast concerns.',
+    ai:'None noted'},
+  Webb:{full:'Webb, W.',role:'MD',specialty:'Orthopedics',start:'2010',sentiment:'Positive',
+    panel:[null,null,null,null],visits:[175,154,157,93],vpd:[null,null,null,null],
+    after:[1.23,1.07,1.46,1.65],msg:[8.0,7.9,8.8,13.9],no_show:null,panel_chg:null,
+    ehr_q3:7.4,ehr_q4:[7.6,7.0,8.5,7.6],days:[null,null,null,null],
+    surg:[8,13,13,1],surg_ytd:109,surg_ytd_prev:153,
+    monthly_enc:[149,132,98,149,95,86,175,154,157,93,104],
+    next_appt:'Nov 20, 2025',next_np:null,
+    bottleneck:'Getting people in the front door, especially afternoons.',
+    scheduling:'Loves schedule.',staffing:'Laura fantastic. Priscilla knows what she is doing.',
+    feedback:'Yes.',leadership:'N/A',wellbeing:'Loves job.',support:'N/A',
+    strategic:'Nothing jumps out.',ai:'None noted'},
+  Abbas:{full:'Abbas',role:'LCSW',specialty:'Behavioral Health',start:'8/4/2025',sentiment:'Positive',
+    panel:[null,null,null,null],visits:[39,54,70,76],vpd:[null,null,null,null],
+    after:[0,0,0,0],msg:[3.0,12.4,7.7,10.0],no_show:null,panel_chg:null,
+    ehr_q3:5.56,ehr_q4:[5.9,8.1,7.2,6.6],days:[null,null,null,null],
+    bh_visits:[12,23,19,21,25,29,11,22,33,46,25],
+    next_appt:null,next_np:null,
+    bottleneck:'Office space limited. Crisis patients when BH schedule is full — no room.',
+    scheduling:'Works wonderfully. Sarah is great.',staffing:'Everyone great. Feels very supported.',
+    feedback:'Definitely yes.',leadership:'ED communication good. EHR training was inadequate (1 hr only).',
+    wellbeing:'Managing well. Hearing difficult content daily is emotionally heavy.',
+    support:'Has people to decompress with.',
+    strategic:'Continue family atmosphere. Mentorship and QAPI role interest.',
+    ai:'None noted'},
+  Newth:{full:'Newth',role:'LCSW',specialty:'Behavioral Health',start:'2/10/2019',sentiment:'Neutral',
+    panel:[null,null,null,null],visits:[null,null,null,null],vpd:[null,null,null,null],
+    after:[0,null,null,null],msg:[8.8,null,null,null],no_show:null,panel_chg:null,
+    ehr_q3:18.25,ehr_q4:[18.25,null,null,null],days:[null,null,null,null],
+    bh_visits:[44,35,17,38,36,32,26,35,41,45,45],
+    next_appt:null,next_np:null,
+    bottleneck:'BH check-in process not ideal.',
+    scheduling:'Working fine. Coverage days have too few patients — underutilized.',
+    staffing:'Working well with Sarah.',
+    feedback:'If I bring it to you, it gets done.',
+    leadership:'Communication always problematic. Prior director did not communicate new processes to Marcia.',
+    wellbeing:'No stress — just underutilized.',support:'N/A',
+    strategic:'Team-based care model. GAD-7 + SDOH screening for all patients.',
+    ai:'None noted'},
+};
+
+const PC_C={Aragon:'#1D9E75',Brown:'#378ADD',Mashburn:'#BA7517',McIntyre:'#534AB7',Nobles:'#D85A30',RSM:'#3B6D11',Zappone:'#A32D2D',Liverett:'#7F77DD'};
+const SP_C={Holcomb:'#0F6E56',Steed:'#639922',Tinguely:'#D4537E',Webb:'#5DCAA5'};
+const ALL_C={...PC_C,...SP_C,Abbas:'#EF9F27',Newth:'#85B7EB'};
+const SENT_C={Positive:'#1E8449',Mixed:'#D4830A',Neutral:'#888888',Concern:'#A32D2D'};
+const SENT_BG={Positive:'#D5F5E3',Mixed:'#FDEBD0',Neutral:'#F4F4F4',Concern:'#FADBD8'};
+
+function av(a){const v=(a||[]).filter(x=>x!=null&&!isNaN(x));return v.length?v.reduce((s,x)=>s+x)/v.length:null}
+function fn(v,d=1){return v==null||isNaN(v)?'—':Number(v).toFixed(d)}
+function leg(id,items){const el=document.getElementById(id);if(!el)return;el.innerHTML=items.map(x=>`<span class="legitem"><span class="legsq" style="background:${x.c}"></span>${x.l}</span>`).join('')}
+
+function sw(n){
+  ['col','cmp','ind'].forEach((k,i)=>{
+    document.querySelectorAll('.tab')[i].classList.toggle('on',k===n);
+    document.getElementById('pane-'+k).classList.toggle('on',k===n);
+  });
+}
+
+// Theme list
+const THEMES=[
+  {n:'Registration / check-in delays',c:8,cat:'Operations',cc:'#185FA5'},
+  {n:'After-hours charting burden',c:6,cat:'Wellbeing',cc:'#1E8449'},
+  {n:'Leadership / c-suite disconnect',c:5,cat:'Culture',cc:'#A32D2D'},
+  {n:'AI tool adoption / interest',c:5,cat:'Innovation',cc:'#534AB7'},
+  {n:'Staffing inconsistency / turnover',c:4,cat:'Staffing',cc:'#BA7517'},
+  {n:'Provider recognition / morale',c:4,cat:'Culture',cc:'#A32D2D'},
+  {n:'Room stocking / supplies',c:3,cat:'Operations',cc:'#185FA5'},
+  {n:'Panel / risk stratification',c:3,cat:'Strategy',cc:'#0F6E56'},
+  {n:'Pediatric screening gaps',c:3,cat:'Clinical',cc:'#3B6D11'},
+  {n:'Billing / phone / portal visits',c:2,cat:'Revenue',cc:'#854F0B'},
+];
+const th=document.getElementById('themes');
+THEMES.forEach(t=>{th.innerHTML+=`<div class="trow"><span class="tname">${t.n}</span><div class="tbw"><div class="tb" style="width:${t.c/8*100}%"></div></div><span class="tn">${t.c}</span><span class="tcat" style="background:${t.cc}22;color:${t.cc}">${t.cat}</span></div>`;});
+
+// Provider grid
+const groups=[
+  {label:'Primary Care',keys:['Aragon','Brown','Liverett','Mashburn','McIntyre','Nobles','RSM','Zappone']},
+  {label:'Specialty',keys:['Holcomb','Steed','Tinguely','Webb']},
+  {label:'Behavioral Health',keys:['Abbas','Newth']},
+];
+const pg=document.getElementById('pg');
+groups.forEach(g=>{
+  pg.innerHTML+=`<div class="grp-hdr">${g.label}</div>`;
+  g.keys.forEach(k=>{
+    const p=P[k];
+    pg.innerHTML+=`<button class="pbtn" id="pb-${k}" onclick="showRpt('${k}')"><div class="pname"><span class="dot" style="background:${SENT_C[p.sentiment]}"></span>${k}</div><div class="prole">${p.role}</div><div class="pspec">${p.specialty}</div></button>`;
+  });
+});
+
+function showRpt(key){
+  const p=P[key];
+  document.querySelectorAll('.pbtn').forEach(b=>b.classList.remove('on'));
+  document.getElementById('pb-'+key)?.classList.add('on');
+  function ta(arr){
+    const v=(arr||[]).filter(x=>x!=null&&!isNaN(parseFloat(x)));
+    if(v.length<2)return'<span class="st">—</span>';
+    const l=parseFloat(v[v.length-1]),f=parseFloat(v[0]);
+    return l>f?'<span class="up">▲ Up</span>':l<f?'<span class="dn">▼ Down</span>':'<span class="st">► Stable</span>';
+  }
+  const mRows=[
+    ['Panel size',p.panel.map(v=>v??'—'),p.ehr_q3!=null?'—':'—'],
+    ['Visits / month',p.visits.map(v=>v??'—'),null],
+    ['Visits / day',p.vpd.map(v=>v??'—'),null],
+    ['After-hrs EHR %',p.after.map(v=>v!=null?v.toFixed(1)+'%':'—'),null],
+    ['Message center %',p.msg.map(v=>v!=null?v.toFixed(1)+'%':'—'),null],
+    ['EHR doc time (min)',p.ehr_q4.map(v=>v!=null?v.toFixed(1):'—'),p.ehr_q3!=null?p.ehr_q3.toFixed(1):'—'],
+    ['Days worked',p.days.map(v=>v??'—'),null],
+  ];
+  const qPairs=[
+    ['Bottleneck',p.bottleneck],['Scheduling',p.scheduling],['Staffing',p.staffing],
+    ['Feedback heard?',p.feedback],['Leadership gap',p.leadership],
+    ['Wellbeing & stress',p.wellbeing],['Support requested',p.support],
+    ['Strategic input',p.strategic],['AI tool',p.ai],
+  ];
+  const r=document.getElementById('rpt');
+  r.className='on';
+  r.innerHTML=`
+    <button class="back" onclick="clearRpt()">&#8592; All providers</button>
+    <div class="rh">
+      <div>
+        <div class="rname">${p.full}</div>
+        <div class="rmeta">${p.role} &nbsp;·&nbsp; ${p.specialty} &nbsp;·&nbsp; Started: ${p.start}</div>
+        ${p.next_appt?`<div class="rmeta" style="margin-top:4px">Next available appt: <strong>${p.next_appt}</strong>${p.next_np?' &nbsp;|&nbsp; Next NP appt: <strong>'+p.next_np+'</strong>':''}</div>`:''}
+      </div>
+      <span class="rsent" style="background:${SENT_BG[p.sentiment]};color:${SENT_C[p.sentiment]}">${p.sentiment}</span>
+    </div>
+    <div class="shdr">Performance metrics — Q3 snapshot + Q4 monthly</div>
+    <div style="overflow-x:auto;margin-bottom:20px">
+      <table class="mtbl">
+        <thead><tr><th>Metric</th><th style="background:#FAEEDA;color:#BA7517">Q3 Snapshot</th>${Q4.map(m=>`<th>${m}</th>`).join('')}<th>Trend</th></tr></thead>
+        <tbody>${mRows.map(([label,vals,q3v])=>`<tr><td>${label}</td><td style="background:#FAEEDA">${q3v??'—'}</td>${vals.map(v=>`<td>${v}</td>`).join('')}<td>${ta(vals)}</td></tr>`).join('')}</tbody>
+      </table>
+    </div>
+    <div class="shdr">Charts</div>
+    <div class="rcgrid">
+      <div class="rcc"><div class="ctitle">Visits per month — Q4</div><div class="cw" style="height:200px"><canvas id="rc1"></canvas></div></div>
+      <div class="rcc"><div class="ctitle">After-hours % vs message center %</div><div class="cw" style="height:200px"><canvas id="rc2"></canvas></div></div>
+      ${p.panel[0]?`<div class="rcc"><div class="ctitle">Panel growth — Jul to Oct</div><div class="cw" style="height:200px"><canvas id="rc3"></canvas></div></div>`:''}
+      <div class="rcc"><div class="ctitle">EHR doc time (min/patient) — Q4</div><div class="cw" style="height:200px"><canvas id="rc4"></canvas></div></div>
+      ${p.monthly_enc?`<div class="rcc"><div class="ctitle">Monthly encounters — full year 2025</div><div class="cw" style="height:200px"><canvas id="rc5"></canvas></div></div>`:''}
+      ${p.surg?`<div class="rcc"><div class="ctitle">Surgical cases — 2024 vs 2025 YTD</div><div class="cw" style="height:200px"><canvas id="rc6"></canvas></div></div>`:''}
+      ${p.bh_visits?`<div class="rcc"><div class="ctitle">BH encounters — monthly 2025</div><div class="cw" style="height:200px"><canvas id="rc7"></canvas></div></div>`:''}
+    </div>
+    <div class="shdr">Interview notes</div>
+    <div class="qblock">${qPairs.map(([k,v])=>`<div class="qrow"><div class="qk">${k}</div><div class="qv">${v||'—'}</div></div>`).join('')}</div>
+    ${p.no_show!=null?`<p style="font-size:12px;color:var(--text-2);margin-bottom:16px">No-shows Jul–Oct: <strong>${p.no_show}</strong>${p.panel_chg!=null?' &nbsp;·&nbsp; Panel change Jul–Oct: <strong>'+p.panel_chg.toFixed(1)+'%</strong>':''}</p>`:''}
+  `;
+  const col=ALL_C[key]||'#1D9E75';
+  setTimeout(()=>{
+    new Chart(document.getElementById('rc1'),{type:'bar',data:{labels:Q4,datasets:[{label:'Visits',data:p.visits,backgroundColor:col+'99',borderColor:col,borderWidth:1.5}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{beginAtZero:false,ticks:{font:{size:11}}}}}});
+    new Chart(document.getElementById('rc2'),{type:'line',data:{labels:Q4,datasets:[{label:'After-hrs %',data:p.after,borderColor:'#A32D2D',backgroundColor:'transparent',pointRadius:3,borderWidth:2,tension:.3},{label:'Msg ctr %',data:p.msg,borderColor:'#185FA5',backgroundColor:'transparent',pointRadius:3,borderWidth:2,borderDash:[4,3],tension:.3}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{boxWidth:10,font:{size:10}}}},scales:{y:{ticks:{callback:v=>v+'%',font:{size:11}}}}}});
+    const rc3=document.getElementById('rc3');
+    if(rc3&&p.panel[0]) new Chart(rc3,{type:'line',data:{labels:Q4,datasets:[{label:'Panel',data:p.panel,borderColor:col,backgroundColor:col+'22',fill:true,pointRadius:3,borderWidth:2,tension:.3}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{ticks:{font:{size:11}}}}}});
+    new Chart(document.getElementById('rc4'),{type:'bar',data:{labels:Q4,datasets:[{label:'Min',data:p.ehr_q4,backgroundColor:'#FAC77599',borderColor:'#BA7517',borderWidth:1.5}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{beginAtZero:false,ticks:{font:{size:11}}}}}});
+    const rc5=document.getElementById('rc5');
+    if(rc5&&p.monthly_enc) new Chart(rc5,{type:'line',data:{labels:MO,datasets:[{label:'Encounters',data:p.monthly_enc,borderColor:col,backgroundColor:col+'22',fill:true,pointRadius:3,borderWidth:2,tension:.3}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,ticks:{font:{size:11}}}}}});
+    const rc6=document.getElementById('rc6');
+    if(rc6&&p.surg) new Chart(rc6,{type:'bar',data:{labels:['2024 YTD','2025 YTD'],datasets:[{label:'Cases',data:[p.surg_ytd_prev,p.surg_ytd],backgroundColor:[col+'88',col+'cc'],borderColor:col,borderWidth:1.5}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,ticks:{font:{size:11}}}}}});
+    const rc7=document.getElementById('rc7');
+    if(rc7&&p.bh_visits) new Chart(rc7,{type:'bar',data:{labels:MO,datasets:[{label:'BH visits',data:p.bh_visits,backgroundColor:col+'99',borderColor:col,borderWidth:1.5}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,ticks:{font:{size:11}}}}}});
+  },50);
+}
+function clearRpt(){document.getElementById('rpt').className='';document.getElementById('rpt').innerHTML='';document.querySelectorAll('.pbtn').forEach(b=>b.classList.remove('on'));}
+
+// Collective charts
+const pcK=['Nobles','RSM','Zappone','McIntyre','Liverett','Brown','Mashburn','Aragon'];
+const vpdA=pcK.map(k=>{const v=av(P[k].vpd);return v?+v.toFixed(1):null;});
+new Chart(document.getElementById('c1'),{type:'bar',data:{labels:pcK,datasets:[{label:'Avg visits/day',data:vpdA,backgroundColor:pcK.map(k=>PC_C[k]+'BB'),borderColor:pcK.map(k=>PC_C[k]),borderWidth:1.5}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{min:7,max:16,ticks:{font:{size:11}}},x:{ticks:{font:{size:11},autoSkip:false}}}}});
+leg('l1',pcK.map(k=>({l:`${k} ${vpdA[pcK.indexOf(k)]??'—'}`,c:PC_C[k]})));
+
+const pK=['Aragon','McIntyre','Nobles','RSM','Zappone','Mashburn'];
+new Chart(document.getElementById('c2'),{type:'line',data:{labels:Q4,datasets:pK.map(k=>({label:k,data:P[k].panel,borderColor:PC_C[k],backgroundColor:'transparent',pointRadius:3,borderWidth:2,tension:.3}))},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{ticks:{font:{size:11}}},x:{ticks:{font:{size:11}}}}}});
+leg('l2',pK.map(k=>({l:k,c:PC_C[k]})));
+
+const allK=Object.keys(P).filter(k=>av(P[k].after)!=null);
+const aS=allK.map(k=>({k,v:+(av(P[k].after)||0).toFixed(1)})).sort((a,b)=>b.v-a.v);
+new Chart(document.getElementById('c3'),{type:'bar',data:{labels:aS.map(x=>x.k),datasets:[{label:'After-hrs %',data:aS.map(x=>x.v),backgroundColor:aS.map(x=>(ALL_C[x.k]||'#888')+'BB'),borderColor:aS.map(x=>ALL_C[x.k]||'#888'),borderWidth:1.5}]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{callback:v=>v+'%',font:{size:10}}},y:{ticks:{font:{size:11},autoSkip:false}}}}});
+const mS=allK.map(k=>({k,v:+(av(P[k].msg)||0).toFixed(1)})).sort((a,b)=>b.v-a.v);
+new Chart(document.getElementById('c4'),{type:'bar',data:{labels:mS.map(x=>x.k),datasets:[{label:'Msg ctr %',data:mS.map(x=>x.v),backgroundColor:mS.map(x=>(ALL_C[x.k]||'#888')+'BB'),borderColor:mS.map(x=>ALL_C[x.k]||'#888'),borderWidth:1.5}]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{callback:v=>v+'%',font:{size:10}}},y:{ticks:{font:{size:11},autoSkip:false}}}}});
+
+const spK=['Holcomb','Steed','Tinguely','Webb'];
+new Chart(document.getElementById('c5'),{type:'line',data:{labels:MO,datasets:spK.map(k=>({label:`${k} (${P[k].specialty})`,data:P[k].monthly_enc,borderColor:SP_C[k],backgroundColor:'transparent',pointRadius:3,borderWidth:2,tension:.3}))},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,ticks:{font:{size:11}}},x:{ticks:{font:{size:11}}}}}});
+leg('l5',spK.map(k=>({l:`${k} (${P[k].specialty})`,c:SP_C[k]})));
+
+new Chart(document.getElementById('c6'),{type:'bar',data:{labels:['Webb (Ortho)','Steed (Ortho)'],datasets:[{label:'2024 YTD',data:[153,16],backgroundColor:'#B5D4F499',borderColor:'#378ADD',borderWidth:1.5},{label:'2025 YTD',data:[109,92],backgroundColor:'#9FE1CB99',borderColor:'#1D9E75',borderWidth:1.5}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{ticks:{font:{size:11}}},x:{ticks:{font:{size:11}}}}}});
+leg('l6',[{l:'2024 YTD',c:'#378ADD'},{l:'2025 YTD',c:'#1D9E75'}]);
+
+new Chart(document.getElementById('c7'),{type:'line',data:{labels:MO,datasets:[{label:'Abbas (BH)',data:P.Abbas.bh_visits,borderColor:'#EF9F27',backgroundColor:'#EF9F2722',fill:true,pointRadius:3,borderWidth:2,tension:.3},{label:'Newth (BH)',data:P.Newth.bh_visits,borderColor:'#85B7EB',backgroundColor:'#85B7EB22',fill:true,pointRadius:3,borderWidth:2,tension:.3}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{boxWidth:10,font:{size:10}}}},scales:{y:{beginAtZero:true,ticks:{font:{size:11}}},x:{ticks:{font:{size:11}}}}}});
+leg('l7',[{l:'Abbas (BH)',c:'#EF9F27'},{l:'Newth (BH)',c:'#85B7EB'}]);
+
+// Comparison charts
+const vTK=['Nobles','RSM','Zappone','McIntyre','Liverett','Mashburn','Aragon'];
+new Chart(document.getElementById('d1'),{type:'line',data:{labels:Q4,datasets:vTK.map(k=>({label:k,data:P[k].vpd,borderColor:PC_C[k],backgroundColor:'transparent',pointRadius:4,borderWidth:2,tension:.3}))},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{boxWidth:10,font:{size:11}}}},scales:{y:{min:7,ticks:{font:{size:11}}},x:{ticks:{font:{size:11}}}}}});
+
+const aK2=['McIntyre','Nobles','RSM','Aragon','Zappone','Liverett'];
+new Chart(document.getElementById('d2'),{type:'line',data:{labels:Q4,datasets:aK2.map(k=>({label:k,data:P[k].after,borderColor:PC_C[k],backgroundColor:'transparent',pointRadius:3,borderWidth:1.5,tension:.3}))},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{boxWidth:10,font:{size:11}}}},scales:{y:{ticks:{callback:v=>v+'%',font:{size:11}}},x:{ticks:{font:{size:11}}}}}});
+
+const mK2=['Mashburn','Zappone','Nobles','RSM','Aragon','McIntyre','Liverett'];
+new Chart(document.getElementById('d3'),{type:'line',data:{labels:Q4,datasets:mK2.map(k=>({label:k,data:P[k].msg,borderColor:PC_C[k],backgroundColor:'transparent',pointRadius:3,borderWidth:1.5,tension:.3,borderDash:k==='Liverett'?[4,3]:[]}))},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{boxWidth:10,font:{size:11}}}},scales:{y:{ticks:{callback:v=>v+'%',font:{size:11}}},x:{ticks:{font:{size:11}}}}}});
+
+const bK=['Aragon','Mashburn','McIntyre','Nobles','RSM','Zappone'];
+new Chart(document.getElementById('d4'),{type:'bubble',data:{datasets:bK.map(k=>{const ns=P[k].no_show||0,vd=av(P[k].vpd)||12,pan=P[k].panel[3]||300;return{label:k,data:[{x:+vd.toFixed(1),y:ns,r:Math.max(6,Math.sqrt(pan/16))}],backgroundColor:PC_C[k]+'88',borderColor:PC_C[k],borderWidth:1.5};})},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{boxWidth:10,font:{size:11}}}},scales:{x:{title:{display:true,text:'Avg visits/day',font:{size:11}},min:8,max:16,ticks:{font:{size:10}}},y:{title:{display:true,text:'No-shows (total)',font:{size:11}},min:15,max:65,ticks:{font:{size:10}}}}}});
+
+const eK=['McIntyre','Nobles','Aragon','RSM','Mashburn','Zappone','Liverett'];
+new Chart(document.getElementById('d5'),{type:'bar',data:{labels:Q4,datasets:eK.map(k=>({label:k,data:P[k].ehr_q4,backgroundColor:PC_C[k]+'99',borderColor:PC_C[k],borderWidth:1}))},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{boxWidth:10,font:{size:11}}}},scales:{y:{ticks:{font:{size:11}}},x:{ticks:{font:{size:11}}}}}});
+
+new Chart(document.getElementById('d6'),{type:'line',data:{labels:MO,datasets:spK.map(k=>({label:`${k} (${P[k].specialty})`,data:P[k].monthly_enc,borderColor:SP_C[k],backgroundColor:'transparent',pointRadius:3,borderWidth:2,tension:.3}))},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{boxWidth:10,font:{size:11}}}},scales:{y:{beginAtZero:true,ticks:{font:{size:11}}},x:{ticks:{font:{size:11}}}}}});
+</script>
+</body>
+</html>
