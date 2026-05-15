@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Scheduling Opportunities — Manager Dashboard | PSMC</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+:root{--navy:#1a2744;--blue:#2855a0;--blue-mid:#4272c4;--blue-light:#e8f0fb;--blue-pale:#f4f7fd;--teal:#0f7c70;--teal-light:#e6f5f3;--amber:#b45309;--amber-light:#fef9ee;--amber-mid:#fcd34d;--slate:#475569;--slate-light:#f8fafc;--border:#e2e8f0;--border-mid:#cbd5e1;--txt:#1e293b;--txt2:#475569;--txt3:#94a3b8;--white:#ffffff;--success-bg:#f0fdf4;--success:#166534;--warn-bg:#fffbeb;--warn:#92400e;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'DM Sans',sans-serif;background:#f0f4f8;color:var(--txt);font-size:14px;line-height:1.5;min-height:100vh;}
+.topbar{background:var(--navy);padding:0 32px;display:flex;align-items:center;justify-content:space-between;height:56px;position:sticky;top:0;z-index:100;}
+.topbar-left{display:flex;align-items:center;gap:16px;}
+.topbar-logo{font-size:13px;font-weight:600;color:#fff;letter-spacing:.04em;text-transform:uppercase;}
+.topbar-divider{width:1px;height:20px;background:rgba(255,255,255,.2);}
+.topbar-title{font-size:13px;color:rgba(255,255,255,.65);}
+.topbar-right{display:flex;align-items:center;gap:12px;}
+.date-range{font-size:12px;color:rgba(255,255,255,.5);font-family:'DM Mono',monospace;}
+.series-badge{background:rgba(255,255,255,.12);color:rgba(255,255,255,.8);font-size:11px;padding:3px 10px;border-radius:99px;}
+.main{max-width:1280px;margin:0 auto;padding:28px 28px 60px;}
+.page-header{margin-bottom:24px;display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:12px;}
+.page-title{font-size:22px;font-weight:600;color:var(--navy);line-height:1.2;}
+.page-sub{font-size:13px;color:var(--txt2);margin-top:3px;}
+.filter-bar{display:flex;align-items:center;gap:8px;}
+.filter-label{font-size:12px;color:var(--txt3);}
+select{font-family:'DM Sans',sans-serif;font-size:12px;padding:6px 12px;border:1px solid var(--border-mid);border-radius:6px;background:var(--white);color:var(--txt);cursor:pointer;outline:none;}
+select:focus{border-color:var(--blue-mid);}
+.metrics{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin-bottom:20px;}
+.metric{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:16px;position:relative;overflow:hidden;}
+.metric::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--blue-mid);}
+.metric.accent::before{background:var(--teal);}
+.metric.warn::before{background:var(--amber);}
+.metric-val{font-size:26px;font-weight:600;color:var(--navy);font-family:'DM Mono',monospace;line-height:1;margin-bottom:5px;}
+.metric-label{font-size:11px;color:var(--txt3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:2px;}
+.metric-sub{font-size:11px;color:var(--txt2);}
+.card{background:var(--white);border:1px solid var(--border);border-radius:12px;overflow:hidden;}
+.card-head{padding:16px 20px 12px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.card-title{font-size:13px;font-weight:600;color:var(--navy);}
+.card-sub{font-size:11px;color:var(--txt3);margin-top:1px;}
+.card-body{padding:16px 20px;}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;}
+.legend{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:10px;}
+.legend-item{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--txt2);}
+.legend-sq{width:9px;height:9px;border-radius:2px;}
+.tbl-wrap{overflow-x:auto;}
+table{width:100%;border-collapse:collapse;font-size:12px;}
+thead th{text-align:left;padding:10px 14px;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--txt3);border-bottom:1px solid var(--border);white-space:nowrap;background:var(--slate-light);}
+tbody td{padding:9px 14px;border-bottom:1px solid var(--border);vertical-align:middle;}
+tbody tr:last-child td{border-bottom:none;}
+tbody tr:hover{background:var(--blue-pale);}
+.ibar-wrap{display:flex;align-items:center;gap:6px;}
+.ibar-bg{height:4px;width:60px;background:var(--border);border-radius:2px;flex-shrink:0;}
+.ibar-fill{height:4px;border-radius:2px;background:var(--blue-mid);}
+.badge{display:inline-block;font-size:10px;padding:2px 7px;border-radius:99px;font-weight:500;white-space:nowrap;margin:1px;}
+.b-blue{background:var(--blue-light);color:var(--blue);}
+.b-teal{background:var(--teal-light);color:var(--teal);}
+.b-amber{background:var(--amber-light);color:var(--amber);border:1px solid var(--amber-mid);}
+.b-gray{background:var(--slate-light);color:var(--slate);border:1px solid var(--border);}
+.b-warn{background:#fff3cd;color:#7B4F00;}
+.staff-name{font-weight:500;color:var(--navy);}
+.staff-sub{font-size:10px;color:var(--txt3);margin-top:1px;}
+.avg-high{color:var(--amber);font-weight:600;}
+.avg-ok{color:var(--teal);font-weight:500;}
+.insights{background:var(--navy);border-radius:12px;padding:20px 24px;margin-bottom:16px;color:rgba(255,255,255,.85);}
+.insights-title{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.4);margin-bottom:12px;}
+.insight-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+.insight-label{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:rgba(255,255,255,.4);margin-bottom:4px;}
+.insight-text{font-size:12px;color:rgba(255,255,255,.8);line-height:1.55;}
+.insight-text b{color:#fff;font-weight:600;}
+.flag-note{font-size:11px;color:var(--txt2);max-width:340px;line-height:1.4;}
+.section-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--txt3);margin:24px 0 10px;display:flex;align-items:center;gap:8px;}
+.section-label::after{content:'';flex:1;height:1px;background:var(--border);}
+.footer{text-align:center;padding:32px;font-size:11px;color:var(--txt3);border-top:1px solid var(--border);margin-top:20px;}
+@media(max-width:900px){.metrics{grid-template-columns:repeat(3,1fr);}.row2{grid-template-columns:1fr;}.insight-grid{grid-template-columns:1fr;}}
+@media print{.topbar{position:static;}body{background:white;}.main{padding:16px;}}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <div class="topbar-left">
+    <span class="topbar-logo">PSMC</span>
+    <div class="topbar-divider"></div>
+    <span class="topbar-title">Registration / Scheduling &mdash; Common Opportunities</span>
+  </div>
+  <div class="topbar-right">
+    <span class="date-range">Mar 26 &ndash; May 4, 2026</span>
+    <span class="series-badge">Manager View</span>
+  </div>
+</div>
+
+<div class="main">
+  <div class="page-header">
+    <div>
+      <div class="page-title">Scheduling opportunities dashboard</div>
+      <div class="page-sub">All encounters flagged for registration quality review &mdash; 6-week period</div>
+    </div>
+    <div class="filter-bar">
+      <span class="filter-label">Filter by scheduler</span>
+      <select id="staffFilter"><option value="all">All staff</option></select>
+    </div>
+  </div>
+
+  <div class="metrics" id="metricsGrid"></div>
+
+  <div class="insights">
+    <div class="insights-title">Manager insights</div>
+    <div class="insight-grid" id="insightGrid"></div>
+  </div>
+
+  <div class="section-label">Trend &amp; patterns</div>
+  <div class="row2">
+    <div class="card">
+      <div class="card-head"><div><div class="card-title">Opportunities by week</div><div class="card-sub">Total vs. accident question misses</div></div></div>
+      <div class="card-body">
+        <div class="legend" id="weekLeg"></div>
+        <div style="position:relative;height:200px"><canvas id="weekChart" role="img" aria-label="Weekly opportunity trend">Weekly counts.</canvas></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head"><div><div class="card-title">Day-of-week pattern</div><div class="card-sub">Total opportunities by weekday</div></div></div>
+      <div class="card-body">
+        <div style="position:relative;height:220px"><canvas id="dowChart" role="img" aria-label="Opportunities by day of week">Day of week distribution.</canvas></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row2">
+    <div class="card">
+      <div class="card-head"><div><div class="card-title">Error type breakdown</div><div class="card-sub">Total individual errors logged</div></div></div>
+      <div class="card-body">
+        <div class="legend" id="typeLeg"></div>
+        <div style="position:relative;height:220px"><canvas id="typeChart" role="img" aria-label="Error types by count">Error type counts.</canvas></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head"><div><div class="card-title">Errors per encounter</div><div class="card-sub">How many errors occur on the same visit</div></div></div>
+      <div class="card-body">
+        <div style="position:relative;height:220px"><canvas id="multiChart" role="img" aria-label="Multi-error encounter distribution">Multi-error distribution.</canvas></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-label">Staff detail</div>
+  <div class="card" style="margin-bottom:16px">
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr>
+          <th>Scheduler</th><th>Encounters</th><th>Total errors</th><th>Avg errors / visit</th>
+          <th>Top error</th><th>Accident N/A</th><th>Missing demo</th><th>Wrong ins</th>
+          <th>MSPQ N/A</th><th>Provider</th><th>Status</th>
+        </tr></thead>
+        <tbody id="staffTbody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="section-label">Flagged &amp; notable encounters</div>
+  <div class="card" style="margin-bottom:16px">
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Date</th><th>FIN</th><th>Scheduler</th><th>Error types</th><th>Note</th></tr></thead>
+        <tbody id="flagTbody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="footer">
+    Pagosa Springs Medical Center &nbsp;&middot;&nbsp; Registration / Scheduling Department &nbsp;&middot;&nbsp; Confidential &mdash; for internal management use only
+  </div>
+</div>
+
+<script>
+const raw=[
+  {d:'3.26.26',fin:'4411757',t:['Accident N/A','Incorrect Provider'],s:'Daniel Shannon',note:''},
+  {d:'3.26.26',fin:'4425765',t:['Accident N/A'],s:'Charlene C',note:''},
+  {d:'3.27.26',fin:'4429496',t:['Accident N/A'],s:'Tori Watts',note:''},
+  {d:'3.27.26',fin:'4429393',t:['Missing Demo'],s:'Sarah Rader',note:''},
+  {d:'3.27.26',fin:'4429519',t:['Wrong Insurance','Accident N/A'],s:'Lisa Grooms',note:''},
+  {d:'3.30.26',fin:'4411462',t:['Missing Demo','No Emergency Contact'],s:'Maya Romano',note:''},
+  {d:'3.30.26',fin:'4429283',t:['Wrong Insurance'],s:'Lisa Grooms',note:''},
+  {d:'3.30.26',fin:'4427130',t:['Accident N/A'],s:'Paula Quintana',note:''},
+  {d:'3.30.26',fin:'4428927',t:['Empty Chart'],s:'Brianne Albach',note:'Nothing filled in; pt sent upstairs to be registered'},
+  {d:'3.31.26',fin:'4416624',t:['Accident N/A'],s:'Shannon Montanez',note:''},
+  {d:'4.1.26',fin:'4426755',t:['Missing Demo'],s:'Paula Quintana',note:''},
+  {d:'4.1.26',fin:'4426108',t:['Accident N/A'],s:'Paula Quintana',note:''},
+  {d:'4.1.26',fin:'4427954',t:['Accident N/A'],s:'Paula Quintana',note:''},
+  {d:'4.1.26',fin:'4424165',t:['Wrong Insurance'],s:'Paula Quintana',note:''},
+  {d:'4.1.26',fin:'4427521',t:['Accident N/A'],s:'Shannon Montanez',note:''},
+  {d:'4.1.26',fin:'4413150',t:['Missing Demo','Wrong Insurance'],s:'Heather Allbrandt',note:''},
+  {d:'4.2.26',fin:'4412674',t:['Missing Demo','Wrong Insurance','Incorrect Provider'],s:'Crystal Quintana',note:''},
+  {d:'4.2.26',fin:'4415568',t:['Incorrect Provider'],s:'Sara Marino',note:''},
+  {d:'4.3.26',fin:'4406694',t:['Wrong Insurance'],s:'Latia Albue',note:''},
+  {d:'4.6.26',fin:'4428465',t:['Wrong PCP'],s:'Meghan W',note:''},
+  {d:'4.7.26',fin:'4425960',t:['Missing Demo','Wrong Insurance','WC Not Entered'],s:'Sarah Rader',note:''},
+  {d:'4.8.26',fin:'4430865',t:['Missing Demo'],s:'Unknown',note:''},
+  {d:'4.8.26',fin:'4430184',t:['Name Incorrect'],s:'Unknown',note:''},
+  {d:'4.13.26',fin:'4430036',t:['Accident N/A'],s:'Leah Wattier',note:''},
+  {d:'4.13.26',fin:'4430657',t:['Accident N/A'],s:'McKenna Sutton',note:''},
+  {d:'4.13.26',fin:'4409013',t:['Accident N/A'],s:'Haley P',note:''},
+  {d:'4.13.26',fin:'4425842',t:['Accident N/A'],s:'Paula Quintana',note:''},
+  {d:'4.13.26',fin:'4418108',t:['Missing Demo','Accident N/A'],s:'Londisha Washington',note:''},
+  {d:'4.13.26',fin:'4430117',t:['Accident N/A'],s:'Paula Quintana',note:''},
+  {d:'4.14.26',fin:'4430241',t:['Missing Demo','Accident N/A'],s:"Kinsey O'Dell",note:''},
+  {d:'4.14.26',fin:'4431637',t:['Accident N/A'],s:"Kinsey O'Dell",note:''},
+  {d:'4.14.26',fin:'4414126',t:['Incorrect Provider','Accident N/A'],s:'Londisha Washington',note:''},
+  {d:'4.15.26',fin:'4423993',t:['Accident N/A'],s:'Paula Quintana',note:''},
+  {d:'4.15.26',fin:'4431537',t:['Accident N/A'],s:'Londisha Washington',note:''},
+  {d:'4.15.26',fin:'4427439',t:['Accident N/A'],s:'Paula Quintana',note:''},
+  {d:'4.15.26',fin:'4423686',t:['Accident N/A'],s:'Paula Quintana',note:''},
+  {d:'4.15.26',fin:'4431094',t:['Missing Demo'],s:'Sarah Rader',note:''},
+  {d:'4.15.26',fin:'4431347',t:['Accident N/A'],s:'Lisa Grooms',note:''},
+  {d:'4.15.26',fin:'4431013',t:['Accident N/A'],s:'Brianne Albach',note:''},
+  {d:'4.15.26',fin:'4429744',t:['Accident N/A'],s:"Kinsey O'Dell",note:''},
+  {d:'4.15.26',fin:'4410977',t:['Accident N/A'],s:'Charlene',note:''},
+  {d:'4.15.26',fin:'4430143',t:['Accident N/A'],s:'Annette L',note:''},
+  {d:'4.15.26',fin:'4421344',t:['Missing Demo','Accident N/A'],s:'Monica Reyes',note:''},
+  {d:'4.15.26',fin:'4422282',t:['Accident N/A'],s:'Charlene',note:''},
+  {d:'4.15.26',fin:'4427899',t:['Wrong Insurance','Accident N/A'],s:'Paula Quintana',note:'Marked self-pay; insurance never entered'},
+  {d:'4.15.26',fin:'4427309',t:['Incorrect Provider','Accident N/A'],s:"Kinsey O'Dell",note:''},
+  {d:'4.15.26',fin:'4430826',t:['Accident N/A'],s:'Paula Quintana',note:''},
+  {d:'4.16.26',fin:'4421555',t:['Missing Demo','Accident N/A'],s:'Mayra Romano',note:'Minor patient - chart completely empty, no guarantor or guardian info'},
+  {d:'4.17.26',fin:'4424002',t:['Accident N/A'],s:'Mayra Romano',note:''},
+  {d:'4.17.26',fin:'4429560',t:['Missing Demo'],s:'Sarah Rader',note:''},
+  {d:'4.17.26',fin:'4430397',t:['Accident N/A'],s:'Paula Quintana',note:''},
+  {d:'4.17.26',fin:'4407306',t:['Wrong Insurance','Accident N/A'],s:'Nicole Flinn',note:'Employee no longer at PSMC'},
+  {d:'4.17.26',fin:'4431235',t:['Missing Demo'],s:'Sarah Rader',note:'Emergency contact and phone number did not belong to patient'},
+  {d:'4.17.26',fin:'4410799',t:['Wrong Insurance','Accident N/A'],s:'Nicole Flinn',note:'Employee no longer at PSMC'},
+  {d:'4.20.26',fin:'4431470',t:['Accident N/A'],s:'Londisha Washington',note:''},
+  {d:'4.20.26',fin:'4423687',t:['Accident N/A'],s:'Sara Marino',note:''},
+  {d:'4.20.26',fin:'4430055',t:['Accident N/A'],s:'Paula Quintana',note:''},
+  {d:'4.20.26',fin:'4430938',t:['Accident N/A'],s:'Shannon Montanez',note:''},
+  {d:'4.20.26',fin:'4432208',t:['Accident N/A'],s:'Londisha Washington',note:''},
+  {d:'4.20.26',fin:'4430876',t:['Accident N/A'],s:'Monica Reyes',note:''},
+  {d:'4.20.26',fin:'4418891',t:['Incorrect Provider','Accident N/A'],s:'Monica Reyes',note:'Attending marked RSM - scheduled to see Zappone'},
+  {d:'4.20.26',fin:'4419041',t:['Accident N/A'],s:'Nicole Flinn',note:'Employee no longer at PSMC'},
+  {d:'4.20.26',fin:'4417499',t:['Accident N/A'],s:'Crystal Quintana',note:''},
+  {d:'4.20.26',fin:'4431288',t:['Accident N/A'],s:'McKenna Sutton',note:''},
+  {d:'4.20.26',fin:'4431604',t:['Accident N/A'],s:'Megan Niederkorn',note:''},
+  {d:'4.20.26',fin:'4431008',t:['Accident N/A'],s:'Paula Quintana',note:''},
+  {d:'4.20.26',fin:'4430965',t:['Accident N/A'],s:'Brianne Albach',note:''},
+  {d:'4.21.26',fin:'4431904',t:['Accident N/A'],s:'Paula Quintana',note:''},
+  {d:'4.21.26',fin:'4420156',t:['Accident N/A'],s:'Paula Quintana',note:''},
+  {d:'4.21.26',fin:'4419300',t:['Accident N/A','MSPQ N/A'],s:'Latia Albue',note:''},
+  {d:'4.21.26',fin:'4431134',t:['Accident N/A'],s:'Lisa Grooms',note:''},
+  {d:'4.21.26',fin:'4432117',t:['PCP Blank'],s:'Ariana Shabro',note:''},
+  {d:'4.21.26',fin:'4430809',t:['Accident N/A','MSPQ N/A'],s:'Leah Wattier',note:''},
+  {d:'4.21.26',fin:'4429419',t:['Missing Demo','Accident N/A'],s:'Sarah Rader',note:'Chart completely empty - sent to be registered'},
+  {d:'4.21.26',fin:'4432168',t:['Accident N/A','Incorrect PCP'],s:'Shannon Montanez',note:''},
+  {d:'4.21.26',fin:'4430810',t:['Accident N/A'],s:'Monica Reyes',note:''},
+  {d:'4.21.26',fin:'4431566',t:['Accident N/A'],s:'Brianne Albach',note:''},
+  {d:'4.21.26',fin:'4430725',t:['MSPQ N/A'],s:'Sara Marino',note:''},
+  {d:'4.21.26',fin:'4431314',t:['Missing Demo','WC Not Entered'],s:'Sarah Kinser',note:'Patient has 2 WC claims; wrong claim used for this appointment'},
+  {d:'4.21.26',fin:'4425638',t:['Missing Demo'],s:'Latia Albue',note:''},
+  {d:'4.21.26',fin:'4425846',t:['Accident N/A'],s:'Monica Reyes',note:''},
+  {d:'4.22.26',fin:'4429878',t:['Accident N/A'],s:'Paula Quintana',note:''},
+  {d:'4.22.26',fin:'4432202',t:['Accident N/A'],s:"Kinsey O'Dell",note:''},
+  {d:'4.22.26',fin:'4430764',t:['Accident N/A'],s:'Megan Niederkorn',note:''},
+  {d:'4.22.26',fin:'4428832',t:['Accident N/A'],s:'Paula Quintana',note:''},
+  {d:'4.22.26',fin:'4425777',t:['Missing Demo','Accident N/A'],s:'Mayra Romano',note:'Address on file did not belong to patient; HealtheLife not answered'},
+  {d:'4.22.26',fin:'4431048',t:['Accident N/A','MSPQ N/A'],s:'Londisha Washington',note:''},
+  {d:'4.23.26',fin:'4432497',t:['Accident N/A','Incorrect PCP'],s:'Meghan Waugh',note:''},
+  {d:'4.23.26',fin:'4408293',t:['Accident N/A'],s:'Nicole Flinn',note:'Employee no longer at PSMC'},
+  {d:'4.23.26',fin:'4430886',t:['Incorrect Provider'],s:'Sara Marino',note:'Marked Corrinne Johnson - should be Matthew Hntzman'},
+  {d:'4.23.26',fin:'4423281',t:['Accident N/A','Incorrect PCP','MSPQ N/A'],s:'Mayra Romano',note:''},
+  {d:'4.23.26',fin:'4423278',t:['Accident N/A'],s:'Mayra Romano',note:''},
+  {d:'4.23.26',fin:'4395818',t:['Accident N/A'],s:'Paula Quintana',note:''},
+  {d:'4.23.26',fin:'4432789',t:['Accident N/A','MSPQ N/A'],s:'Pricilla Garcia',note:''},
+  {d:'4.23.26',fin:'4295803',t:['Incorrect Provider','Empty Chart'],s:'Sarah Rader',note:'Bad FIN number; appointment info left blank / unknown'},
+  {d:'4.23.26',fin:'4424080',t:['Accident N/A'],s:'Paula Quintana',note:''},
+  {d:'4.23.26',fin:'4432139',t:['Accident N/A'],s:'Paula Quintana',note:''},
+  {d:'4.23.26',fin:'4431635',t:['Accident N/A','Incorrect PCP'],s:'Megan Niederkorn',note:''},
+  {d:'4.23.26',fin:'4432935',t:['Accident N/A'],s:'Leah Wattier',note:''},
+  {d:'4.23.26',fin:'4431613',t:['Wrong Insurance'],s:'Paula Quintana',note:''},
+  {d:'4.23.26',fin:'4432733',t:['MSPQ N/A'],s:'Brianne Albach',note:''},
+  {d:'4.23.26',fin:'4431277',t:['Missing Demo'],s:'Sarah Rader',note:''},
+  {d:'4.23.26',fin:'4423280',t:['Accident N/A'],s:'Mayra Romano',note:''},
+  {d:'4.24.26',fin:'4432283',t:['Incorrect PCP'],s:'Sara Marino',note:''},
+  {d:'4.24.26',fin:'4432944',t:['MSPQ N/A'],s:'Ariana Shabro',note:''},
+  {d:'4.24.26',fin:'4432781',t:['Missing Demo','Accident N/A','MSPQ N/A'],s:'Pricilla Garcia',note:''},
+  {d:'4.24.26',fin:'4432942',t:['Accident N/A'],s:'Mayra Romano',note:''},
+  {d:'4.24.26',fin:'4433170',t:['Accident N/A'],s:'Paula Quintana',note:''},
+  {d:'4.24.26',fin:'4432766',t:['Wrong Insurance'],s:'Latia Albue',note:'Appointment labeled WCC; patient stated self-employed'},
+  {d:'4.24.26',fin:'4433182',t:['Incorrect Provider'],s:'Mayra Romano',note:'Attending labeled as No Provider'},
+  {d:'4.24.26',fin:'4404268',t:['MSPQ N/A'],s:'Haley Dalton',note:''},
+  {d:'4.27.26',fin:'4429644',t:['Employment Blank'],s:'Latia Albue',note:'Patient refused employment info; comment added to chart'},
+  {d:'4.27.26',fin:'4413733',t:['Accident N/A','Incorrect PCP'],s:'Nicole Flinn',note:'Employee no longer at PSMC'},
+  {d:'4.27.26',fin:'4433288',t:['Accident N/A'],s:'Paula Quintana',note:''},
+  {d:'4.27.26',fin:'4420644',t:['Incorrect PCP'],s:'Sarah Rader',note:''},
+  {d:'4.27.26',fin:'4429544',t:['Accident N/A','MSPQ N/A'],s:'Lisa Grooms',note:''},
+  {d:'4.27.26',fin:'4430666',t:['Accident N/A'],s:'Lisa Grooms',note:''},
+  {d:'4.27.26',fin:'4433184',t:['Provider Not Labeled'],s:'Mayra Romano',note:''},
+  {d:'4.28.26',fin:'4433671',t:['Accident N/A'],s:'Unknown',note:''},
+  {d:'4.28.26',fin:'4427691',t:['Missing Demo','Wrong Insurance','Accident N/A'],s:'Londisha Washington',note:''},
+  {d:'4.28.26',fin:'4412039',t:['Wrong Insurance','Accident N/A','MSPQ N/A'],s:'Haley Pacheco',note:''},
+  {d:'4.28.26',fin:'4433534',t:['Accident N/A','MSPQ N/A','Incorrect PCP'],s:'Cate Harding',note:''},
+  {d:'4.28.26',fin:'4433031',t:['Accident N/A','Incorrect PCP'],s:'Crystal Quintana',note:''},
+  {d:'4.28.26',fin:'4430324',t:['Accident N/A'],s:'Paula Quintana',note:''},
+  {d:'4.28.26',fin:'4433043',t:['Accident N/A','MSPQ N/A'],s:'Leah Wattier',note:''},
+  {d:'4.28.26',fin:'4433567',t:['Accident N/A','Provider Not Labeled'],s:'Shannon Montanez',note:''},
+  {d:'4.28.26',fin:'4425370',t:['Missing Demo','Accident N/A'],s:'Haley Pacheco',note:''},
+  {d:'4.28.26',fin:'4433304',t:['Accident N/A'],s:'Tori Watts',note:''},
+  {d:'4.29.26',fin:'4432855',t:['Accident N/A','MSPQ N/A'],s:'Tori Watts',note:''},
+  {d:'5.1.26',fin:'4433373',t:['Incorrect Provider'],s:'McKenna Sutton',note:''},
+  {d:'5.1.26',fin:'4432327',t:['Accident N/A'],s:'McKenna Sutton',note:''},
+  {d:'5.1.26',fin:'4434134',t:['Incorrect Provider'],s:'Latia Albue',note:''},
+  {d:'5.1.26',fin:'4434106',t:['Accident N/A'],s:'Paula Quintana',note:''},
+  {d:'5.1.26',fin:'4427549',t:['Accident N/A','Incorrect PCP'],s:'McKenna Sutton',note:''},
+  {d:'5.1.26',fin:'4432494',t:['Accident N/A'],s:'Monica Reyes',note:''},
+  {d:'5.4.26',fin:'44133935',t:['Accident N/A'],s:'Haley Pacheco',note:''},
+  {d:'5.4.26',fin:'4422174',t:['Accident N/A'],s:'Sara Marino',note:''},
+  {d:'5.4.26',fin:'4433602',t:['Accident N/A'],s:'Sara Marino',note:''},
+  {d:'5.4.26',fin:'4428497',t:['Accident N/A'],s:'Paula Quintana',note:''},
+  {d:'5.4.26',fin:'4430906',t:['Accident N/A'],s:'Sara Marino',note:''},
+  {d:'5.4.26',fin:'4422745',t:['Accident N/A'],s:'Sarah Rader',note:''},
+  {d:'5.4.26',fin:'4433772',t:['Accident N/A'],s:'Paula Quintana',note:''},
+  {d:'5.4.26',fin:'4433879',t:['Accident N/A'],s:'Tori Watts',note:''},
+  {d:'5.4.26',fin:'4431842',t:['Accident N/A'],s:'Leah Wattier',note:''},
+  {d:'5.4.26',fin:'4415394',t:['Accident N/A'],s:'McKenna Sutton',note:''},
+  {d:'5.4.26',fin:'4426271',t:['Accident N/A'],s:'Sarah Rader',note:''},
+  {d:'5.4.26',fin:'4431806',t:['Accident N/A'],s:'Leah Wattier',note:''},
+  {d:'5.4.26',fin:'4430246',t:['Auth N/A'],s:'Sarah Rader',note:''},
+  {d:'5.4.26',fin:'4432142',t:['Auth N/A'],s:'Paula Quintana',note:''},
+  {d:'5.4.26',fin:'4421618',t:['Accident N/A'],s:'Sarah Rader',note:''},
+  {d:'5.4.26',fin:'4432482',t:['Accident N/A'],s:'Sara Marino',note:''},
+  {d:'5.4.26',fin:'4433010',t:['Accident N/A'],s:'Leah Wattier',note:''},
+  {d:'5.4.26',fin:'4431859',t:['Accident N/A'],s:'Londisha Washington',note:''},
+  {d:'5.4.26',fin:'4409755',t:['Accident N/A'],s:'Sara Marino',note:''},
+  {d:'5.4.26',fin:'4433796',t:['WC Not Entered','Accident N/A'],s:'Mayra Romano',note:''},
+];
+
+const TYPES=['Accident N/A','Missing Demo','Wrong Insurance','MSPQ N/A','Incorrect PCP','Incorrect Provider','Auth N/A','Other'];
+const TCOLORS=['#2855a0','#0f7c70','#b45309','#6d28d9','#dc2626','#0e7490','#6b7280','#d97706'];
+
+function normType(t){
+  if(/accident/i.test(t)) return 'Accident N/A';
+  if(/missing demo|no emergency|name incorrect|employment blank/i.test(t)) return 'Missing Demo';
+  if(/wrong ins/i.test(t)) return 'Wrong Insurance';
+  if(/mspq/i.test(t)) return 'MSPQ N/A';
+  if(/incorrect pcp|wrong pcp|pcp blank/i.test(t)) return 'Incorrect PCP';
+  if(/incorrect provider|provider not labeled|attending provider|no provider/i.test(t)) return 'Incorrect Provider';
+  if(/auth/i.test(t)) return 'Auth N/A';
+  return 'Other';
+}
+function parseDate(d){const[m,dy,yr]=d.split('.');return new Date(2000+parseInt(yr),parseInt(m)-1,parseInt(dy));}
+function weekKey(d){const dt=parseDate(d);const ws=new Date(dt);ws.setDate(dt.getDate()-dt.getDay());return`${ws.getMonth()+1}/${ws.getDate()}`;}
+
+const staffMap={},weekMap={},dowMap={0:0,1:0,2:0,3:0,4:0,5:0,6:0};
+const typeTotals={},multiError={1:0,2:0,3:0,'4+':0};
+const flagged=[];
+TYPES.forEach(t=>{typeTotals[t]=0;});
+
+raw.forEach(r=>{
+  const s=r.s;
+  if(!staffMap[s]) staffMap[s]={encounters:0,errors:0,types:{}};
+  staffMap[s].encounters++;
+  const normTypes=[...new Set(r.t.map(normType))];
+  staffMap[s].errors+=normTypes.length;
+  normTypes.forEach(nt=>{staffMap[s].types[nt]=(staffMap[s].types[nt]||0)+1;typeTotals[nt]++;});
+  const wk=weekKey(r.d);
+  if(!weekMap[wk]) weekMap[wk]={total:0,accident:0};
+  weekMap[wk].total++;
+  if(normTypes.includes('Accident N/A')) weekMap[wk].accident++;
+  dowMap[parseDate(r.d).getDay()]++;
+  const ec=normTypes.length;
+  if(ec===1) multiError[1]++; else if(ec===2) multiError[2]++; else if(ec===3) multiError[3]++; else multiError['4+']++;
+  if(r.note) flagged.push(r);
+});
+
+const totalVisits=raw.length;
+const totalErrors=Object.values(staffMap).reduce((s,v)=>s+v.errors,0);
+const multiCount=raw.filter(r=>[...new Set(r.t.map(normType))].length>1).length;
+const multiPct=Math.round(multiCount/totalVisits*100);
+const staffList=Object.entries(staffMap).sort((a,b)=>b[1].encounters-a[1].encounters);
+const maxEnc=staffList[0][1].encounters;
+const peakDow=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][Object.entries(dowMap).sort((a,b)=>b[1]-a[1])[0][0]];
+const multiHighStaff=staffList.filter(([s,v])=>s!=='Unknown'&&v.encounters>2&&(v.errors/v.encounters)>=2).map(([s])=>s);
+
+document.getElementById('metricsGrid').innerHTML=[
+  {label:'Encounters flagged',val:totalVisits,sub:'Mar 26 – May 4',cls:''},
+  {label:'Individual errors',val:totalErrors,sub:`${(totalErrors/totalVisits).toFixed(1)} avg per visit`,cls:'accent'},
+  {label:'Multi-error visits',val:multiPct+'%',sub:`${multiCount} of ${totalVisits} visits`,cls:''},
+  {label:'Schedulers involved',val:staffList.filter(([s])=>s!=='Unknown').length,sub:'active staff',cls:''},
+  {label:'Flagged notable',val:flagged.length,sub:'with comments',cls:'warn'},
+  {label:'Peak day',val:peakDow,sub:'most opportunities',cls:''},
+].map(m=>`<div class="metric ${m.cls}"><div class="metric-label">${m.label}</div><div class="metric-val">${m.val}</div><div class="metric-sub">${m.sub}</div></div>`).join('');
+
+document.getElementById('insightGrid').innerHTML=[
+  {label:'Volume concentration',text:`<b>${staffList[0][0]}</b> accounts for <b>${staffList[0][1].encounters}</b> of ${totalVisits} flagged encounters (${Math.round(staffList[0][1].encounters/totalVisits*100)}%). Likely reflects higher scheduling volume — compare against total encounters worked to confirm.`},
+  {label:'Step-skipping signal',text:`<b>${multiPct}%</b> of flagged visits have 2+ errors on the same encounter, suggesting workflow step-skipping rather than isolated misses.${multiHighStaff.length?` Schedulers avg &ge;2.0 errors/visit: <b>${multiHighStaff.join(', ')}</b>.`:''}`},
+  {label:'Action items',text:`<b>Nicole Flinn</b> and <b>Lisa Grooms</b> are no longer at PSMC — exclude both from active performance reviews. <b>3 encounters</b> have no scheduler recorded — accountability gap to address.`},
+].map(i=>`<div class="insight-item"><div class="insight-label">${i.label}</div><div class="insight-text">${i.text}</div></div>`).join('');
+
+const weeks=Object.keys(weekMap).sort((a,b)=>{const[am,ad]=a.split('/').map(Number);const[bm,bd]=b.split('/').map(Number);return am!==bm?am-bm:ad-bd;});
+document.getElementById('weekLeg').innerHTML=`<span class="legend-item"><span class="legend-sq" style="background:#2855a0"></span>Total</span><span class="legend-item"><span class="legend-sq" style="background:#0f7c70"></span>Accident N/A</span>`;
+new Chart(document.getElementById('weekChart'),{type:'line',data:{labels:weeks.map(w=>'Wk '+w),datasets:[
+  {label:'Total',data:weeks.map(w=>weekMap[w].total),borderColor:'#2855a0',backgroundColor:'rgba(40,85,160,0.06)',fill:true,tension:0.35,pointRadius:4,pointBackgroundColor:'#2855a0'},
+  {label:'Accident N/A',data:weeks.map(w=>weekMap[w].accident),borderColor:'#0f7c70',borderDash:[5,4],backgroundColor:'transparent',tension:0.35,pointRadius:4,pointStyle:'triangle',pointBackgroundColor:'#0f7c70'},
+]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{font:{size:11},maxRotation:35}},y:{ticks:{font:{size:11}},beginAtZero:true}}}});
+
+const days=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+const maxDow=Math.max(...Object.values(dowMap));
+new Chart(document.getElementById('dowChart'),{type:'bar',data:{labels:days,datasets:[{label:'Opportunities',data:days.map((_,i)=>dowMap[i]),backgroundColor:days.map((_,i)=>dowMap[i]===maxDow?'#2855a0':'#b5d4f4')}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{font:{size:11}}},y:{ticks:{font:{size:11}},beginAtZero:true}}}});
+
+const activeTypes=TYPES.filter(t=>typeTotals[t]>0);
+document.getElementById('typeLeg').innerHTML=activeTypes.map(t=>`<span class="legend-item"><span class="legend-sq" style="background:${TCOLORS[TYPES.indexOf(t)]}"></span>${t} ${typeTotals[t]}</span>`).join('');
+new Chart(document.getElementById('typeChart'),{type:'bar',data:{labels:activeTypes,datasets:[{label:'Count',data:activeTypes.map(t=>typeTotals[t]),backgroundColor:activeTypes.map(t=>TCOLORS[TYPES.indexOf(t)])}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{font:{size:10},autoSkip:false,maxRotation:35}},y:{ticks:{font:{size:11}},beginAtZero:true}}}});
+
+new Chart(document.getElementById('multiChart'),{type:'bar',data:{labels:['1 error','2 errors','3 errors','4+ errors'],datasets:[{label:'Encounters',data:[multiError[1],multiError[2],multiError[3],multiError['4+']],backgroundColor:['#b5d4f4','#4272c4','#2855a0','#1a2744']}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{font:{size:11}}},y:{ticks:{font:{size:11}},beginAtZero:true}}}});
+
+function renderStaff(filter){
+  const data=filter==='all'?staffList:staffList.filter(([s])=>s===filter);
+  document.getElementById('staffTbody').innerHTML=data.map(([s,v])=>{
+    const avg=parseFloat((v.errors/v.encounters).toFixed(1));
+    const topT=Object.entries(v.types).sort((a,b)=>b[1]-a[1])[0];
+    const pct=Math.round(v.encounters/maxEnc*100);
+    const isExited=s==='Nicole Flinn'||s==='Lisa Grooms',isUnknown=s==='Unknown';
+    return`<tr>
+      <td><div class="staff-name">${s}</div>${isExited?'<div class="staff-sub"><span class="badge b-warn">No longer at PSMC</span></div>':isUnknown?'<div class="staff-sub"><span class="badge b-gray">Unidentified</span></div>':''}</td>
+      <td><div class="ibar-wrap"><span style="min-width:22px;font-family:'DM Mono',monospace">${v.encounters}</span><div class="ibar-bg"><div class="ibar-fill" style="width:${pct}%"></div></div></div></td>
+      <td style="font-family:'DM Mono',monospace">${v.errors}</td>
+      <td><span class="${avg>=2?'avg-high':'avg-ok'}" style="font-family:'DM Mono',monospace">${avg.toFixed(1)}</span></td>
+      <td>${topT?`<span class="badge b-blue">${topT[0]}</span>`:''}</td>
+      <td style="font-family:'DM Mono',monospace;color:#64748b">${v.types['Accident N/A']||0}</td>
+      <td style="font-family:'DM Mono',monospace;color:#64748b">${v.types['Missing Demo']||0}</td>
+      <td style="font-family:'DM Mono',monospace;color:#64748b">${v.types['Wrong Insurance']||0}</td>
+      <td style="font-family:'DM Mono',monospace;color:#64748b">${v.types['MSPQ N/A']||0}</td>
+      <td style="font-family:'DM Mono',monospace;color:#64748b">${(v.types['Incorrect PCP']||0)+(v.types['Incorrect Provider']||0)}</td>
+      <td>${isExited?'<span class="badge b-warn">Inactive</span>':isUnknown?'<span class="badge b-gray">Unknown</span>':'<span class="badge b-teal">Active</span>'}</td>
+    </tr>`;
+  }).join('');
+}
+renderStaff('all');
+
+const sel=document.getElementById('staffFilter');
+staffList.forEach(([s])=>{const o=document.createElement('option');o.value=s;o.textContent=s;sel.appendChild(o);});
+sel.addEventListener('change',e=>renderStaff(e.target.value));
+
+document.getElementById('flagTbody').innerHTML=flagged.map(r=>`<tr>
+  <td style="white-space:nowrap;font-family:'DM Mono',monospace;font-size:11px">${r.d}</td>
+  <td style="font-family:'DM Mono',monospace;font-size:11px;color:#94a3b8">${r.fin}</td>
+  <td style="font-weight:500">${r.s}</td>
+  <td>${[...new Set(r.t.map(normType))].map(t=>`<span class="badge b-blue">${t}</span>`).join('')}</td>
+  <td class="flag-note">${r.note}</td>
+</tr>`).join('');
+</script>
+</body>
+</html>
