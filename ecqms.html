@@ -3,523 +3,420 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PCC eCQM Quality Measures — 2026 Dashboard</title>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+  <title>eCQM Performance Update — Quality Transformation Meeting May 2026</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500&family=DM+Mono:wght@400;500&family=Lora:ital,wght@0,400;0,500;1,400;1,500&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #F5F4F0;
-      --bg2: #ECEAE4;
-      --bg3: #fff;
-      --text: #1A1916;
-      --text2: #706E67;
-      --text3: #999790;
-      --border: #DDDBD4;
-      --border2: #E8E6E0;
-      --green: #3B6D11;
-      --green-bg: #EAF3DE;
+      --navy:   #1F5C99;
+      --blue:   #2E75B6;
+      --lb:     #D6E4F0;
+      --lb2:    #EAF2FB;
+      --g1:     #F4F4F4;
+      --g2:     #E2E2E2;
+      --g3:     #888;
+      --dark:   #1A1916;
+      --mid:    #555;
+      --green:  #3B6D11;
+      --gbg:    #EAF3DE;
+      --gborder:#C0DD97;
       --orange: #854F0B;
-      --orange-bg: #FAEEDA;
-      --red: #993C1D;
-      --red-bg: #FAECE7;
-      --blue: #185FA5;
-      --blue-bg: #E6F1FB;
-      --blue-border: #B5D4F4;
-      --green-bar: #639922;
-      --orange-bar: #BA7517;
-      --red-bar: #D85A30;
-      --chart-blue: #378ADD;
-      --chart-grey: #B4B2A9;
-      --chart-red: #E24B4A;
-      --chart-green: #1D9E75;
-      --radius: 10px;
-      --radius-sm: 6px;
+      --obg:    #FAEEDA;
+      --red:    #993C1D;
+      --rbg:    #FAECE7;
+      --gbar:   #639922;
+      --obar:   #BA7517;
+      --rbar:   #D85A30;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: 'DM Sans', sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      min-height: 100vh;
+      background: #ECF2F8;
+      color: var(--dark);
       padding: 2rem;
+      min-height: 100vh;
     }
-    .container { max-width: 1100px; margin: 0 auto; }
+    .page { max-width: 900px; margin: 0 auto; }
 
-    /* HEADER */
-    .header { margin-bottom: 2rem; padding-bottom: 1.25rem; border-bottom: 1px solid var(--border); }
-    .header-top { display: flex; align-items: flex-start; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
-    .header h1 { font-size: 22px; font-weight: 600; letter-spacing: -0.3px; color: var(--text); }
-    .header p { font-size: 13px; color: var(--text2); margin-top: 5px; }
-    .header-badge { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--text3); background: var(--bg2); padding: 5px 12px; border-radius: 20px; border: 1px solid var(--border); white-space: nowrap; align-self: flex-start; }
+    /* PAGE HEADER */
+    .page-header { background: var(--navy); border-radius: 12px; padding: 22px 28px 20px; margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 12px; }
+    .page-header-left h1 { font-size: 22px; font-weight: 500; color: #fff; letter-spacing: -0.3px; margin-bottom: 6px; }
+    .page-header-left p { font-size: 13px; color: #BFD7F0; }
+    .page-header-right { text-align: right; }
+    .page-header-right .big { font-size: 12px; color: #BFD7F0; }
+    .page-header-right .small { font-size: 11px; color: #85B7EB; margin-top: 3px; }
 
-    /* TIER */
-    .tier-row { display: flex; align-items: center; gap: 14px; margin-bottom: 1.5rem; flex-wrap: wrap; padding: 14px 18px; background: var(--red-bg); border-radius: var(--radius); border: 1px solid #F5C8BB; }
-    .tier-label { font-size: 12px; font-weight: 500; color: var(--red); text-transform: uppercase; letter-spacing: 0.06em; white-space: nowrap; }
-    .tier-pts { font-family: 'DM Mono', monospace; font-size: 20px; font-weight: 500; color: var(--red); white-space: nowrap; }
-    .tier-progress-wrap { flex: 1; min-width: 120px; height: 8px; background: rgba(153,60,29,0.15); border-radius: 4px; overflow: hidden; }
-    .tier-progress-fill { height: 100%; border-radius: 4px; background: var(--red); width: 37.5%; }
-    .tier-goal { font-size: 12px; color: var(--red); white-space: nowrap; }
+    /* WINS */
+    .wins-section { background: var(--gbg); border: 1px solid var(--gborder); border-radius: 12px; padding: 22px 24px 20px; margin-bottom: 1rem; }
+    .wins-title { font-size: 11px; font-weight: 500; color: var(--green); text-transform: uppercase; letter-spacing: 0.09em; margin-bottom: 16px; }
+    .wins-grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 12px; }
+    .win-card { background: #fff; border-radius: 8px; padding: 16px 18px; border: 1px solid var(--gborder); }
+    .win-num { font-family: 'DM Mono', monospace; font-size: 38px; font-weight: 500; color: var(--green); line-height: 1; margin-bottom: 5px; }
+    .win-label { font-size: 14px; font-weight: 500; color: #27500A; margin-bottom: 3px; }
+    .win-sub { font-size: 12px; color: var(--green); }
 
-    /* FOCUS BANNER */
-    .focus-banner { background: var(--blue-bg); border: 1px solid var(--blue-border); border-radius: var(--radius); padding: 14px 18px; margin-bottom: 1.5rem; }
-    .focus-banner-title { font-size: 12px; font-weight: 600; color: var(--blue); margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.05em; }
-    .focus-chips { display: flex; flex-wrap: wrap; gap: 6px; }
-    .focus-chip { padding: 4px 11px; background: #fff; border: 1px solid var(--blue-border); border-radius: 20px; font-size: 12px; color: var(--blue); }
-    .focus-pts { font-size: 12px; color: var(--blue); font-weight: 500; margin-top: 10px; }
+    /* MILESTONE */
+    .milestone-section { background: var(--navy); border-radius: 12px; padding: 22px 26px; margin-bottom: 1.5rem; }
+    .milestone-label { font-size: 11px; font-weight: 500; color: #85B7EB; text-transform: uppercase; letter-spacing: 0.09em; margin-bottom: 10px; }
+    .milestone-text { font-family: 'Lora', serif; font-size: 21px; font-style: italic; color: #fff; line-height: 1.55; margin-bottom: 16px; }
+    .milestone-prog-wrap { display: flex; align-items: center; gap: 14px; }
+    .milestone-prog-track { flex: 1; height: 10px; background: rgba(255,255,255,0.18); border-radius: 5px; overflow: hidden; }
+    .milestone-prog-fill { height: 100%; border-radius: 5px; background: #fff; width: 84%; }
+    .milestone-prog-lbl { font-size: 13px; color: #BFD7F0; white-space: nowrap; }
+    .milestone-prog-lbl strong { color: #fff; font-weight: 500; }
 
-    /* METRIC GRID */
-    .metric-grid { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 10px; margin-bottom: 1.5rem; }
-    .metric-card { background: var(--bg3); border: 1px solid var(--border2); border-radius: var(--radius); padding: 16px 18px; }
-    .metric-label { font-size: 11px; color: var(--text3); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.05em; }
-    .metric-value { font-family: 'DM Mono', monospace; font-size: 24px; font-weight: 500; color: var(--text); }
-    .metric-sub { font-size: 11px; color: var(--text2); margin-top: 4px; }
+    /* TIER ROW */
+    .tier-row { display: flex; align-items: center; gap: 12px; margin-bottom: 1.5rem; flex-wrap: wrap; }
+    .tier-badge { padding: 6px 16px; border-radius: 20px; font-size: 13px; font-weight: 500; background: var(--rbg); color: var(--red); white-space: nowrap; }
+    .tier-track { flex: 1; min-width: 100px; height: 7px; background: var(--g2); border-radius: 4px; overflow: hidden; }
+    .tier-fill { height: 100%; border-radius: 4px; background: var(--rbar); width: 75%; }
+    .tier-note { font-size: 12px; color: var(--g3); }
+
+    /* KPI GRID */
+    .kpi-grid { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 10px; margin-bottom: 1.5rem; }
+    .kpi { background: var(--g1); border: 1px solid var(--g2); border-radius: 8px; padding: 14px 16px; }
+    .kpi-label { font-size: 11px; color: var(--g3); margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.05em; }
+    .kpi-val { font-family: 'DM Mono', monospace; font-size: 22px; font-weight: 500; color: var(--dark); }
+    .kpi-sub { font-size: 11px; color: var(--g3); margin-top: 3px; }
 
     /* DIVIDER */
-    .divider { height: 1px; background: var(--border); margin: 1.75rem 0; }
+    .divider { height: 1px; background: var(--g2); margin: 1.75rem 0; }
 
-    /* SECTION TITLE */
-    .section-title { font-size: 11px; font-weight: 600; color: var(--text3); text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 12px; }
+    /* SEC LABEL */
+    .sec-label { font-size: 11px; font-weight: 500; color: var(--g3); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 10px; }
 
-    /* STATUS BADGES */
-    .status-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 1.25rem; }
-    .status-badge { padding: 4px 11px; border-radius: 20px; font-size: 11px; font-weight: 500; }
-    .badge-met { background: var(--green-bg); color: var(--green); }
-    .badge-close { background: var(--orange-bg); color: var(--orange); }
-    .badge-gap { background: var(--red-bg); color: var(--red); }
-    .badge-focus { background: var(--blue-bg); color: var(--blue); }
+    /* LEGEND */
+    .legend { display: flex; gap: 14px; flex-wrap: wrap; font-size: 11px; color: var(--g3); margin-bottom: 8px; }
+    .legend span { display: flex; align-items: center; gap: 5px; }
+    .ld { width: 8px; height: 8px; border-radius: 2px; }
 
-    /* MEASURES GRID */
-    .measures-grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 10px; margin-bottom: 1.5rem; }
-    .measure-card { background: var(--bg3); border: 1px solid var(--border2); border-radius: var(--radius); padding: 14px 16px; }
-    .measure-card.focus { border-color: var(--blue-border); border-width: 1.5px; }
-    .measure-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; gap: 8px; }
-    .measure-name { font-size: 12px; font-weight: 500; color: var(--text); line-height: 1.4; }
-    .measure-meta { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
-    .focus-tag { font-size: 10px; color: var(--blue); background: var(--blue-bg); border-radius: 10px; padding: 2px 8px; white-space: nowrap; font-weight: 500; }
-    .measure-pts { font-size: 11px; color: var(--text3); white-space: nowrap; }
-    .measure-stats { display: flex; gap: 10px; margin-bottom: 10px; }
-    .stat-item { flex: 1; }
-    .stat-label { font-size: 10px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 2px; }
-    .stat-val { font-family: 'DM Mono', monospace; font-size: 15px; font-weight: 500; }
-    .stat-val.green { color: var(--green); }
-    .stat-val.orange { color: var(--orange); }
-    .stat-val.red { color: var(--red); }
-    .progress-bar-wrap { height: 5px; background: var(--bg2); border-radius: 3px; overflow: hidden; margin-bottom: 5px; }
-    .progress-bar { height: 100%; border-radius: 3px; }
-    .progress-green { background: var(--green-bar); }
-    .progress-orange { background: var(--orange-bar); }
-    .progress-red { background: var(--red-bar); }
-    .benchmark-label { font-size: 10px; color: var(--text3); }
+    /* TABLE */
+    table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    thead th { font-size: 11px; font-weight: 500; color: var(--g3); text-transform: uppercase; letter-spacing: 0.06em; padding: 0 10px 8px; text-align: center; border-bottom: 1px solid var(--g2); }
+    thead th:first-child { text-align: left; }
+    tbody tr { border-bottom: 1px solid var(--g2); }
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr:hover { background: var(--g1); }
+    td { padding: 9px 10px; text-align: center; }
+    td:first-child { text-align: left; font-weight: 500; font-size: 12px; }
+    td.bench { color: var(--g3); font-size: 12px; }
+    td.pct { font-family: 'DM Mono', monospace; font-size: 12px; }
+    .focus-dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--blue); margin-right: 5px; vertical-align: 2px; }
+    .badge { display: inline-flex; align-items: center; padding: 3px 9px; border-radius: 20px; font-size: 11px; font-weight: 500; }
+    .badge-met   { background: var(--gbg); color: var(--green); }
+    .badge-gap   { background: var(--rbg); color: var(--red); }
+    .badge-close { background: var(--obg); color: var(--orange); }
+    .inv-tag { font-size: 10px; color: var(--g3); }
 
-    /* TREND CHART */
-    .chart-tabs { display: flex; gap: 6px; margin-bottom: 14px; flex-wrap: wrap; }
-    .tab-btn { padding: 5px 13px; font-size: 12px; font-family: 'DM Sans', sans-serif; border: 1px solid var(--border); border-radius: 20px; background: transparent; cursor: pointer; color: var(--text2); transition: all 0.15s; }
-    .tab-btn:hover { background: var(--bg2); }
-    .tab-btn.active { background: var(--bg2); color: var(--text); border-color: var(--border); font-weight: 500; }
-    .tab-btn.focus-tab { border-color: var(--blue-border); color: var(--blue); }
-    .tab-btn.focus-tab.active { background: var(--blue-bg); color: var(--blue); border-color: var(--chart-blue); font-weight: 500; }
-    .chart-wrap { position: relative; width: 100%; height: 280px; background: var(--bg3); border: 1px solid var(--border2); border-radius: var(--radius); padding: 16px; }
-    .legend { display: flex; flex-wrap: wrap; gap: 16px; margin-bottom: 10px; font-size: 12px; color: var(--text2); }
-    .legend span { display: flex; align-items: center; gap: 6px; }
-    .legend-dot { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
-
-    /* FORECAST */
-    .forecast-section { background: var(--bg3); border: 1px solid var(--border2); border-radius: var(--radius); padding: 16px 18px; margin-bottom: 1.5rem; }
-    .forecast-note { font-size: 12px; color: var(--text2); margin-bottom: 14px; }
-    .forecast-grid { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 8px; }
-    .forecast-item { background: var(--bg); border-radius: var(--radius-sm); padding: 12px; text-align: center; border: 1px solid var(--border2); }
-    .forecast-item.focus { background: var(--blue-bg); border-color: var(--blue-border); }
-    .forecast-name { font-size: 11px; color: var(--text2); margin-bottom: 8px; line-height: 1.3; font-weight: 500; }
-    .forecast-vals { display: flex; justify-content: center; align-items: center; gap: 8px; margin-bottom: 4px; }
-    .forecast-now { font-family: 'DM Mono', monospace; font-size: 13px; font-weight: 500; color: var(--text); }
-    .forecast-arrow { font-size: 11px; color: var(--text3); }
-    .forecast-pred { font-family: 'DM Mono', monospace; font-size: 13px; font-weight: 500; }
-    .forecast-bench { font-size: 10px; color: var(--text3); }
-
-    /* GAP */
-    .gap-section { margin-bottom: 1.5rem; background: var(--bg3); border: 1px solid var(--border2); border-radius: var(--radius); padding: 4px 18px; }
-    .gap-row { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--border2); }
+    /* GAP SECTION */
+    .gap-section { background: #fff; border: 1px solid var(--g2); border-radius: 12px; padding: 4px 18px; }
+    .gap-row { display: flex; align-items: center; gap: 12px; padding: 9px 0; border-bottom: 1px solid var(--g2); }
     .gap-row:last-child { border-bottom: none; }
-    .gap-name { font-size: 12px; color: var(--text); flex: 2; display: flex; align-items: center; gap: 7px; min-width: 120px; }
-    .gap-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
-    .gap-bar-wrap { flex: 3; height: 7px; background: var(--bg2); border-radius: 4px; overflow: hidden; }
-    .gap-bar-fill { height: 100%; border-radius: 4px; }
-    .gap-numbers { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--text2); flex: 1.5; text-align: right; white-space: nowrap; }
+    .gap-name { font-size: 12px; font-weight: 500; color: var(--dark); flex: 2; display: flex; align-items: center; gap: 6px; min-width: 0; }
+    .gap-track { flex: 3; height: 7px; background: var(--g2); border-radius: 4px; overflow: hidden; }
+    .gap-fill { height: 100%; border-radius: 4px; }
+    .gap-nums { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--g3); flex: 1.2; text-align: right; white-space: nowrap; }
+    .gap-pts { font-size: 11px; font-weight: 500; color: #185FA5; background: var(--lb2); padding: 2px 7px; border-radius: 10px; white-space: nowrap; }
 
-    /* FOLLOW-UP */
-    .fu-grid { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 10px; margin-bottom: 1.5rem; }
-    .fu-metric { background: var(--bg3); border: 1px solid var(--border2); border-radius: var(--radius); padding: 16px 18px; text-align: center; }
+    /* POINTS TRACKER */
+    .pts-tracker { background: #fff; border: 1px solid var(--g2); border-radius: 12px; overflow: hidden; }
+    .pts-tracker-hdr { background: var(--g1); padding: 12px 18px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--g2); }
+    .pts-tracker-hdr-title { font-size: 13px; font-weight: 500; color: var(--dark); }
+    .pts-tracker-hdr-sub { font-size: 12px; color: var(--g3); }
+    .pts-row { display: flex; align-items: center; justify-content: space-between; padding: 10px 18px; border-bottom: 1px solid var(--g2); }
+    .pts-row:last-child { border-bottom: none; }
+    .pts-row-left { display: flex; align-items: center; gap: 8px; }
+    .pts-name { font-size: 13px; font-weight: 500; color: var(--dark); }
+    .pts-avail { font-size: 11px; color: var(--g3); }
+    .pts-result { font-size: 13px; font-weight: 500; }
+    .pts-result.earned { color: var(--green); }
+    .pts-result.open { color: var(--g3); }
+    .dot-earned { width: 10px; height: 10px; border-radius: 50%; background: var(--gbar); flex-shrink: 0; }
+    .dot-near   { width: 10px; height: 10px; border-radius: 50%; background: var(--obar); flex-shrink: 0; }
+    .dot-open   { width: 10px; height: 10px; border-radius: 50%; border: 1.5px solid var(--g2); flex-shrink: 0; }
+    .pts-bar-track { width: 120px; height: 5px; background: var(--g2); border-radius: 3px; overflow: hidden; }
+    .pts-bar-fill { height: 100%; border-radius: 3px; }
 
-    /* RESPONSIVE */
-    @media (max-width: 800px) {
+    /* TOTALS */
+    .pts-totals { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px; }
+    .ptc { border-radius: 8px; padding: 16px 20px; text-align: center; }
+    .ptc.now { background: var(--g1); border: 1px solid var(--g2); }
+    .ptc.future { background: var(--gbg); border: 1px solid var(--gborder); }
+    .ptc-label { font-size: 11px; color: var(--g3); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
+    .ptc-val { font-family: 'DM Mono', monospace; font-size: 34px; font-weight: 500; }
+    .ptc.now .ptc-val { color: var(--red); }
+    .ptc.future .ptc-val { color: var(--green); }
+    .ptc-sub { font-size: 12px; color: var(--g3); margin-top: 4px; }
+
+    /* TIER PROGRESS BAR */
+    .tier-prog-section { margin-top: 14px; }
+    .tier-prog-track { height: 10px; background: var(--g2); border-radius: 5px; overflow: visible; position: relative; }
+    .tier-prog-now { height: 100%; border-radius: 5px; background: var(--rbar); position: absolute; top: 0; left: 0; }
+    .tier-prog-future { height: 100%; border-radius: 5px; background: var(--gbar); position: absolute; top: 0; }
+    .tier-prog-labels { display: flex; justify-content: space-between; font-size: 11px; color: var(--g3); margin-top: 6px; }
+
+    /* ADDITIONAL MEASURES */
+    .additional-section { margin-top: 2rem; }
+    tbody.secondary tr td { color: var(--g3); }
+    tbody.secondary tr td:first-child { font-weight: 400; }
+
+    /* CLOSING */
+    .closing { border-top: 1px solid var(--g2); margin-top: 2.5rem; padding-top: 2.5rem; text-align: center; padding-bottom: 1.5rem; }
+    .closing-headline { font-family: 'Lora', serif; font-size: 34px; font-style: italic; color: var(--dark); margin-bottom: 1.75rem; }
+    .closing-body { font-family: 'Lora', serif; font-size: 16px; font-style: italic; color: var(--mid); line-height: 1.95; max-width: 560px; margin: 0 auto 1.75rem; }
+    .closing-cta { font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 500; color: var(--dark); letter-spacing: 0.03em; margin-bottom: 1.5rem; }
+    .closing-sig { font-size: 11px; color: var(--g3); letter-spacing: 0.06em; }
+
+    @media (max-width: 700px) {
       body { padding: 1rem; }
-      .metric-grid { grid-template-columns: repeat(2, 1fr); }
-      .measures-grid { grid-template-columns: 1fr; }
-      .forecast-grid { grid-template-columns: repeat(2, 1fr); }
-      .fu-grid { grid-template-columns: 1fr; }
+      .wins-grid { grid-template-columns: 1fr; }
+      .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+      .pts-totals { grid-template-columns: 1fr; }
     }
-    @media (max-width: 500px) {
-      .metric-grid { grid-template-columns: 1fr; }
-    }
-
     @media print {
       body { background: #fff; padding: 1rem; }
-      .chart-wrap { break-inside: avoid; }
-      .measures-grid { break-inside: avoid; }
+      .page { max-width: 100%; }
     }
   </style>
 </head>
 <body>
-<div class="container">
+<div class="page">
 
-  <!-- HEADER -->
-  <div class="header">
-    <div class="header-top">
-      <div>
-        <h1>PCC eCQM Quality Measures — 2026 Dashboard</h1>
-        <p>Data through April 2026 &nbsp;·&nbsp; Benchmarks: 2026 MIPS/HEDIS national targets</p>
+  <div class="page-header">
+    <div class="page-header-left">
+      <h1>eCQM Performance Update</h1>
+      <p>Quality Transformation Meeting &nbsp;·&nbsp; May 2026 &nbsp;·&nbsp; Data through April 2026</p>
+    </div>
+    <div class="page-header-right">
+      <div class="big">CMS-165 · CMS-2 · CMS-122 · CMS-146 · CMS-154 · CMS-155a · CMS-153 · CMS-951</div>
+      <div class="small">8 focus measures &nbsp;·&nbsp; Tier 3 goal ≥32 pts</div>
+    </div>
+  </div>
+
+  <div class="wins-section">
+    <div class="wins-title">Wins since January — your work is showing up in the data</div>
+    <div class="wins-grid">
+      <div class="win-card">
+        <div class="win-num">+12.8%</div>
+        <div class="win-label">High Blood Pressure control is climbing</div>
+        <div class="win-sub">50.9% in January → 63.7% in April &nbsp;·&nbsp; biggest mover of the year</div>
       </div>
-      <div class="header-badge">Updated May 2026 · Through April</div>
+      <div class="win-card">
+        <div class="win-num">−30 pts</div>
+        <div class="win-label">Diabetes HbA1c trending the right direction</div>
+        <div class="win-sub">61% → 31% uncontrolled (inverse measure — lower is better)</div>
+      </div>
+      <div class="win-card">
+        <div class="win-num">+21.3%</div>
+        <div class="win-label">Kidney Health evaluations on the rise</div>
+        <div class="win-sub">6.3% in January → 27.6% in April &nbsp;·&nbsp; remarkable early growth</div>
+      </div>
+      <div class="win-card">
+        <div class="win-num">4 / 4</div>
+        <div class="win-label">Depression screening above benchmark every month</div>
+        <div class="win-sub">January through April — consistent, reliable, above target</div>
+      </div>
     </div>
   </div>
 
-  <!-- TIER STATUS -->
+  <div class="milestone-section">
+    <div class="milestone-label">Next milestone</div>
+    <div class="milestone-text">HBP has moved <strong style="font-style:normal; font-family:'DM Sans',sans-serif; font-size:20px;">12.8 points</strong> in four months. Close this one gap and we reach Tier 3. We are not far.</div>
+    <div class="milestone-prog-wrap">
+      <div class="milestone-prog-track"><div class="milestone-prog-fill"></div></div>
+      <div class="milestone-prog-lbl">HBP at <strong>63.7%</strong> &nbsp;·&nbsp; need <strong>75.7%</strong></div>
+    </div>
+  </div>
+
   <div class="tier-row">
-    <div class="tier-label">Tier Goal</div>
-    <div class="tier-pts">12 / 32 pts</div>
-    <div class="tier-progress-wrap"><div class="tier-progress-fill"></div></div>
-    <div class="tier-goal">Tier 3 target: ≥32 pts &nbsp;·&nbsp; 20 pts needed</div>
+    <div class="sec-label" style="margin:0;">Tier goal</div>
+    <div class="tier-badge">24 / 32 pts</div>
+    <div class="tier-track"><div class="tier-fill"></div></div>
+    <div class="tier-note">Tier 3 target ≥32 pts &nbsp;·&nbsp; 8 pts needed</div>
   </div>
 
-  <!-- FOCUS BANNER -->
-  <div class="focus-banner">
-    <div class="focus-banner-title">Focus Measures — Pathway to Tier 3</div>
-    <div class="focus-chips">
-      <span class="focus-chip">Depression (12 pts)</span>
-      <span class="focus-chip">Diabetes HbA1c (6 pts)</span>
-      <span class="focus-chip">Pharyngitis (4 pts)</span>
-      <span class="focus-chip">URI Treatment (4 pts)</span>
-      <span class="focus-chip">Weight (BMI) (4 pts)</span>
-      <span class="focus-chip">HBP (12 pts)</span>
-      <span class="focus-chip">Chlamydia (6 pts)</span>
-      <span class="focus-chip">Kidney Health (4 pts)</span>
-    </div>
-    <div class="focus-pts">Combined potential: 52 pts across 8 focus measures</div>
-  </div>
-
-  <!-- KPI CARDS -->
-  <div class="metric-grid">
-    <div class="metric-card">
-      <div class="metric-label">Measures above benchmark</div>
-      <div class="metric-value" style="color:var(--green);">4 / 11</div>
-      <div class="metric-sub">as of April 2026</div>
-    </div>
-    <div class="metric-card">
-      <div class="metric-label">Focus measures above benchmark</div>
-      <div class="metric-value" style="color:var(--green);">4 / 8</div>
-      <div class="metric-sub">Depression, Pharyngitis, URI, Weight</div>
-    </div>
-    <div class="metric-card">
-      <div class="metric-label">Depression screening (Apr)</div>
-      <div class="metric-value">87.7%</div>
-      <div class="metric-sub">Benchmark: 69.9% ✓</div>
-    </div>
-    <div class="metric-card">
-      <div class="metric-label">HBP control (Apr) — 12 pts</div>
-      <div class="metric-value" style="color:var(--red);">63.7%</div>
-      <div class="metric-sub">Benchmark: 75.7% · +5pts vs Mar</div>
-    </div>
-  </div>
-
-  <div class="divider"></div>
-
-  <!-- SCORECARD -->
-  <div class="section-title">Measure Scorecard — 2026 YTD vs Benchmark</div>
-  <div class="status-row">
-    <span class="status-badge badge-met">Above benchmark</span>
-    <span class="status-badge badge-close">Within 5% of benchmark</span>
-    <span class="status-badge badge-gap">Below benchmark</span>
-    <span class="status-badge badge-focus">Focus measure</span>
-  </div>
-  <div class="measures-grid" id="measuresGrid"></div>
-
-  <div class="divider"></div>
-
-  <!-- TREND CHART -->
-  <div class="section-title">Monthly Trend — 2026 vs 2025</div>
-  <div class="chart-tabs" id="chartTabs"></div>
+  <div class="sec-label">Focus measure performance — Jan through Apr 2026</div>
   <div class="legend">
-    <span><span class="legend-dot" style="background:var(--chart-blue);"></span>2026</span>
-    <span><span class="legend-dot" style="background:var(--chart-grey);border:1px dashed #888;"></span>2025</span>
-    <span><span class="legend-dot" style="background:var(--chart-red);"></span>Benchmark</span>
+    <span><span class="ld" style="background:#2E75B6;"></span>Focus measure</span>
+    <span><span class="badge badge-met" style="padding:1px 7px; font-size:11px;">Above</span>&nbsp;above benchmark</span>
+    <span><span class="badge badge-close" style="padding:1px 7px; font-size:11px;">Close</span>&nbsp;within 5%</span>
+    <span><span class="badge badge-gap" style="padding:1px 7px; font-size:11px;">Below</span>&nbsp;below benchmark</span>
   </div>
-  <div class="chart-wrap" style="margin-bottom:1.5rem;">
-    <canvas id="trendChart" role="img" aria-label="Monthly trend line chart comparing 2026 vs 2025 performance against benchmark"></canvas>
-  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th style="width:22%; text-align:left;">Measure</th>
+        <th style="width:9%; text-align:left; font-weight:700; color:#1A1916;">Benchmark</th>
+        <th>Jan</th><th>Feb</th><th>Mar</th><th style="font-weight:700; color:#1A1916;">Apr</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody id="focusTableBody"></tbody>
+  </table>
 
   <div class="divider"></div>
 
-  <!-- FORECAST -->
-  <div class="section-title">Year-End Forecast — Linear Projection from Jan–Mar 2026</div>
-  <div class="forecast-section">
-    <div class="forecast-note">Estimated December 2026 rate if current trend continues (Jan–Apr 2026). Green = on track to meet benchmark. Blue border = focus measure.</div>
-    <div class="chart-wrap" style="height:300px; margin-bottom:1.25rem; background:transparent; border:none; padding:0;">
-      <canvas id="forecastChart" role="img" aria-label="Bar chart comparing current 2026 YTD rates, forecast year-end rates, and benchmarks for all measures"></canvas>
-    </div>
-    <div class="forecast-grid" id="forecastGrid"></div>
+  <div style="text-align:center; margin-bottom:1.25rem; padding:0.5rem 0;">
+    <span style="font-family:'Lora',serif; font-size:34px; font-style:italic; font-weight:400; color:#1A1916; letter-spacing:0.01em;">Something to Reach for</span>
   </div>
 
-  <div class="divider"></div>
-
-  <!-- GAP CHART -->
-  <div class="section-title">Gap to Benchmark — Measures Needing Attention</div>
-  <div class="gap-section" id="gapSection"></div>
-
-  <div class="divider"></div>
-
-  <!-- FOLLOW-UP KPIs -->
-  <div class="section-title">Follow-Up Performance (Jan–Apr 2026)</div>
-  <div class="fu-grid">
-    <div class="fu-metric">
-      <div class="metric-label">IP Follow-Up (avg)</div>
-      <div class="metric-value" style="color:var(--green);">86%</div>
-      <div class="metric-sub">Jan 64% → Mar 100%</div>
+  <div class="sec-label">Points tracker — focus measures</div>
+  <div class="pts-tracker">
+    <div class="pts-tracker-hdr">
+      <div class="pts-tracker-hdr-title">Focus measure point status</div>
+      <div class="pts-tracker-hdr-sub">Goal: 32 pts for Tier 3</div>
     </div>
-    <div class="fu-metric">
-      <div class="metric-label">ED/OBS — PCC Providers</div>
-      <div class="metric-value" style="color:var(--orange);">68%</div>
-      <div class="metric-sub">Benchmark target: ≥80%</div>
+    <div id="ptsList"></div>
+  </div>
+
+  <div class="pts-totals">
+    <div class="ptc now">
+      <div class="ptc-label">Points earned today</div>
+      <div class="ptc-val" id="ptsNow">—</div>
+      <div class="ptc-sub">4 measures above benchmark</div>
     </div>
-    <div class="fu-metric">
-      <div class="metric-label">ED/OBS — No PCP/Specialists</div>
-      <div class="metric-value" style="color:var(--red);">13%</div>
-      <div class="metric-sub">Significant gap — action needed</div>
+    <div class="ptc future">
+      <div class="ptc-label">If all 8 focus measures met</div>
+      <div class="ptc-val" id="ptsFuture">—</div>
+      <div class="ptc-sub">✓ Tier 3 reached — and then some</div>
     </div>
   </div>
 
-  <!-- FOLLOW-UP TREND -->
-  <div class="section-title">Monthly Trend — Follow-Up Performance</div>
-  <div class="legend">
-    <span><span class="legend-dot" style="background:var(--chart-blue);"></span>IP follow-up</span>
-    <span><span class="legend-dot" style="background:var(--chart-green);"></span>ED/OBS PCC providers</span>
-    <span><span class="legend-dot" style="background:var(--red-bar);"></span>ED/OBS no-PCP/specialists</span>
-  </div>
-  <div class="chart-wrap" style="height:240px; margin-bottom:2rem;">
-    <canvas id="fuChart" role="img" aria-label="Bar chart showing monthly follow-up performance January through March 2026"></canvas>
+  <div class="tier-prog-section">
+    <div class="tier-prog-track">
+      <div class="tier-prog-now" id="progNow"></div>
+      <div class="tier-prog-future" id="progFuture"></div>
+    </div>
+    <div class="tier-prog-labels">
+      <span style="color:#D85A30;">24 pts earned</span>
+      <span style="color:#3B6D11; font-weight:500;">32 pts = Tier 3 ✓</span>
+      <span style="color:#3B6D11;">52 pts potential</span>
+    </div>
   </div>
 
-</div><!-- /container -->
+  <div class="additional-section">
+    <div class="divider"></div>
+    <div class="sec-label">Additional measures — for reference</div>
+    <table>
+      <thead>
+        <tr>
+          <th style="width:22%; text-align:left;">Measure</th>
+          <th style="width:9%; text-align:left;">Benchmark</th>
+          <th>Jan</th><th>Feb</th><th>Mar</th><th>Apr</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody id="otherTableBody" class="secondary"></tbody>
+    </table>
+  </div>
+
+  <div class="closing">
+    <div class="closing-headline">8 points to Tier 3</div>
+    <div class="closing-body">
+      Every percentage point in these measures is a patient whose blood pressure is better controlled,
+      whose diabetes is better managed, whose cancer screening did not get missed.
+      The numbers are moving because people in this building are doing the work —
+      scheduling the follow-up, entering the right code, asking the right question.
+      <br><br>
+      We are eight points from Tier 3.
+      <br>
+      Eight points is not a mountain. It is a hallway.
+    </div>
+    <div class="closing-cta">Keep going.</div>
+    <div class="closing-sig">PCC Quality Team &nbsp;·&nbsp; Quality Transformation Meeting &nbsp;·&nbsp; May 2026</div>
+  </div>
+
+</div>
 
 <script>
 const focusIds = new Set(['Depression','Diabetes HbA1c','Pharyngitis','URI Treatment','Weight (BMI)','HBP','Chlamydia','Kidney Health']);
-
 const measures = [
-  { id:'Depression',      name:'CMS-2 Depression Screening',                pts:12, benchmark:0.699,  inverse:false, data2026:[0.8338,0.8380,0.8611,0.8771,null,null,null,null,null,null,null,null], data2025:[0.7521,0.7888,0.8106,0.8506,0.8624,0.8731,0.8761,0.8776,0.8771,0.8757,0.8804,0.8849] },
-  { id:'Diabetes HbA1c',  name:'CMS-122 Diabetes HbA1c >9% (inverse)',      pts:6,  benchmark:0.215,  inverse:true,  data2026:[0.6101,0.4812,0.3973,0.3091,null,null,null,null,null,null,null,null], data2025:[0.5166,0.4225,0.3763,0.3323,0.2806,0.2544,0.2305,0.2293,0.1922,0.1640,0.1599,0.1691] },
-  { id:'Pharyngitis',     name:'CMS-146 Appropriate Pharyngitis Testing',    pts:4,  benchmark:0.9552, inverse:false, data2026:[1.0,1.0,1.0,1.0,null,null,null,null,null,null,null,null],             data2025:[0.6600,0.8888,0.9230,0.9375,0.9230,0.9259,0.9333,0.9428,0.9210,0.9285,0.9333,0.9387] },
-  { id:'URI Treatment',   name:'CMS-154 Appropriate URI Treatment',          pts:4,  benchmark:0.9415, inverse:false, data2026:[1.0,1.0,0.9852,0.9759,null,null,null,null,null,null,null,null],       data2025:[0.9761,0.9892,0.9923,0.9876,0.9805,0.9818,0.9821,0.9832,0.9847,0.9804,0.9813,0.9829] },
-  { id:'Weight (BMI)',    name:'CMS-155a Weight Assessment (ages 3-17)',     pts:4,  benchmark:0.7114, inverse:false, data2026:[0.9344,0.9531,0.9333,0.9067,null,null,null,null,null,null,null,null],  data2025:[0.7475,0.7741,0.8307,0.8364,0.8657,0.8704,0.8859,0.8961,0.9073,0.9079,0.9119,0.9090] },
-  { id:'HBP',             name:'CMS-165 Controlling High Blood Pressure',    pts:12, benchmark:0.7571, inverse:false, data2026:[0.5087,0.5571,0.5876,0.6371,null,null,null,null,null,null,null,null],  data2025:[0.5213,0.5440,0.5494,0.5807,0.6395,0.6476,0.6558,0.6624,0.6538,0.6372,0.6311,0.6229] },
-  { id:'Chlamydia',       name:'CMS-153 Chlamydia Screening (16-24)',        pts:6,  benchmark:0.5914, inverse:false, data2026:[0.1000,0.0555,0.0952,0.0769,null,null,null,null,null,null,null,null],  data2025:[0.0000,0.0000,0.1250,0.1250,0.1470,0.1578,0.1632,0.1636,0.1525,0.1612,0.1538,0.1515] },
-  { id:'Kidney Health',   name:'CMS-951 Kidney Health Evaluation',           pts:4,  benchmark:0.5415, inverse:false, data2026:[0.0625,0.1185,0.1968,0.2755,null,null,null,null,null,null,null,null],  data2025:[0.0909,0.1500,0.1875,0.2488,0.2906,0.3173,0.3450,0.3674,0.3993,0.4343,0.4496,0.4679] },
-  { id:'Cervical Cancer', name:'CMS-124 Cervical Cancer Screening',          pts:6,  benchmark:0.6919, inverse:false, data2026:[0.2380,0.2359,0.2240,0.2277,null,null,null,null,null,null,null,null],  data2025:[0.2299,0.2190,0.2351,0.2449,0.2469,0.2537,0.2598,0.2558,0.2521,0.2549,0.2519,0.2500] },
-  { id:'Breast Cancer',   name:'CMS-125 Breast Cancer Screening',            pts:6,  benchmark:0.8558, inverse:false, data2026:[0.5708,0.5693,0.5801,0.5926,null,null,null,null,null,null,null,null],  data2025:[0.5718,0.6096,0.6280,0.6229,0.6184,0.6258,0.6270,0.6266,0.6386,0.6508,0.6533,0.6557] },
-  { id:'Colorectal',      name:'CMS-130 Colorectal Cancer Screening',        pts:6,  benchmark:0.8354, inverse:false, data2026:[0.5298,0.5232,0.5222,0.5309,null,null,null,null,null,null,null,null],  data2025:[0.5498,0.5536,0.5658,0.5755,0.5772,0.5705,0.5752,0.5774,0.5780,0.5783,0.5745,0.5749] }
+  { id:'Depression',      pts:12, benchmark:0.699,  inverse:false, data:[0.8338,0.8380,0.8611,0.8771] },
+  { id:'Diabetes HbA1c',  pts:6,  benchmark:0.215,  inverse:true,  data:[0.6101,0.4812,0.3973,0.3091] },
+  { id:'Pharyngitis',     pts:4,  benchmark:0.9552, inverse:false, data:[1.0,1.0,1.0,1.0] },
+  { id:'URI Treatment',   pts:4,  benchmark:0.9415, inverse:false, data:[1.0,1.0,0.9852,0.9759] },
+  { id:'Weight (BMI)',    pts:4,  benchmark:0.7114, inverse:false, data:[0.9344,0.9531,0.9333,0.9067] },
+  { id:'HBP',             pts:12, benchmark:0.7571, inverse:false, data:[0.5087,0.5571,0.5876,0.6371] },
+  { id:'Chlamydia',       pts:6,  benchmark:0.5914, inverse:false, data:[0.1000,0.0555,0.0952,0.0769] },
+  { id:'Kidney Health',   pts:4,  benchmark:0.5415, inverse:false, data:[0.0625,0.1185,0.1968,0.2755] },
+  { id:'Cervical Cancer', pts:6,  benchmark:0.6919, inverse:false, data:[0.2380,0.2359,0.2240,0.2277] },
+  { id:'Breast Cancer',   pts:6,  benchmark:0.8558, inverse:false, data:[0.5708,0.5693,0.5801,0.5926] },
+  { id:'Colorectal',      pts:6,  benchmark:0.8354, inverse:false, data:[0.5298,0.5232,0.5222,0.5309] }
 ];
 
-const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+function fmt(v) { return (v*100).toFixed(1)+'%'; }
 
-function getLatest(arr) { for (let i=arr.length-1;i>=0;i--){if(arr[i]!==null)return arr[i];}return null; }
-function fmt(v) { return v!==null?(v*100).toFixed(1)+'%':'—'; }
 function getStatus(m) {
-  const cur=getLatest(m.data2026); if(cur===null)return 'unknown';
-  if(m.inverse){return cur<=m.benchmark?'met':cur-m.benchmark<0.05?'close':'gap';}
-  return cur>=m.benchmark?'met':m.benchmark-cur<0.05?'close':'gap';
+  const v = m.data[m.data.length-1];
+  if (m.inverse) return v<=m.benchmark?'met':v-m.benchmark<0.05?'close':'gap';
+  return v>=m.benchmark?'met':m.benchmark-v<0.05?'close':'gap';
 }
-function getBarColor(s){return s==='met'?'progress-green':s==='close'?'progress-orange':'progress-red';}
-function getTextColor(s){return s==='met'?'green':s==='close'?'orange':'red';}
 
-// SCORECARD
-const grid = document.getElementById('measuresGrid');
-measures.forEach(m => {
-  const cur=getLatest(m.data2026), status=getStatus(m);
-  const barPct=m.inverse?Math.min((m.benchmark/(cur||0.01))*100,100):Math.min((cur/m.benchmark)*100,100);
-  const prevYear=getLatest(m.data2025);
-  const diff=cur!==null&&prevYear!==null?((cur-prevYear)*100).toFixed(1):null;
-  const arrow=diff!==null?(parseFloat(diff)>=0?'▲':'▼'):'';
-  const arrowColor=m.inverse?(parseFloat(diff)<=0?'var(--green)':'var(--red)'):(parseFloat(diff)>=0?'var(--green)':'var(--red)');
-  const statusLabel=status==='met'?'✓ Above benchmark':status==='close'?'⚠ Within 5%':'✗ Below benchmark';
-  const isFocus=focusIds.has(m.id);
-  grid.innerHTML+=`
-    <div class="measure-card${isFocus?' focus':''}">
-      <div class="measure-header">
-        <div class="measure-name">${m.name}</div>
-        <div class="measure-meta">
-          ${isFocus?'<span class="focus-tag">Focus</span>':''}
-          <div class="measure-pts">${m.pts}pts${m.inverse?' · inv':''}</div>
-        </div>
-      </div>
-      <div class="measure-stats">
-        <div class="stat-item"><div class="stat-label">2026 YTD</div><div class="stat-val ${getTextColor(status)}">${fmt(cur)}</div></div>
-        <div class="stat-item"><div class="stat-label">Benchmark</div><div class="stat-val">${fmt(m.benchmark)}</div></div>
-        <div class="stat-item"><div class="stat-label">vs 2025</div><div class="stat-val" style="color:${arrowColor};font-size:13px;">${arrow} ${diff!==null?Math.abs(diff)+'%':'—'}</div></div>
-      </div>
-      <div class="progress-bar-wrap"><div class="progress-bar ${getBarColor(status)}" style="width:${barPct.toFixed(1)}%"></div></div>
-      <div class="benchmark-label">Benchmark: ${fmt(m.benchmark)} &nbsp;${statusLabel}</div>
-    </div>`;
-});
-
-// TREND CHART
-const tabs = document.getElementById('chartTabs');
-let trendChartObj = null;
-measures.forEach((m,i)=>{
-  const btn=document.createElement('button');
-  const isFocus=focusIds.has(m.id);
-  btn.className='tab-btn'+(isFocus?' focus-tab':'')+(i===0?' active':'');
-  btn.textContent=m.id;
-  btn.onclick=()=>{document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');updateTrendChart(i);};
-  tabs.appendChild(btn);
-});
-
-function updateTrendChart(idx) {
-  const m=measures[idx];
-  const d2026=m.data2026.map(v=>v!==null?+(v*100).toFixed(1):null);
-  const d2025=m.data2025.map(v=>v!==null?+(v*100).toFixed(1):null);
-  const bench=months.map(()=>+(m.benchmark*100).toFixed(1));
-  if(trendChartObj)trendChartObj.destroy();
-  trendChartObj=new Chart(document.getElementById('trendChart'),{
-    type:'line',
-    data:{labels:months,datasets:[
-      {label:'2026',data:d2026,borderColor:'#378ADD',backgroundColor:'rgba(55,138,221,0.07)',borderWidth:2.5,pointRadius:4,pointBackgroundColor:'#378ADD',spanGaps:false,tension:0.3,fill:false},
-      {label:'2025',data:d2025,borderColor:'#B4B2A9',borderDash:[5,4],borderWidth:1.5,pointRadius:2,pointBackgroundColor:'#B4B2A9',spanGaps:false,tension:0.3,fill:false},
-      {label:'Benchmark',data:bench,borderColor:'#E24B4A',borderDash:[6,3],borderWidth:2,pointRadius:0,fill:false}
-    ]},
-    options:{
-      responsive:true,maintainAspectRatio:false,
-      plugins:{
-        legend:{display:false},
-        title:{display:true,text:m.name,font:{size:12,weight:'400',family:"'DM Sans', sans-serif"},color:'#999790',padding:{bottom:10}},
-        tooltip:{callbacks:{label:ctx=>ctx.dataset.label+': '+(ctx.parsed.y!==null?ctx.parsed.y.toFixed(1)+'%':'N/A')}}
-      },
-      scales:{
-        y:{min:0,max:105,ticks:{callback:v=>v+'%',font:{size:11,family:"'DM Mono', monospace"}},grid:{color:'rgba(0,0,0,0.05)'}},
-        x:{ticks:{font:{size:11},autoSkip:false},grid:{color:'rgba(0,0,0,0.04)'}}
-      }
-    }
-  });
+function statusBadge(s) {
+  if (s==='met')   return '<span class="badge badge-met">Above</span>';
+  if (s==='close') return '<span class="badge badge-close">Close</span>';
+  return '<span class="badge badge-gap">Below</span>';
 }
-updateTrendChart(0);
 
-// FORECAST BAR CHART
-(function(){
-  const labels=[], cur2026=[], forecasted=[], benchmarks=[], bgCur=[], bgFore=[];
-  measures.forEach(m=>{
-    const pts=m.data2026.filter(v=>v!==null);
-    if(pts.length<2)return;
-    const cur=pts[pts.length-1];
-    const slope=(pts[pts.length-1]-pts[0])/(pts.length-1);
-    const fc=Math.min(Math.max(cur+slope*(12-pts.length),0),1.0);
-    const onTrack=m.inverse?fc<=m.benchmark:fc>=m.benchmark;
-    labels.push(m.id);
-    cur2026.push(+(cur*100).toFixed(1));
-    forecasted.push(+(fc*100).toFixed(1));
-    benchmarks.push(+(m.benchmark*100).toFixed(1));
-    bgCur.push('rgba(55,138,221,0.55)');
-    bgFore.push(onTrack?'rgba(99,153,34,0.7)':'rgba(216,90,48,0.7)');
+function pctColor(v, m) {
+  if (m.inverse) return v<=m.benchmark?'#3B6D11':v-m.benchmark<0.05?'#854F0B':'#993C1D';
+  return v>=m.benchmark?'#3B6D11':m.benchmark-v<0.05?'#854F0B':'#993C1D';
+}
+
+const focusList = measures.filter(m=>focusIds.has(m.id));
+const otherList = measures.filter(m=>!focusIds.has(m.id));
+
+focusList.forEach(m => {
+  const s = getStatus(m);
+  let row = `<tr><td><span class="focus-dot"></span>${m.id}</td>`;
+  row += `<td class="bench" style="font-weight:600;color:#1A1916;">${fmt(m.benchmark)}${m.inverse?' <span class="inv-tag">inv</span>':''}</td>`;
+  m.data.forEach((v, i) => {
+    const isApr = i === m.data.length - 1;
+    row += `<td class="pct" style="color:${pctColor(v,m)};${isApr?'font-weight:600;':''}">${fmt(v)}</td>`;
   });
-  new Chart(document.getElementById('forecastChart'),{
-    type:'bar',
-    data:{labels,datasets:[
-      {label:'2026 YTD (Mar)',data:cur2026,backgroundColor:bgCur,borderRadius:3,order:1},
-      {label:'Forecast (Dec 2026)',data:forecasted,backgroundColor:bgFore,borderRadius:3,order:2},
-      {label:'Benchmark',data:benchmarks,type:'line',borderColor:'#E24B4A',borderDash:[5,3],borderWidth:2,pointRadius:0,fill:false,order:0}
-    ]},
-    options:{
-      responsive:true,maintainAspectRatio:false,
-      plugins:{
-        legend:{display:true,position:'bottom',labels:{font:{size:11,family:"'DM Sans',sans-serif"},boxWidth:12,padding:16}},
-        tooltip:{callbacks:{label:ctx=>ctx.dataset.label+': '+ctx.parsed.y.toFixed(1)+'%'}}
-      },
-      scales:{
-        y:{min:0,max:110,ticks:{callback:v=>v+'%',font:{size:11,family:"'DM Mono',monospace"}},grid:{color:'rgba(0,0,0,0.05)'}},
-        x:{ticks:{font:{size:11},maxRotation:30},grid:{display:false}}
-      }
-    }
-  });
-})();
-
-// FORECAST CARDS
-const fgrid=document.getElementById('forecastGrid');
-measures.forEach(m=>{
-  const pts=m.data2026.filter(v=>v!==null);
-  const cur=pts[pts.length-1]; if(pts.length<2)return;
-  const slope=(pts[pts.length-1]-pts[0])/(pts.length-1);
-  const forecast=Math.min(Math.max(cur+slope*(12-pts.length),0),1.0);
-  const st=m.inverse?(forecast<=m.benchmark?'met':forecast-m.benchmark>0.1?'red':'orange'):(forecast>=m.benchmark?'met':m.benchmark-forecast>0.1?'red':'orange');
-  const fColor=st==='met'?'var(--green)':st==='red'?'var(--red)':'var(--orange)';
-  const isFocus=focusIds.has(m.id);
-  fgrid.innerHTML+=`
-    <div class="forecast-item${isFocus?' focus':''}">
-      <div class="forecast-name">${m.id}</div>
-      <div class="forecast-vals">
-        <div class="forecast-now">${fmt(cur)}</div>
-        <div class="forecast-arrow">→</div>
-        <div class="forecast-pred" style="color:${fColor}">${fmt(forecast)}</div>
-      </div>
-      <div class="forecast-bench">Benchmark: ${fmt(m.benchmark)}</div>
-    </div>`;
+  row += `<td>${statusBadge(s)}</td></tr>`;
+  document.getElementById('focusTableBody').innerHTML += row;
 });
 
-// GAP SECTION
-const gapSection=document.getElementById('gapSection');
-const sorted=measures.map(m=>{
-  const cur=getLatest(m.data2026); if(cur===null)return null;
-  const gap=m.inverse?Math.max(cur-m.benchmark,0):Math.max(m.benchmark-cur,0);
-  return{...m,cur,gap};
-}).filter(Boolean).sort((a,b)=>b.gap-a.gap);
-
-sorted.forEach(m=>{
-  const status=getStatus(m);
-  const colorMap={'progress-green':'var(--green-bar)','progress-orange':'var(--orange-bar)','progress-red':'var(--red-bar)'};
-  const fc=colorMap[getBarColor(status)];
-  const gapPct=(m.gap*100).toFixed(1);
-  const fillPct=Math.min((m.cur/Math.max(m.benchmark,0.01))*100,100).toFixed(1);
-  const isFocus=focusIds.has(m.id);
-  gapSection.innerHTML+=`
-    <div class="gap-row">
-      <div class="gap-name">
-        <span class="gap-dot" style="background:${isFocus?'#378ADD':'var(--border)'}"></span>
-        ${m.id}
-      </div>
-      <div class="gap-bar-wrap"><div class="gap-bar-fill" style="width:${fillPct}%;background:${fc};"></div></div>
-      <div class="gap-numbers">${fmt(m.cur)} / ${fmt(m.benchmark)} <span style="color:${fc};">(${m.gap>0?'-':''}${gapPct}%)</span></div>
-    </div>`;
+otherList.forEach(m => {
+  const s = getStatus(m);
+  let row = `<tr><td>${m.id}</td><td class="bench">${fmt(m.benchmark)}</td>`;
+  m.data.forEach(v => { row += `<td class="pct">${fmt(v)}</td>`; });
+  row += `<td>${statusBadge(s)}</td></tr>`;
+  document.getElementById('otherTableBody').innerHTML += row;
 });
 
-// FOLLOW-UP CHART
-new Chart(document.getElementById('fuChart'),{
-  type:'bar',
-  data:{
-    labels:['January','February','March'],
-    datasets:[
-      {label:'IP follow-up',data:[63.7,91.7,100],backgroundColor:'#378ADD',borderRadius:4},
-      {label:'ED/OBS PCC providers',data:[72.4,69.2,64.9],backgroundColor:'#1D9E75',borderRadius:4},
-      {label:'ED/OBS no-PCP/specialists',data:[13.2,11.8,13.5],backgroundColor:'#D85A30',borderRadius:4}
-    ]
-  },
-  options:{
-    responsive:true,maintainAspectRatio:false,
-    plugins:{
-      legend:{display:false},
-      tooltip:{callbacks:{label:ctx=>ctx.dataset.label+': '+ctx.parsed.y.toFixed(1)+'%'}}
-    },
-    scales:{
-      y:{min:0,max:110,ticks:{callback:v=>v+'%',font:{size:11,family:"'DM Mono',monospace"}},grid:{color:'rgba(0,0,0,0.05)'}},
-      x:{ticks:{font:{size:11}},grid:{display:false}}
-    }
-  }
+let earnedPts=0, totalFocusPts=0;
+const ptsEl = document.getElementById('ptsList');
+focusList.forEach(m => {
+  const s=getStatus(m); const met=s==='met';
+  earnedPts+=met?m.pts:0; totalFocusPts+=m.pts;
+  const barPct = m.inverse
+    ? Math.min((m.benchmark/Math.max(m.data[3],0.01))*100,100).toFixed(1)
+    : Math.min((m.data[3]/m.benchmark)*100,100).toFixed(1);
+  const dotClass = met?'dot-earned':s==='close'?'dot-near':'dot-open';
+  const barColor = met?'#639922':s==='close'?'#BA7517':'#D85A30';
+  ptsEl.innerHTML += `<div class="pts-row">
+    <div class="pts-row-left">
+      <span class="${dotClass}"></span>
+      <span class="pts-name">${m.id}</span>
+      <span class="pts-avail">${m.pts} pts</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;">
+      <div class="pts-bar-track"><div class="pts-bar-fill" style="width:${barPct}%;background:${barColor};"></div></div>
+      <span class="pts-result ${met?'earned':'open'}">${met?'+ '+m.pts+' pts earned':'not yet met'}</span>
+    </div>
+  </div>`;
 });
+
+document.getElementById('ptsNow').textContent = earnedPts;
+document.getElementById('ptsFuture').textContent = totalFocusPts;
+const nowPct = (earnedPts/totalFocusPts*100).toFixed(1);
+const futurePct = ((totalFocusPts-earnedPts)/totalFocusPts*100).toFixed(1);
+document.getElementById('progNow').style.width = nowPct+'%';
+document.getElementById('progFuture').style.left = nowPct+'%';
+document.getElementById('progFuture').style.width = futurePct+'%';
 </script>
 </body>
 </html>
