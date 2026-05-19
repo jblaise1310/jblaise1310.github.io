@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Depression Screening — Provider Follow-up Guidelines</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy:     #1e3a5f;
+    --steel:    #2e6da4;
+    --sky:      #e8f2fc;
+    --gold:     #c9a227;
+    --gold-lt:  #fdf6e3;
+    --green:    #2d6a4f;
+    --green-lt: #d8f3dc;
+    --orange:   #e07b39;
+    --orange-lt:#fff0e6;
+    --red:      #c1121f;
+    --red-lt:   #ffe5e7;
+    --gray:     #f4f7fb;
+    --border:   #ccdcee;
+    --text:     #1a2b3c;
+    --muted:    #5f7a96;
+    --white:    #ffffff;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: #eef3f9;
+    color: var(--text);
+    min-height: 100vh;
+    padding: 0 0 60px;
+  }
+
+  /* ── Header ── */
+  .page-header {
+    background: linear-gradient(135deg, var(--navy) 0%, #2a5298 100%);
+    padding: 36px 48px 30px;
+    position: relative;
+    overflow: hidden;
+  }
+  .page-header::before {
+    content: '';
+    position: absolute;
+    top: -40px; right: -60px;
+    width: 260px; height: 260px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.04);
+  }
+  .page-header::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--gold) 0%, #5ba3d9 60%, transparent 100%);
+  }
+  .header-org {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #7aabcc;
+    margin-bottom: 10px;
+  }
+  .header-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 30px;
+    color: var(--white);
+    line-height: 1.15;
+    margin-bottom: 6px;
+  }
+  .header-subtitle {
+    font-size: 14px;
+    font-weight: 300;
+    color: #a8c8e8;
+  }
+
+  /* ── Tabs ── */
+  .tab-bar {
+    background: var(--navy);
+    display: flex;
+    padding: 0 48px;
+    gap: 4px;
+    border-bottom: 2px solid rgba(255,255,255,0.08);
+  }
+  .tab {
+    padding: 12px 22px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #7aabcc;
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    margin-bottom: -2px;
+    transition: color 0.2s, border-color 0.2s;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .tab:hover { color: var(--white); }
+  .tab.active { color: var(--white); border-bottom-color: var(--gold); }
+
+  /* ── Main layout ── */
+  .container { max-width: 960px; margin: 0 auto; padding: 36px 24px; }
+
+  /* ── Section labels ── */
+  .section-eyebrow {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--steel);
+    margin-bottom: 10px;
+  }
+  .section-heading {
+    font-family: 'DM Serif Display', serif;
+    font-size: 22px;
+    color: var(--navy);
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--border);
+  }
+
+  /* ── Score grid ── */
+  .score-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.6fr 1.6fr;
+    gap: 0;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 16px rgba(30,58,95,0.10);
+    margin-bottom: 32px;
+  }
+  .score-col { display: flex; flex-direction: column; }
+  .score-header {
+    padding: 14px 20px;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-align: center;
+  }
+  .score-header.s1 { background: var(--green);  color: var(--white); }
+  .score-header.s5 { background: var(--orange); color: var(--white); }
+  .score-header.s10{ background: var(--red);    color: var(--white); }
+  .score-range {
+    font-family: 'DM Serif Display', serif;
+    font-size: 26px;
+    display: block;
+    margin-bottom: 2px;
+  }
+  .score-body {
+    padding: 20px 20px;
+    flex: 1;
+    border-right: 1px solid var(--border);
+  }
+  .score-body:last-child { border-right: none; }
+  .score-col:nth-child(1) .score-body { background: var(--green-lt); }
+  .score-col:nth-child(2) .score-body { background: var(--orange-lt); }
+  .score-col:nth-child(3) .score-body { background: var(--red-lt); }
+
+  .action-item {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+    align-items: flex-start;
+    font-size: 13.5px;
+    line-height: 1.5;
+  }
+  .action-dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    margin-top: 6px;
+  }
+  .dot-green  { background: var(--green); }
+  .dot-orange { background: var(--orange); }
+  .dot-red    { background: var(--red); }
+
+  .action-numbered {
+    counter-reset: action-counter;
+    list-style: none;
+    margin-top: 8px;
+  }
+  .action-numbered li {
+    counter-increment: action-counter;
+    display: flex;
+    gap: 10px;
+    margin-bottom: 8px;
+    font-size: 13px;
+    line-height: 1.5;
+  }
+  .action-numbered li::before {
+    content: counter(action-counter);
+    background: var(--red);
+    color: white;
+    font-size: 11px;
+    font-weight: 600;
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .emphasis { font-weight: 600; color: var(--red); }
+
+  /* ── Autotext tip ── */
+  .tip-box {
+    background: var(--sky);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--steel);
+    border-radius: 0 8px 8px 0;
+    padding: 14px 18px;
+    margin-bottom: 32px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    font-size: 13px;
+  }
+  .tip-icon {
+    width: 32px; height: 32px;
+    background: var(--steel);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    color: white;
+    font-size: 15px;
+  }
+  .autotext-tag {
+    display: inline-block;
+    background: var(--steel);
+    color: white;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 4px;
+    margin-left: 6px;
+    letter-spacing: 0.02em;
+    font-family: monospace;
+  }
+
+  /* ── MIPS reminder ── */
+  .mips-banner {
+    background: linear-gradient(135deg, #fff9e6 0%, #fffdf5 100%);
+    border: 1px solid #e8c84a;
+    border-left: 5px solid var(--gold);
+    border-radius: 0 10px 10px 0;
+    padding: 20px 24px;
+    margin-bottom: 32px;
+  }
+  .mips-banner .banner-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 16px;
+    color: #7a5200;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .mips-banner p { font-size: 13.5px; color: #5a4200; line-height: 1.6; }
+  .mips-banner strong { color: #3d2c00; }
+
+  /* ── Footer ── */
+  .page-footer {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 0 24px;
+    font-size: 11px;
+    color: var(--muted);
+    display: flex;
+    justify-content: space-between;
+    margin-top: 40px;
+    border-top: 1px solid var(--border);
+    padding-top: 16px;
+  }
+
+  @media print {
+    body { background: white; }
+    .tab-bar { display: none; }
+    .page-header { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .score-header, .score-body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <div class="header-org">Pagosa Springs Medical Center &nbsp;·&nbsp; CSS Quality</div>
+  <div class="header-title">Depression &amp; CSSRS Assessment<br>Provider Follow-up Guidelines</div>
+  <div class="header-subtitle">Clinical workflow reference &nbsp;·&nbsp; 2026</div>
+</div>
+
+<div class="tab-bar">
+  <a href="Depression_Screening_Workflow.html" class="tab active">Depression Screening (PHQ)</a>
+  <a href="CSSRS_Workflow.html" class="tab">CSSRS Screening</a>
+</div>
+
+<div class="container">
+
+  <div class="section-eyebrow">PHQ Score Response Protocol</div>
+  <h2 class="section-heading">Depression Screening — Scoring Options</h2>
+
+  <div class="score-grid">
+    <!-- Score 1-4 -->
+    <div class="score-col">
+      <div class="score-header s1">
+        <span class="score-range">1–4</span>
+        Low Score
+      </div>
+      <div class="score-body">
+        <div class="action-item">
+          <span class="action-dot dot-green"></span>
+          <span>No further action required</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Score 5-9 -->
+    <div class="score-col">
+      <div class="score-header s5">
+        <span class="score-range">5–9</span>
+        Moderate Score
+      </div>
+      <div class="score-body">
+        <div class="action-item">
+          <span class="action-dot dot-orange"></span>
+          <span>Follow-up per provider's discretion</span>
+        </div>
+        <div class="action-item">
+          <span class="action-dot dot-orange"></span>
+          <span>Providers are advised to designate depression-related diagnoses as <strong>chronic</strong> whenever applicable</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Score 10+ -->
+    <div class="score-col">
+      <div class="score-header s10">
+        <span class="score-range">10+</span>
+        High Score
+      </div>
+      <div class="score-body">
+        <div class="action-item">
+          <span class="action-dot dot-red"></span>
+          <span>Follow-up per provider's discretion</span>
+        </div>
+        <div class="action-item">
+          <span class="action-dot dot-red"></span>
+          <span>Designate depression-related diagnoses as <strong>chronic</strong> whenever applicable</span>
+        </div>
+        <div style="margin-top:10px;">
+          <div class="emphasis" style="font-size:13px;margin-bottom:6px;">Complete one or more of the following:</div>
+          <ol class="action-numbered">
+            <li>Place an order for Referral Management to medical service: <strong>RM Behavioral Health</strong></li>
+            <li>Place a <strong>prescription order</strong> (common medications used for depression will qualify)</li>
+            <li>Contact <strong>Integrated BH</strong></li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Autotext tip -->
+  <div class="tip-box">
+    <div class="tip-icon">&#128196;</div>
+    <div>
+      To include the depression screening in your clinic note, use auto-text:
+      <span class="autotext-tag">PHQ-DepressionScreening</span>
+    </div>
+  </div>
+
+  <!-- MIPS reminder -->
+  <div class="mips-banner">
+    <div class="banner-title">&#9888; MIPS Exclusion Documentation Reminder</div>
+    <p>
+      When a patient <strong>declines or is unable to complete</strong> the depression screening, this must be documented
+      using the <strong>MIPS exclusion field</strong> in the chart. Without this documentation, there is no way to
+      distinguish between a patient who refused screening and a patient who was never offered it.
+      This step is <strong>required</strong> and directly impacts your quality measure performance data.
+    </p>
+  </div>
+
+</div>
+
+<div class="page-footer">
+  <span>Pagosa Springs Medical Center &nbsp;·&nbsp; Provider Follow-up Guidelines &nbsp;·&nbsp; 2026</span>
+  <span>Questions? Consult with your manager.</span>
+</div>
+
+</body>
+</html>
