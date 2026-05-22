@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PSMC — PTO Planning 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --teal: #1a7a6e; --teal-light: #e8f5f3; --teal-mid: #2a9d8e;
+    --navy: #1c2d40; --gold: #e9a84c; --gold-light: #fdf6ea;
+    --rose: #d95f5f; --rose-light: #fdf0f0; --sage: #6b8f71; --sage-light: #eef4ef;
+    --orange: #e8792a; --orange-light: #fdf0e6;
+    --text: #2c3840; --muted: #6b7c85; --border: #dde8e6; --white: #fff; --bg: #f5f7f6;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'DM Sans',sans-serif; background:var(--bg); color:var(--text); line-height:1.6; }
+
+  /* NAV */
+  nav { background:var(--white); border-bottom:1px solid var(--border); position:sticky; top:0; z-index:100; }
+  .nav-inner { max-width:1100px; margin:0 auto; padding:0 32px; display:flex; align-items:center; gap:4px; height:52px; }
+  .nav-logo { font-family:'DM Serif Display',serif; font-size:15px; color:var(--navy); margin-right:24px; white-space:nowrap; }
+  .nav-link { font-size:13px; font-weight:500; padding:6px 14px; border-radius:7px; color:var(--muted); text-decoration:none; transition:background .15s,color .15s; white-space:nowrap; }
+  .nav-link:hover { background:var(--teal-light); color:var(--teal); }
+  .nav-link.active { background:#fdf0e6; color:var(--orange); font-weight:600; }
+
+  /* HEADER — warm summer sky */
+  header {
+    background: linear-gradient(160deg, #f5a623 0%, #e8792a 45%, #c44a0a 100%);
+    position:relative; overflow:hidden;
+  }
+  header .sun {
+    position:absolute; top:-10px; right:80px;
+    width:120px; height:120px; border-radius:50%;
+    background:rgba(255,230,80,.4);
+    box-shadow:0 0 0 24px rgba(255,220,60,.15), 0 0 0 48px rgba(255,220,60,.07);
+  }
+  header::after {
+    content:'';
+    position:absolute; bottom:0; left:0; right:0; height:40px;
+    background:linear-gradient(to top, rgba(245,247,246,.2), transparent);
+  }
+  .header-inner { max-width:1100px; margin:0 auto; padding:52px 32px 48px; position:relative; z-index:1; }
+  .header-tag { display:inline-block; background:rgba(255,255,255,.22); color:rgba(255,255,255,.95); font-size:11px; font-weight:600; letter-spacing:2px; text-transform:uppercase; padding:4px 12px; border-radius:20px; margin-bottom:16px; }
+  header h1 { font-family:'DM Serif Display',serif; font-size:clamp(28px,5vw,48px); color:var(--white); line-height:1.12; margin-bottom:14px; text-shadow:0 2px 12px rgba(0,0,0,.15); }
+  header h1 em { font-style:italic; color:#fff5c0; }
+  header p { color:rgba(255,255,255,.88); font-size:15px; max-width:560px; line-height:1.7; }
+  .header-emoji-row { display:flex; gap:10px; margin-top:24px; flex-wrap:wrap; }
+  .header-emoji { background:rgba(255,255,255,.18); border:1px solid rgba(255,255,255,.25); border-radius:30px; padding:7px 16px; font-size:14px; color:white; display:flex; align-items:center; gap:6px; }
+
+  /* MAIN */
+  main { max-width:1100px; margin:0 auto; padding:40px 32px 80px; }
+
+  .section-label { display:flex; align-items:center; gap:12px; margin-bottom:20px; margin-top:52px; }
+  .section-label:first-child { margin-top:0; }
+  .section-label h2 { font-size:11px; font-weight:600; letter-spacing:2.5px; text-transform:uppercase; color:var(--muted); white-space:nowrap; }
+  .section-label::after { content:''; flex:1; height:1px; background:var(--border); }
+
+  /* SUMMER VIBES BANNER */
+  .summer-banner {
+    background: linear-gradient(135deg, #fff8ed 0%, #fdecd4 100%);
+    border: 1px solid #f8d9a8;
+    border-radius:16px;
+    padding:28px 32px;
+    margin-bottom:0;
+    display:grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap:16px;
+  }
+  .summer-tile {
+    text-align:center;
+    padding:20px 12px;
+    background:white;
+    border-radius:12px;
+    border:1px solid #f0dfc0;
+    transition:transform .2s, box-shadow .2s;
+  }
+  .summer-tile:hover { transform:translateY(-3px); box-shadow:0 6px 20px rgba(232,121,42,.12); }
+  .summer-tile-icon { font-size:32px; margin-bottom:10px; }
+  .summer-tile-title { font-family:'DM Serif Display',serif; font-size:15px; color:var(--navy); margin-bottom:5px; }
+  .summer-tile-text { font-size:12px; color:var(--muted); line-height:1.5; }
+
+  /* STEPS CARD */
+  .steps-card { background:var(--white); border-radius:16px; border:1px solid var(--border); overflow:hidden; margin-bottom:16px; }
+  .steps-header { background:linear-gradient(135deg, var(--orange) 0%, #c44a0a 100%); padding:28px 32px; }
+  .steps-header h3 { font-family:'DM Serif Display',serif; font-size:22px; color:white; margin-bottom:6px; }
+  .steps-header p { font-size:14px; color:rgba(255,255,255,.85); }
+  .steps-row { display:flex; padding:24px 32px; gap:0; border-bottom:1px solid var(--border); flex-wrap:wrap; }
+  .step { flex:1; text-align:center; padding:14px 8px; position:relative; min-width:120px; }
+  .step::after { content:'→'; position:absolute; right:-4px; top:50%; transform:translateY(-50%); color:var(--border); font-size:18px; }
+  .step:last-child::after { display:none; }
+  .step-num { display:inline-flex; align-items:center; justify-content:center; width:44px; height:44px; border-radius:50%; background:var(--orange-light); color:var(--orange); font-size:18px; font-weight:700; margin-bottom:8px; }
+  .step-label { font-size:12px; font-weight:700; color:var(--orange); letter-spacing:.5px; margin-bottom:3px; }
+  .step-desc { font-size:12px; color:var(--muted); }
+
+  /* BENEFITS ROW */
+  .benefits-row { display:grid; grid-template-columns:repeat(3,1fr); gap:0; }
+  .benefit { padding:20px 24px; border-right:1px solid var(--border); }
+  .benefit:last-child { border:none; }
+  .benefit-icon { font-size:22px; margin-bottom:8px; }
+  .benefit-title { font-size:13px; font-weight:600; color:var(--navy); margin-bottom:4px; }
+  .benefit-desc { font-size:12px; color:var(--muted); line-height:1.5; }
+
+  /* TABLE */
+  .table-wrap { overflow-x:auto; padding:0 32px 28px; }
+  table { width:100%; border-collapse:collapse; font-size:13px; }
+  thead th { text-align:left; padding:10px 14px; font-size:11px; font-weight:600; letter-spacing:1px; text-transform:uppercase; color:var(--muted); border-bottom:2px solid var(--border); }
+  tbody tr { border-bottom:1px solid #f0f4f3; transition:background .15s; }
+  tbody tr:hover { background:#fdf6ee; }
+  tbody td { padding:10px 14px; color:var(--text); }
+  tbody td:first-child { font-weight:600; color:var(--navy); }
+  .current-month td { background:#fff8ed; }
+  .current-month td:first-child { color:var(--orange); }
+  .past-month td { color:#b0bec5; }
+  .past-month td:first-child { color:#b0bec5; }
+  .now-badge { display:inline-block; font-size:10px; font-weight:700; background:var(--orange); color:white; padding:1px 7px; border-radius:10px; margin-left:6px; vertical-align:middle; }
+  .summer-badge { display:inline-block; font-size:10px; font-weight:700; background:#fff0d0; color:#b07a1a; padding:1px 7px; border-radius:10px; margin-left:6px; vertical-align:middle; }
+
+  /* NOTICE */
+  .notice { display:flex; gap:14px; align-items:flex-start; padding:18px 20px; border-radius:12px; font-size:14px; }
+  .notice-icon { font-size:22px; flex-shrink:0; margin-top:1px; }
+  .notice-orange { background:var(--orange-light); border:1px solid #f5c898; }
+  .notice-gold  { background:var(--gold-light); border:1px solid #f0d5a0; }
+  .notice p { color:var(--text); line-height:1.6; }
+
+  footer { background:var(--navy); color:#a8bfc7; text-align:center; padding:24px 32px; font-size:13px; }
+  footer strong { color:white; }
+  footer a { color:#7dd4ca; text-decoration:none; }
+
+  @media(max-width:700px) {
+    main { padding:24px 16px 60px; }
+    .header-inner { padding:36px 20px 36px; }
+    .summer-banner { grid-template-columns:1fr 1fr; }
+    .steps-row { gap:8px; }
+    .step { min-width:80px; }
+    .benefits-row { grid-template-columns:1fr; }
+    .benefit { border-right:none; border-bottom:1px solid var(--border); }
+    .steps-header, .table-wrap { padding-left:20px; padding-right:20px; }
+    .nav-inner { padding:0 16px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <span class="nav-logo">PSMC</span>
+    <a href="staffing-updates.html" class="nav-link">Staffing &amp; Schedules</a>
+    <a href="pto-planning.html" class="nav-link active">PTO Planning</a>
+    <a href="operations-reminders.html" class="nav-link">Operations &amp; Reminders</a>
+  </div>
+</nav>
+
+<header>
+  <div class="sun"></div>
+  <div class="header-inner">
+    <div class="header-tag">PSMC Internal · 2026</div>
+    <h1>Summer is Here —<br><em>Plan Your Time Off</em></h1>
+    <p>Family trips, backyard barbecues, mountain hikes, or just a few quiet days to recharge — you've earned it. Use the "8–6–4–2" timeline to lock in your plans and keep coverage smooth for everyone.</p>
+    <div class="header-emoji-row">
+      <div class="header-emoji">☀️ Family Vacations</div>
+      <div class="header-emoji">💒 Weddings</div>
+      <div class="header-emoji">🏕️ Camping Trips</div>
+      <div class="header-emoji">🧺 Picnics &amp; BBQs</div>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <!-- SUMMER ACTIVITIES -->
+  <div class="section-label"><h2>Summer — Make the Most of It</h2></div>
+
+  <div class="summer-banner">
+    <div class="summer-tile">
+      <div class="summer-tile-icon">🏔️</div>
+      <div class="summer-tile-title">Mountain Getaways</div>
+      <div class="summer-tile-text">Hit the trails, camp under the stars, or escape to cooler elevation. Summer in the Rockies doesn't last forever — grab it early.</div>
+    </div>
+    <div class="summer-tile">
+      <div class="summer-tile-icon">👨‍👩‍👧‍👦</div>
+      <div class="summer-tile-title">Family Vacations</div>
+      <div class="summer-tile-text">Kids are out of school and the whole family's free — this is prime time. Plan your week away before the best dates fill up.</div>
+    </div>
+    <div class="summer-tile">
+      <div class="summer-tile-icon">💒</div>
+      <div class="summer-tile-title">Weddings & Celebrations</div>
+      <div class="summer-tile-text">Peak wedding season runs June through August. If you've got an invitation on the fridge, get the time in now.</div>
+    </div>
+    <div class="summer-tile">
+      <div class="summer-tile-icon">🍉</div>
+      <div class="summer-tile-title">Backyard Time</div>
+      <div class="summer-tile-text">Sometimes the best vacation is a long weekend with nowhere to be. Picnics, cookouts, and porch evenings count too.</div>
+    </div>
+  </div>
+
+  <div class="notice notice-orange" style="margin-top:12px;">
+    <span class="notice-icon">📅</span>
+    <p><strong>Summer dates fill fast.</strong> July and August are the most requested months of the year. Submit your PTO early — requests are reviewed in the order received and based on coverage needs.</p>
+  </div>
+
+  <!-- HOW IT WORKS -->
+  <div class="section-label"><h2>How the Timeline Works</h2></div>
+
+  <div class="steps-card">
+    <div class="steps-header">
+      <h3>The "8–6–4–2" PTO Planning Model</h3>
+      <p>A predictable four-step process so everyone can plan with confidence and coverage gaps are caught early.</p>
+    </div>
+    <div class="steps-row">
+      <div class="step">
+        <div class="step-num">8</div>
+        <div class="step-label">Weeks Before</div>
+        <div class="step-desc">Schedule sign-up opens</div>
+      </div>
+      <div class="step">
+        <div class="step-num">6</div>
+        <div class="step-label">Weeks Before</div>
+        <div class="step-desc">PTO requests are due</div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-label">Weeks Before</div>
+        <div class="step-desc">Sign-up closes</div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-label">Weeks Before</div>
+        <div class="step-desc">Final schedule published</div>
+      </div>
+    </div>
+    <div class="benefits-row">
+      <div class="benefit">
+        <div class="benefit-icon">👀</div>
+        <div class="benefit-title">Visibility for You</div>
+        <div class="benefit-desc">Plan your PTO based on real shift options before the schedule is locked.</div>
+      </div>
+      <div class="benefit">
+        <div class="benefit-icon">⚖️</div>
+        <div class="benefit-title">Fairness for Everyone</div>
+        <div class="benefit-desc">Requests are reviewed and approved on a level playing field.</div>
+      </div>
+      <div class="benefit">
+        <div class="benefit-icon">📆</div>
+        <div class="benefit-title">Predictability</div>
+        <div class="benefit-desc">Everyone knows exactly when to expect their final schedule.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TABLE -->
+  <div class="section-label"><h2>2026 Request Schedule</h2></div>
+
+  <div class="steps-card">
+    <div class="table-wrap" style="padding-top:20px;">
+      <table>
+        <thead>
+          <tr>
+            <th>Month</th>
+            <th>Sign-Up Opens</th>
+            <th>Request Due</th>
+            <th>Sign-Up Closes</th>
+            <th>Schedule Published</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="past-month"><td>January</td><td>Nov 1, 2025</td><td>Nov 15, 2025</td><td>Dec 1, 2025</td><td>Dec 15, 2025</td></tr>
+          <tr class="past-month"><td>February</td><td>Dec 1, 2025</td><td>Dec 15, 2025</td><td>Jan 1, 2026</td><td>Jan 15, 2026</td></tr>
+          <tr class="past-month"><td>March</td><td>Jan 1, 2026</td><td>Jan 15, 2026</td><td>Feb 1, 2026</td><td>Feb 15, 2026</td></tr>
+          <tr class="past-month"><td>April</td><td>Feb 1, 2026</td><td>Feb 15, 2026</td><td>Mar 1, 2026</td><td>Mar 15, 2026</td></tr>
+          <tr class="past-month"><td>May</td><td>Mar 1, 2026</td><td>Mar 15, 2026</td><td>Apr 1, 2026</td><td>Apr 15, 2026</td></tr>
+          <tr class="current-month"><td>June <span class="now-badge">NOW</span></td><td>Apr 1, 2026</td><td>Apr 15, 2026</td><td>May 1, 2026</td><td>May 15, 2026</td></tr>
+          <tr><td>July <span class="summer-badge">☀️ Summer</span></td><td>May 1, 2026</td><td>May 15, 2026</td><td>Jun 1, 2026</td><td>Jun 15, 2026</td></tr>
+          <tr><td>August <span class="summer-badge">☀️ Summer</span></td><td>Jun 1, 2026</td><td>Jun 15, 2026</td><td>Jul 1, 2026</td><td>Jul 15, 2026</td></tr>
+          <tr><td>September</td><td>Jul 1, 2026</td><td>Jul 15, 2026</td><td>Aug 1, 2026</td><td>Aug 15, 2026</td></tr>
+          <tr><td>October</td><td>Aug 1, 2026</td><td>Aug 15, 2026</td><td>Sep 1, 2026</td><td>Sep 15, 2026</td></tr>
+          <tr><td>November</td><td>Sep 1, 2026</td><td>Sep 15, 2026</td><td>Oct 1, 2026</td><td>Oct 15, 2026</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="notice notice-gold" style="margin-top:8px;">
+    <span class="notice-icon">💡</span>
+    <p>All requests must be submitted directly in <strong>Paycom</strong>. Managers cannot add PTO on your behalf. Have a great summer — you deserve it! 🌞</p>
+  </div>
+
+</main>
+
+<footer>
+  <p><strong>PSMC PTO Planning 2026</strong> &nbsp;•&nbsp; For internal use only &nbsp;•&nbsp;
+  Also see: <a href="staffing-updates.html">Staffing &amp; Schedules</a> &nbsp;|&nbsp; <a href="operations-reminders.html">Operations &amp; Reminders</a></p>
+</footer>
+
+</body>
+</html>

@@ -3,568 +3,146 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PSMC Clinic Staffing Updates</title>
+<title>PSMC — Clinic Staffing Updates</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
 <style>
   :root {
-    --teal: #1a7a6e;
-    --teal-light: #e8f5f3;
-    --teal-mid: #2a9d8e;
-    --navy: #1c2d40;
-    --gold: #e9a84c;
-    --gold-light: #fdf6ea;
-    --rose: #d95f5f;
-    --rose-light: #fdf0f0;
-    --sage: #6b8f71;
-    --sage-light: #eef4ef;
-    --text: #2c3840;
-    --muted: #6b7c85;
-    --border: #dde8e6;
-    --white: #ffffff;
-    --bg: #f5f7f6;
+    --teal: #1a7a6e; --teal-light: #e8f5f3; --teal-mid: #2a9d8e;
+    --navy: #1c2d40; --gold: #e9a84c; --gold-light: #fdf6ea;
+    --rose: #d95f5f; --rose-light: #fdf0f0; --sage: #6b8f71; --sage-light: #eef4ef;
+    --text: #2c3840; --muted: #6b7c85; --border: #dde8e6; --white: #fff; --bg: #f5f7f6;
   }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'DM Sans',sans-serif; background:var(--bg); color:var(--text); line-height:1.6; }
 
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-
-  body {
-    font-family: 'DM Sans', sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    line-height: 1.6;
-  }
+  /* NAV BAR */
+  nav { background:var(--white); border-bottom:1px solid var(--border); position:sticky; top:0; z-index:100; }
+  .nav-inner { max-width:1100px; margin:0 auto; padding:0 32px; display:flex; align-items:center; gap:4px; height:52px; }
+  .nav-inner .nav-logo { font-family:'DM Serif Display',serif; font-size:15px; color:var(--navy); margin-right:24px; white-space:nowrap; }
+  .nav-link { font-size:13px; font-weight:500; padding:6px 14px; border-radius:7px; color:var(--muted); text-decoration:none; transition:background 0.15s,color 0.15s; white-space:nowrap; }
+  .nav-link:hover { background:var(--teal-light); color:var(--teal); }
+  .nav-link.active { background:var(--teal-light); color:var(--teal); font-weight:600; }
 
   /* HEADER */
-  header {
-    background: var(--navy);
-    padding: 0;
-    position: relative;
-    overflow: hidden;
-  }
-  header::before {
-    content: '';
-    position: absolute;
-    top: -60px; right: -60px;
-    width: 300px; height: 300px;
-    background: radial-gradient(circle, rgba(42,157,142,0.25) 0%, transparent 70%);
-    border-radius: 50%;
-  }
-  header::after {
-    content: '';
-    position: absolute;
-    bottom: -40px; left: 20%;
-    width: 200px; height: 200px;
-    background: radial-gradient(circle, rgba(233,168,76,0.15) 0%, transparent 70%);
-    border-radius: 50%;
-  }
-  .header-inner {
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 48px 32px 40px;
-    position: relative; z-index: 1;
-  }
-  .header-tag {
-    display: inline-block;
-    background: rgba(42,157,142,0.25);
-    color: #7dd4ca;
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    padding: 4px 12px;
-    border-radius: 20px;
-    margin-bottom: 16px;
-  }
-  header h1 {
-    font-family: 'DM Serif Display', serif;
-    font-size: clamp(28px, 5vw, 46px);
-    color: var(--white);
-    line-height: 1.15;
-    margin-bottom: 14px;
-  }
-  header h1 em {
-    font-style: italic;
-    color: #7dd4ca;
-  }
-  header p {
-    color: #a8bfc7;
-    font-size: 15px;
-    max-width: 580px;
-    line-height: 1.7;
-  }
-  .header-meta {
-    display: flex;
-    gap: 24px;
-    margin-top: 28px;
-    flex-wrap: wrap;
-  }
-  .header-pill {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    background: rgba(255,255,255,0.07);
-    border: 1px solid rgba(255,255,255,0.12);
-    color: #c8d8df;
-    font-size: 13px;
-    padding: 7px 14px;
-    border-radius: 8px;
-  }
-  .header-pill span { font-size: 16px; }
+  header { background:var(--navy); position:relative; overflow:hidden; }
+  header::before { content:''; position:absolute; top:-60px; right:-60px; width:300px; height:300px; background:radial-gradient(circle,rgba(42,157,142,.25) 0%,transparent 70%); border-radius:50%; }
+  header::after { content:''; position:absolute; bottom:-40px; left:20%; width:200px; height:200px; background:radial-gradient(circle,rgba(233,168,76,.15) 0%,transparent 70%); border-radius:50%; }
+  .header-inner { max-width:1100px; margin:0 auto; padding:48px 32px 40px; position:relative; z-index:1; }
+  .header-tag { display:inline-block; background:rgba(42,157,142,.25); color:#7dd4ca; font-size:11px; font-weight:600; letter-spacing:2px; text-transform:uppercase; padding:4px 12px; border-radius:20px; margin-bottom:16px; }
+  header h1 { font-family:'DM Serif Display',serif; font-size:clamp(28px,5vw,46px); color:var(--white); line-height:1.15; margin-bottom:14px; }
+  header h1 em { font-style:italic; color:#7dd4ca; }
+  header p { color:#a8bfc7; font-size:15px; max-width:580px; line-height:1.7; }
+  .header-meta { display:flex; gap:16px; margin-top:28px; flex-wrap:wrap; }
+  .header-pill { display:flex; align-items:center; gap:8px; background:rgba(255,255,255,.07); border:1px solid rgba(255,255,255,.12); color:#c8d8df; font-size:13px; padding:7px 14px; border-radius:8px; }
 
-  /* MAIN LAYOUT */
-  main {
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 40px 32px 80px;
-  }
+  /* MAIN */
+  main { max-width:1100px; margin:0 auto; padding:40px 32px 80px; }
 
-  /* SECTION LABELS */
-  .section-label {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 20px;
-    margin-top: 48px;
-  }
-  .section-label:first-child { margin-top: 0; }
-  .section-label h2 {
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 2.5px;
-    text-transform: uppercase;
-    color: var(--muted);
-  }
-  .section-label::after {
-    content: '';
-    flex: 1;
-    height: 1px;
-    background: var(--border);
-  }
+  /* SECTION LABEL */
+  .section-label { display:flex; align-items:center; gap:12px; margin-bottom:20px; margin-top:48px; }
+  .section-label:first-child { margin-top:0; }
+  .section-label h2 { font-size:11px; font-weight:600; letter-spacing:2.5px; text-transform:uppercase; color:var(--muted); white-space:nowrap; }
+  .section-label::after { content:''; flex:1; height:1px; background:var(--border); }
 
   /* CARDS */
-  .cards {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-    gap: 16px;
-  }
-  .cards.wide { grid-template-columns: 1fr; }
-  .cards.two-col { grid-template-columns: repeat(auto-fill, minmax(440px, 1fr)); }
+  .cards { display:grid; grid-template-columns:repeat(auto-fill,minmax(320px,1fr)); gap:16px; }
+  .cards.wide { grid-template-columns:1fr; }
+  .cards.two-col { grid-template-columns:repeat(auto-fill,minmax(440px,1fr)); }
+  .card { background:var(--white); border-radius:14px; padding:24px 26px; border:1px solid var(--border); position:relative; overflow:hidden; transition:box-shadow .2s,transform .2s; }
+  .card:hover { box-shadow:0 8px 28px rgba(28,45,64,.09); transform:translateY(-2px); }
+  .card-accent { position:absolute; top:0; left:0; width:4px; height:100%; border-radius:4px 0 0 4px; }
+  .accent-teal { background:var(--teal-mid); } .accent-gold { background:var(--gold); }
+  .accent-rose { background:var(--rose); } .accent-sage { background:var(--sage); } .accent-navy { background:var(--navy); }
+  .card-icon { width:38px; height:38px; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:18px; margin-bottom:14px; }
+  .icon-teal { background:var(--teal-light); } .icon-gold { background:var(--gold-light); }
+  .icon-rose { background:var(--rose-light); } .icon-sage { background:var(--sage-light); }
+  .card h3 { font-family:'DM Serif Display',serif; font-size:18px; color:var(--navy); margin-bottom:6px; }
+  .card .subtitle { font-size:11px; font-weight:600; letter-spacing:1.5px; text-transform:uppercase; color:var(--muted); margin-bottom:10px; }
+  .card p { font-size:14px; color:#4a5c65; line-height:1.65; }
+  .badge { display:inline-block; font-size:11px; font-weight:600; padding:3px 10px; border-radius:20px; margin-bottom:10px; }
+  .badge-teal { background:var(--teal-light); color:var(--teal); }
+  .badge-gold { background:var(--gold-light); color:#b07a1a; }
+  .badge-rose { background:var(--rose-light); color:var(--rose); }
+  .badge-sage { background:var(--sage-light); color:#3d5c42; }
 
-  .card {
-    background: var(--white);
-    border-radius: 14px;
-    padding: 24px 26px;
-    border: 1px solid var(--border);
-    position: relative;
-    overflow: hidden;
-    transition: box-shadow 0.2s, transform 0.2s;
-  }
-  .card:hover {
-    box-shadow: 0 8px 28px rgba(28,45,64,0.09);
-    transform: translateY(-2px);
-  }
-  .card-accent {
-    position: absolute;
-    top: 0; left: 0;
-    width: 4px; height: 100%;
-    border-radius: 4px 0 0 4px;
-  }
-  .accent-teal  { background: var(--teal-mid); }
-  .accent-gold  { background: var(--gold); }
-  .accent-rose  { background: var(--rose); }
-  .accent-sage  { background: var(--sage); }
-  .accent-navy  { background: var(--navy); }
+  /* ORTHO */
+  .ortho-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:14px; }
+  .ortho-block { background:var(--bg); border-radius:10px; padding:14px 16px; }
+  .ortho-block .week-label { font-size:11px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:var(--teal); margin-bottom:8px; }
+  .ortho-block .dr-row { font-size:13px; color:var(--text); padding:4px 0; border-bottom:1px dashed var(--border); }
+  .ortho-block .dr-row:last-child { border:none; }
+  .dr-name { font-weight:600; color:var(--navy); }
 
-  .card-icon {
-    width: 38px; height: 38px;
-    border-radius: 10px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 18px;
-    margin-bottom: 14px;
-  }
-  .icon-teal { background: var(--teal-light); }
-  .icon-gold  { background: var(--gold-light); }
-  .icon-rose  { background: var(--rose-light); }
-  .icon-sage  { background: var(--sage-light); }
+  /* SCHED LIST */
+  .sched-list { list-style:none; margin-top:12px; }
+  .sched-list li { display:flex; gap:12px; padding:8px 0; border-bottom:1px solid #f0f4f3; font-size:13px; align-items:flex-start; }
+  .sched-list li:last-child { border:none; }
+  .sched-day { font-weight:600; color:var(--teal); min-width:90px; flex-shrink:0; }
 
-  .card h3 {
-    font-family: 'DM Serif Display', serif;
-    font-size: 18px;
-    color: var(--navy);
-    margin-bottom: 6px;
-  }
-  .card .subtitle {
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-bottom: 10px;
-  }
-  .card p {
-    font-size: 14px;
-    color: #4a5c65;
-    line-height: 1.65;
-  }
+  /* NOTICE */
+  .notice { display:flex; gap:14px; align-items:flex-start; padding:16px 18px; border-radius:10px; margin-top:12px; font-size:13px; }
+  .notice-icon { font-size:20px; flex-shrink:0; margin-top:1px; }
+  .notice-teal { background:var(--teal-light); border:1px solid #b7ddd9; }
+  .notice-gold { background:var(--gold-light); border:1px solid #f0d5a0; }
+  .notice-rose { background:var(--rose-light); border:1px solid #f0c4c4; }
+  .notice p { color:var(--text); line-height:1.6; }
 
-  /* BADGE */
-  .badge {
-    display: inline-block;
-    font-size: 11px;
-    font-weight: 600;
-    padding: 3px 10px;
-    border-radius: 20px;
-    margin-bottom: 10px;
-  }
-  .badge-teal { background: var(--teal-light); color: var(--teal); }
-  .badge-gold  { background: var(--gold-light); color: #b07a1a; }
-  .badge-rose  { background: var(--rose-light); color: var(--rose); }
-  .badge-sage  { background: var(--sage-light); color: #3d5c42; }
+  /* CHECKLIST */
+  .checklist { list-style:none; margin-top:10px; }
+  .checklist li { display:flex; gap:10px; align-items:flex-start; padding:7px 0; font-size:14px; color:#4a5c65; border-bottom:1px solid #f0f4f3; }
+  .checklist li:last-child { border:none; }
+  .checklist .check { font-size:16px; }
 
-  /* TIMELINE CARD */
-  .timeline-card {
-    background: var(--white);
-    border-radius: 14px;
-    border: 1px solid var(--border);
-    overflow: hidden;
-  }
-  .timeline-header {
-    background: linear-gradient(135deg, var(--teal) 0%, #127066 100%);
-    padding: 24px 28px;
-    color: white;
-  }
-  .timeline-header h3 {
-    font-family: 'DM Serif Display', serif;
-    font-size: 22px;
-    margin-bottom: 6px;
-  }
-  .timeline-header p { font-size: 13px; opacity: 0.85; }
-  .steps-row {
-    display: flex;
-    padding: 20px 28px;
-    gap: 0;
-    border-bottom: 1px solid var(--border);
-    flex-wrap: wrap;
-  }
-  .step {
-    flex: 1;
-    text-align: center;
-    padding: 12px 8px;
-    position: relative;
-    min-width: 120px;
-  }
-  .step::after {
-    content: '→';
-    position: absolute;
-    right: -4px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: var(--border);
-    font-size: 18px;
-  }
-  .step:last-child::after { display: none; }
-  .step-num {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 36px; height: 36px;
-    border-radius: 50%;
-    background: var(--teal-light);
-    color: var(--teal);
-    font-size: 15px;
-    font-weight: 700;
-    margin-bottom: 6px;
-  }
-  .step-label {
-    font-size: 11px;
-    font-weight: 600;
-    color: var(--teal);
-    letter-spacing: 0.5px;
-    margin-bottom: 2px;
-  }
-  .step-desc {
-    font-size: 12px;
-    color: var(--muted);
-  }
+  /* MATERNITY TIMELINE */
+  .mat-timeline { display:flex; flex-direction:column; gap:10px; margin-top:12px; }
+  .mat-row { display:flex; gap:14px; align-items:flex-start; font-size:13px; }
+  .mat-dot { width:10px; height:10px; border-radius:50%; background:var(--gold); margin-top:5px; flex-shrink:0; }
+  .mat-date { font-weight:600; color:var(--navy); min-width:170px; flex-shrink:0; }
+  .mat-detail { color:#4a5c65; }
 
-  /* PTO TABLE */
-  .pto-table-wrap {
-    overflow-x: auto;
-    padding: 0 28px 24px;
-  }
-  .pto-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 13px;
-  }
-  .pto-table thead th {
-    text-align: left;
-    padding: 10px 12px;
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    color: var(--muted);
-    border-bottom: 2px solid var(--border);
-  }
-  .pto-table tbody tr {
-    border-bottom: 1px solid #f0f4f3;
-    transition: background 0.15s;
-  }
-  .pto-table tbody tr:hover { background: var(--teal-light); }
-  .pto-table tbody td {
-    padding: 9px 12px;
-    color: var(--text);
-  }
-  .pto-table tbody td:first-child {
-    font-weight: 600;
-    color: var(--navy);
-  }
-  .pto-table .highlight-row td { background: #f0faf8; }
-
-  /* ORTHO GRID */
-  .ortho-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-    margin-top: 14px;
-  }
-  .ortho-block {
-    background: var(--bg);
-    border-radius: 10px;
-    padding: 14px 16px;
-  }
-  .ortho-block .week-label {
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    color: var(--teal);
-    margin-bottom: 8px;
-  }
-  .ortho-block .dr-row {
-    font-size: 13px;
-    color: var(--text);
-    padding: 4px 0;
-    border-bottom: 1px dashed var(--border);
-  }
-  .ortho-block .dr-row:last-child { border: none; }
-  .dr-name { font-weight: 600; color: var(--navy); }
-
-  /* MATERNITY CARD */
-  .mat-timeline {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin-top: 12px;
-  }
-  .mat-row {
-    display: flex;
-    gap: 14px;
-    align-items: flex-start;
-    font-size: 13px;
-  }
-  .mat-dot {
-    width: 10px; height: 10px;
-    border-radius: 50%;
-    background: var(--gold);
-    margin-top: 5px;
-    flex-shrink: 0;
-  }
-  .mat-date {
-    font-weight: 600;
-    color: var(--navy);
-    min-width: 170px;
-    flex-shrink: 0;
-  }
-  .mat-detail { color: #4a5c65; }
-
-  /* SCHEDULE CARD */
-  .sched-list {
-    list-style: none;
-    margin-top: 12px;
-  }
-  .sched-list li {
-    display: flex;
-    gap: 12px;
-    padding: 8px 0;
-    border-bottom: 1px solid #f0f4f3;
-    font-size: 13px;
-    align-items: flex-start;
-  }
-  .sched-list li:last-child { border: none; }
-  .sched-day {
-    font-weight: 600;
-    color: var(--teal);
-    min-width: 90px;
-    flex-shrink: 0;
-  }
-
-  /* NOTICE / ALERT */
-  .notice {
-    display: flex;
-    gap: 14px;
-    align-items: flex-start;
-    padding: 16px 18px;
-    border-radius: 10px;
-    margin-top: 12px;
-    font-size: 13px;
-  }
-  .notice-icon { font-size: 20px; flex-shrink: 0; margin-top: 1px; }
-  .notice-teal { background: var(--teal-light); border: 1px solid #b7ddd9; }
-  .notice-gold  { background: var(--gold-light);  border: 1px solid #f0d5a0; }
-  .notice-rose  { background: var(--rose-light);  border: 1px solid #f0c4c4; }
-  .notice p { color: var(--text); line-height: 1.6; }
-  .notice strong { color: var(--navy); }
-
-  /* COMMUNICATION & REMINDERS */
-  .checklist {
-    list-style: none;
-    margin-top: 10px;
-  }
-  .checklist li {
-    display: flex;
-    gap: 10px;
-    align-items: flex-start;
-    padding: 7px 0;
-    font-size: 14px;
-    color: #4a5c65;
-    border-bottom: 1px solid #f0f4f3;
-  }
-  .checklist li:last-child { border: none; }
-  .checklist .check { font-size: 16px; }
-
-  /* IT STEPS */
-  .it-steps {
-    counter-reset: step;
-    list-style: none;
-    margin-top: 12px;
-  }
-  .it-steps li {
-    display: flex;
-    gap: 14px;
-    align-items: flex-start;
-    padding: 8px 0;
-    font-size: 13px;
-    color: #4a5c65;
-    border-bottom: 1px solid #f0f4f3;
-    counter-increment: step;
-  }
-  .it-steps li:last-child { border: none; }
-  .it-steps li::before {
-    content: counter(step);
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 24px; height: 24px;
-    background: var(--navy);
-    color: white;
-    border-radius: 50%;
-    font-size: 12px;
-    font-weight: 700;
-    flex-shrink: 0;
-    margin-top: 1px;
-  }
 
   /* FOOTER */
-  footer {
-    background: var(--navy);
-    color: #a8bfc7;
-    text-align: center;
-    padding: 24px 32px;
-    font-size: 13px;
-  }
-  footer strong { color: white; }
+  footer { background:var(--navy); color:#a8bfc7; text-align:center; padding:24px 32px; font-size:13px; }
+  footer strong { color:white; }
+  footer a { color:#7dd4ca; text-decoration:none; }
 
-  @media (max-width: 600px) {
-    main { padding: 24px 16px 60px; }
-    .header-inner { padding: 32px 20px 28px; }
-    .steps-row { gap: 8px; }
-    .step { min-width: 80px; }
-    .ortho-grid { grid-template-columns: 1fr; }
-    .mat-date { min-width: 130px; }
+  @media(max-width:600px) {
+    main { padding:24px 16px 60px; }
+    .header-inner { padding:32px 20px 28px; }
+    .ortho-grid { grid-template-columns:1fr; }
+    .mat-date { min-width:130px; }
+    .nav-inner { padding:0 16px; gap:2px; }
   }
 </style>
 </head>
 <body>
 
-<!-- HEADER -->
+<nav>
+  <div class="nav-inner">
+    <span class="nav-logo">PSMC</span>
+    <a href="staffing-updates.html" class="nav-link active">Staffing &amp; Schedules</a>
+    <a href="pto-planning.html" class="nav-link">PTO Planning</a>
+    <a href="operations-reminders.html" class="nav-link">Operations &amp; Reminders</a>
+  </div>
+</nav>
+
 <header>
   <div class="header-inner">
     <div class="header-tag">PSMC Internal</div>
-    <h1>Clinic Staffing &<br><em>Schedule Updates</em></h1>
+    <h1>Clinic Staffing &amp;<br><em>Schedule Updates</em></h1>
     <p>Supporting safe coverage, role clarity, and daily readiness. Stay aligned on who's doing what, when, and why — especially during absences, surges, or float coverage.</p>
     <div class="header-meta">
-      <div class="header-pill"><span>📅</span> 2026 Planning Year</div>
-      <div class="header-pill"><span>🏥</span> Primary Care &amp; Specialty</div>
-      <div class="header-pill"><span>🔄</span> Updated Regularly</div>
+      <div class="header-pill">📅 2026 Planning Year</div>
+      <div class="header-pill">🏥 Primary Care &amp; Specialty</div>
+      <div class="header-pill">🔄 Updated Regularly</div>
     </div>
   </div>
 </header>
 
 <main>
 
-  <!-- ===== PTO PLANNING ===== -->
-  <div class="section-label"><h2>PTO &amp; Schedule Planning</h2></div>
-
-  <div class="cards wide" style="margin-bottom:16px;">
-    <div class="timeline-card">
-      <div class="timeline-header">
-        <h3>The 2026 "8–6–4–2" PTO Timeline</h3>
-        <p>A predictable four-step model so everyone plans with confidence — whether you're heading out of town or just off the clock.</p>
-      </div>
-      <div class="steps-row">
-        <div class="step">
-          <div class="step-num">8</div>
-          <div class="step-label">Weeks Before</div>
-          <div class="step-desc">Schedule sign-up opens</div>
-        </div>
-        <div class="step">
-          <div class="step-num">6</div>
-          <div class="step-label">Weeks Before</div>
-          <div class="step-desc">PTO requests due</div>
-        </div>
-        <div class="step">
-          <div class="step-num">4</div>
-          <div class="step-label">Weeks Before</div>
-          <div class="step-desc">Sign-up closes</div>
-        </div>
-        <div class="step">
-          <div class="step-num">2</div>
-          <div class="step-label">Weeks Before</div>
-          <div class="step-desc">Final schedule published</div>
-        </div>
-      </div>
-      <div class="pto-table-wrap">
-        <table class="pto-table">
-          <thead>
-            <tr>
-              <th>Month</th>
-              <th>Sign-Up Opens</th>
-              <th>Request Due</th>
-              <th>Sign-Up Closes</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr><td>January</td><td>Nov 1, 2025</td><td>Nov 15, 2025</td><td>Dec 1, 2025</td></tr>
-            <tr class="highlight-row"><td>February</td><td>Dec 1, 2025</td><td>Dec 15, 2025</td><td>Jan 1, 2026</td></tr>
-            <tr><td>March</td><td>Jan 1, 2026</td><td>Jan 15, 2026</td><td>Feb 1, 2026</td></tr>
-            <tr class="highlight-row"><td>April</td><td>Feb 1, 2026</td><td>Feb 15, 2026</td><td>Mar 1, 2026</td></tr>
-            <tr><td>May</td><td>Mar 1, 2026</td><td>Mar 15, 2026</td><td>Apr 1, 2026</td></tr>
-            <tr class="highlight-row"><td>June</td><td>Apr 1, 2026</td><td>Apr 15, 2026</td><td>May 1, 2026</td></tr>
-            <tr><td>July</td><td>May 1, 2026</td><td>May 15, 2026</td><td>Jun 1, 2026</td></tr>
-            <tr class="highlight-row"><td>August</td><td>Jun 1, 2026</td><td>Jun 15, 2026</td><td>Jul 1, 2026</td></tr>
-            <tr><td>September</td><td>Jul 1, 2026</td><td>Jul 15, 2026</td><td>Aug 1, 2026</td></tr>
-            <tr class="highlight-row"><td>October</td><td>Aug 1, 2026</td><td>Aug 15, 2026</td><td>Sep 1, 2026</td></tr>
-            <tr><td>November</td><td>Sep 1, 2026</td><td>Sep 15, 2026</td><td>Oct 1, 2026</td></tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-
-  <!-- ===== PROVIDER TRANSITIONS ===== -->
+  <!-- PROVIDER TRANSITIONS -->
   <div class="section-label"><h2>Provider Transitions &amp; Departures</h2></div>
-
   <div class="cards">
 
     <div class="card">
@@ -576,7 +154,7 @@
     </div>
 
     <div class="card">
-      <div class="card-accent accent-rose"></div>
+      <div class="card-accent accent-sage"></div>
       <div class="card-icon icon-rose">🎉</div>
       <div class="badge badge-sage">Retired May 22, 2026</div>
       <h3>Dr. Williams</h3>
@@ -588,31 +166,38 @@
       <div class="card-icon icon-teal">🔄</div>
       <div class="badge badge-teal">Transition — June 16</div>
       <h3>Emily Barber, FNP-C</h3>
-      <p>Emily transitions from the Specialty Clinic into a <strong>provider role in the Primary Care Clinic</strong>, effective June 16, 2026. Emily has been a valued member of the PSMC team and we look forward to her continued contributions in this new role.</p>
+      <p>Emily transitions from the Specialty Clinic into a <strong>provider role in the Primary Care Clinic</strong>, effective June 16, 2026. We look forward to her continued contributions in this new role.</p>
     </div>
 
     <div class="card">
       <div class="card-accent accent-gold"></div>
-      <div class="card-icon icon-gold">ℹ️</div>
-      <div class="badge badge-gold">Updates Coming Soon</div>
+      <div class="card-icon icon-gold">🩺</div>
+      <div class="badge badge-gold">Covering Physician</div>
       <h3>Dr. Chad Gray</h3>
-      <p>Schedule and transition details for Dr. Gray will be posted here as they become available. Check back for updates.</p>
+      <p style="margin-bottom:14px;">Dr. Gray will be covering the clinic on the following proposed dates:</p>
+      <ul class="sched-list">
+        <li><span class="sched-day">May 26</span><span>Week of May 26</span></li>
+        <li><span class="sched-day">June 1 – 5</span><span>Week of June 1</span></li>
+        <li><span class="sched-day">June 15 – 19</span><span>Week of June 15</span></li>
+        <li><span class="sched-day">July 15 – 17</span><span>Week of July 15</span></li>
+        <li><span class="sched-day">July 20 – 24</span><span>Week of July 20</span></li>
+        <li><span class="sched-day">Aug 10 – 13</span><span>Week of August 10</span></li>
+        <li><span class="sched-day">Aug 19 – 21</span><span>Week of August 19</span></li>
+      </ul>
     </div>
 
   </div>
 
-  <!-- ===== PROVIDER SCHEDULES ===== -->
+  <!-- PROVIDER SCHEDULES -->
   <div class="section-label"><h2>Provider Schedules</h2></div>
-
   <div class="cards two-col">
 
-    <!-- Ortho -->
     <div class="card">
       <div class="card-accent accent-navy"></div>
       <div class="card-icon icon-teal">🦴</div>
       <div class="subtitle">Orthopedics</div>
       <h3>Friday Ortho Surgery Schedule</h3>
-      <p style="margin-bottom:12px; font-size:13px;">Dr. Webb &amp; Dr. Steed's Friday rotation is as follows:</p>
+      <p style="margin-bottom:12px; font-size:13px;">Dr. Webb &amp; Dr. Steed's Friday rotation:</p>
       <div class="ortho-grid">
         <div class="ortho-block">
           <div class="week-label">1st &amp; 3rd Fridays</div>
@@ -627,12 +212,11 @@
       </div>
     </div>
 
-    <!-- Emily Barber Schedule -->
     <div class="card">
       <div class="card-accent accent-teal"></div>
       <div class="card-icon icon-teal">📆</div>
       <div class="subtitle">Effective Jan 26, 2026</div>
-      <h3>Emily Barber — New Schedule</h3>
+      <h3>Emily Barber — Specialty Clinic Schedule</h3>
       <ul class="sched-list">
         <li><span class="sched-day">Mondays</span><span>Half day — patient appointments 10 AM – Noon</span></li>
         <li><span class="sched-day">Tuesdays</span><span>Full day</span></li>
@@ -642,49 +226,39 @@
 
   </div>
 
-  <!-- ===== WORKFLOW UPDATES ===== -->
+  <!-- WORKFLOW UPDATES -->
   <div class="section-label"><h2>Workflow &amp; Clinical Updates</h2></div>
-
   <div class="cards">
 
-    <!-- Neurology -->
     <div class="card">
       <div class="card-accent accent-gold"></div>
       <div class="card-icon icon-gold">🧠</div>
       <div class="badge badge-gold">Transition — Ends June 11</div>
       <h3>Neurology — Dr. Bentley</h3>
       <p>With Dr. Bentley's departure confirmed for <strong>June 11, 2026</strong>, the following are in effect:</p>
-      <ul class="checklist" style="margin-top:10px;">
+      <ul class="checklist">
         <li><span class="check">🚫</span>New Neurology referrals have been stopped</li>
         <li><span class="check">✅</span>Follow-up scheduling prioritized for existing patients</li>
         <li><span class="check">📋</span>Standardized patient communication in place</li>
       </ul>
-      <div class="notice notice-teal" style="margin-top:14px;">
+      <div class="notice notice-teal">
         <span class="notice-icon">💬</span>
-        <p>Full workflow, scripting, and routing instructions are available in <strong>Teams</strong>. Questions? Reach out to <strong>Jo, Emily, or Ariana</strong>.</p>
+        <p>Full workflow, scripting, and routing instructions in <strong>Teams</strong>. Questions? Reach out to <strong>Jo, Emily, or Ariana</strong>.</p>
       </div>
     </div>
 
-    <!-- Colonoscopy -->
     <div class="card">
       <div class="card-accent accent-rose"></div>
       <div class="card-icon icon-rose">🏥</div>
       <div class="badge badge-rose">Referral Change</div>
       <h3>Colonoscopy Scheduling — Dr. Gross</h3>
-      <p>Dr. Gross will <strong>no longer perform screening colonoscopies at PSMC</strong> except in rare, urgent situations. When recommending colonoscopy screening, offer patients one of these options:</p>
-      <ul class="checklist" style="margin-top:10px;">
-        <li><span class="check">1️⃣</span>Refer to PSMC — patient will be contacted when a new general surgeon is hired (date TBD)</li>
-        <li><span class="check">2️⃣</span>Refer to a regional provider of patient's choice:
-          <ul style="padding-left:12px; margin-top:6px; font-size:13px; color:#4a5c65;">
-            <li>Dr. Shaffer</li>
-            <li>CommonSpirit Gastroenterology – Durango</li>
-            <li>Southwest Endoscopy Center – Durango</li>
-          </ul>
-        </li>
+      <p>Dr. Gross will <strong>no longer perform screening colonoscopies at PSMC</strong> except in rare, urgent situations. Offer patients one of these options:</p>
+      <ul class="checklist">
+        <li><span class="check">1️⃣</span>Refer to PSMC — patient contacted when new general surgeon is hired (date TBD)</li>
+        <li><span class="check">2️⃣</span>Refer to a regional provider: Dr. Shaffer, CommonSpirit Gastroenterology – Durango, or Southwest Endoscopy Center – Durango</li>
       </ul>
     </div>
 
-    <!-- Shelby Aragon Inbox -->
     <div class="card">
       <div class="card-accent accent-sage"></div>
       <div class="card-icon icon-sage">📬</div>
@@ -699,9 +273,8 @@
 
   </div>
 
-  <!-- ===== MATERNITY LEAVE ===== -->
+  <!-- MATERNITY LEAVE -->
   <div class="section-label"><h2>Maternity Leave Coverage</h2></div>
-
   <div class="cards wide">
     <div class="card">
       <div class="card-accent accent-gold"></div>
@@ -710,31 +283,11 @@
       <h3>Kaela Mashburn — Maternity Leave Plan</h3>
       <p style="margin-bottom:16px; font-size:14px;">With Kaela's help, leave has been proactively planned to minimize disruption. Here are the key details reflected in the schedule:</p>
       <div class="mat-timeline">
-        <div class="mat-row">
-          <div class="mat-dot"></div>
-          <div class="mat-date">Mar 9 – Apr 10</div>
-          <div class="mat-detail">New patient appointments disabled for a smoother transition</div>
-        </div>
-        <div class="mat-row">
-          <div class="mat-dot"></div>
-          <div class="mat-date">Mar 30 – Apr 3</div>
-          <div class="mat-detail">First &amp; last patient slots of each day blocked — only use with direct approval from Jo or the Blue Team RN</div>
-        </div>
-        <div class="mat-row">
-          <div class="mat-dot"></div>
-          <div class="mat-date">Apr 6 – 10</div>
-          <div class="mat-detail">Kaela available as extra walk-in provider only (no regular scheduled visits)</div>
-        </div>
-        <div class="mat-row">
-          <div class="mat-dot"></div>
-          <div class="mat-date">Apr 13 – Jul 7</div>
-          <div class="mat-detail"><strong>Maternity leave</strong> — schedule fully removed for this period</div>
-        </div>
-        <div class="mat-row">
-          <div class="mat-dot"></div>
-          <div class="mat-date">Jul 8 – Oct/Nov</div>
-          <div class="mat-detail">Kaela will <strong>not be working Tuesdays</strong> upon return</div>
-        </div>
+        <div class="mat-row"><div class="mat-dot"></div><div class="mat-date">Mar 9 – Apr 10</div><div class="mat-detail">New patient appointments disabled for a smoother transition</div></div>
+        <div class="mat-row"><div class="mat-dot"></div><div class="mat-date">Mar 30 – Apr 3</div><div class="mat-detail">First &amp; last patient slots of each day blocked — direct approval from Jo or the Blue Team RN required</div></div>
+        <div class="mat-row"><div class="mat-dot"></div><div class="mat-date">Apr 6 – 10</div><div class="mat-detail">Kaela available as extra walk-in provider only (no regular scheduled visits)</div></div>
+        <div class="mat-row"><div class="mat-dot"></div><div class="mat-date">Apr 13 – Jul 7</div><div class="mat-detail"><strong>Maternity leave</strong> — schedule fully removed for this period</div></div>
+        <div class="mat-row"><div class="mat-dot"></div><div class="mat-date">Jul 8 – Oct/Nov</div><div class="mat-detail">Kaela will <strong>not be working Tuesdays</strong> upon return</div></div>
       </div>
       <div class="notice notice-teal" style="margin-top:16px;">
         <span class="notice-icon">💬</span>
@@ -743,67 +296,11 @@
     </div>
   </div>
 
-  <!-- ===== OPERATIONS ===== -->
-  <div class="section-label"><h2>Operations &amp; Reminders</h2></div>
-
-  <div class="cards">
-
-    <!-- Communication -->
-    <div class="card">
-      <div class="card-accent accent-teal"></div>
-      <div class="card-icon icon-teal">📡</div>
-      <div class="subtitle">Required for All Staff</div>
-      <h3>Communication Protocols</h3>
-      <p style="margin-bottom:12px;">All staff are required to regularly check:</p>
-      <ul class="checklist">
-        <li><span class="check">📧</span>PSMC Email</li>
-        <li><span class="check">💬</span>Teams Chat &amp; All Staff Posts</li>
-        <li><span class="check">📰</span>RHC Today</li>
-      </ul>
-      <div class="notice notice-rose" style="margin-top:14px;">
-        <span class="notice-icon">⚠️</span>
-        <p><strong>Missed communications = missed instructions.</strong> These are the official sources for schedule changes, provider updates, workflow notices, and training assignments.</p>
-      </div>
-    </div>
-
-    <!-- Timecard -->
-    <div class="card">
-      <div class="card-accent accent-sage"></div>
-      <div class="card-icon icon-sage">⏱️</div>
-      <div class="subtitle">Every Pay Period</div>
-      <h3>Timecard Reminders</h3>
-      <p style="margin-bottom:12px;">Every employee must review and approve their timecard each pay period and approve their paycheck in <strong>Paycom</strong>.</p>
-      <ul class="checklist">
-        <li><span class="check">✅</span>Did my hours look right?</li>
-        <li><span class="check">✅</span>Did I request my time off?</li>
-        <li><span class="check">✅</span>Does my paycheck reflect what I expected?</li>
-      </ul>
-      <div class="notice notice-gold" style="margin-top:14px;">
-        <span class="notice-icon">ℹ️</span>
-        <p><strong>Managers cannot add PTO or sick leave</strong> on behalf of employees. All requests must be submitted directly in Paycom.</p>
-      </div>
-    </div>
-
-    <!-- IT Support -->
-    <div class="card">
-      <div class="card-accent accent-navy"></div>
-      <div class="card-icon icon-teal">💻</div>
-      <div class="subtitle">Updated Process</div>
-      <h3>IT Support Requests</h3>
-      <p style="margin-bottom:12px;">Before submitting most IT requests, please follow the new routing process to prevent duplicate tickets and improve resolution time:</p>
-      <ol class="it-steps">
-        <li><strong>Password resets</strong> — continue through the usual process, no change.</li>
-        <li><strong>Everything else</strong> (printer issues, desktop/device setup, etc.) — contact <strong>Vicki or Jo</strong> first.</li>
-        <li>They will determine next steps and route the request appropriately.</li>
-      </ol>
-    </div>
-
-  </div>
-
 </main>
 
 <footer>
-  <p><strong>PSMC Clinic Staffing &amp; Schedule Updates</strong> &nbsp;•&nbsp; For internal use only &nbsp;•&nbsp; Questions? Contact your team lead or check Teams.</p>
+  <p><strong>PSMC Clinic Staffing &amp; Schedule Updates</strong> &nbsp;•&nbsp; For internal use only &nbsp;•&nbsp;
+  Also see: <a href="pto-planning.html">PTO Planning</a> &nbsp;|&nbsp; <a href="operations-reminders.html">Operations &amp; Reminders</a></p>
 </footer>
 
 </body>
