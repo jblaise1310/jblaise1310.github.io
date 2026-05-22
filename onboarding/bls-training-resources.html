@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Training Resources — Employee Onboarding</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: #f4f6f9;
+    color: #1e2a3a;
+    line-height: 1.7;
+    font-size: 16px;
+  }
+
+  /* Header */
+  .site-header {
+    background: #1a4b8c;
+    color: #fff;
+    padding: 2.5rem 2rem 2rem;
+  }
+  .site-header .eyebrow {
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #a8c4e8;
+    margin-bottom: 0.5rem;
+  }
+  .site-header h1 {
+    font-size: 28px;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+  .site-header .subtitle {
+    font-size: 15px;
+    color: #c8dbf0;
+    max-width: 600px;
+  }
+
+  /* Layout */
+  .page-body {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem 4rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  /* Cards */
+  .card {
+    background: #fff;
+    border-radius: 10px;
+    border: 1px solid #dce3ec;
+    overflow: hidden;
+  }
+
+  .card-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid #dce3ec;
+    background: #f8fafc;
+  }
+  .card-header .icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .icon-blue { background: #dbeafe; color: #1a4b8c; }
+  .icon-amber { background: #fef3c7; color: #92400e; }
+  .icon-green { background: #d1fae5; color: #065f46; }
+  .icon-gray  { background: #e5e7eb; color: #374151; }
+
+  .card-header h2 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #1e2a3a;
+  }
+  .card-body {
+    padding: 1.25rem;
+  }
+
+  /* Alert banner */
+  .alert {
+    background: #fffbeb;
+    border: 1px solid #fcd34d;
+    border-left: 4px solid #f59e0b;
+    border-radius: 8px;
+    padding: 1rem 1.25rem;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+  .alert-icon {
+    color: #d97706;
+    font-size: 20px;
+    margin-top: 2px;
+    flex-shrink: 0;
+  }
+  .alert p { font-size: 15px; color: #78350f; margin: 0; }
+  .alert p + p { margin-top: 4px; }
+
+  /* Cert pills */
+  .cert-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 0.75rem;
+  }
+  .cert-pill {
+    background: #e8f0fb;
+    color: #1a4b8c;
+    border: 1px solid #b8cef2;
+    border-radius: 20px;
+    padding: 4px 14px;
+    font-size: 13px;
+    font-weight: 500;
+  }
+
+  /* Steps */
+  .steps {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+  .step {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    padding: 10px 0;
+    position: relative;
+  }
+  .step:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    left: 15px;
+    top: 38px;
+    bottom: -4px;
+    width: 1px;
+    background: #dce3ec;
+  }
+  .step-num {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: #1a4b8c;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    position: relative;
+    z-index: 1;
+  }
+  .step-content {
+    padding-top: 4px;
+    font-size: 15px;
+    color: #2d3748;
+  }
+  .step-content strong { font-weight: 600; color: #1e2a3a; }
+  .step-search {
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 6px;
+  }
+  .search-tag {
+    background: #f1f5f9;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    padding: 2px 10px;
+    font-size: 13px;
+    color: #334155;
+    font-family: monospace;
+  }
+
+  /* Info row */
+  .info-row {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    padding: 8px 0;
+    border-bottom: 1px solid #f1f5f9;
+    font-size: 15px;
+  }
+  .info-row:last-child { border-bottom: none; }
+  .info-label {
+    min-width: 110px;
+    color: #6b7280;
+    font-size: 14px;
+  }
+  .info-value { color: #1e2a3a; }
+
+  /* Email table */
+  .email-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+    margin-top: 0.75rem;
+  }
+  .email-table th {
+    text-align: left;
+    padding: 8px 12px;
+    background: #f1f5f9;
+    color: #475569;
+    font-weight: 600;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .email-table td {
+    padding: 10px 12px;
+    border-top: 1px solid #e8edf3;
+    vertical-align: middle;
+  }
+  .email-table tr:last-child td { border-bottom: none; }
+  .badge {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 500;
+  }
+  .badge-retiring { background: #fee2e2; color: #991b1b; }
+  .badge-active   { background: #d1fae5; color: #065f46; }
+  .email-link { color: #1a4b8c; text-decoration: none; font-family: monospace; font-size: 13px; }
+  .email-link:hover { text-decoration: underline; }
+
+  /* Course list */
+  .course-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 0.75rem;
+  }
+  .course-item {
+    background: #f8fafc;
+    border: 1px solid #dce3ec;
+    border-radius: 6px;
+    padding: 4px 12px;
+    font-size: 14px;
+    color: #374151;
+  }
+
+  /* Two-col layout */
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+  }
+  @media (max-width: 600px) {
+    .two-col { grid-template-columns: 1fr; }
+    .site-header h1 { font-size: 22px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <p class="eyebrow">Employee Onboarding</p>
+  <h1>Welcome to Your Training Resources</h1>
+  <p class="subtitle">Employees can now register for all American Heart Association (AHA) certification courses directly through HealthStream. This updated process helps streamline onboarding, training enrollment, and certification management for all staff.</p>
+</header>
+
+<main class="page-body">
+
+  <!-- Important reminder -->
+  <div class="alert">
+    <svg class="alert-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+    <div>
+      <p><strong>Basic Life Support (BLS) certification is required for all employees.</strong></p>
+      <p>If you are unsure which certifications are required for your role, please contact your manager.</p>
+    </div>
+  </div>
+
+  <!-- Two-col: Registration + Already Registered -->
+  <div class="two-col">
+
+    <!-- New registration process -->
+    <div class="card">
+      <div class="card-header">
+        <div class="icon icon-blue">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18" aria-hidden="true"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+        </div>
+        <h2>New HealthStream registration process</h2>
+      </div>
+      <div class="card-body">
+        <p style="font-size:15px; color:#374151;">Employees may now register for all AHA certification classes directly in HealthStream, including:</p>
+        <div class="cert-grid">
+          <span class="cert-pill">BLS — Basic Life Support</span>
+          <span class="cert-pill">ACLS — Advanced Cardiovascular Life Support</span>
+          <span class="cert-pill">PALS — Pediatric Advanced Life Support</span>
+        </div>
+        <p style="font-size:14px; color:#6b7280; margin-top:0.75rem;">This new process eliminates the need for email back-and-forth to schedule classes.</p>
+      </div>
+    </div>
+
+    <!-- Already registered -->
+    <div class="card">
+      <div class="card-header">
+        <div class="icon icon-green">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <h2>Already registered for a class?</h2>
+      </div>
+      <div class="card-body">
+        <p style="font-size:15px; color:#374151;">No action is needed. Existing registrations have been manually enrolled and should appear in your HealthStream <strong>"To Do"</strong> tasks.</p>
+        <p style="font-size:14px; color:#6b7280; margin-top:0.75rem;">Log in to confirm your enrollment is visible under your assigned tasks.</p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- How to register -->
+  <div class="card">
+    <div class="card-header">
+      <div class="icon icon-blue">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      </div>
+      <h2>How to register</h2>
+    </div>
+    <div class="card-body">
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-content">Log into <strong>HealthStream Training</strong> using the desktop icon.</div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-content">Select the <strong>Catalog</strong> tab.</div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-content">
+            Search for one of the following courses:
+            <div class="step-search">
+              <span class="search-tag">BLS</span>
+              <span class="search-tag">ACLS</span>
+              <span class="search-tag">PALS</span>
+            </div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-content">Select the <strong>Info</strong> tab to review course details and learning objectives.</div>
+        </div>
+        <div class="step">
+          <div class="step-num">5</div>
+          <div class="step-content">Click <strong>Choose Class</strong> or <strong>Enroll</strong> to select a class date and time.</div>
+        </div>
+      </div>
+
+      <div style="margin-top:1.25rem; padding:0.875rem 1rem; background:#f1f5f9; border-radius:8px; border-left:3px solid #94a3b8;">
+        <p style="font-size:14px; color:#374151; margin:0;"><strong>Need to reschedule?</strong> Use <strong>View Class</strong> in HealthStream to reschedule, withdraw, or drop a course.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Updated email -->
+  <div class="card">
+    <div class="card-header">
+      <div class="icon icon-gray">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+      </div>
+      <h2>Updated Education &amp; Training Center email</h2>
+    </div>
+    <div class="card-body">
+      <p style="font-size:15px; color:#374151; margin-bottom:0.75rem;">The Education and Training Center has updated its email address to better support communication regarding training programs and class offerings.</p>
+
+      <table class="email-table">
+        <thead>
+          <tr>
+            <th>Type</th>
+            <th>Email address</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="color:#6b7280; font-size:14px;">Old email</td>
+            <td><a href="mailto:isems.training@psmedicalcenter.org" class="email-link">isems.training@psmedicalcenter.org</a></td>
+            <td><span class="badge badge-retiring">Retiring June 30, 2026</span></td>
+          </tr>
+          <tr>
+            <td style="color:#6b7280; font-size:14px;">New email</td>
+            <td><a href="mailto:educationtrainingcenter@psmedicalcenter.org" class="email-link">educationtrainingcenter@psmedicalcenter.org</a></td>
+            <td><span class="badge badge-active">Effective immediately</span></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p style="font-size:14px; color:#374151; margin-top:1rem;">Please use the new email for all questions related to internal and external training programs, including:</p>
+      <div class="course-list">
+        <span class="course-item">BLS</span>
+        <span class="course-item">Heartsaver CPR</span>
+        <span class="course-item">First Aid</span>
+        <span class="course-item">ACLS</span>
+        <span class="course-item">PALS</span>
+        <span class="course-item">EMT</span>
+        <span class="course-item">ECG</span>
+        <span class="course-item">IV Courses</span>
+        <span class="course-item">Other Education &amp; Training Center offerings</span>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+</body>
+</html>
