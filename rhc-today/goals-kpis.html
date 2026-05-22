@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PSMC — 2026 Goals &amp; KPIs</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --teal: #1a7a6e; --teal-light: #e8f5f3; --teal-mid: #2a9d8e;
+    --navy: #1c2d40; --gold: #e9a84c; --gold-light: #fdf6ea;
+    --rose: #d95f5f; --rose-light: #fdf0f0; --sage: #6b8f71; --sage-light: #eef4ef;
+    --indigo: #4a5fc1; --indigo-light: #eef0fb;
+    --plum: #7c4fa0; --plum-light: #f4eefa;
+    --text: #2c3840; --muted: #6b7c85; --border: #dde8e6; --white: #fff; --bg: #f5f7f6;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'DM Sans',sans-serif; background:var(--bg); color:var(--text); line-height:1.6; }
+
+  /* NAV */
+  nav { background:var(--white); border-bottom:1px solid var(--border); position:sticky; top:0; z-index:100; }
+  .nav-inner { max-width:1100px; margin:0 auto; padding:0 32px; display:flex; align-items:center; gap:4px; height:52px; flex-wrap:nowrap; overflow-x:auto; }
+  .nav-logo { font-family:'DM Serif Display',serif; font-size:15px; color:var(--navy); margin-right:20px; white-space:nowrap; flex-shrink:0; }
+  .nav-link { font-size:13px; font-weight:500; padding:6px 12px; border-radius:7px; color:var(--muted); text-decoration:none; transition:background .15s,color .15s; white-space:nowrap; flex-shrink:0; }
+  .nav-link:hover { background:var(--teal-light); color:var(--teal); }
+  .nav-link.active { background:var(--indigo-light); color:var(--indigo); font-weight:600; }
+
+  /* HEADER */
+  header { background:linear-gradient(150deg, #1c2d40 0%, #2a3a5c 60%, #3a3570 100%); position:relative; overflow:hidden; }
+  header::before { content:''; position:absolute; top:-80px; right:-40px; width:380px; height:380px; background:radial-gradient(circle,rgba(74,95,193,.3) 0%,transparent 65%); border-radius:50%; }
+  header::after { content:''; position:absolute; bottom:-60px; left:10%; width:280px; height:280px; background:radial-gradient(circle,rgba(42,157,142,.2) 0%,transparent 65%); border-radius:50%; }
+  .header-inner { max-width:1100px; margin:0 auto; padding:52px 32px 48px; position:relative; z-index:1; }
+  .header-tag { display:inline-block; background:rgba(74,95,193,.3); color:#b0baee; font-size:11px; font-weight:600; letter-spacing:2px; text-transform:uppercase; padding:4px 12px; border-radius:20px; margin-bottom:16px; }
+  header h1 { font-family:'DM Serif Display',serif; font-size:clamp(28px,5vw,48px); color:var(--white); line-height:1.12; margin-bottom:14px; }
+  header h1 em { font-style:italic; color:#a0b4f8; }
+  header p { color:#a8bfc7; font-size:15px; max-width:600px; line-height:1.75; }
+  .header-meta { display:flex; gap:14px; margin-top:28px; flex-wrap:wrap; }
+  .header-pill { display:flex; align-items:center; gap:8px; background:rgba(255,255,255,.07); border:1px solid rgba(255,255,255,.12); color:#c8d8df; font-size:13px; padding:7px 14px; border-radius:8px; }
+
+  /* KPI COUNTDOWN STRIP */
+  .kpi-strip { background:var(--white); border:1px solid var(--border); border-radius:16px; overflow:hidden; margin-bottom:0; }
+  .kpi-strip-header { background:linear-gradient(135deg, var(--indigo) 0%, #3a4fa8 100%); padding:22px 28px; }
+  .kpi-strip-header h3 { font-family:'DM Serif Display',serif; font-size:20px; color:white; margin-bottom:4px; }
+  .kpi-strip-header p { font-size:13px; color:rgba(255,255,255,.8); }
+  .kpi-items { display:flex; flex-direction:column; }
+  .kpi-item { display:flex; gap:20px; align-items:flex-start; padding:22px 28px; border-bottom:1px solid var(--border); }
+  .kpi-item:last-child { border:none; }
+  .kpi-num { display:flex; align-items:center; justify-content:center; width:48px; height:48px; border-radius:14px; background:var(--indigo-light); color:var(--indigo); font-family:'DM Serif Display',serif; font-size:22px; font-weight:700; flex-shrink:0; }
+  .kpi-body { flex:1; }
+  .kpi-body h4 { font-size:15px; font-weight:600; color:var(--navy); margin-bottom:5px; }
+  .kpi-body p { font-size:13px; color:#4a5c65; line-height:1.65; }
+  .kpi-tag { display:inline-flex; align-items:center; gap:5px; font-size:11px; font-weight:600; background:var(--indigo-light); color:var(--indigo); padding:3px 10px; border-radius:20px; margin-bottom:8px; }
+
+  /* QI HIGHLIGHT */
+  .qi-row { display:flex; gap:10px; margin-top:12px; flex-wrap:wrap; }
+  .qi-chip { display:flex; align-items:center; gap:6px; background:#f0f2fe; border:1px solid #c8cef7; border-radius:8px; padding:7px 14px; font-size:13px; font-weight:600; color:var(--indigo); }
+
+  /* SECTION LABEL */
+  .section-label { display:flex; align-items:center; gap:12px; margin-bottom:20px; margin-top:52px; }
+  .section-label:first-child { margin-top:0; }
+  .section-label h2 { font-size:11px; font-weight:600; letter-spacing:2.5px; text-transform:uppercase; color:var(--muted); white-space:nowrap; }
+  .section-label::after { content:''; flex:1; height:1px; background:var(--border); }
+
+  /* INITIATIVE CARDS */
+  .cards { display:grid; grid-template-columns:repeat(auto-fill,minmax(320px,1fr)); gap:16px; }
+  .cards.wide { grid-template-columns:1fr; }
+  .card { background:var(--white); border-radius:14px; padding:24px 26px; border:1px solid var(--border); position:relative; overflow:hidden; transition:box-shadow .2s,transform .2s; }
+  .card:hover { box-shadow:0 8px 28px rgba(28,45,64,.09); transform:translateY(-2px); }
+  .card-accent { position:absolute; top:0; left:0; width:4px; height:100%; border-radius:4px 0 0 4px; }
+  .accent-indigo { background:var(--indigo); }
+  .accent-teal   { background:var(--teal-mid); }
+  .accent-gold   { background:var(--gold); }
+  .accent-rose   { background:var(--rose); }
+  .accent-sage   { background:var(--sage); }
+  .accent-plum   { background:var(--plum); }
+  .card-icon { width:38px; height:38px; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:18px; margin-bottom:14px; }
+  .icon-indigo { background:var(--indigo-light); }
+  .icon-teal   { background:var(--teal-light); }
+  .icon-gold   { background:var(--gold-light); }
+  .icon-rose   { background:var(--rose-light); }
+  .icon-sage   { background:var(--sage-light); }
+  .icon-plum   { background:var(--plum-light); }
+  .card h3 { font-family:'DM Serif Display',serif; font-size:17px; color:var(--navy); margin-bottom:5px; }
+  .card .subtitle { font-size:11px; font-weight:600; letter-spacing:1.5px; text-transform:uppercase; color:var(--muted); margin-bottom:10px; }
+  .card p { font-size:13.5px; color:#4a5c65; line-height:1.65; }
+
+  /* TARGETS BLOCK */
+  .targets { background:var(--bg); border-radius:10px; padding:14px 16px; margin-top:14px; }
+  .targets-title { font-size:10px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:var(--muted); margin-bottom:10px; }
+  .target-row { display:flex; justify-content:space-between; align-items:center; padding:6px 0; border-bottom:1px solid var(--border); font-size:13px; gap:12px; }
+  .target-row:last-child { border:none; padding-bottom:0; }
+  .target-label { color:#4a5c65; flex:1; }
+  .target-value { font-weight:600; color:var(--navy); text-align:right; white-space:nowrap; }
+  .target-value.good { color:var(--teal); }
+  .target-value.warn { color:#b07a1a; }
+
+  /* STAFF MEANS */
+  .means { list-style:none; margin-top:12px; }
+  .means li { display:flex; gap:10px; align-items:flex-start; padding:6px 0; font-size:13px; color:#4a5c65; border-bottom:1px solid #f0f4f3; }
+  .means li:last-child { border:none; }
+  .means li::before { content:'→'; color:var(--indigo); font-weight:700; flex-shrink:0; margin-top:1px; }
+
+  /* NOTICE */
+  .notice { display:flex; gap:14px; align-items:flex-start; padding:16px 18px; border-radius:10px; margin-top:12px; font-size:13px; }
+  .notice-icon { font-size:20px; flex-shrink:0; margin-top:1px; }
+  .notice-indigo { background:var(--indigo-light); border:1px solid #c0c9f5; }
+  .notice-teal   { background:var(--teal-light); border:1px solid #b7ddd9; }
+  .notice-gold   { background:var(--gold-light); border:1px solid #f0d5a0; }
+  .notice p { color:var(--text); line-height:1.6; }
+
+  /* SMART GOAL BOX */
+  .smart-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:10px; margin-top:14px; }
+  .smart-item { background:var(--bg); border-radius:10px; padding:12px 14px; border:1px solid var(--border); }
+  .smart-letter { font-family:'DM Serif Display',serif; font-size:22px; color:var(--indigo); margin-bottom:4px; }
+  .smart-word { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:1px; color:var(--muted); margin-bottom:4px; }
+  .smart-desc { font-size:12px; color:#4a5c65; line-height:1.5; }
+
+  /* FOOTER */
+  footer { background:var(--navy); color:#a8bfc7; text-align:center; padding:24px 32px; font-size:13px; }
+  footer strong { color:white; }
+  footer a { color:#7dd4ca; text-decoration:none; }
+
+  @media(max-width:640px) {
+    main { padding:24px 16px 60px; }
+    .header-inner { padding:36px 20px 36px; }
+    .kpi-item { flex-direction:column; gap:12px; }
+    .nav-inner { padding:0 16px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <span class="nav-logo">RHC <span style="opacity:.45;font-weight:300;">@ PSMC</span></span>
+    <a href="https://jblaise1310.github.io/rhc-today/staffing-updates.html" class="nav-link">Staffing &amp; Schedules</a>
+    <a href="https://jblaise1310.github.io/rhc-today/pto-planning.html" class="nav-link">PTO Planning</a>
+    <a href="https://jblaise1310.github.io/rhc-today/operations-reminders.html" class="nav-link">Operations &amp; Reminders</a>
+    <a href="https://jblaise1310.github.io/rhc-today/goals-kpis.html" class="nav-link active">2026 Goals &amp; KPIs</a>
+  </div>
+</nav>
+
+<!-- HEADER -->
+<header>
+  <div class="header-inner">
+    <div class="header-tag">RHC Team · Internal</div>
+    <h1>RHC 2026 Goals<br><em>&amp; Key Performance Indicators</em></h1>
+    <p>These KPIs and initiatives are specific to the <strong style="color:#a0b4f8;">Rural Health Clinic (RHC)</strong> team. They reflect our measurable commitments for the year — aligned to PSMC's strategic priorities and driven by the daily work each of us does.</p>
+    <div class="header-meta">
+      <div class="header-pill">🎯 3 Organizational KPIs</div>
+      <div class="header-pill">🏥 Talent &amp; Culture Initiatives</div>
+      <div class="header-pill">✅ Quality &amp; Patient Safety Goals</div>
+      <div class="header-pill">📅 Target: Oct – Dec 31, 2026</div>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <!-- ===== ORGANIZATIONAL KPIs ===== -->
+  <div class="section-label"><h2>2026 RHC Organizational KPIs</h2></div>
+
+  <div class="kpi-strip">
+    <div class="kpi-strip-header">
+      <h3>Top-Line Goals Aligned to PSMC Strategic Priorities</h3>
+      <p>These three KPIs define our highest-level targets for the year. Everything we do in our initiatives supports these outcomes.</p>
+    </div>
+    <div class="kpi-items">
+
+      <div class="kpi-item">
+        <div class="kpi-num">1</div>
+        <div class="kpi-body">
+          <div class="kpi-tag">📉 No-Show Reduction</div>
+          <h4>Reduce Primary Care No-Shows by 40–50%</h4>
+          <p>By the end of Q4, reduce RHC primary care no-shows by 40–50% compared to the Q1 benchmark, driven by continuous PDSA-based process improvement.</p>
+        </div>
+      </div>
+
+      <div class="kpi-item">
+        <div class="kpi-num">2</div>
+        <div class="kpi-body">
+          <div class="kpi-tag">📋 Pre-Visit Paperwork</div>
+          <h4>50% Pre-Visit Paperwork Compliance by Dec 31</h4>
+          <p>Achieve 50% compliance with new and MAWV patients submitting required pre-visit paperwork at least 7 days prior to their scheduled visit by December 31, 2026.</p>
+        </div>
+      </div>
+
+      <div class="kpi-item">
+        <div class="kpi-num">3</div>
+        <div class="kpi-body">
+          <div class="kpi-tag">⭐ Value-Based Program</div>
+          <h4>Maintain Tier 3 Status in RMHP ACC 3.0</h4>
+          <p>Maintain Tier 3 status by identifying two QI initiatives in Q1 with measurable goals, running ongoing PDSA cycles through Q2–Q4, and actively participating in all required meetings to maximize available funding.</p>
+          <div class="qi-row">
+            <div class="qi-chip">🫀 High Blood Pressure</div>
+            <div class="qi-chip">🩸 Glycemic Control</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ===== TALENT & CULTURE ===== -->
+  <div class="section-label"><h2>Talent &amp; Culture Initiatives</h2></div>
+  <div class="cards">
+
+    <!-- Certifications -->
+    <div class="card">
+      <div class="card-accent accent-indigo"></div>
+      <div class="card-icon icon-indigo">📜</div>
+      <div class="subtitle">Talent &amp; Culture</div>
+      <h3>Professional Certification Maintenance</h3>
+      <p>Prevent lapses in required clinical and administrative certifications across the team.</p>
+      <div class="targets">
+        <div class="targets-title">2026 Targets</div>
+        <div class="target-row"><span class="target-label">Renewal completion</span><span class="target-value good">100% before expiration</span></div>
+        <div class="target-row"><span class="target-label">Allowed lapses</span><span class="target-value good">0</span></div>
+        <div class="target-row"><span class="target-label">Deadline</span><span class="target-value">Ongoing through Oct 31</span></div>
+      </div>
+      <ul class="means">
+        <li>Maintain current certifications (BLS, RN/LPN/CMA licenses, required CE)</li>
+        <li>Submit renewal documentation before expiration dates</li>
+      </ul>
+    </div>
+
+    <!-- Meeting Attendance -->
+    <div class="card">
+      <div class="card-accent accent-indigo"></div>
+      <div class="card-icon icon-indigo">🤝</div>
+      <div class="subtitle">Talent &amp; Culture</div>
+      <h3>Meeting Attendance &amp; Engagement</h3>
+      <p>Improve meeting participation to build team alignment and shared accountability.</p>
+      <div class="targets">
+        <div class="targets-title">2026 Targets</div>
+        <div class="target-row"><span class="target-label">Attendance rate</span><span class="target-value good">≥ 90%</span></div>
+        <div class="target-row"><span class="target-label">Agenda sign-off credit</span><span class="target-value warn">≤ 3% of goal</span></div>
+        <div class="target-row"><span class="target-label">Sign-off deadline</span><span class="target-value">Within 7 business days</span></div>
+      </div>
+      <ul class="means">
+        <li>Attend meetings as scheduled, in person or remote</li>
+        <li>If unable to attend, review the agenda and complete sign-off within 7 business days</li>
+      </ul>
+    </div>
+
+    <!-- Timecard -->
+    <div class="card">
+      <div class="card-accent accent-sage"></div>
+      <div class="card-icon icon-sage">⏱️</div>
+      <div class="subtitle">Talent &amp; Culture</div>
+      <h3>Timecard Submission &amp; Approval</h3>
+      <p>Submit and approve timecards on time to ensure accurate and timely payroll for everyone.</p>
+      <div class="targets">
+        <div class="targets-title">2026 Targets</div>
+        <div class="target-row"><span class="target-label">On-time submission &amp; approval</span><span class="target-value good">≥ 95% compliance</span></div>
+        <div class="target-row"><span class="target-label">Deadline</span><span class="target-value">Friday before each pay period</span></div>
+        <div class="target-row"><span class="target-label">Compliance sustained by</span><span class="target-value">Oct 31, 2026</span></div>
+      </div>
+      <ul class="means">
+        <li>Submit your timecard by the deadline each pay period</li>
+        <li>Supervisors must review and approve by the same deadline</li>
+        <li>Respond promptly to correction requests to avoid payroll delays</li>
+      </ul>
+    </div>
+
+    <!-- Missed Punches -->
+    <div class="card">
+      <div class="card-accent accent-sage"></div>
+      <div class="card-icon icon-sage">🕐</div>
+      <div class="subtitle">Talent &amp; Culture</div>
+      <h3>Reduction of Missed Punches</h3>
+      <p>Strengthen timekeeping accuracy by reducing missed or incorrect clock-ins throughout the year.</p>
+      <div class="targets">
+        <div class="targets-title">2026 Targets</div>
+        <div class="target-row"><span class="target-label">Missed punch reduction</span><span class="target-value good">50% vs. 2025 baseline</span></div>
+        <div class="target-row"><span class="target-label">Measurement</span><span class="target-value">Timekeeping reports</span></div>
+        <div class="target-row"><span class="target-label">Deadline</span><span class="target-value">Oct 31, 2026</span></div>
+      </div>
+      <ul class="means">
+        <li>Clock in and out accurately for every shift</li>
+        <li>Don't forget lunch breaks — those count too! 😊</li>
+      </ul>
+    </div>
+
+    <!-- HealthStream -->
+    <div class="card">
+      <div class="card-accent accent-teal"></div>
+      <div class="card-icon icon-teal">💻</div>
+      <div class="subtitle">Talent &amp; Culture</div>
+      <h3>HealthStream Training Completion</h3>
+      <p>Ensure all mandatory training modules are completed on time, every time.</p>
+      <div class="targets">
+        <div class="targets-title">2026 Targets</div>
+        <div class="target-row"><span class="target-label">On-time module completion</span><span class="target-value good">≥ 95%</span></div>
+        <div class="target-row"><span class="target-label">Overdue trainings allowed</span><span class="target-value good">0 beyond 7 days past due</span></div>
+        <div class="target-row"><span class="target-label">Deadline</span><span class="target-value">Sustained by Oct 31, 2026</span></div>
+      </div>
+      <ul class="means">
+        <li>Complete all assigned HealthStream modules by their due date</li>
+        <li>Monitor your assignments regularly — don't wait for reminders</li>
+        <li>Respond promptly to manager outreach about training completion</li>
+      </ul>
+    </div>
+
+    <!-- Tardiness -->
+    <div class="card">
+      <div class="card-accent accent-gold"></div>
+      <div class="card-icon icon-gold">🏃</div>
+      <div class="subtitle">Talent &amp; Culture</div>
+      <h3>Reduction in Tardiness</h3>
+      <p>Improve timeliness and schedule coverage across all teams to keep the clinic running smoothly.</p>
+      <div class="targets">
+        <div class="targets-title">2026 Targets</div>
+        <div class="target-row"><span class="target-label">Tardiness reduction</span><span class="target-value good">50% vs. 2025 baseline</span></div>
+        <div class="target-row"><span class="target-label">Definition</span><span class="target-value">Clocking in after shift start without notice</span></div>
+        <div class="target-row"><span class="target-label">Deadline</span><span class="target-value">Oct 31, 2026</span></div>
+      </div>
+      <ul class="means">
+        <li>Arrive on time for every scheduled shift</li>
+        <li>Communicate in advance if you expect to be late</li>
+        <li>Participate in check-ins or coaching if tardiness is a pattern</li>
+      </ul>
+    </div>
+
+  </div>
+
+  <!-- ===== QUALITY & PATIENT SAFETY ===== -->
+  <div class="section-label"><h2>Quality &amp; Patient Safety Goals</h2></div>
+  <div class="cards">
+
+    <!-- Pre-visit documentation -->
+    <div class="card">
+      <div class="card-accent accent-teal"></div>
+      <div class="card-icon icon-teal">📝</div>
+      <div class="subtitle">Quality &amp; Patient Safety</div>
+      <h3>Pre-Visit Documentation Compliance</h3>
+      <p>Improve readiness for new patient visits by ensuring forms and charts are in place well before the appointment.</p>
+      <div class="targets">
+        <div class="targets-title">2026 Targets</div>
+        <div class="target-row"><span class="target-label">Patient paperwork due</span><span class="target-value good">7+ days before visit</span></div>
+        <div class="target-row"><span class="target-label">EHR charting due</span><span class="target-value good">2+ days before visit</span></div>
+        <div class="target-row"><span class="target-label">Initial compliance target</span><span class="target-value warn">60% of new patient visits</span></div>
+        <div class="target-row"><span class="target-label">Deadline</span><span class="target-value">Oct 31, 2026</span></div>
+      </div>
+      <ul class="means">
+        <li>Inform new patients of paperwork requirements at scheduling</li>
+        <li>Verify Adult Ambulatory Patient History forms are received on time</li>
+        <li>Chart the completed form in the EHR at least 2 days before the visit</li>
+      </ul>
+    </div>
+
+    <!-- Tier 3 / Quality Measures -->
+    <div class="card">
+      <div class="card-accent accent-plum"></div>
+      <div class="card-icon icon-plum">⭐</div>
+      <div class="subtitle">Quality &amp; Patient Safety</div>
+      <h3>Maintain Tier 3 Status &amp; Compliance</h3>
+      <p>Sustain Tier 3 status and strong performance across all required quality measures and eCQMs throughout the year.</p>
+      <div class="targets">
+        <div class="targets-title">2026 Targets</div>
+        <div class="target-row"><span class="target-label">Tier 3 status</span><span class="target-value good">Maintained</span></div>
+        <div class="target-row"><span class="target-label">Quality measure compliance</span><span class="target-value good">≥ 90% across RHC benchmarks</span></div>
+        <div class="target-row"><span class="target-label">Initial implementation check</span><span class="target-value">Oct 31, 2026</span></div>
+        <div class="target-row"><span class="target-label">Full implementation</span><span class="target-value">Dec 31, 2026</span></div>
+      </div>
+      <ul class="means">
+        <li>Follow updated workflows related to quality measure documentation</li>
+        <li>Complete required training and audits as assigned</li>
+        <li>Support accurate tracking of quality measures in daily work</li>
+      </ul>
+    </div>
+
+    <!-- Referral Turnaround - Creation to Sent -->
+    <div class="card">
+      <div class="card-accent accent-rose"></div>
+      <div class="card-icon icon-rose">📤</div>
+      <div class="subtitle">Quality &amp; Patient Safety</div>
+      <h3>Referral Turnaround — Creation to Sent</h3>
+      <p>Reduce the time from when a referral is created to when it is sent, improving care coordination and patient experience.</p>
+      <div class="targets">
+        <div class="targets-title">2026 Targets</div>
+        <div class="target-row"><span class="target-label">Current average</span><span class="target-value warn">14.0 days</span></div>
+        <div class="target-row"><span class="target-label">Target average</span><span class="target-value good">11.2 days</span></div>
+        <div class="target-row"><span class="target-label">Improvement goal</span><span class="target-value good">20% reduction</span></div>
+        <div class="target-row"><span class="target-label">Tracking tool</span><span class="target-value">LightsOn reports</span></div>
+        <div class="target-row"><span class="target-label">Deadline</span><span class="target-value">Oct 31, 2026</span></div>
+      </div>
+      <ul class="means">
+        <li>Process referrals promptly after creation</li>
+        <li>Follow standardized workflows to reach "sent" status without delay</li>
+        <li>Review referral status regularly and address barriers in team huddles</li>
+      </ul>
+    </div>
+
+    <!-- Referral Turnaround - Seen to Complete -->
+    <div class="card">
+      <div class="card-accent accent-rose"></div>
+      <div class="card-icon icon-rose">✅</div>
+      <div class="subtitle">Quality &amp; Patient Safety</div>
+      <h3>Referral Turnaround — Seen to Complete</h3>
+      <p>Shorten the time from when a patient is seen to when their referral is fully completed.</p>
+      <div class="targets">
+        <div class="targets-title">2026 Targets</div>
+        <div class="target-row"><span class="target-label">Current average</span><span class="target-value warn">4.7 days</span></div>
+        <div class="target-row"><span class="target-label">Target average</span><span class="target-value good">3.8 days</span></div>
+        <div class="target-row"><span class="target-label">Tracking tool</span><span class="target-value">LightsOn referral tracking</span></div>
+        <div class="target-row"><span class="target-label">Deadline</span><span class="target-value">Oct 31, 2026</span></div>
+      </div>
+      <div class="smart-grid">
+        <div class="smart-item"><div class="smart-letter">S</div><div class="smart-word">Specific</div><div class="smart-desc">Reduce Seen → Complete time from 4.7 to 3.8 days</div></div>
+        <div class="smart-item"><div class="smart-letter">M</div><div class="smart-word">Measurable</div><div class="smart-desc">Tracked via LightsOn referral reports</div></div>
+        <div class="smart-item"><div class="smart-letter">A</div><div class="smart-word">Achievable</div><div class="smart-desc">Standardized follow-up &amp; accountability for pending items</div></div>
+        <div class="smart-item"><div class="smart-letter">R</div><div class="smart-word">Relevant</div><div class="smart-desc">Faster completions reduce care delays &amp; improve experience</div></div>
+        <div class="smart-item"><div class="smart-letter">T</div><div class="smart-word">Time-Bound</div><div class="smart-desc">Goal achieved by October 31, 2026</div></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- CLOSING NOTE -->
+  <div class="notice notice-indigo" style="margin-top:40px;">
+    <span class="notice-icon">💬</span>
+    <p>These goals are specific to the RHC team and reflect our shared commitments for 2026. Questions about any KPI or initiative? See <strong>Jo or Vicki</strong> — they're happy to help.</p>
+  </div>
+
+</main>
+
+<footer>
+  <p><strong>PSMC 2026 Goals &amp; KPIs</strong> &nbsp;•&nbsp; For internal use only &nbsp;•&nbsp;
+  Also see: <a href="https://jblaise1310.github.io/rhc-today/staffing-updates.html">Staffing</a> &nbsp;|&nbsp; <a href="https://jblaise1310.github.io/rhc-today/pto-planning.html">PTO Planning</a> &nbsp;|&nbsp; <a href="https://jblaise1310.github.io/rhc-today/operations-reminders.html">Operations &amp; Reminders</a></p>
+</footer>
+
+</body>
+</html>
