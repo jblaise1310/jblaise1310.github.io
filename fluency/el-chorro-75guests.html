@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sommer & Hayve — Wedding Budget Summary</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400;1,600&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --sky: #a8c8e8;
+    --periwinkle: #7b9dc8;
+    --blush: #f4b8c8;
+    --rose: #e890a8;
+    --buttercup: #f7d98b;
+    --gold: #e8b840;
+    --lavender: #c8a8e0;
+    --violet: #a078c0;
+    --sage: #c8dcc0;
+    --cream: #fdf8f2;
+    --parchment: #f5ede0;
+    --ink: #2a2040;
+    --soft-ink: #4a3860;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--cream);
+    font-family: 'Jost', sans-serif;
+    color: var(--ink);
+    min-height: 100vh;
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 40% at 10% 20%, rgba(168,200,232,0.25) 0%, transparent 60%),
+      radial-gradient(ellipse 50% 60% at 90% 80%, rgba(200,168,224,0.22) 0%, transparent 60%),
+      radial-gradient(ellipse 40% 50% at 80% 10%, rgba(244,184,200,0.2) 0%, transparent 55%),
+      radial-gradient(ellipse 45% 35% at 20% 85%, rgba(247,217,139,0.18) 0%, transparent 55%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .page {
+    position: relative;
+    z-index: 1;
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 48px 32px 80px;
+  }
+
+  .corner-flora { position: fixed; opacity: 0.18; pointer-events: none; }
+  .corner-flora.tl { top: -10px; left: -10px; }
+  .corner-flora.tr { top: -10px; right: -10px; transform: rotate(90deg); }
+
+  /* ─── HEADER ─── */
+  .header { text-align: center; padding: 56px 0 36px; }
+  .header-tag {
+    font-family: 'Jost', sans-serif; font-weight: 300;
+    font-size: 0.72rem; letter-spacing: 0.28em; text-transform: uppercase;
+    color: var(--violet); margin-bottom: 16px;
+  }
+  .names {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(3rem, 7vw, 5.2rem); font-weight: 400; font-style: italic; line-height: 1;
+    background: linear-gradient(135deg, var(--periwinkle) 0%, var(--violet) 35%, var(--rose) 65%, var(--gold) 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    margin-bottom: 10px;
+  }
+  .header-sub {
+    font-family: 'Cormorant Garamond', serif; font-size: 1.05rem;
+    font-weight: 300; letter-spacing: 0.12em; color: var(--soft-ink); margin-bottom: 4px;
+  }
+  .wedding-date {
+    font-family: 'Jost', sans-serif; font-size: 0.75rem;
+    letter-spacing: 0.22em; text-transform: uppercase; color: var(--violet); margin-top: 4px;
+  }
+  .divider-floral {
+    display: flex; align-items: center; justify-content: center;
+    gap: 14px; margin: 24px auto; color: var(--rose); font-size: 1.1rem;
+  }
+  .divider-floral::before, .divider-floral::after {
+    content: ''; display: block; width: 80px; height: 1px;
+    background: linear-gradient(90deg, transparent, var(--blush), transparent);
+  }
+  .petals-row {
+    display: flex; justify-content: center; gap: 6px;
+    font-size: 1.1rem; margin: 6px 0; opacity: 0.55; letter-spacing: 4px;
+  }
+
+  /* ─── STAT CARDS ─── */
+  .budget-hero { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin: 0 0 36px; }
+  .stat-card {
+    background: white; border-radius: 20px; padding: 20px 16px; text-align: center;
+    box-shadow: 0 4px 24px rgba(100,80,140,0.08), 0 1px 4px rgba(100,80,140,0.06);
+    border: 1px solid rgba(200,168,224,0.2); position: relative; overflow: hidden;
+  }
+  .stat-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0;
+    height: 4px; border-radius: 20px 20px 0 0;
+  }
+  .stat-card.blue::before { background: linear-gradient(90deg, var(--sky), var(--periwinkle)); }
+  .stat-card.pink::before { background: linear-gradient(90deg, var(--blush), var(--rose)); }
+  .stat-card.yellow::before { background: linear-gradient(90deg, var(--buttercup), var(--gold)); }
+  .stat-card.purple::before { background: linear-gradient(90deg, var(--lavender), var(--violet)); }
+  .stat-icon { font-size: 1.6rem; margin-bottom: 6px; }
+  .stat-label { font-size: 0.62rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--soft-ink); opacity: 0.7; margin-bottom: 5px; }
+  .stat-value { font-family: 'Playfair Display', serif; font-size: 1.35rem; font-weight: 600; color: var(--ink); line-height: 1.1; }
+  .stat-note { font-size: 0.68rem; color: var(--soft-ink); opacity: 0.6; margin-top: 3px; font-family: 'Cormorant Garamond', serif; font-style: italic; }
+
+  /* ─── ALERT / INFO BANNERS ─── */
+  .alert-banner {
+    border-radius: 16px; padding: 18px 24px; margin-bottom: 28px;
+    display: flex; align-items: flex-start; gap: 14px;
+  }
+  .alert-banner.yellow { background: linear-gradient(135deg, rgba(247,217,139,0.3), rgba(232,184,64,0.15)); border: 1px solid rgba(232,184,64,0.35); }
+  .alert-banner.red { background: linear-gradient(135deg, rgba(232,144,168,0.2), rgba(200,100,120,0.1)); border: 1px solid rgba(200,100,120,0.3); }
+  .alert-banner.blue { background: linear-gradient(135deg, rgba(168,200,232,0.25), rgba(123,157,200,0.12)); border: 1px solid rgba(123,157,200,0.3); }
+  .alert-banner.green { background: linear-gradient(135deg, rgba(180,224,180,0.25), rgba(100,160,100,0.1)); border: 1px solid rgba(100,160,100,0.25); }
+  .alert-icon { font-size: 1.4rem; flex-shrink: 0; margin-top: 1px; }
+  .alert-text { font-family: 'Cormorant Garamond', serif; font-size: 1.02rem; color: var(--soft-ink); line-height: 1.65; }
+  .alert-text strong { font-weight: 600; color: var(--ink); }
+
+  /* ─── SECTION ─── */
+  .section { margin-bottom: 38px; }
+  .section-header { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; }
+  .section-dot {
+    width: 34px; height: 34px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center; font-size: 0.95rem; flex-shrink: 0;
+  }
+  .dot-blue { background: linear-gradient(135deg, var(--sky), var(--periwinkle)); }
+  .dot-pink { background: linear-gradient(135deg, var(--blush), var(--rose)); }
+  .dot-yellow { background: linear-gradient(135deg, var(--buttercup), var(--gold)); }
+  .dot-purple { background: linear-gradient(135deg, var(--lavender), var(--violet)); }
+  .dot-green { background: linear-gradient(135deg, #b8e0b8, #78b878); }
+  .section-title { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 600; color: var(--ink); }
+  .section-subtitle { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 0.88rem; color: var(--soft-ink); opacity: 0.7; margin-left: 2px; }
+
+  /* ─── COST TABLE ─── */
+  .cost-table {
+    background: white; border-radius: 20px; overflow: hidden;
+    box-shadow: 0 4px 24px rgba(100,80,140,0.07); border: 1px solid rgba(200,168,224,0.18);
+  }
+  .cost-row {
+    display: grid; grid-template-columns: 1fr auto auto;
+    align-items: center; padding: 15px 22px;
+    border-bottom: 1px solid rgba(200,168,224,0.12); gap: 16px;
+    transition: background 0.2s;
+  }
+  .cost-row:last-child { border-bottom: none; }
+  .cost-row:hover { background: rgba(200,168,224,0.06); }
+  .cost-row.header-row {
+    background: linear-gradient(135deg, rgba(168,200,232,0.15), rgba(200,168,224,0.12));
+    font-size: 0.63rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--soft-ink); opacity: 0.8; padding: 11px 22px;
+  }
+  .cost-row.subtotal-row { background: rgba(247,217,139,0.1); }
+  .cost-row.warning-row { background: rgba(232,144,168,0.08); }
+  .cost-row.total-row { background: linear-gradient(135deg, rgba(200,168,224,0.15), rgba(168,200,232,0.12)); }
+  .cost-row.savings-row { background: rgba(180,224,180,0.15); }
+  .item-name { font-family: 'Cormorant Garamond', serif; font-size: 1.03rem; color: var(--ink); }
+  .item-detail { font-size: 0.7rem; color: var(--soft-ink); opacity: 0.65; font-family: 'Jost', sans-serif; font-weight: 300; margin-top: 2px; }
+  .item-qty { font-size: 0.78rem; color: var(--soft-ink); opacity: 0.65; text-align: right; white-space: nowrap; }
+  .item-cost { font-family: 'Playfair Display', serif; font-size: 1.03rem; font-weight: 600; color: var(--soft-ink); text-align: right; white-space: nowrap; min-width: 88px; }
+  .total-row .item-name, .total-row .item-cost { font-family: 'Playfair Display', serif; font-size: 1.18rem; color: var(--ink); }
+  .savings-row .item-name { color: #3a6a3a; }
+  .savings-row .item-cost { color: #3a6a3a; }
+  .strike { text-decoration: line-through; opacity: 0.5; }
+
+  .badge {
+    display: inline-block; padding: 2px 9px; border-radius: 20px;
+    font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase; font-family: 'Jost', sans-serif;
+  }
+  .badge-blue { background: rgba(168,200,232,0.3); color: var(--periwinkle); }
+  .badge-pink { background: rgba(244,184,200,0.3); color: var(--rose); }
+  .badge-yellow { background: rgba(247,217,139,0.4); color: #9a6a10; }
+  .badge-red { background: rgba(255,180,180,0.3); color: #c04040; }
+  .badge-green { background: rgba(180,224,180,0.3); color: #3a6a3a; }
+  .badge-purple { background: rgba(200,168,224,0.3); color: var(--violet); }
+
+  /* ─── SCENARIO COMPARE ─── */
+  .scenario-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  .scenario-card {
+    background: white; border-radius: 20px; overflow: hidden;
+    box-shadow: 0 4px 24px rgba(100,80,140,0.07); border: 1px solid rgba(200,168,224,0.18);
+  }
+  .scenario-head {
+    padding: 16px 20px 14px; font-family: 'Playfair Display', serif;
+    font-size: 1.05rem; font-weight: 600;
+  }
+  .scenario-head.red { background: rgba(232,144,168,0.15); color: #903050; }
+  .scenario-head.green { background: rgba(180,224,180,0.2); color: #2a5a2a; }
+  .scenario-head small { display: block; font-family: 'Jost', sans-serif; font-weight: 300; font-size: 0.7rem; letter-spacing: 0.12em; opacity: 0.8; margin-top: 2px; }
+  .scenario-body { padding: 16px 20px; }
+  .scenario-line {
+    display: flex; justify-content: space-between; align-items: baseline;
+    padding: 7px 0; border-bottom: 1px solid rgba(200,168,224,0.1);
+    font-family: 'Cormorant Garamond', serif; font-size: 0.98rem;
+  }
+  .scenario-line:last-child { border-bottom: none; }
+  .scenario-line.total { font-weight: 600; font-family: 'Playfair Display', serif; font-size: 1.1rem; padding-top: 10px; }
+  .scenario-line.total span:last-child { color: var(--ink); }
+
+  /* ─── TWO COL ─── */
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  .card {
+    background: white; border-radius: 20px; padding: 22px;
+    box-shadow: 0 4px 24px rgba(100,80,140,0.07); border: 1px solid rgba(200,168,224,0.18);
+  }
+  .card-title { font-family: 'Playfair Display', serif; font-size: 1.02rem; font-weight: 600; margin-bottom: 14px; color: var(--ink); }
+  .pill-list { display: flex; flex-wrap: wrap; gap: 8px; }
+  .pill { padding: 5px 13px; border-radius: 30px; font-family: 'Cormorant Garamond', serif; font-size: 0.92rem; border: 1px solid; }
+  .pill-yes { background: rgba(200,220,192,0.3); border-color: rgba(100,160,100,0.25); color: #3a6040; }
+  .pill-no { background: rgba(232,144,168,0.15); border-color: rgba(200,100,120,0.2); color: #904060; text-decoration: line-through; opacity: 0.7; }
+  .pill-new { background: rgba(168,200,232,0.25); border-color: rgba(123,157,200,0.3); color: #2a4a80; }
+
+  /* ─── HORS D'OEUVRES ─── */
+  .hors-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .hors-item {
+    padding: 10px 14px; border-radius: 12px; border: 1px solid;
+    font-family: 'Cormorant Garamond', serif; font-size: 0.95rem;
+  }
+  .hors-item .hors-sub { font-size: 0.72rem; font-family: 'Jost', sans-serif; font-weight: 300; opacity: 0.6; margin-top: 1px; }
+  .hors-yes { background: rgba(200,220,192,0.2); border-color: rgba(100,160,100,0.22); color: #2a5030; }
+  .hors-no { background: rgba(232,144,168,0.1); border-color: rgba(200,100,120,0.18); color: #903050; opacity: 0.7; }
+  .hors-no .item-name-h { text-decoration: line-through; }
+
+  /* ─── PRIORITY GRID ─── */
+  .priority-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .priority-item {
+    display: flex; align-items: center; gap: 10px; padding: 12px 16px;
+    background: white; border-radius: 14px; box-shadow: 0 2px 12px rgba(100,80,140,0.06);
+    border: 1px solid rgba(200,168,224,0.15);
+  }
+  .priority-emoji { font-size: 1.25rem; }
+  .priority-label { font-family: 'Cormorant Garamond', serif; font-size: 0.97rem; color: var(--ink); }
+
+  /* ─── RECOMMENDATION ─── */
+  .recommendation {
+    background: linear-gradient(135deg, rgba(200,168,224,0.2), rgba(168,200,232,0.15));
+    border: 1px solid rgba(200,168,224,0.3); border-radius: 20px; padding: 32px;
+    text-align: center; position: relative; overflow: hidden;
+  }
+  .recommendation::before { content: '✦'; position: absolute; font-size: 8rem; color: rgba(200,168,224,0.1); top: -20px; left: -10px; pointer-events: none; }
+  .recommendation::after { content: '✦'; position: absolute; font-size: 8rem; color: rgba(168,200,232,0.08); bottom: -30px; right: -10px; pointer-events: none; }
+  .rec-title { font-family: 'Playfair Display', serif; font-size: 1.55rem; font-style: italic; font-weight: 400; color: var(--ink); margin-bottom: 12px; }
+  .rec-body { font-family: 'Cormorant Garamond', serif; font-size: 1.03rem; font-weight: 300; line-height: 1.78; color: var(--soft-ink); max-width: 640px; margin: 0 auto; }
+
+  /* ─── KEY INSIGHT BOX ─── */
+  .insight-box {
+    background: white; border-radius: 20px; padding: 22px 24px;
+    box-shadow: 0 4px 24px rgba(100,80,140,0.07); border-left: 4px solid var(--violet);
+    margin-bottom: 28px;
+  }
+  .insight-title { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 600; color: var(--ink); margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+  .insight-body { font-family: 'Cormorant Garamond', serif; font-size: 1rem; line-height: 1.7; color: var(--soft-ink); }
+  .insight-body strong { color: var(--ink); font-weight: 600; }
+
+  /* ─── FOOTER ─── */
+  .footer { text-align: center; margin-top: 60px; padding-top: 28px; border-top: 1px solid rgba(200,168,224,0.2); }
+  .footer-names { font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.35rem; background: linear-gradient(90deg, var(--periwinkle), var(--violet), var(--rose)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 6px; }
+  .footer-note { font-size: 0.68rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--soft-ink); opacity: 0.5; }
+
+  @media (max-width: 660px) {
+    .budget-hero { grid-template-columns: 1fr 1fr; }
+    .two-col, .scenario-grid, .hors-grid, .priority-grid { grid-template-columns: 1fr; }
+    .cost-row { grid-template-columns: 1fr auto; }
+    .item-qty { display: none; }
+    .page { padding: 24px 16px 60px; }
+    .names { font-size: 2.6rem; }
+  }
+</style>
+</head>
+<body>
+
+<svg class="corner-flora tl" width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="40" cy="30" r="18" fill="#f4b8c8" opacity="0.5"/>
+  <circle cx="70" cy="15" r="12" fill="#c8a8e0" opacity="0.4"/>
+  <circle cx="25" cy="60" r="10" fill="#f7d98b" opacity="0.5"/>
+  <circle cx="100" cy="40" r="22" fill="#a8c8e8" opacity="0.35"/>
+  <circle cx="55" cy="85" r="8" fill="#e890a8" opacity="0.45"/>
+  <path d="M10,10 L10,150" stroke="#c8a8e0" stroke-width="1" fill="none" opacity="0.5"/>
+  <path d="M10,10 L150,10" stroke="#a8c8e8" stroke-width="1" fill="none" opacity="0.5"/>
+</svg>
+<svg class="corner-flora tr" width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="40" cy="30" r="18" fill="#f4b8c8" opacity="0.5"/>
+  <circle cx="70" cy="15" r="12" fill="#c8a8e0" opacity="0.4"/>
+  <circle cx="25" cy="60" r="10" fill="#f7d98b" opacity="0.5"/>
+  <circle cx="100" cy="40" r="22" fill="#a8c8e8" opacity="0.35"/>
+  <circle cx="55" cy="85" r="8" fill="#e890a8" opacity="0.45"/>
+  <path d="M10,10 L10,150" stroke="#c8a8e0" stroke-width="1" fill="none" opacity="0.5"/>
+  <path d="M10,10 L150,10" stroke="#a8c8e8" stroke-width="1" fill="none" opacity="0.5"/>
+</svg>
+
+<div class="page">
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="header-tag">Wedding Budget Summary · Updated with Venue Menu Review</div>
+    <div class="names">Sommer <span style="font-style:italic;font-weight:600">&</span> Hayve</div>
+    <div class="petals-row">🌸 🌼 💐 🌸 🌼</div>
+    <div class="header-sub">El Chorro · Paradise Valley, Arizona</div>
+    <div class="wedding-date">Wedding Date &nbsp;·&nbsp; March 12, 2027</div>
+    <div class="divider-floral">🌿</div>
+  </header>
+
+  <!-- STAT CARDS -->
+  <div class="budget-hero">
+    <div class="stat-card blue">
+      <div class="stat-icon">👥</div>
+      <div class="stat-label">Guest Count</div>
+      <div class="stat-value">75</div>
+      <div class="stat-note">Current plan</div>
+    </div>
+    <div class="stat-card pink">
+      <div class="stat-icon">🎯</div>
+      <div class="stat-label">Target Budget</div>
+      <div class="stat-value">$10K–$12K</div>
+      <div class="stat-note">Venue F&B only</div>
+    </div>
+    <div class="stat-card yellow">
+      <div class="stat-icon">⚠️</div>
+      <div class="stat-label">Realistic Venue Total</div>
+      <div class="stat-value">~$17,200</div>
+      <div class="stat-note">75 guests w/ charges</div>
+    </div>
+    <div class="stat-card purple">
+      <div class="stat-icon">✅</div>
+      <div class="stat-label">Achievable At</div>
+      <div class="stat-value">~50 guests</div>
+      <div class="stat-note">To hit $12K target</div>
+    </div>
+  </div>
+
+  <!-- KEY FINDING -->
+  <div class="alert-banner red">
+    <div class="alert-icon">📋</div>
+    <div class="alert-text">
+      <strong>New Finding from Actual Menu:</strong> The Peridot Dinner Stations package <strong>requires 1 chef attendant per 50 guests at $150 each</strong> — meaning 75 guests triggers <strong>2 mandatory chef attendants ($300)</strong> not included in the original estimate. Also, the Gourmet Tacos station includes Chorro Spiced Shrimp, which is a premium protein — swapping it for a simpler station saves no money (it's within the package), but choosing budget-friendly hors d'oeuvres from the passed menu does keep you at the package rate.
+    </div>
+  </div>
+
+  <!-- CORRECTED COST BREAKDOWN -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-dot dot-blue">💐</div>
+      <div>
+        <div class="section-title">Corrected Cost Breakdown — 75 Guests</div>
+        <div class="section-subtitle">Per the actual 2027 menu, including all mandatory charges</div>
+      </div>
+    </div>
+    <div class="cost-table">
+      <div class="cost-row header-row">
+        <div>Line Item</div>
+        <div>Rate</div>
+        <div>Subtotal</div>
+      </div>
+      <div class="cost-row">
+        <div>
+          <div class="item-name">Peridot Dinner Stations Package</div>
+          <div class="item-detail">Passed hors d'oeuvres (4) · Sticky buns · Coffee · Hot tea · Champagne toast · 4 stations</div>
+        </div>
+        <div class="item-qty">$125 × 75</div>
+        <div class="item-cost">$9,375</div>
+      </div>
+      <div class="cost-row warning-row">
+        <div>
+          <div class="item-name">⚠️ Chef Attendants <span class="badge badge-red">Required</span></div>
+          <div class="item-detail">Mandatory — 1 per 50 guests; 75 guests = 2 attendants · Not optional</div>
+        </div>
+        <div class="item-qty">2 × $150</div>
+        <div class="item-cost">$300</div>
+      </div>
+      <div class="cost-row">
+        <div>
+          <div class="item-name">Beer, Wine & Margarita Bar</div>
+          <div class="item-detail">2-hour hosted — cocktail hour & dinner · William Hill wines · domestic + premium beer</div>
+        </div>
+        <div class="item-qty">$35 × 75</div>
+        <div class="item-cost">$2,625</div>
+      </div>
+      <div class="cost-row subtotal-row">
+        <div><div class="item-name">F&B Subtotal</div></div>
+        <div class="item-qty"></div>
+        <div class="item-cost">$12,300</div>
+      </div>
+      <div class="cost-row">
+        <div>
+          <div class="item-name">28% Taxable Service Charge</div>
+          <div class="item-detail">Applied to F&B subtotal per venue policy</div>
+        </div>
+        <div class="item-qty">× 1.28</div>
+        <div class="item-cost">$3,444</div>
+      </div>
+      <div class="cost-row">
+        <div>
+          <div class="item-name">8.8% Arizona Sales Tax</div>
+          <div class="item-detail">Applied after service charge</div>
+        </div>
+        <div class="item-qty">× 1.088</div>
+        <div class="item-cost">~$1,384</div>
+      </div>
+      <div class="cost-row total-row">
+        <div>
+          <div class="item-name">Estimated Venue F&B Total</div>
+          <div class="item-detail">75 guests · Peridot Stations + Beer/Wine/Margarita + 2 chef attendants</div>
+        </div>
+        <div class="item-qty"><span class="badge badge-red">Over budget</span></div>
+        <div class="item-cost">~$17,128</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- KEY INSIGHT -->
+  <div class="insight-box">
+    <div class="insight-title">💡 The Only Real Lever: Guest Count</div>
+    <div class="insight-body">
+      With this venue's pricing structure, the per-person rate is fixed — there is no menu combination that brings 75 guests within a $12K all-in budget. The <strong>only meaningful way to hit the target</strong> is to reduce the guest count. At <strong>~50 guests</strong>, the Peridot package + Beer/Wine/Margarita bar + 1 chef attendant lands at approximately <strong>$11,900–$12,200 after all charges</strong> — right at the target. Below is a side-by-side scenario comparison.
+    </div>
+  </div>
+
+  <!-- SCENARIO COMPARISON -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-dot dot-pink">🌷</div>
+      <div>
+        <div class="section-title">Scenario Comparison</div>
+        <div class="section-subtitle">Same Peridot package · Same beer/wine bar · All charges included</div>
+      </div>
+    </div>
+    <div class="scenario-grid">
+      <div class="scenario-card">
+        <div class="scenario-head red">
+          75 Guests — Current Plan
+          <small>Over budget by ~$5,000+</small>
+        </div>
+        <div class="scenario-body">
+          <div class="scenario-line"><span>Peridot Stations ($125)</span><span>$9,375</span></div>
+          <div class="scenario-line"><span>Chef Attendants (2 req.)</span><span>$300</span></div>
+          <div class="scenario-line"><span>Beer/Wine/Margarita ($35)</span><span>$2,625</span></div>
+          <div class="scenario-line"><span>F&B Subtotal</span><span>$12,300</span></div>
+          <div class="scenario-line"><span>28% Service Charge</span><span>$3,444</span></div>
+          <div class="scenario-line"><span>8.8% Sales Tax</span><span>~$1,384</span></div>
+          <div class="scenario-line total"><span>Estimated Total</span><span>~$17,128</span></div>
+        </div>
+      </div>
+      <div class="scenario-card">
+        <div class="scenario-head green">
+          50 Guests — Budget Scenario
+          <small>Just within the $12K target ✓</small>
+        </div>
+        <div class="scenario-body">
+          <div class="scenario-line"><span>Peridot Stations ($125)</span><span>$6,250</span></div>
+          <div class="scenario-line"><span>Chef Attendants (1 req.)</span><span>$150</span></div>
+          <div class="scenario-line"><span>Beer/Wine/Margarita ($35)</span><span>$1,750</span></div>
+          <div class="scenario-line"><span>F&B Subtotal</span><span>$8,150</span></div>
+          <div class="scenario-line"><span>28% Service Charge</span><span>$2,282</span></div>
+          <div class="scenario-line"><span>8.8% Sales Tax</span><span>~$919</span></div>
+          <div class="scenario-line total"><span>Estimated Total</span><span>~$11,351</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STATION SELECTIONS -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-dot dot-yellow">🌼</div>
+      <div>
+        <div class="section-title">Recommended Station Selections</div>
+        <div class="section-subtitle">Choose 4 from the Peridot menu · Avoid high-attendant stations</div>
+      </div>
+    </div>
+    <div class="two-col">
+      <div class="card">
+        <div class="card-title">✅ Best Value Stations (Choose These 4)</div>
+        <div class="pill-list">
+          <span class="pill pill-yes">🌮 Gourmet Tacos</span>
+          <span class="pill pill-yes">🥦 Grilled Vegetable Display</span>
+          <span class="pill pill-yes">🫙 Chips & Salsa Bar</span>
+          <span class="pill pill-yes">🍟 French Fry Bar</span>
+        </div>
+        <div style="margin-top:12px; font-family:'Cormorant Garamond',serif; font-size:0.9rem; color:var(--soft-ink); font-style:italic; opacity:0.8;">
+          Note: Gourmet Mini Burgers requires selecting 2 proteins + a 3rd adds $5pp — skip it. Artisan Cheese Display is also fine as a 4th option.
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">🚫 Avoid These Add-Ons</div>
+        <div class="pill-list">
+          <span class="pill pill-no">🦪 Mobile Oyster Bar ($1,850)</span>
+          <span class="pill pill-no">🍦 Gelato Cart ($1,100)</span>
+          <span class="pill pill-no">🚲 Ice Cream Bike ($1,400)</span>
+          <span class="pill pill-no">🥃 Premium/Super Premium Bar</span>
+          <span class="pill pill-no">🍹 Welcome Cocktails (+$14pp)</span>
+          <span class="pill pill-no">🌙 Late Night Snacks (+$18–24pp)</span>
+          <span class="pill pill-no">🎪 Cigar Bar ($1,400)</span>
+          <span class="pill pill-no">🦐 Seafood Display ($45–75pp)</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HORS D'OEUVRES GUIDANCE -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-dot dot-purple">🌸</div>
+      <div>
+        <div class="section-title">Passed Hors d'Oeuvres — Best Picks</div>
+        <div class="section-subtitle">All included in Peridot package · Choose 4 · Select budget-friendly options</div>
+      </div>
+    </div>
+    <div class="alert-banner blue" style="margin-bottom:16px;">
+      <div class="alert-icon">ℹ️</div>
+      <div class="alert-text">The 4 passed hors d'oeuvres are included in the Peridot package price — choosing simpler options doesn't save money, but choosing all 4 from the budget-friendly list below ensures you get the most volume and crowd-pleasing variety without feeling like you're skimping.</div>
+    </div>
+    <div class="hors-grid">
+      <div class="hors-item hors-yes">
+        <div>🍗 Chili Lime Chicken Brochettes</div>
+        <div class="hors-sub">Crowd favorite · chipotle lime sauce</div>
+      </div>
+      <div class="hors-item hors-yes">
+        <div>🧀 Mac n' Cheese Balls</div>
+        <div class="hors-sub">Fan favorite · chipotle cream sauce</div>
+      </div>
+      <div class="hors-item hors-yes">
+        <div>🥬 Vegetable Empanada</div>
+        <div class="hors-sub">Vegetarian-friendly · universally liked</div>
+      </div>
+      <div class="hors-item hors-yes">
+        <div>🥧 Vegetarian Quiche</div>
+        <div class="hors-sub">Elegant presentation · crowd pleaser</div>
+      </div>
+      <div class="hors-item hors-no">
+        <div class="item-name-h">🦐 Almond Shrimp</div>
+        <div class="hors-sub">Premium seafood — skip if possible</div>
+      </div>
+      <div class="hors-item hors-no">
+        <div class="item-name-h">🥩 Prosciutto Wrapped Scallops</div>
+        <div class="hors-sub">Premium protein — skip if possible</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BAR STRATEGY -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-dot dot-blue">🥂</div>
+      <div>
+        <div class="section-title">Bar Strategy</div>
+        <div class="section-subtitle">Beer, Wine & Margarita Package — $35/person for 2 hrs · Most cost-effective option</div>
+      </div>
+    </div>
+    <div class="cost-table">
+      <div class="cost-row header-row">
+        <div>Phase</div><div>Approach</div><div>Host Cost</div>
+      </div>
+      <div class="cost-row">
+        <div>
+          <div class="item-name">🌸 Cocktail Hour</div>
+          <div class="item-detail">Beer, Wine & Margarita — William Hill wines · domestic + premium beer</div>
+        </div>
+        <div class="item-qty"><span class="badge badge-blue">Hosted</span></div>
+        <div class="item-cost">Included</div>
+      </div>
+      <div class="cost-row">
+        <div>
+          <div class="item-name">🍽️ Dinner</div>
+          <div class="item-detail">2-hour package covers cocktail hour through dinner service</div>
+        </div>
+        <div class="item-qty"><span class="badge badge-blue">Hosted</span></div>
+        <div class="item-cost">Included</div>
+      </div>
+      <div class="cost-row savings-row">
+        <div>
+          <div class="item-name">🎶 After Dinner / Dancing</div>
+          <div class="item-detail">Switch to cash bar — guests pay own drinks; saves $10/person/hour</div>
+        </div>
+        <div class="item-qty"><span class="badge badge-green">Cash Bar</span></div>
+        <div class="item-cost">$0 to host</div>
+      </div>
+      <div class="cost-row">
+        <div>
+          <div class="item-name">🥤 Non-Drinking Guests</div>
+          <div class="item-detail">Non-alcoholic package available at $20/person — worth asking venue if you have many non-drinkers</div>
+        </div>
+        <div class="item-qty"><span class="badge badge-yellow">Optional</span></div>
+        <div class="item-cost">$20 pp</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- IF 75 GUESTS IS NON-NEGOTIABLE -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-dot dot-green">💬</div>
+      <div>
+        <div class="section-title">If 75 Guests Is Non-Negotiable</div>
+        <div class="section-subtitle">Three paths to reduce the ~$5K gap</div>
+      </div>
+    </div>
+    <div class="alert-banner green">
+      <div class="alert-icon">🌿</div>
+      <div class="alert-text">
+        If trimming the guest list isn't an option, the gap between the ~$17K realistic total and the $12K target needs to be addressed another way. Here are three honest options:
+      </div>
+    </div>
+    <div class="cost-table">
+      <div class="cost-row">
+        <div>
+          <div class="item-name">① Raise the budget to ~$17,000–$18,000</div>
+          <div class="item-detail">The most straightforward path — accepts the venue's pricing reality for 75 guests with a comfortable experience</div>
+        </div>
+        <div class="item-qty"><span class="badge badge-purple">Recommended</span></div>
+        <div class="item-cost">+$5–6K</div>
+      </div>
+      <div class="cost-row">
+        <div>
+          <div class="item-name">② Negotiate a food & beverage minimum with El Chorro</div>
+          <div class="item-detail">Ask the venue directly if there is a lower F&B minimum for a March weekday or Sunday wedding — off-peak dates often carry more flexibility</div>
+        </div>
+        <div class="item-qty"><span class="badge badge-blue">Ask venue</span></div>
+        <div class="item-cost">Varies</div>
+      </div>
+      <div class="cost-row">
+        <div>
+          <div class="item-name">③ Reduce to cocktail-only reception (no dinner stations)</div>
+          <div class="item-detail">Passed hors d'oeuvres only from the stationary menu · Chips & Salsa ($21pp) + Vegetable Crudité ($19pp) + 2 passed items · No dinner package required — but venue may still impose a F&B minimum</div>
+        </div>
+        <div class="item-qty"><span class="badge badge-yellow">Ask venue</span></div>
+        <div class="item-cost">~$40pp base</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- WHERE TO SPEND -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-dot dot-pink">✨</div>
+      <div>
+        <div class="section-title">Where to Invest the Remaining Budget</div>
+        <div class="section-subtitle">Outside of the venue F&B — these make the biggest impression</div>
+      </div>
+    </div>
+    <div class="priority-grid">
+      <div class="priority-item"><div class="priority-emoji">📸</div><div class="priority-label">Photography</div></div>
+      <div class="priority-item"><div class="priority-emoji">🎵</div><div class="priority-label">Music & DJ</div></div>
+      <div class="priority-item"><div class="priority-emoji">🕯️</div><div class="priority-label">Lighting & Candles</div></div>
+      <div class="priority-item"><div class="priority-emoji">💐</div><div class="priority-label">Floral Arrangements</div></div>
+      <div class="priority-item"><div class="priority-emoji">😊</div><div class="priority-label">Guest Comfort</div></div>
+      <div class="priority-item"><div class="priority-emoji">🎂</div><div class="priority-label">Wedding Cake</div></div>
+    </div>
+  </div>
+
+  <!-- FINAL RECOMMENDATION -->
+  <div class="section">
+    <div class="recommendation">
+      <div class="rec-title">Bottom Line for Sommer & Hayve</div>
+      <div class="petals-row" style="opacity:0.4; margin-bottom:16px;">🌸 🌼 💜 🌸 🌼</div>
+      <div class="rec-body">
+        The El Chorro 2027 menu is beautiful — but its pricing, mandatory service charges, and required chef attendants make a $10K–$12K all-in wedding difficult at 75 guests. The <strong>most realistic path to the budget is ~50 guests</strong>, which brings the venue F&B total to approximately <strong>$11,350 after all charges</strong>.<br><br>
+        If the guest count stays at 75, the honest all-in venue number is closer to <strong>$17,000–$18,000</strong>, and the couple should plan their total wedding budget accordingly. The <strong>Peridot Stations</strong> package remains the best value on the menu — with the <strong>Beer, Wine & Margarita bar</strong> for cocktail hour and dinner, switching to a <strong>cash bar</strong> afterward.<br><br>
+        <em>A smaller, intimate gathering at El Chorro will feel just as magical — and be fully within reach.</em>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="petals-row">🌸 🌼 🌷 💐 🌼 🌸</div>
+    <div class="footer-names">Sommer & Hayve · March 12, 2027</div>
+    <div class="footer-note">El Chorro Wedding Menus 2027 · Budget Guide</div>
+    <div style="margin-top:10px; font-size:0.63rem; color:#a090b8; opacity:0.5; letter-spacing:0.1em;">
+      All estimates based on published 2027 menu pricing. Final costs subject to venue confirmation. Prices subject to change per El Chorro policy.
+    </div>
+  </footer>
+
+</div>
+</body>
+</html>
