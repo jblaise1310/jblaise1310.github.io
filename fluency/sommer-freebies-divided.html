@@ -1,0 +1,985 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sommer's Wedding Freebies — Team Division</title>
+<link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Pinyon+Script&family=Lora:ital,wght@0,400;0,500;1,400&family=Nunito:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #fdf9f6;
+    --ink: #1e1428;
+    --muted: #6e5e78;
+    --border: rgba(30,20,40,0.08);
+
+    /* Sommer — blush rose */
+    --s-main: #d4607a;
+    --s-light: #fbe8ed;
+    --s-mid: #f2b8c6;
+    --s-dark: #a83050;
+
+    /* Mom — sage green */
+    --m-main: #5a8f6a;
+    --m-light: #eaf4ec;
+    --m-mid: #a8d0b0;
+    --m-dark: #3a6848;
+
+    /* Jabby — periwinkle blue */
+    --j-main: #5878b8;
+    --j-light: #eaeefc;
+    --j-mid: #a8b8e0;
+    --j-dark: #3050a0;
+
+    /* Gold accent */
+    --gold: #c8903a;
+    --gold-pale: #fdf2dc;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    font-family: 'Nunito', sans-serif;
+    color: var(--ink);
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 55% 45% at 5% 5%, rgba(212,96,122,0.1) 0%, transparent 55%),
+      radial-gradient(ellipse 45% 55% at 95% 95%, rgba(90,143,106,0.1) 0%, transparent 55%),
+      radial-gradient(ellipse 40% 35% at 90% 5%, rgba(242,184,198,0.12) 0%, transparent 50%),
+      radial-gradient(ellipse 35% 40% at 5% 95%, rgba(168,208,176,0.1) 0%, transparent 50%),
+      radial-gradient(ellipse 30% 30% at 50% 50%, rgba(247,217,139,0.06) 0%, transparent 60%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .page {
+    position: relative;
+    z-index: 1;
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 0 24px 80px;
+  }
+
+  /* ─── HERO ─── */
+  .hero {
+    text-align: center;
+    padding: 60px 0 44px;
+    position: relative;
+  }
+
+  .hero-eyebrow {
+    display: inline-block;
+    background: var(--s-main);
+    color: white;
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    padding: 6px 20px;
+    border-radius: 30px;
+    margin-bottom: 18px;
+    animation: fadeIn 0.8s ease 0.1s both;
+  }
+
+  .hero-petals {
+    font-size: 1.2rem;
+    letter-spacing: 6px;
+    opacity: 0.5;
+    margin-bottom: 16px;
+    animation: fadeIn 1s ease both;
+  }
+
+  .hero-name {
+    font-family: 'Pinyon Script', cursive;
+    font-size: clamp(4rem, 11vw, 7.5rem);
+    color: var(--s-main);
+    line-height: 1;
+    margin-bottom: 4px;
+    animation: slideUp 0.8s ease 0.2s both;
+  }
+
+  .hero-title {
+    font-family: 'Abril Fatface', serif;
+    font-size: clamp(1.1rem, 3vw, 1.6rem);
+    color: var(--ink);
+    letter-spacing: 0.08em;
+    line-height: 1.2;
+    margin-bottom: 16px;
+    animation: fadeIn 0.8s ease 0.3s both;
+  }
+
+  .hero-divider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    margin: 14px auto 18px;
+    max-width: 400px;
+    animation: fadeIn 0.8s ease 0.4s both;
+  }
+  .hero-divider::before, .hero-divider::after {
+    content: '';
+    display: block;
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--s-mid), transparent);
+  }
+  .hero-divider-icon { color: var(--m-main); font-size: 1rem; }
+
+  .hero-sub {
+    font-family: 'Lora', serif;
+    font-style: italic;
+    font-size: 1rem;
+    color: var(--muted);
+    max-width: 520px;
+    margin: 0 auto 28px;
+    line-height: 1.75;
+    animation: fadeIn 0.8s ease 0.45s both;
+  }
+
+  .hero-stats {
+    display: flex;
+    justify-content: center;
+    gap: 36px;
+    flex-wrap: wrap;
+    animation: fadeIn 0.8s ease 0.55s both;
+  }
+  .hero-stat-num {
+    font-family: 'Abril Fatface', serif;
+    font-size: 2rem;
+    color: var(--s-main);
+    line-height: 1;
+  }
+  .hero-stat-label {
+    font-size: 0.66rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 3px;
+  }
+
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes slideUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+
+  /* ─── TEAM LEGEND ─── */
+  .team-legend {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin-bottom: 52px;
+  }
+
+  .team-card {
+    border-radius: 18px;
+    padding: 22px 20px;
+    text-align: center;
+    border: 1.5px solid var(--border);
+  }
+
+  .team-card.sommer { background: var(--s-light); border-color: var(--s-mid); }
+  .team-card.mom { background: var(--m-light); border-color: var(--m-mid); }
+  .team-card.jabby { background: var(--j-light); border-color: var(--j-mid); }
+
+  .team-emoji { font-size: 2rem; margin-bottom: 8px; }
+
+  .team-name {
+    font-family: 'Abril Fatface', serif;
+    font-size: 1.3rem;
+    margin-bottom: 4px;
+  }
+  .team-card.sommer .team-name { color: var(--s-main); }
+  .team-card.mom .team-name { color: var(--m-main); }
+  .team-card.jabby .team-name { color: var(--j-main); }
+
+  .team-role {
+    font-size: 0.68rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 10px;
+  }
+
+  .team-tasks-count {
+    display: inline-block;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 4px 14px;
+    border-radius: 20px;
+  }
+  .team-card.sommer .team-tasks-count { background: var(--s-main); color: white; }
+  .team-card.mom .team-tasks-count { background: var(--m-main); color: white; }
+  .team-card.jabby .team-tasks-count { background: var(--j-main); color: white; }
+
+  /* ─── SECTION ─── */
+  .section { margin-bottom: 52px; }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 22px;
+    padding-bottom: 14px;
+    border-bottom: 2px solid var(--border);
+  }
+
+  .section-icon {
+    width: 40px; height: 40px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.2rem; flex-shrink: 0;
+  }
+
+  .section-title {
+    font-family: 'Abril Fatface', serif;
+    font-size: 1.35rem;
+    color: var(--ink);
+  }
+  .section-sub {
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+
+  /* ─── TASK ROWS ─── */
+  .task-list { display: flex; flex-direction: column; gap: 12px; }
+
+  .task {
+    background: white;
+    border-radius: 14px;
+    border: 1px solid var(--border);
+    box-shadow: 0 2px 10px rgba(30,20,40,0.04);
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 0;
+    overflow: hidden;
+    transition: box-shadow 0.2s, transform 0.2s;
+  }
+  .task:hover {
+    box-shadow: 0 6px 24px rgba(30,20,40,0.09);
+    transform: translateY(-1px);
+  }
+
+  /* Owner stripe */
+  .task-stripe {
+    width: 6px;
+    align-self: stretch;
+    flex-shrink: 0;
+  }
+  .stripe-sommer { background: var(--s-main); }
+  .stripe-mom { background: var(--m-main); }
+  .stripe-jabby { background: var(--j-main); }
+  .stripe-shared {
+    background: repeating-linear-gradient(
+      45deg,
+      var(--s-main),
+      var(--s-main) 6px,
+      var(--m-main) 6px,
+      var(--m-main) 12px
+    );
+  }
+  .stripe-shared-jab {
+    background: repeating-linear-gradient(
+      45deg,
+      var(--m-main),
+      var(--m-main) 6px,
+      var(--j-main) 6px,
+      var(--j-main) 12px
+    );
+  }
+
+  .task-body {
+    padding: 16px 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .task-top {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .task-brand {
+    font-family: 'Lora', serif;
+    font-weight: 500;
+    font-size: 1rem;
+    color: var(--ink);
+  }
+
+  .owner-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 20px;
+    white-space: nowrap;
+  }
+  .pill-sommer { background: var(--s-light); color: var(--s-dark); border: 1px solid var(--s-mid); }
+  .pill-mom { background: var(--m-light); color: var(--m-dark); border: 1px solid var(--m-mid); }
+  .pill-jabby { background: var(--j-light); color: var(--j-dark); border: 1px solid var(--j-mid); }
+  .pill-shared { background: var(--gold-pale); color: #7a5010; border: 1px solid #e8c870; }
+
+  .free-tag {
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border-radius: 20px;
+    background: #e8f5e8;
+    color: #2a6a2a;
+    border: 1px solid #b0d8b0;
+  }
+
+  .task-desc {
+    font-size: 0.83rem;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+  .task-desc strong { color: var(--ink); font-weight: 600; }
+
+  .task-code {
+    font-size: 0.76rem;
+    font-family: 'Courier New', monospace;
+    font-weight: 700;
+    background: var(--gold-pale);
+    border: 1px dashed var(--gold);
+    border-radius: 6px;
+    padding: 4px 10px;
+    color: #7a5000;
+    width: fit-content;
+  }
+
+  .task-action {
+    padding: 16px 18px 16px 8px;
+    flex-shrink: 0;
+  }
+
+  .task-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: white;
+    padding: 8px 14px;
+    border-radius: 8px;
+    white-space: nowrap;
+    transition: opacity 0.2s, transform 0.15s;
+  }
+  .task-link:hover { opacity: 0.85; transform: scale(0.98); }
+  .link-sommer { background: var(--s-main); }
+  .link-mom { background: var(--m-main); }
+  .link-jabby { background: var(--j-main); }
+  .link-shared { background: var(--gold); }
+
+  /* ─── NOTE BOX ─── */
+  .note {
+    border-radius: 12px;
+    padding: 14px 18px;
+    margin-top: 14px;
+    display: flex;
+    gap: 10px;
+    font-size: 0.82rem;
+    line-height: 1.6;
+    font-family: 'Lora', serif;
+    font-style: italic;
+    color: var(--muted);
+  }
+  .note.s { background: var(--s-light); border-left: 3px solid var(--s-main); }
+  .note.m { background: var(--m-light); border-left: 3px solid var(--m-main); }
+  .note.j { background: var(--j-light); border-left: 3px solid var(--j-main); }
+  .note-icon { font-size: 1rem; flex-shrink: 0; }
+  .note strong { color: var(--ink); font-style: normal; }
+
+  /* ─── SUMMARY STRIP ─── */
+  .summary {
+    background: var(--ink);
+    border-radius: 20px;
+    padding: 30px 32px;
+    color: white;
+    margin: 48px 0 0;
+  }
+  .summary-title {
+    font-family: 'Abril Fatface', serif;
+    font-size: 1.4rem;
+    margin-bottom: 6px;
+  }
+  .summary-sub {
+    font-family: 'Lora', serif;
+    font-style: italic;
+    font-size: 0.88rem;
+    color: rgba(255,255,255,0.5);
+    margin-bottom: 24px;
+  }
+  .summary-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+  }
+  .summary-col {
+    background: rgba(255,255,255,0.06);
+    border-radius: 12px;
+    padding: 16px;
+    border: 1px solid rgba(255,255,255,0.08);
+  }
+  .summary-col-name {
+    font-family: 'Abril Fatface', serif;
+    font-size: 1rem;
+    margin-bottom: 10px;
+  }
+  .summary-col.s .summary-col-name { color: var(--s-mid); }
+  .summary-col.m .summary-col-name { color: var(--m-mid); }
+  .summary-col.j .summary-col-name { color: var(--j-mid); }
+
+  .summary-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .summary-list li {
+    font-size: 0.78rem;
+    color: rgba(255,255,255,0.7);
+    line-height: 1.4;
+    display: flex;
+    gap: 6px;
+  }
+  .summary-list li::before {
+    content: '→';
+    opacity: 0.4;
+    flex-shrink: 0;
+  }
+
+  /* ─── FOOTER ─── */
+  .footer {
+    text-align: center;
+    margin-top: 40px;
+    padding-top: 28px;
+    border-top: 1px solid var(--border);
+  }
+  .footer-title {
+    font-family: 'Abril Fatface', serif;
+    font-size: 1.6rem;
+    color: var(--s-main);
+    margin-bottom: 4px;
+  }
+  .footer-sub {
+    font-family: 'Lora', serif;
+    font-style: italic;
+    font-size: 0.88rem;
+    color: var(--muted);
+  }
+
+  @media (max-width: 660px) {
+    .team-legend { grid-template-columns: 1fr; }
+    .summary-grid { grid-template-columns: 1fr; }
+    .task { grid-template-columns: auto 1fr; }
+    .task-action { grid-column: 2; padding: 0 18px 14px 18px; }
+    .task-link { width: 100%; justify-content: center; }
+    .page { padding: 0 14px 60px; }
+    .hero-title { font-size: 2rem; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-petals">🌸 🌿 🌼 💐 🌿 🌸</div>
+    <div class="hero-eyebrow">Wedding Freebie Team Plan ✦ March 2027</div>
+    <div class="hero-name">Sommer</div>
+    <div class="hero-title">Your Wedding Freebie Team Plan</div>
+    <div class="hero-divider"><span class="hero-divider-icon">🌿</span></div>
+    <p class="hero-sub">Every free sample, perk, and gift on this list has been divided between you, Mom, and Jabby — so you can enjoy it all without having to chase it all down yourself.</p>
+    <div class="hero-stats">
+      <div>
+        <div class="hero-stat-num">8+</div>
+        <div class="hero-stat-label">Free Invite Kits</div>
+      </div>
+      <div>
+        <div class="hero-stat-num">$0</div>
+        <div class="hero-stat-label">Total Cost</div>
+      </div>
+      <div>
+        <div class="hero-stat-num">3</div>
+        <div class="hero-stat-label">People Helping</div>
+      </div>
+      <div>
+        <div class="hero-stat-num">$50+</div>
+        <div class="hero-stat-label">Est. Free Value</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TEAM LEGEND -->
+  <div class="team-legend">
+    <div class="team-card sommer">
+      <div class="team-emoji">👰</div>
+      <div class="team-name">Sommer</div>
+      <div class="team-role">The Bride</div>
+      <div class="team-tasks-count">4 quick tasks</div>
+    </div>
+    <div class="team-card mom">
+      <div class="team-emoji">💚</div>
+      <div class="team-name">Mom</div>
+      <div class="team-role">The Helper</div>
+      <div class="team-tasks-count">6 tasks to own</div>
+    </div>
+    <div class="team-card jabby">
+      <div class="team-emoji">💙</div>
+      <div class="team-name">Jabby</div>
+      <div class="team-role">Maid of Honor</div>
+      <div class="team-tasks-count">5 tasks to own</div>
+    </div>
+  </div>
+
+  <!-- SECTION: INVITATIONS -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon" style="background:#fbe8ed;">💌</div>
+      <div>
+        <div class="section-title">Invitation & Stationery Samples</div>
+        <div class="section-sub">8 free sample kits by mail — Mom & Jabby handle these</div>
+      </div>
+    </div>
+
+    <div class="task-list">
+
+      <div class="task">
+        <div class="task-stripe stripe-mom"></div>
+        <div class="task-body">
+          <div class="task-top">
+            <div class="task-brand">VistaPrint — 11-Piece Sample Kit</div>
+            <span class="owner-pill pill-mom">💚 Mom</span>
+            <span class="free-tag">Free + Free Ship</span>
+          </div>
+          <div class="task-desc">The most complete kit — invitations, save the dates, RSVP, menu, place card, envelopes, <strong>plus a discount code</strong> for the actual order. Mom requests this on Sommer's behalf and forwards when it arrives.</div>
+        </div>
+        <div class="task-action">
+          <a href="https://www.vistaprint.com/sample-kits/free-wedding-sample-kit" class="task-link link-mom" target="_blank">
+            Request →
+          </a>
+        </div>
+      </div>
+
+      <div class="task">
+        <div class="task-stripe stripe-mom"></div>
+        <div class="task-body">
+          <div class="task-top">
+            <div class="task-brand">Minted — Wedding Sample Kit</div>
+            <span class="owner-pill pill-mom">💚 Mom</span>
+            <span class="free-tag">Free + Free Ship</span>
+          </div>
+          <div class="task-desc">Beautiful box of mixed invitation designs and paper swatches from independent artists. Mom requests and brings to Sommer to look through together.</div>
+        </div>
+        <div class="task-action">
+          <a href="https://www.minted.com/wedding-samples" class="task-link link-mom" target="_blank">
+            Request →
+          </a>
+        </div>
+      </div>
+
+      <div class="task">
+        <div class="task-stripe stripe-jabby"></div>
+        <div class="task-body">
+          <div class="task-top">
+            <div class="task-brand">Shutterfly — Invitation Samples</div>
+            <span class="owner-pill pill-jabby">💙 Jabby</span>
+            <span class="free-tag">Free + Free Ship</span>
+          </div>
+          <div class="task-desc">Free wedding invitation samples delivered to Jabby's door, zero shipping. Good for paper quality comparison — Jabby brings to the next time they're all together.</div>
+        </div>
+        <div class="task-action">
+          <a href="https://www.shutterfly.com/wedding/wedding-invitation-samples/" class="task-link link-jabby" target="_blank">
+            Request →
+          </a>
+        </div>
+      </div>
+
+      <div class="task">
+        <div class="task-stripe stripe-jabby"></div>
+        <div class="task-body">
+          <div class="task-top">
+            <div class="task-brand">The Knot — 3 Free Invite Samples</div>
+            <span class="owner-pill pill-jabby">💙 Jabby</span>
+            <span class="free-tag">Free w/ Code</span>
+          </div>
+          <div class="task-desc">Self-select <strong>3 invitation designs</strong> of Sommer's choice. Jabby screenshots a few options, Sommer picks, Jabby orders using the code.</div>
+          <div class="task-code">Code: 3FREE</div>
+        </div>
+        <div class="task-action">
+          <a href="https://www.theknot.com/marketplace/wedding-invitations" class="task-link link-jabby" target="_blank">
+            Browse & Order →
+          </a>
+        </div>
+      </div>
+
+      <div class="task">
+        <div class="task-stripe stripe-mom"></div>
+        <div class="task-body">
+          <div class="task-top">
+            <div class="task-brand">Artifact Uprising — Card Suite Samples</div>
+            <span class="owner-pill pill-mom">💚 Mom</span>
+            <span class="free-tag">Free Kit</span>
+          </div>
+          <div class="task-desc">Premium modern stationery samples in different printing styles. Just needs a wedding date and email — Mom submits Sommer's info to have it sent directly to Sommer.</div>
+        </div>
+        <div class="task-action">
+          <a href="https://www.artifactuprising.com/wedding-invitations" class="task-link link-mom" target="_blank">
+            Request →
+          </a>
+        </div>
+      </div>
+
+      <div class="task">
+        <div class="task-stripe stripe-jabby"></div>
+        <div class="task-body">
+          <div class="task-top">
+            <div class="task-brand">Zola — Invite & Paper Sample Pack</div>
+            <span class="owner-pill pill-jabby">💙 Jabby</span>
+            <span class="free-tag">Free</span>
+          </div>
+          <div class="task-desc">Free mix of invitation and save-the-date designs. Jabby can also set up Sommer's <strong>free Zola wedding website</strong> at the same time — two birds, one stop.</div>
+        </div>
+        <div class="task-action">
+          <a href="https://www.zola.com/wedding-invitations" class="task-link link-jabby" target="_blank">
+            Get Pack →
+          </a>
+        </div>
+      </div>
+
+      <div class="task">
+        <div class="task-stripe stripe-mom"></div>
+        <div class="task-body">
+          <div class="task-top">
+            <div class="task-brand">Papier — First Sample Free</div>
+            <span class="owner-pill pill-mom">💚 Mom</span>
+            <span class="free-tag">First Sample Free</span>
+          </div>
+          <div class="task-desc">Beautiful European-style stationery — lovely fit for a garden reception aesthetic. Mom picks a design Sommer might like and orders the free sample to her address.</div>
+        </div>
+        <div class="task-action">
+          <a href="https://www.papier.com/us/wedding/samples/" class="task-link link-mom" target="_blank">
+            Claim →
+          </a>
+        </div>
+      </div>
+
+      <div class="task">
+        <div class="task-stripe stripe-jabby"></div>
+        <div class="task-body">
+          <div class="task-top">
+            <div class="task-brand">Persnickety Prints — Sample Kit</div>
+            <span class="owner-pill pill-jabby">💙 Jabby</span>
+            <span class="free-tag">Free</span>
+          </div>
+          <div class="task-desc">Request by email — premium paper swatches, invitation examples, and envelope samples. Jabby sends the email and has it shipped to Sommer directly.</div>
+          <div class="task-code">Email: samples@persnicketyprints.com</div>
+        </div>
+        <div class="task-action">
+          <a href="mailto:samples@persnicketyprints.com" class="task-link link-jabby" target="_blank">
+            Send Email →
+          </a>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="note m">
+      <div class="note-icon">💡</div>
+      <div><strong>Mom's tip:</strong> Order all 4 of your kits the same day so they arrive around the same time as Jabby's. Plan a fun afternoon to lay all 8 kits out side by side — make it a little event with Sommer.</div>
+    </div>
+  </div>
+
+  <!-- SECTION: BEAUTY -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon" style="background:#f0ecf8;">💄</div>
+      <div>
+        <div class="section-title">Beauty, Hair & Skincare Perks</div>
+        <div class="section-sub">Sommer handles her own accounts — Jabby scouts the artists</div>
+      </div>
+    </div>
+
+    <div class="task-list">
+
+      <div class="task">
+        <div class="task-stripe stripe-sommer"></div>
+        <div class="task-body">
+          <div class="task-top">
+            <div class="task-brand">Sephora Beauty Insider</div>
+            <span class="owner-pill pill-sommer">👰 Sommer</span>
+            <span class="free-tag">Free to Join</span>
+          </div>
+          <div class="task-desc">Sommer signs up (or logs in) and picks <strong>2–3 free samples with every beauty order</strong> she makes. Stack bridal skincare, setting spray, and long-wear foundation samples every month between now and March 2027. Also includes a free birthday gift.</div>
+        </div>
+        <div class="task-action">
+          <a href="https://www.sephora.com" class="task-link link-sommer" target="_blank">
+            Sign Up →
+          </a>
+        </div>
+      </div>
+
+      <div class="task">
+        <div class="task-stripe stripe-sommer"></div>
+        <div class="task-body">
+          <div class="task-top">
+            <div class="task-brand">Ulta Ultamate Rewards</div>
+            <span class="owner-pill pill-sommer">👰 Sommer</span>
+            <span class="free-tag">Free Membership</span>
+          </div>
+          <div class="task-desc">Free to join — earns points on every beauty purchase. <strong>Free birthday gift</strong> every year. Stack points between now and the wedding to unlock free items or a discount on bridal beauty purchases.</div>
+        </div>
+        <div class="task-action">
+          <a href="https://www.ulta.com/ulta/browse/beautyBag.jsp" class="task-link link-sommer" target="_blank">
+            Join Free →
+          </a>
+        </div>
+      </div>
+
+      <div class="task">
+        <div class="task-stripe stripe-jabby"></div>
+        <div class="task-body">
+          <div class="task-top">
+            <div class="task-brand">Bridal Makeup Artist — Free Trial Research</div>
+            <span class="owner-pill pill-jabby">💙 Jabby</span>
+            <span class="free-tag">Free Consultation</span>
+          </div>
+          <div class="task-desc">Jabby browses Phoenix bridal MUAs and shortlists 3 options, specifically <strong>asking each artist if a free trial is included</strong> when booking the wedding day. Brings options to Sommer to choose from — MOH magic.</div>
+        </div>
+        <div class="task-action">
+          <a href="https://www.theknot.com/marketplace/makeup-artists-phoenix-az" class="task-link link-jabby" target="_blank">
+            Browse MUAs →
+          </a>
+        </div>
+      </div>
+
+      <div class="task">
+        <div class="task-stripe stripe-jabby"></div>
+        <div class="task-body">
+          <div class="task-top">
+            <div class="task-brand">Bridal Hair — Free Consultation Scout</div>
+            <span class="owner-pill pill-jabby">💙 Jabby</span>
+            <span class="free-tag">Free Consultation</span>
+          </div>
+          <div class="task-desc">Jabby contacts 3 Phoenix hair salons asking specifically about <strong>free bridal consultations and trial inclusions</strong>. Shortlists the best for Sommer to review. Saves Sommer hours of back-and-forth.</div>
+        </div>
+        <div class="task-action">
+          <a href="https://www.theknot.com/marketplace/hair-salons-phoenix-az" class="task-link link-jabby" target="_blank">
+            Browse Salons →
+          </a>
+        </div>
+      </div>
+
+      <div class="task">
+        <div class="task-stripe stripe-mom"></div>
+        <div class="task-body">
+          <div class="task-top">
+            <div class="task-brand">Nordstrom / Macy's — Fragrance Samples</div>
+            <span class="owner-pill pill-mom">💚 Mom</span>
+            <span class="free-tag">Free In-Store</span>
+          </div>
+          <div class="task-desc">Make a fun outing of it — Mom takes Sommer to the fragrance counter at Nordstrom or Macy's. <strong>Ask the beauty counter for bridal fragrance samples</strong> — no purchase required. A lovely way to find her wedding day scent together.</div>
+        </div>
+        <div class="task-action">
+          <a href="https://www.nordstrom.com/browse/beauty/fragrance" class="task-link link-mom" target="_blank">
+            Find a Counter →
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- SECTION: REGISTRY PERKS -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon" style="background:#fdf3dc;">🎁</div>
+      <div>
+        <div class="section-title">Registry Welcome Gifts & Perks</div>
+        <div class="section-sub">Mom sets these up — Sommer gets the gifts</div>
+      </div>
+    </div>
+
+    <div class="task-list">
+
+      <div class="task">
+        <div class="task-stripe stripe-mom"></div>
+        <div class="task-body">
+          <div class="task-top">
+            <div class="task-brand">Amazon Wedding Registry — Free Welcome Box</div>
+            <span class="owner-pill pill-mom">💚 Mom helps</span>
+            <span class="free-tag">~$40 Free Box</span>
+          </div>
+          <div class="task-desc">Mom helps Sommer create an Amazon registry — Amazon mails a <strong>free welcome box of product samples</strong> (~$40 value) to Sommer's door. Zero purchase required. Also unlocks a <strong>20% post-wedding completion discount</strong>.</div>
+        </div>
+        <div class="task-action">
+          <a href="https://www.amazon.com/wedding" class="task-link link-mom" target="_blank">
+            Create Registry →
+          </a>
+        </div>
+      </div>
+
+      <div class="task">
+        <div class="task-stripe stripe-mom"></div>
+        <div class="task-body">
+          <div class="task-top">
+            <div class="task-brand">Target Registry — Free Welcome Kit</div>
+            <span class="owner-pill pill-mom">💚 Mom helps</span>
+            <span class="free-tag">Free Kit by Mail</span>
+          </div>
+          <div class="task-desc">Mom helps Sommer create a Target registry — triggers a <strong>free welcome kit with coupons and beauty/home samples</strong> shipped to her door. Also includes 15% completion discount and free 1-year returns.</div>
+        </div>
+        <div class="task-action">
+          <a href="https://www.target.com/c/wedding-registry/-/N-5q0e7" class="task-link link-mom" target="_blank">
+            Create Registry →
+          </a>
+        </div>
+      </div>
+
+      <div class="task">
+        <div class="task-stripe stripe-jabby"></div>
+        <div class="task-body">
+          <div class="task-top">
+            <div class="task-brand">Zola Registry + Wedding Website</div>
+            <span class="owner-pill pill-jabby">💙 Jabby sets up</span>
+            <span class="free-tag">Free + 20% Post-Wedding</span>
+          </div>
+          <div class="task-desc">Jabby sets up Sommer's free Zola wedding website and registry — then Sommer can add items at her leisure. <strong>20% completion discount</strong> after the wedding. Zero-fee cash funds for honeymoon savings. A great MOH gift of time.</div>
+        </div>
+        <div class="task-action">
+          <a href="https://www.zola.com" class="task-link link-jabby" target="_blank">
+            Set Up Zola →
+          </a>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="note s">
+      <div class="note-icon">🌸</div>
+      <div><strong>For Sommer:</strong> Once Mom and Jabby create the Amazon and Zola registries, all she needs to do is add items she actually wants. The hard part is already done.</div>
+    </div>
+  </div>
+
+  <!-- SECTION: PLANNING TOOLS -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon" style="background:#eaf4ec;">📋</div>
+      <div>
+        <div class="section-title">Free Planning Tools & Bonuses</div>
+        <div class="section-sub">One-time setups — split between the team</div>
+      </div>
+    </div>
+
+    <div class="task-list">
+
+      <div class="task">
+        <div class="task-stripe stripe-jabby"></div>
+        <div class="task-body">
+          <div class="task-top">
+            <div class="task-brand">Minted Planning Journal</div>
+            <span class="owner-pill pill-jabby">💙 Jabby orders</span>
+            <span class="free-tag">Free ($9 value)</span>
+          </div>
+          <div class="task-desc">Jabby orders the free Vine Wrap Wedding Planning Journal using the code, ships it directly to Sommer — makes a sweet little gift for Sommer to find in the mail. Card required but <strong>not charged</strong>.</div>
+          <div class="task-code">Code: WEDDINGJOURNAL</div>
+        </div>
+        <div class="task-action">
+          <a href="https://www.minted.com" class="task-link link-jabby" target="_blank">
+            Order Journal →
+          </a>
+        </div>
+      </div>
+
+      <div class="task">
+        <div class="task-stripe stripe-sommer"></div>
+        <div class="task-body">
+          <div class="task-top">
+            <div class="task-brand">The Knot — Free Planning Account</div>
+            <span class="owner-pill pill-sommer">👰 Sommer</span>
+            <span class="free-tag">100% Free</span>
+          </div>
+          <div class="task-desc">Sommer creates a free Knot account — <strong>wedding website, checklist, vendor search, budget tracker</strong>, and access to the Phoenix vendor directory. Use code <strong>3FREE</strong> for invitation samples while she's there.</div>
+          <div class="task-code">Code: 3FREE (for invite samples)</div>
+        </div>
+        <div class="task-action">
+          <a href="https://www.theknot.com" class="task-link link-sommer" target="_blank">
+            Create Account →
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- SUMMARY -->
+  <div class="summary">
+    <div class="summary-title">The Team Checklist at a Glance</div>
+    <div class="summary-sub">Print this out or screenshot it — one column per person</div>
+    <div class="summary-grid">
+      <div class="summary-col s">
+        <div class="summary-col-name">👰 Sommer</div>
+        <ul class="summary-list">
+          <li>Sign up for Sephora Beauty Insider</li>
+          <li>Join Ulta Ultamate Rewards</li>
+          <li>Create The Knot account (use 3FREE)</li>
+          <li>Add items to Amazon & Zola registries once set up</li>
+        </ul>
+      </div>
+      <div class="summary-col m">
+        <div class="summary-col-name">💚 Mom</div>
+        <ul class="summary-list">
+          <li>Request VistaPrint sample kit</li>
+          <li>Request Minted sample kit</li>
+          <li>Request Artifact Uprising samples</li>
+          <li>Request Papier sample</li>
+          <li>Help Sommer create Amazon registry</li>
+          <li>Help Sommer create Target registry</li>
+          <li>Take Sommer to Nordstrom/Macy's for fragrance samples</li>
+        </ul>
+      </div>
+      <div class="summary-col j">
+        <div class="summary-col-name">💙 Jabby</div>
+        <ul class="summary-list">
+          <li>Order Shutterfly samples</li>
+          <li>Order The Knot samples (code: 3FREE)</li>
+          <li>Request Zola invite sample pack</li>
+          <li>Email Persnickety Prints</li>
+          <li>Set up Sommer's Zola website & registry</li>
+          <li>Scout 3 Phoenix MUAs (ask about free trials)</li>
+          <li>Scout 3 Phoenix hair salons (ask about free consults)</li>
+          <li>Order Minted planning journal for Sommer</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div class="footer-title">Team Sommer 🌸</div>
+    <div class="footer-sub">Mom, Jabby & Sommer — making March 13, 2027 unforgettable together</div>
+  </div>
+
+</div>
+</body>
+</html>
