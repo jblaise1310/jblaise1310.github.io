@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zero Suicide Staff Education | Issue 1: Risk Factors &amp; Warning Signs</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Source+Sans+3:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1a2e44;
+    --teal: #2a8c82;
+    --teal-light: #e6f4f3;
+    --amber: #e07b39;
+    --amber-light: #fdf1e8;
+    --cream: #faf8f5;
+    --text: #2c3340;
+    --muted: #6b7685;
+    --border: #dde3eb;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Source Sans 3', sans-serif; background: var(--cream); color: var(--text); font-weight: 400; line-height: 1.7; font-size: 16px; }
+  .crisis-bar { background: #c0392b; color: #fff; text-align: center; padding: 12px 24px; font-size: 14px; font-weight: 600; letter-spacing: 0.5px; }
+  .crisis-bar span { font-weight: 300; margin: 0 8px; }
+  .header { background: var(--navy); color: #fff; padding: 40px 48px 36px; position: relative; overflow: hidden; }
+  .header::after { content: ''; position: absolute; right: -60px; top: -60px; width: 280px; height: 280px; border-radius: 50%; background: rgba(42,140,130,0.18); }
+  .series-label { font-size: 11px; font-weight: 600; letter-spacing: 2.5px; text-transform: uppercase; color: var(--teal); margin-bottom: 10px; display: flex; align-items: center; gap: 10px; }
+  .series-label span { display: inline-block; background: var(--teal); color: #fff; border-radius: 20px; padding: 2px 10px; font-size: 10px; letter-spacing: 1.5px; }
+  .header h1 { font-family: 'Playfair Display', serif; font-size: 2.6rem; line-height: 1.2; max-width: 560px; position: relative; z-index: 1; }
+  .header-meta { margin-top: 14px; font-size: 13px; color: rgba(255,255,255,0.55); letter-spacing: 0.5px; }
+  .container { max-width: 860px; margin: 0 auto; padding: 0 32px 60px; }
+  .intro { background: #fff; border-left: 4px solid var(--teal); padding: 24px 28px; margin: 36px 0 32px; border-radius: 0 8px 8px 0; font-size: 1.05rem; font-weight: 300; color: var(--text); }
+  .intro strong { font-weight: 600; color: var(--navy); }
+  .clinic-goal { background: var(--teal); color: #fff; border-radius: 10px; padding: 16px 24px; margin-bottom: 32px; display: flex; align-items: center; gap: 14px; font-size: 15px; }
+  .clinic-goal .goal-label { font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.7); display: block; margin-bottom: 3px; }
+  .clinic-goal strong { font-weight: 600; }
+  .stat-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 32px 0 8px; }
+  .stat-card { background: #fff; border-radius: 10px; padding: 24px 20px 20px; border-top: 4px solid var(--teal); box-shadow: 0 2px 10px rgba(0,0,0,0.05); text-align: center; }
+  .stat-card.amber { border-top-color: var(--amber); }
+  .stat-number { font-family: 'Playfair Display', serif; font-size: 2.8rem; color: var(--navy); line-height: 1; margin-bottom: 8px; }
+  .stat-card.amber .stat-number { color: var(--amber); }
+  .stat-label { font-size: 13px; color: var(--muted); line-height: 1.4; }
+  .section-title { font-family: 'Playfair Display', serif; font-size: 1.4rem; color: var(--navy); margin: 36px 0 16px; display: flex; align-items: center; gap: 12px; }
+  .section-title::before { content: ''; display: inline-block; width: 28px; height: 3px; background: var(--teal); border-radius: 2px; flex-shrink: 0; }
+  .signs-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 28px; }
+  .sign-item { background: #fff; border-radius: 8px; padding: 16px 18px; display: flex; align-items: flex-start; gap: 12px; box-shadow: 0 1px 6px rgba(0,0,0,0.05); }
+  .sign-icon { width: 34px; height: 34px; border-radius: 50%; background: var(--teal-light); display: flex; align-items: center; justify-content: center; font-size: 15px; flex-shrink: 0; margin-top: 2px; }
+  .sign-item.urgent .sign-icon { background: #fdecea; }
+  .sign-text strong { display: block; font-size: 14px; font-weight: 600; color: var(--navy); margin-bottom: 2px; }
+  .sign-text span { font-size: 13px; color: var(--muted); }
+  .factor-block { background: #fff; border-radius: 10px; padding: 24px 28px; margin-bottom: 16px; box-shadow: 0 1px 8px rgba(0,0,0,0.05); }
+  .factor-block h3 { font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; color: var(--teal); margin-bottom: 12px; }
+  .factor-list { list-style: none; display: flex; flex-wrap: wrap; gap: 8px; }
+  .factor-list li { background: var(--teal-light); color: var(--navy); border-radius: 20px; padding: 5px 14px; font-size: 13.5px; }
+  .factor-block.amber-block h3 { color: var(--amber); }
+  .factor-block.amber-block .factor-list li { background: var(--amber-light); }
+  .callout { background: var(--navy); color: #fff; border-radius: 12px; padding: 28px 32px; margin: 32px 0; }
+  .callout h3 { font-family: 'Playfair Display', serif; font-size: 1.15rem; margin-bottom: 10px; color: #e8f4f3; }
+  .callout p { font-size: 14.5px; color: rgba(255,255,255,0.8); line-height: 1.65; }
+  .callout strong { color: #fff; }
+  .key-action { background: var(--amber-light); border-left: 4px solid var(--amber); border-radius: 0 10px 10px 0; padding: 20px 24px; margin: 28px 0; }
+  .key-action h3 { font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 1.5px; color: var(--amber); margin-bottom: 8px; }
+  .key-action p { font-size: 14.5px; color: var(--text); }
+  .references { margin-top: 48px; padding-top: 24px; border-top: 1px solid var(--border); }
+  .references h4 { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: var(--muted); margin-bottom: 10px; }
+  .references p { font-size: 12px; color: var(--muted); line-height: 1.7; }
+  .footer { border-top: 1px solid var(--border); margin-top: 28px; padding-top: 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
+  .footer-left { font-size: 12.5px; color: var(--muted); }
+</style>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- SITE NAV -->
+  <style>
+    .site-nav { background: #1a2e44; padding: 0 40px; display: flex; align-items: center; justify-content: space-between; height: 52px; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 12px rgba(0,0,0,0.18); }
+    .site-nav-logo { font-family: 'DM Serif Display', serif; font-size: 1.1rem; color: #fff; text-decoration: none; letter-spacing: 0.5px; flex-shrink: 0; }
+    .site-nav-logo span { color: #2a8c82; }
+    .site-nav-links { display: flex; gap: 4px; align-items: center; flex-wrap: nowrap; overflow-x: auto; }
+    .site-nav-links a { color: rgba(255,255,255,0.6); text-decoration: none; font-family: 'DM Sans', sans-serif; font-size: 12.5px; font-weight: 500; padding: 5px 10px; border-radius: 6px; transition: background 0.15s, color 0.15s; white-space: nowrap; }
+    .site-nav-links a:hover { background: rgba(255,255,255,0.1); color: #fff; }
+    .site-nav-links a.current { background: #2a8c82; color: #fff; }
+  </style>
+  <nav class="site-nav">
+    <a href="index.html" class="site-nav-logo">RHC <span>Today</span></a>
+    <div class="site-nav-links">
+      <a href="index.html">Home</a>
+      <a href="00-mental-health-awareness-month.html" >MH Awareness</a>
+      <a href="01-risk-factors.html" class="current">Issue 1</a>
+      <a href="02-populations-at-risk.html" >Issue 2</a>
+      <a href="03-crisis-resources.html" >Issue 3</a>
+      <a href="04-behavioral-health-referrals.html" >Issue 4</a>
+      <a href="05-staff-response-skills.html" >Issue 5</a>
+      <a href="06-commitment-year-ahead.html" >Issue 6</a>
+    </div>
+  </nav>
+  <!-- END SITE NAV -->
+
+
+<div class="crisis-bar">
+  988 Suicide &amp; Crisis Lifeline: Call or Text <strong>988</strong><span>|</span>Crisis Text Line: Text <strong>HOME to 741741</strong>
+</div>
+
+<div class="header">
+  <div class="series-label">Zero Suicide Staff Education <span>Issue 1</span></div>
+  <h1>Recognizing Risk Factors &amp; Warning Signs</h1>
+  <div class="header-meta">Primary Care Clinic </div>
+</div>
+
+<div class="container">
+
+  <div class="intro">
+    Suicide is <strong>preventable</strong>. As primary care staff, you are often the first and sometimes the only clinical contact for patients in crisis. Knowing what to look for can make a life-saving difference.
+  </div>
+
+  <div class="clinic-goal">
+    <span style="font-size:22px;">🎯</span>
+    <div>
+      <span class="goal-label">Our Clinic Goal</span>
+      <strong>Screen every patient, every visit</strong> using the Columbia Suicide Severity Rating Scale (C-SSRS). Consistent screening is how we identify patients who need support before a crisis occurs.
+    </div>
+  </div>
+
+  <div class="stat-row">
+    <div class="stat-card">
+      <div class="stat-number">47K+</div>
+      <div class="stat-label">Americans die by suicide each year, about 130 per day</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">54%</div>
+      <div class="stat-label">of people who died by suicide had no known mental health diagnosis</div>
+    </div>
+    <div class="stat-card amber">
+      <div class="stat-number">80%</div>
+      <div class="stat-label">of people who die by suicide visited a primary care provider in the prior year</div>
+    </div>
+  </div>
+  <p style="font-size:12.5px; color:var(--muted); margin-top:-16px; margin-bottom:28px;">See references below.</p>
+
+  <div class="section-title">Warning Signs to Watch For</div>
+  <p style="margin-bottom:20px; font-size:14.5px; color:var(--muted);">These may appear in conversation, behavior, or patient records. Trust your observations and act on them.</p>
+
+  <div class="signs-grid">
+    <div class="sign-item">
+      <div class="sign-icon">💬</div>
+      <div class="sign-text">
+        <strong>Talking about wanting to die</strong>
+        <span>"I wish I wasn't here" or "Everyone would be better off without me"</span>
+      </div>
+    </div>
+    <div class="sign-item">
+      <div class="sign-icon">😔</div>
+      <div class="sign-text">
+        <strong>Hopelessness or feeling trapped</strong>
+        <span>Expressed belief that things won't get better; no way out</span>
+      </div>
+    </div>
+    <div class="sign-item">
+      <div class="sign-icon">⚡</div>
+      <div class="sign-text">
+        <strong>Increased agitation or reckless behavior</strong>
+        <span>Sudden mood changes, risk-taking, giving away belongings</span>
+      </div>
+    </div>
+    <div class="sign-item">
+      <div class="sign-icon">🚫</div>
+      <div class="sign-text">
+        <strong>Withdrawal from people and activities</strong>
+        <span>Social isolation, canceling appointments, stopping medications</span>
+      </div>
+    </div>
+    <div class="sign-item urgent">
+      <div class="sign-icon">🔴</div>
+      <div class="sign-text">
+        <strong>Direct mention of a plan or means</strong>
+        <span>Access to firearms, medications, or a specific stated plan. Act immediately.</span>
+      </div>
+    </div>
+    <div class="sign-item">
+      <div class="sign-icon">😴</div>
+      <div class="sign-text">
+        <strong>Dramatic changes in sleep or eating</strong>
+        <span>Extreme insomnia or sleeping all day; significant weight changes</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-title">Key Risk Factors</div>
+
+  <div class="factor-block">
+    <h3>Clinical / Mental Health</h3>
+    <ul class="factor-list">
+      <li>Depression or bipolar disorder</li>
+      <li>Anxiety disorders</li>
+      <li>Substance use disorder</li>
+      <li>Chronic pain or illness</li>
+      <li>Traumatic brain injury</li>
+      <li>Prior suicide attempt (strongest predictor)</li>
+      <li>Recent psychiatric hospitalization</li>
+    </ul>
+  </div>
+
+  <div class="factor-block amber-block">
+    <h3>Situational / Social</h3>
+    <ul class="factor-list">
+      <li>Recent loss or grief</li>
+      <li>Housing instability</li>
+      <li>Financial crisis</li>
+      <li>Social isolation</li>
+      <li>Relationship breakdown</li>
+      <li>Legal or occupational problems</li>
+      <li>Access to lethal means (especially firearms)</li>
+      <li>Discrimination or marginalization</li>
+    </ul>
+  </div>
+
+  <div class="callout">
+    <h3>Risk factors inform, they do not predict.</h3>
+    <p>No checklist can definitively identify who will attempt suicide. Many patients have multiple risk factors and never reach crisis; some with few risk factors do. Use risk factors to guide <strong>conversations, screenings, and referrals</strong> rather than to make assumptions about patients.</p>
+  </div>
+
+  <div class="key-action">
+    <h3>Your Action as Staff</h3>
+    <p>If you observe a warning sign or a patient discloses distress, <strong>you do not have to handle it alone</strong>. Tell a provider, document what you observed, and ensure the patient does not leave without a referral or safety check. Every role in this clinic plays a part.</p>
+  </div>
+
+  <div class="references">
+    <h4>References</h4>
+    <p>
+      Centers for Disease Control and Prevention (CDC). (2022). <em>Suicide data and statistics.</em> https://www.cdc.gov/suicide/data<br>
+      Ahmedani, B.K., et al. (2014). Health care contacts in the year before suicide death. <em>Journal of General Internal Medicine, 29</em>(6), 870-877.<br>
+      Substance Abuse and Mental Health Services Administration (SAMHSA). (2023). <em>Key substance use and mental health indicators in the United States.</em> https://www.samhsa.gov/data<br>
+      Columbia Lighthouse Project. (2023). <em>Columbia Suicide Severity Rating Scale (C-SSRS).</em> https://cssrs.columbia.edu
+    </p>
+  </div>
+
+  <div class="footer">
+    <div class="footer-left">Zero Suicide Staff Education Series &nbsp;·&nbsp; Primary Care Clinic &nbsp;·&nbsp; Issue 1</div>
+  </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zero Suicide Staff Education | Issue 3: Crisis Resources &amp; Protocols</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Source+Sans+3:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1a2e44; --teal: #2a8c82; --teal-light: #e6f4f3;
+    --red: #c0392b; --red-light: #fdecea;
+    --amber: #e07b39; --amber-light: #fdf1e8;
+    --cream: #faf8f5; --text: #2c3340; --muted: #6b7685; --border: #dde3eb;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Source Sans 3', sans-serif; background: var(--cream); color: var(--text); line-height: 1.7; font-size: 16px; }
+  .crisis-bar { background: var(--red); color: #fff; text-align: center; padding: 12px 24px; font-size: 14px; font-weight: 600; }
+  .crisis-bar span { font-weight: 300; margin: 0 8px; }
+  .header { background: var(--red); color: #fff; padding: 40px 48px 36px; position: relative; overflow: hidden; }
+  .header::after { content: ''; position: absolute; right: -60px; top: -60px; width: 280px; height: 280px; border-radius: 50%; background: rgba(255,255,255,0.08); }
+  .series-label { font-size: 11px; font-weight: 600; letter-spacing: 2.5px; text-transform: uppercase; color: rgba(255,255,255,0.7); margin-bottom: 10px; display: flex; align-items: center; gap: 10px; }
+  .series-label span { display: inline-block; background: rgba(255,255,255,0.25); color: #fff; border-radius: 20px; padding: 2px 10px; font-size: 10px; letter-spacing: 1.5px; }
+  .header h1 { font-family: 'Playfair Display', serif; font-size: 2.5rem; line-height: 1.2; max-width: 600px; position: relative; z-index: 1; }
+  .header-meta { margin-top: 14px; font-size: 13px; color: rgba(255,255,255,0.5); }
+  .container { max-width: 860px; margin: 0 auto; padding: 0 32px 60px; }
+  .intro { background: #fff; border-left: 4px solid var(--red); padding: 24px 28px; margin: 36px 0 24px; border-radius: 0 8px 8px 0; font-size: 1.05rem; font-weight: 300; }
+  .intro strong { font-weight: 600; color: var(--navy); }
+  .clinic-goal { background: var(--navy); color: #fff; border-radius: 10px; padding: 16px 24px; margin-bottom: 32px; display: flex; align-items: center; gap: 14px; font-size: 15px; }
+  .clinic-goal .goal-label { font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.6); display: block; margin-bottom: 3px; }
+  .resource-big { background: var(--navy); color: #fff; border-radius: 12px; padding: 28px 32px; margin-bottom: 16px; display: flex; align-items: center; gap: 24px; }
+  .resource-icon { font-size: 2.4rem; flex-shrink: 0; width: 64px; height: 64px; background: rgba(255,255,255,0.1); border-radius: 14px; display: flex; align-items: center; justify-content: center; }
+  .resource-big h3 { font-family: 'Playfair Display', serif; font-size: 1.2rem; margin-bottom: 4px; }
+  .resource-big .number { font-size: 1.7rem; font-weight: 600; color: #a8e6df; letter-spacing: 1px; }
+  .resource-big p { font-size: 13.5px; color: rgba(255,255,255,0.7); margin-top: 4px; }
+  .resource-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 16px; }
+  .resource-card { background: #fff; border-radius: 10px; padding: 20px 22px; box-shadow: 0 1px 8px rgba(0,0,0,0.05); border-top: 4px solid var(--teal); }
+  .resource-card.amber-card { border-top-color: var(--amber); }
+  .resource-card h3 { font-size: 14.5px; font-weight: 600; color: var(--navy); margin-bottom: 4px; }
+  .resource-card .number { font-size: 1.1rem; font-weight: 600; color: var(--teal); margin-bottom: 6px; }
+  .resource-card.amber-card .number { color: var(--amber); }
+  .resource-card p { font-size: 13px; color: var(--muted); }
+  .section-title { font-family: 'Playfair Display', serif; font-size: 1.4rem; color: var(--navy); margin: 40px 0 18px; display: flex; align-items: center; gap: 12px; }
+  .section-title::before { content: ''; display: inline-block; width: 28px; height: 3px; background: var(--red); border-radius: 2px; flex-shrink: 0; }
+
+  /* C-SSRS callout */
+  .cssrs-box { background: var(--teal-light); border: 2px solid var(--teal); border-radius: 12px; padding: 24px 28px; margin: 28px 0; }
+  .cssrs-box h3 { font-size: 15px; font-weight: 600; color: var(--teal); margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+  .cssrs-box p { font-size: 14px; color: var(--text); line-height: 1.65; margin-bottom: 10px; }
+  .cssrs-levels { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+  .cssrs-level { border-radius: 8px; padding: 10px 14px; font-size: 13px; flex: 1; min-width: 140px; }
+  .cssrs-level strong { display: block; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
+  .cssrs-level.green { background: #e8f5ee; color: #2e7d52; }
+  .cssrs-level.green strong { color: #2e7d52; }
+  .cssrs-level.yellow { background: #fffbea; color: #8a6d00; }
+  .cssrs-level.yellow strong { color: #8a6d00; }
+  .cssrs-level.red { background: var(--red-light); color: var(--red); }
+  .cssrs-level.red strong { color: var(--red); }
+
+  .steps { list-style: none; margin-bottom: 28px; }
+  .steps li { display: flex; gap: 18px; align-items: flex-start; background: #fff; border-radius: 10px; padding: 18px 22px; margin-bottom: 12px; box-shadow: 0 1px 8px rgba(0,0,0,0.05); }
+  .step-num { width: 34px; height: 34px; border-radius: 50%; background: var(--red); color: #fff; font-weight: 700; font-size: 15px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .step-content strong { display: block; font-size: 14.5px; font-weight: 600; color: var(--navy); margin-bottom: 3px; }
+  .step-content span { font-size: 13.5px; color: var(--muted); }
+  .alert-box { background: var(--red-light); border: 1.5px solid #e9b4af; border-radius: 10px; padding: 20px 24px; margin-bottom: 28px; }
+  .alert-box h3 { font-size: 14px; font-weight: 700; color: var(--red); margin-bottom: 8px; letter-spacing: 0.5px; }
+  .alert-box p { font-size: 14px; color: var(--text); }
+  .key-action { background: var(--teal-light); border-left: 4px solid var(--teal); border-radius: 0 10px 10px 0; padding: 20px 24px; margin: 28px 0; }
+  .key-action h3 { font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 1.5px; color: var(--teal); margin-bottom: 8px; }
+  .key-action p { font-size: 14.5px; }
+  .references { margin-top: 48px; padding-top: 24px; border-top: 1px solid var(--border); }
+  .references h4 { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: var(--muted); margin-bottom: 10px; }
+  .references p { font-size: 12px; color: var(--muted); line-height: 1.7; }
+  .footer { border-top: 1px solid var(--border); margin-top: 28px; padding-top: 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
+  .footer-left { font-size: 12.5px; color: var(--muted); }
+</style>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- SITE NAV -->
+  <style>
+    .site-nav { background: #1a2e44; padding: 0 40px; display: flex; align-items: center; justify-content: space-between; height: 52px; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 12px rgba(0,0,0,0.18); }
+    .site-nav-logo { font-family: 'DM Serif Display', serif; font-size: 1.1rem; color: #fff; text-decoration: none; letter-spacing: 0.5px; flex-shrink: 0; }
+    .site-nav-logo span { color: #2a8c82; }
+    .site-nav-links { display: flex; gap: 4px; align-items: center; flex-wrap: nowrap; overflow-x: auto; }
+    .site-nav-links a { color: rgba(255,255,255,0.6); text-decoration: none; font-family: 'DM Sans', sans-serif; font-size: 12.5px; font-weight: 500; padding: 5px 10px; border-radius: 6px; transition: background 0.15s, color 0.15s; white-space: nowrap; }
+    .site-nav-links a:hover { background: rgba(255,255,255,0.1); color: #fff; }
+    .site-nav-links a.current { background: #2a8c82; color: #fff; }
+  </style>
+  <nav class="site-nav">
+    <a href="index.html" class="site-nav-logo">RHC <span>Today</span></a>
+    <div class="site-nav-links">
+      <a href="index.html">Home</a>
+      <a href="00-mental-health-awareness-month.html" >MH Awareness</a>
+      <a href="01-risk-factors.html" >Issue 1</a>
+      <a href="02-populations-at-risk.html" >Issue 2</a>
+      <a href="03-crisis-resources.html" class="current">Issue 3</a>
+      <a href="04-behavioral-health-referrals.html" >Issue 4</a>
+      <a href="05-staff-response-skills.html" >Issue 5</a>
+      <a href="06-commitment-year-ahead.html" >Issue 6</a>
+    </div>
+  </nav>
+  <!-- END SITE NAV -->
+
+
+<div class="crisis-bar">
+  988 Suicide &amp; Crisis Lifeline: Call or Text <strong>988</strong><span>|</span>Crisis Text Line: Text <strong>HOME to 741741</strong>
+</div>
+
+<div class="header">
+  <div class="series-label">Zero Suicide Staff Education <span>Issue 3</span></div>
+  <h1>Crisis Resources &amp; Clinic Protocols</h1>
+  <div class="header-meta">Primary Care Clinic </div>
+</div>
+
+<div class="container">
+
+  <div class="intro">
+    When a patient is in crisis, <strong>speed and clarity matter</strong>. Every staff member should know our key crisis resources and what steps to take when a patient discloses suicidal thoughts, before a crisis moment happens.
+  </div>
+
+  <div class="clinic-goal">
+    <span style="font-size:22px;">🎯</span>
+    <div>
+      <span class="goal-label">Our Clinic Goal</span>
+      <strong>Every patient, every visit.</strong> The C-SSRS is our standardized screening tool. It gives every patient an equal opportunity to be heard, and gives our team a consistent language for assessing and responding to risk.
+    </div>
+  </div>
+
+  <div class="cssrs-box">
+    <h3>📋 About the C-SSRS: Columbia Suicide Severity Rating Scale</h3>
+    <p>The C-SSRS is our clinic's suicide risk screening tool. It uses a series of straightforward questions to assess whether a patient is experiencing suicidal ideation or has a history of suicidal behavior. It is validated across diverse populations and languages.</p>
+    <p>Based on the patient's responses, the C-SSRS guides the next clinical step:</p>
+    <div class="cssrs-levels">
+      <div class="cssrs-level green">
+        <strong>Low / No Ideation</strong>
+        Continue routine care. Document and monitor.
+      </div>
+      <div class="cssrs-level yellow">
+        <strong>Moderate Ideation</strong>
+        Provider review required. Behavioral health referral. Safety planning.
+      </div>
+      <div class="cssrs-level red">
+        <strong>High / Active Ideation with Plan</strong>
+        Immediate provider notification. Do not leave patient alone. Crisis protocol activates.
+      </div>
+    </div>
+  </div>
+
+  <div class="section-title">National Crisis Resources</div>
+
+  <div class="resource-big">
+    <div class="resource-icon">📞</div>
+    <div>
+      <h3>988 Suicide &amp; Crisis Lifeline</h3>
+      <div class="number">Call or Text 988</div>
+      <p>Free, confidential, 24/7. Available in English and Spanish. Chat at 988lifeline.org. For patients and staff alike.</p>
+    </div>
+  </div>
+
+  <div class="resource-row">
+    <div class="resource-card">
+      <h3>Crisis Text Line</h3>
+      <div class="number">Text HOME to 741741</div>
+      <p>Free, 24/7 text-based crisis support. Useful for patients who prefer not to call.</p>
+    </div>
+    <div class="resource-card amber-card">
+      <h3>Veterans Crisis Line</h3>
+      <div class="number">Call 988, Press 1</div>
+      <p>Dedicated line for veterans, service members, and their families. Text 838255.</p>
+    </div>
+    <div class="resource-card">
+      <h3>Trans Lifeline</h3>
+      <div class="number">(877) 565-8860</div>
+      <p>Peer support for transgender people in crisis, staffed by trans operators.</p>
+    </div>
+    <div class="resource-card amber-card">
+      <h3>Trevor Project (LGBTQ+ Youth)</h3>
+      <div class="number">(866) 488-7386</div>
+      <p>Crisis support for LGBTQ+ youth. Text START to 678-678.</p>
+    </div>
+  </div>
+
+  <div class="section-title">What To Do When a Patient Discloses</div>
+  <p style="font-size:14.5px; color:var(--muted); margin-bottom:20px;">If a patient discloses suicidal thoughts or you suspect they may be in distress, follow these steps:</p>
+
+  <ol class="steps">
+    <li>
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <strong>Stay calm and listen</strong>
+        <span>Thank the patient for sharing. Do not minimize or change the subject. A calm, caring presence reduces distress immediately.</span>
+      </div>
+    </li>
+    <li>
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <strong>Ask directly</strong>
+        <span>"Are you thinking about suicide?" Asking directly does not increase risk. It opens the door and shows the patient that you can handle the conversation.</span>
+      </div>
+    </li>
+    <li>
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <strong>Alert a provider immediately</strong>
+        <span>Do not leave the patient alone. Notify the provider or charge nurse right away so a clinical assessment can happen before the patient leaves.</span>
+      </div>
+    </li>
+    <li>
+      <div class="step-num">4</div>
+      <div class="step-content">
+        <strong>Document what you heard</strong>
+        <span>Use the patient's own words when possible. Note the time, what was said, and who was notified. This is essential for continuity of care.</span>
+      </div>
+    </li>
+    <li>
+      <div class="step-num">5</div>
+      <div class="step-content">
+        <strong>Ensure a warm handoff or follow-up plan</strong>
+        <span>The patient should leave with a clear next step, a referral, a safety plan, or a follow-up call. They should not exit without a plan in place.</span>
+      </div>
+    </li>
+  </ol>
+
+  <div class="alert-box">
+    <h3>🔴 Immediate Danger</h3>
+    <p>If a patient indicates they have a plan, access to means, or intend to act imminently, call 911 or activate the emergency protocol immediately. Do not allow the patient to leave unsupported.</p>
+  </div>
+
+  <div class="key-action">
+    <h3>Remember This</h3>
+    <p>You do not have to be a clinician to make a difference in a crisis moment. Your job is to stay present, get help quickly, and make sure the patient is never left alone. The response starts with you.</p>
+  </div>
+
+  <div class="references">
+    <h4>References</h4>
+    <p>
+      Columbia Lighthouse Project. (2023). <em>Columbia Suicide Severity Rating Scale (C-SSRS): Clinical practice version.</em> https://cssrs.columbia.edu<br>
+      Posner, K., et al. (2011). The Columbia-Suicide Severity Rating Scale: Initial validity and internal consistency findings from three multisite studies. <em>American Journal of Psychiatry, 168</em>(12), 1266-1277.<br>
+      Suicide Prevention Resource Center (SPRC). (2023). <em>Zero Suicide in health and behavioral health care.</em> https://zerosuicide.sprc.org<br>
+      988 Suicide &amp; Crisis Lifeline. (2023). https://988lifeline.org<br>
+      The Trevor Project. (2023). https://www.thetrevorproject.org<br>
+      Trans Lifeline. (2023). https://translifeline.org
+    </p>
+  </div>
+
+  <div class="footer">
+    <div class="footer-left">Zero Suicide Staff Education Series &nbsp;·&nbsp; Primary Care Clinic &nbsp;·&nbsp; Issue 3</div>
+  </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zero Suicide Staff Education | Issue 5: Staff Response &amp; Intervention Skills</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Source+Sans+3:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1a2e44; --teal: #2a8c82; --teal-light: #e6f4f3;
+    --green: #2e7d52; --green-light: #e8f5ee;
+    --amber: #e07b39; --amber-light: #fdf1e8;
+    --cream: #faf8f5; --text: #2c3340; --muted: #6b7685; --border: #dde3eb;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Source Sans 3', sans-serif; background: var(--cream); color: var(--text); line-height: 1.7; font-size: 16px; }
+  .crisis-bar { background: #c0392b; color: #fff; text-align: center; padding: 12px 24px; font-size: 14px; font-weight: 600; }
+  .crisis-bar span { font-weight: 300; margin: 0 8px; }
+  .header { background: var(--green); color: #fff; padding: 40px 48px 36px; position: relative; overflow: hidden; }
+  .header::after { content: ''; position: absolute; right: 40px; top: -80px; width: 260px; height: 260px; border-radius: 50%; background: rgba(255,255,255,0.07); }
+  .series-label { font-size: 11px; font-weight: 600; letter-spacing: 2.5px; text-transform: uppercase; color: rgba(255,255,255,0.65); margin-bottom: 10px; display: flex; align-items: center; gap: 10px; }
+  .series-label span { display: inline-block; background: rgba(255,255,255,0.2); color: #fff; border-radius: 20px; padding: 2px 10px; font-size: 10px; letter-spacing: 1.5px; }
+  .header h1 { font-family: 'Playfair Display', serif; font-size: 2.5rem; line-height: 1.2; max-width: 600px; position: relative; z-index: 1; }
+  .header-meta { margin-top: 14px; font-size: 13px; color: rgba(255,255,255,0.5); }
+  .container { max-width: 860px; margin: 0 auto; padding: 0 32px 60px; }
+  .intro { background: #fff; border-left: 4px solid var(--green); padding: 24px 28px; margin: 36px 0 24px; border-radius: 0 8px 8px 0; font-size: 1.05rem; font-weight: 300; }
+  .intro strong { font-weight: 600; color: var(--navy); }
+  .clinic-goal { background: var(--green); color: #fff; border-radius: 10px; padding: 16px 24px; margin-bottom: 32px; display: flex; align-items: center; gap: 14px; font-size: 15px; }
+  .clinic-goal .goal-label { font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.65); display: block; margin-bottom: 3px; }
+  .section-title { font-family: 'Playfair Display', serif; font-size: 1.4rem; color: var(--navy); margin: 40px 0 18px; display: flex; align-items: center; gap: 12px; }
+  .section-title::before { content: ''; display: inline-block; width: 28px; height: 3px; background: var(--green); border-radius: 2px; flex-shrink: 0; }
+
+  /* Stats */
+  .stat-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 0 0 8px; }
+  .stat-card { background: #fff; border-radius: 10px; padding: 22px 18px 18px; border-top: 4px solid var(--green); box-shadow: 0 2px 10px rgba(0,0,0,0.05); text-align: center; }
+  .stat-number { font-family: 'Playfair Display', serif; font-size: 2.4rem; color: var(--navy); line-height: 1; margin-bottom: 8px; }
+  .stat-label { font-size: 13px; color: var(--muted); line-height: 1.4; }
+
+  /* Underserved callout */
+  .underserved { background: var(--navy); color: #fff; border-radius: 12px; padding: 28px 32px; margin: 32px 0; }
+  .underserved h3 { font-family: 'Playfair Display', serif; font-size: 1.15rem; color: #b9f0e0; margin-bottom: 14px; }
+  .underserved-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .us-item { background: rgba(255,255,255,0.08); border-radius: 10px; padding: 14px 16px; font-size: 13.5px; color: rgba(255,255,255,0.82); line-height: 1.5; }
+  .us-item strong { color: #b9f0e0; display: block; margin-bottom: 4px; font-size: 13px; }
+
+  .myth-list { list-style: none; margin-bottom: 28px; }
+  .myth-item { background: #fff; border-radius: 10px; padding: 20px 22px; margin-bottom: 12px; box-shadow: 0 1px 8px rgba(0,0,0,0.05); }
+  .myth-label { font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 6px; }
+  .myth-label.myth { color: #c0392b; }
+  .myth-label.fact { color: var(--green); }
+  .myth-item p { font-size: 14.5px; }
+  .myth-item p strong { color: var(--navy); }
+
+  .framework { background: #fff; border-radius: 12px; padding: 28px 30px; box-shadow: 0 1px 10px rgba(0,0,0,0.06); margin-bottom: 28px; }
+  .framework h3 { font-size: 15px; font-weight: 600; color: var(--navy); margin-bottom: 16px; }
+  .fw-step { display: flex; gap: 16px; align-items: flex-start; margin-bottom: 14px; }
+  .fw-letter { width: 36px; height: 36px; border-radius: 8px; background: var(--green); color: #fff; font-size: 16px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .fw-step strong { display: block; font-size: 14.5px; font-weight: 600; color: var(--navy); }
+  .fw-step span { font-size: 13.5px; color: var(--muted); }
+
+  .say-grid { margin-bottom: 28px; }
+  .say-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 0; margin-bottom: 12px; border-radius: 10px; overflow: hidden; box-shadow: 0 1px 8px rgba(0,0,0,0.06); }
+  .say-col { padding: 18px 22px; }
+  .say-col:first-child { background: #fff5f5; border-right: 1px solid #f0dede; }
+  .say-col:last-child { background: var(--green-light); }
+  .say-col h4 { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 8px; }
+  .say-col:first-child h4 { color: #c0392b; }
+  .say-col:last-child h4 { color: var(--green); }
+  .say-col p { font-size: 14px; line-height: 1.55; font-style: italic; }
+
+  .self-care { background: var(--navy); color: #fff; border-radius: 12px; padding: 28px 32px; margin: 32px 0; }
+  .self-care h3 { font-family: 'Playfair Display', serif; font-size: 1.15rem; margin-bottom: 10px; color: #b9f0e0; }
+  .self-care p { font-size: 14.5px; color: rgba(255,255,255,0.8); line-height: 1.65; margin-bottom: 12px; }
+  .self-care-tips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px; }
+  .self-care-tips span { background: rgba(255,255,255,0.12); color: #fff; padding: 5px 14px; border-radius: 20px; font-size: 13px; }
+  .key-action { background: var(--green-light); border-left: 4px solid var(--green); border-radius: 0 10px 10px 0; padding: 20px 24px; margin: 28px 0; }
+  .key-action h3 { font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 1.5px; color: var(--green); margin-bottom: 8px; }
+  .key-action p { font-size: 14.5px; }
+  .references { margin-top: 48px; padding-top: 24px; border-top: 1px solid var(--border); }
+  .references h4 { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: var(--muted); margin-bottom: 10px; }
+  .references p { font-size: 12px; color: var(--muted); line-height: 1.7; }
+  .footer { border-top: 1px solid var(--border); margin-top: 28px; padding-top: 20px; display: flex; justify-content: space-between; align-items: center; }
+  .footer-left { font-size: 12.5px; color: var(--muted); }
+</style>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- SITE NAV -->
+  <style>
+    .site-nav { background: #1a2e44; padding: 0 40px; display: flex; align-items: center; justify-content: space-between; height: 52px; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 12px rgba(0,0,0,0.18); }
+    .site-nav-logo { font-family: 'DM Serif Display', serif; font-size: 1.1rem; color: #fff; text-decoration: none; letter-spacing: 0.5px; flex-shrink: 0; }
+    .site-nav-logo span { color: #2a8c82; }
+    .site-nav-links { display: flex; gap: 4px; align-items: center; flex-wrap: nowrap; overflow-x: auto; }
+    .site-nav-links a { color: rgba(255,255,255,0.6); text-decoration: none; font-family: 'DM Sans', sans-serif; font-size: 12.5px; font-weight: 500; padding: 5px 10px; border-radius: 6px; transition: background 0.15s, color 0.15s; white-space: nowrap; }
+    .site-nav-links a:hover { background: rgba(255,255,255,0.1); color: #fff; }
+    .site-nav-links a.current { background: #2a8c82; color: #fff; }
+  </style>
+  <nav class="site-nav">
+    <a href="index.html" class="site-nav-logo">RHC <span>Today</span></a>
+    <div class="site-nav-links">
+      <a href="index.html">Home</a>
+      <a href="00-mental-health-awareness-month.html" >MH Awareness</a>
+      <a href="01-risk-factors.html" >Issue 1</a>
+      <a href="02-populations-at-risk.html" >Issue 2</a>
+      <a href="03-crisis-resources.html" >Issue 3</a>
+      <a href="04-behavioral-health-referrals.html" >Issue 4</a>
+      <a href="05-staff-response-skills.html" class="current">Issue 5</a>
+      <a href="06-commitment-year-ahead.html" >Issue 6</a>
+    </div>
+  </nav>
+  <!-- END SITE NAV -->
+
+
+<div class="crisis-bar">
+  988 Suicide &amp; Crisis Lifeline: Call or Text <strong>988</strong><span>|</span>Crisis Text Line: Text <strong>HOME to 741741</strong>
+</div>
+
+<div class="header">
+  <div class="series-label">Zero Suicide Staff Education <span>Issue 5</span></div>
+  <h1>Staff Response &amp; Intervention Skills</h1>
+  <div class="header-meta">Primary Care Clinic </div>
+</div>
+
+<div class="container">
+
+  <div class="intro">
+    You do not need to be a therapist to respond meaningfully in a difficult moment. <strong>What you say and how you say it</strong> can open or close the door for a patient to get help. This issue focuses on the practical, human side of intervention.
+  </div>
+
+  <div class="clinic-goal">
+    <span style="font-size:22px;">🎯</span>
+    <div>
+      <span class="goal-label">Our Clinic Goal</span>
+      <strong>Every patient, every visit.</strong> The C-SSRS gives us consistent data, but it works best when paired with staff who know how to respond warmly and without judgment when a patient answers "yes."
+    </div>
+  </div>
+
+  <div class="section-title">Staff Response by the Numbers</div>
+
+  <div class="stat-row">
+    <div class="stat-card">
+      <div class="stat-number">0</div>
+      <div class="stat-label">Studies have found zero evidence that asking about suicide increases risk. It is safe to ask directly.</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">70%</div>
+      <div class="stat-label">of patients who died by suicide communicated their intent to someone beforehand, often a non-clinician</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">5 min</div>
+      <div class="stat-label">is often all it takes for a brief supportive check-in to reduce acute distress and keep a patient engaged in care</div>
+    </div>
+  </div>
+  <p style="font-size:12.5px; color:var(--muted); margin: 8px 0 32px;">See references below.</p>
+
+  <div class="underserved">
+    <h3>Responding to Patients from Underserved Communities</h3>
+    <div class="underserved-grid">
+      <div class="us-item">
+        <strong>Cultural humility matters</strong>
+        Many patients from marginalized communities have had negative experiences with healthcare. A non-judgmental, validating response may be the first time they've felt safe disclosing distress in a clinical setting.
+      </div>
+      <div class="us-item">
+        <strong>Language access is a patient right</strong>
+        If a patient has limited English proficiency, use interpreter services for mental health conversations. Do not rely on family members to interpret sensitive disclosures.
+      </div>
+      <div class="us-item">
+        <strong>Do not let stigma go unaddressed</strong>
+        Some communities carry strong cultural stigma around mental health. Normalize the conversation: "A lot of our patients experience this, and there is real support available."
+      </div>
+      <div class="us-item">
+        <strong>Fear of consequences is real</strong>
+        Patients may fear hospitalization, immigration consequences, or loss of custody. Acknowledge these fears without dismissing them, and involve the care team in safety planning.
+      </div>
+    </div>
+  </div>
+
+  <div class="section-title">Myths That Get in the Way</div>
+  <ul class="myth-list">
+    <li class="myth-item">
+      <div class="myth-label myth">Myth</div>
+      <p>"Asking about suicide will put the idea in their head."</p>
+      <div class="myth-label fact" style="margin-top:10px;">Fact</div>
+      <p><strong>Research consistently shows asking does not increase risk.</strong> For most patients, being asked directly is a relief. It signals that it is safe to talk about what they are experiencing.</p>
+    </li>
+    <li class="myth-item">
+      <div class="myth-label myth">Myth</div>
+      <p>"If someone really wanted to die, there's nothing we can do."</p>
+      <div class="myth-label fact" style="margin-top:10px;">Fact</div>
+      <p><strong>Suicidal crises are often temporary and treatable.</strong> Timely connection to care, a supportive conversation, and reduced access to means all save lives.</p>
+    </li>
+    <li class="myth-item">
+      <div class="myth-label myth">Myth</div>
+      <p>"It's not my role; I'm not a clinician."</p>
+      <div class="myth-label fact" style="margin-top:10px;">Fact</div>
+      <p><strong>Every staff member is a link in the chain of care.</strong> A front desk greeting, a kind word during check-in, or noticing a patient seems off can prompt a life-saving conversation.</p>
+    </li>
+  </ul>
+
+  <div class="section-title">The CARE Framework</div>
+
+  <div class="framework">
+    <h3>A simple model for any staff member in any role</h3>
+    <div class="fw-step">
+      <div class="fw-letter">C</div>
+      <div>
+        <strong>Connect: acknowledge what you are observing</strong>
+        <span>"I noticed you seem like you're having a hard time today. How are you doing?" A simple, genuine check-in opens the door.</span>
+      </div>
+    </div>
+    <div class="fw-step">
+      <div class="fw-letter">A</div>
+      <div>
+        <strong>Ask: directly and calmly</strong>
+        <span>"Are you thinking about suicide?" Use plain language. Do not hint or dance around it. Our C-SSRS screening also prompts this conversation at every visit.</span>
+      </div>
+    </div>
+    <div class="fw-step">
+      <div class="fw-letter">R</div>
+      <div>
+        <strong>Respond: listen and stay present</strong>
+        <span>Do not problem-solve immediately. Let them talk. Avoid judgment. "Thank you for telling me" goes a long way before anything else.</span>
+      </div>
+    </div>
+    <div class="fw-step">
+      <div class="fw-letter">E</div>
+      <div>
+        <strong>Engage help: never handle it alone</strong>
+        <span>Tell a provider. Make a referral. Call 988 together. Ensure the patient does not leave without a next step in place.</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-title">Say This, Not That</div>
+
+  <div class="say-grid">
+    <div class="say-pair">
+      <div class="say-col"><h4>Avoid</h4><p>"You have so much to live for."</p></div>
+      <div class="say-col"><h4>Try instead</h4><p>"I hear you. Can you tell me more about what's going on?"</p></div>
+    </div>
+    <div class="say-pair">
+      <div class="say-col"><h4>Avoid</h4><p>"Everyone goes through hard times."</p></div>
+      <div class="say-col"><h4>Try instead</h4><p>"That sounds really hard. Thank you for sharing that with me."</p></div>
+    </div>
+    <div class="say-pair">
+      <div class="say-col"><h4>Avoid</h4><p>"You shouldn't feel that way."</p></div>
+      <div class="say-col"><h4>Try instead</h4><p>"What you're feeling makes sense. Let's make sure you get some support."</p></div>
+    </div>
+    <div class="say-pair">
+      <div class="say-col"><h4>Avoid</h4><p>"Are you sure it's that serious?"</p></div>
+      <div class="say-col"><h4>Try instead</h4><p>"I want to make sure you're safe. Can I get someone who can talk with you more?"</p></div>
+    </div>
+  </div>
+
+  <div class="self-care">
+    <h3>Take care of yourself too.</h3>
+    <p>Supporting patients in crisis is meaningful work and emotionally demanding. Staff who regularly engage with these conversations deserve support as well. It is normal to feel affected. If a patient encounter stays with you, reach out to a supervisor, a trusted colleague, or use 988 yourself.</p>
+    <div class="self-care-tips">
+      <span>Debrief with a colleague</span>
+      <span>Talk to your supervisor</span>
+      <span>Use the EAP if available</span>
+      <span>Take a break when needed</span>
+      <span>You matter too</span>
+    </div>
+  </div>
+
+  <div class="key-action">
+    <h3>Your Action as Staff</h3>
+    <p>Practice the CARE model before you need it. Talk with your team about what a disclosure looks like and who does what. When everyone knows the plan, the patient gets a faster, calmer, and more connected response.</p>
+  </div>
+
+  <div class="references">
+    <h4>References</h4>
+    <p>
+      Dazzi, T., et al. (2014). Does asking about suicide and related behaviours induce suicidal ideation? <em>Psychological Medicine, 44</em>(16), 3361-3363.<br>
+      Ahmedani, B.K., et al. (2014). Health care contacts in the year before suicide death. <em>Journal of General Internal Medicine, 29</em>(6), 870-877.<br>
+      Zero Suicide Institute. (2023). <em>Staff competencies and training for suicide care.</em> https://zerosuicideinstitute.com<br>
+      Suicide Prevention Resource Center (SPRC). (2023). <em>A prioritized research agenda for suicide prevention.</em> https://www.sprc.org<br>
+      National Institute on Minority Health and Health Disparities (NIMHD). (2022). <em>Mental health disparities and culturally responsive care.</em> https://www.nimhd.nih.gov<br>
+      National Council for Mental Wellbeing. (2021). <em>Mental Health First Aid USA.</em> https://www.mentalhealthfirstaid.org
+    </p>
+  </div>
+
+  <div class="footer">
+    <div class="footer-left">Zero Suicide Staff Education Series &nbsp;·&nbsp; Primary Care Clinic &nbsp;·&nbsp; Issue 5</div>
+  </div>
+
+</div>
+</body>
+</html>

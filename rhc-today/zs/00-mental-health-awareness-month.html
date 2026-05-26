@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mental Health Awareness Month | May | Primary Care Clinic</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --sage:       #4a7c59;
+    --sage-mid:   #6a9e78;
+    --sage-light: #c8dfc d;
+    --sage-pale:  #eaf3ec;
+    --sage-xpale: #f4f9f5;
+    --stone:      #f5f3f0;
+    --stone-mid:  #e8e4df;
+    --stone-dark: #c4bdb5;
+    --ink:        #2a2825;
+    --ink-mid:    #4a4743;
+    --ink-light:  #7a7673;
+    --warm-white: #fdfcfa;
+    --blush:      #e8dfd8;
+    --gold:       #b8945a;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--warm-white);
+    color: var(--ink);
+    font-size: 16px;
+    line-height: 1.7;
+  }
+
+  /* ── MASTHEAD ── */
+  .masthead {
+    background: var(--ink);
+    padding: 12px 48px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+    color: rgba(255,255,255,0.5);
+    letter-spacing: 1px;
+  }
+  .masthead strong { color: var(--sage-mid); font-weight: 500; }
+
+  /* ── HERO ── */
+  .hero {
+    background: var(--sage);
+    position: relative;
+    overflow: hidden;
+    padding: 64px 48px 56px;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -100px; right: -100px;
+    width: 500px; height: 500px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.05);
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -60px; left: -60px;
+    width: 300px; height: 300px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.04);
+  }
+  .hero-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(255,255,255,0.15);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    padding: 6px 16px;
+    border-radius: 20px;
+    margin-bottom: 22px;
+  }
+  .hero-eyebrow::before { content: '🌿'; font-size: 13px; }
+  .hero h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 3.8rem;
+    color: #fff;
+    line-height: 1.1;
+    max-width: 640px;
+    position: relative; z-index: 1;
+    margin-bottom: 16px;
+  }
+  .hero h1 em {
+    font-style: italic;
+    color: rgba(255,255,255,0.75);
+  }
+  .hero-sub {
+    font-size: 1.1rem;
+    color: rgba(255,255,255,0.8);
+    max-width: 520px;
+    font-weight: 300;
+    position: relative; z-index: 1;
+    margin-bottom: 28px;
+  }
+  .hero-badges {
+    display: flex; gap: 10px; flex-wrap: wrap;
+    position: relative; z-index: 1;
+  }
+  .hero-badge {
+    background: rgba(255,255,255,0.18);
+    color: #fff;
+    border: 1px solid rgba(255,255,255,0.25);
+    border-radius: 6px;
+    padding: 6px 14px;
+    font-size: 13px;
+    font-weight: 500;
+  }
+
+  /* ── LAYOUT ── */
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 32px 80px;
+  }
+
+  /* ── SECTION HEADERS ── */
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin: 52px 0 24px;
+  }
+  .section-header .icon-circle {
+    width: 42px; height: 42px;
+    border-radius: 50%;
+    background: var(--sage-pale);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+  .section-header h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.7rem;
+    color: var(--ink);
+    line-height: 1.2;
+  }
+  .section-header h2 span {
+    display: block;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--sage);
+    margin-bottom: 2px;
+  }
+  .divider {
+    height: 1px;
+    background: var(--stone-mid);
+    margin: 0 0 28px;
+  }
+
+  /* ── INTRO BAND ── */
+  .intro-band {
+    background: var(--sage-pale);
+    border-radius: 14px;
+    padding: 32px 36px;
+    margin: 40px 0 0;
+    display: flex;
+    gap: 24px;
+    align-items: flex-start;
+  }
+  .intro-band .leaf { font-size: 2.4rem; flex-shrink: 0; margin-top: 4px; }
+  .intro-band p { font-size: 15.5px; font-weight: 300; line-height: 1.75; }
+  .intro-band strong { font-weight: 600; color: var(--sage); }
+
+  /* ── SELF CARE TIPS GRID ── */
+  .tips-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 12px;
+  }
+  .tip-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 24px 20px;
+    border: 1px solid var(--stone-mid);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .tip-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,0.07); }
+  .tip-top {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+  .tip-emoji {
+    width: 40px; height: 40px;
+    border-radius: 10px;
+    background: var(--sage-pale);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 19px;
+    flex-shrink: 0;
+  }
+  .tip-card h3 {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ink);
+    line-height: 1.3;
+  }
+  .tip-card p {
+    font-size: 13.5px;
+    color: var(--ink-light);
+    line-height: 1.6;
+  }
+  .tip-card ul {
+    list-style: none;
+    margin-top: 10px;
+  }
+  .tip-card ul li {
+    font-size: 13px;
+    color: var(--ink-mid);
+    padding: 4px 0;
+    border-bottom: 1px solid var(--stone-mid);
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+  }
+  .tip-card ul li:last-child { border-bottom: none; }
+  .tip-card ul li::before { content: '·'; color: var(--sage); font-weight: 700; flex-shrink: 0; }
+
+  /* ── QUOTE BAND ── */
+  .quote-band {
+    background: var(--ink);
+    border-radius: 14px;
+    padding: 36px 44px;
+    margin: 36px 0;
+    text-align: center;
+  }
+  .quote-band blockquote {
+    font-family: 'DM Serif Display', serif;
+    font-style: italic;
+    font-size: 1.55rem;
+    color: #fff;
+    line-height: 1.45;
+    max-width: 580px;
+    margin: 0 auto 14px;
+  }
+  .quote-band cite {
+    font-size: 13px;
+    color: var(--sage-mid);
+    letter-spacing: 1px;
+    font-style: normal;
+    text-transform: uppercase;
+  }
+
+  /* ── RESOURCE SECTIONS ── */
+  .resource-group { margin-bottom: 36px; }
+  .resource-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--sage);
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .resource-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--sage-pale);
+  }
+  .resource-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .resource-card {
+    background: #fff;
+    border-radius: 10px;
+    padding: 18px 20px;
+    border: 1px solid var(--stone-mid);
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+  }
+  .resource-card .r-icon {
+    width: 38px; height: 38px;
+    border-radius: 8px;
+    background: var(--sage-pale);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+  .resource-card h4 {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 3px;
+  }
+  .resource-card p { font-size: 12.5px; color: var(--ink-light); line-height: 1.5; margin-bottom: 6px; }
+  .resource-card a {
+    font-size: 12px;
+    color: var(--sage);
+    font-weight: 600;
+    text-decoration: none;
+    letter-spacing: 0.3px;
+  }
+  .resource-card a:hover { text-decoration: underline; }
+
+  /* ── WELLNESS WHEEL ── */
+  .wheel-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+    margin-bottom: 28px;
+  }
+  .wheel-item {
+    background: #fff;
+    border-radius: 12px;
+    padding: 20px 22px;
+    border-left: 4px solid var(--sage);
+    border: 1px solid var(--stone-mid);
+    border-left: 4px solid var(--sage);
+  }
+  .wheel-item .w-head {
+    display: flex; align-items: center; gap: 10px;
+    margin-bottom: 10px;
+  }
+  .wheel-item .w-head span { font-size: 20px; }
+  .wheel-item h3 { font-size: 14.5px; font-weight: 600; color: var(--ink); }
+  .wheel-item p { font-size: 13.5px; color: var(--ink-light); line-height: 1.55; }
+  .wheel-item .tip-pill {
+    display: inline-block;
+    margin-top: 10px;
+    background: var(--sage-pale);
+    color: var(--sage);
+    font-size: 12px;
+    font-weight: 600;
+    padding: 4px 12px;
+    border-radius: 12px;
+  }
+
+  /* ── CRISIS BAR ── */
+  .crisis-bar {
+    background: #c0392b;
+    color: #fff;
+    text-align: center;
+    padding: 14px 24px;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+  }
+  .crisis-bar span { font-weight: 300; margin: 0 10px; color: rgba(255,255,255,0.7); }
+
+  /* ── FOOTER ── */
+  .footer-band {
+    background: var(--stone);
+    border-top: 1px solid var(--stone-mid);
+    padding: 28px 48px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+    font-size: 12.5px;
+    color: var(--ink-light);
+  }
+  .footer-band strong { color: var(--sage); }
+
+  /* ── STAT STRIP ── */
+  .stat-strip {
+    background: var(--sage-pale);
+    border-radius: 14px;
+    padding: 28px 32px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    margin: 36px 0;
+  }
+  .strip-stat {
+    text-align: center;
+    padding: 0 20px;
+  }
+  .strip-stat + .strip-stat { border-left: 1px solid var(--sage-light, #b2d0b8); }
+  .strip-stat .big {
+    font-family: 'DM Serif Display', serif;
+    font-size: 2.6rem;
+    color: var(--sage);
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+  .strip-stat p { font-size: 13px; color: var(--ink-mid); line-height: 1.4; }
+
+  /* ── CALLOUT BOX ── */
+  .callout {
+    background: var(--sage);
+    color: #fff;
+    border-radius: 12px;
+    padding: 28px 32px;
+    margin: 36px 0;
+  }
+  .callout h3 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.3rem;
+    margin-bottom: 10px;
+  }
+  .callout p { font-size: 14.5px; color: rgba(255,255,255,0.85); line-height: 1.65; }
+
+  @media (max-width: 680px) {
+    .tips-grid { grid-template-columns: 1fr; }
+    .resource-cards { grid-template-columns: 1fr; }
+    .wheel-grid { grid-template-columns: 1fr; }
+    .stat-strip { grid-template-columns: 1fr; gap: 20px; }
+    .strip-stat + .strip-stat { border-left: none; border-top: 1px solid var(--stone-mid); padding-top: 20px; }
+    .hero h1 { font-size: 2.4rem; }
+    .masthead { padding: 12px 20px; }
+  }
+</style>
+</head>
+<body>
+  <!-- SITE NAV -->
+  <style>
+    .site-nav { background: #1a2e44; padding: 0 40px; display: flex; align-items: center; justify-content: space-between; height: 52px; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 12px rgba(0,0,0,0.18); }
+    .site-nav-logo { font-family: 'DM Serif Display', serif; font-size: 1.1rem; color: #fff; text-decoration: none; letter-spacing: 0.5px; flex-shrink: 0; }
+    .site-nav-logo span { color: #2a8c82; }
+    .site-nav-links { display: flex; gap: 4px; align-items: center; flex-wrap: nowrap; overflow-x: auto; }
+    .site-nav-links a { color: rgba(255,255,255,0.6); text-decoration: none; font-family: 'DM Sans', sans-serif; font-size: 12.5px; font-weight: 500; padding: 5px 10px; border-radius: 6px; transition: background 0.15s, color 0.15s; white-space: nowrap; }
+    .site-nav-links a:hover { background: rgba(255,255,255,0.1); color: #fff; }
+    .site-nav-links a.current { background: #2a8c82; color: #fff; }
+  </style>
+  <nav class="site-nav">
+    <a href="index.html" class="site-nav-logo">RHC <span>Today</span></a>
+    <div class="site-nav-links">
+      <a href="index.html">Home</a>
+      <a href="00-mental-health-awareness-month.html" class="current">MH Awareness</a>
+      <a href="01-risk-factors.html" >Issue 1</a>
+      <a href="02-populations-at-risk.html" >Issue 2</a>
+      <a href="03-crisis-resources.html" >Issue 3</a>
+      <a href="04-behavioral-health-referrals.html" >Issue 4</a>
+      <a href="05-staff-response-skills.html" >Issue 5</a>
+      <a href="06-commitment-year-ahead.html" >Issue 6</a>
+    </div>
+  </nav>
+  <!-- END SITE NAV -->
+
+
+<div class="crisis-bar">
+  988 Suicide &amp; Crisis Lifeline: Call or Text <strong>988</strong><span>|</span>Crisis Text Line: Text <strong>HOME to 741741</strong>
+</div>
+
+<!-- MASTHEAD -->
+<div class="masthead">
+  <span>Primary Care Clinic &nbsp;·&nbsp; Staff &amp; Community Resource</span>
+  <strong>Mental Health Awareness Month</strong>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-eyebrow">Mental Health Awareness Month</div>
+  <h1>You Can't Pour<br>From <em>an Empty Cup.</em></h1>
+  <p class="hero-sub">May is Mental Health Awareness Month. This page is your go-to resource for self-care, support, and connection — for yourself and for the people you love.</p>
+  <div class="hero-badges">
+    <div class="hero-badge">Self-Care Tips</div>
+    <div class="hero-badge">Parenting Support</div>
+    <div class="hero-badge">Caregiver Resources</div>
+    <div class="hero-badge">Elderly Care</div>
+    <div class="hero-badge">Crisis Resources</div>
+  </div>
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="container">
+
+  <div class="intro-band">
+    <div class="leaf">🌿</div>
+    <p>Mental health is <strong>health</strong>. This month, we pause to acknowledge that caring for our minds matters just as much as caring for our bodies. Whether you are a patient, a caregiver, a parent, or a staff member — you deserve support too. Explore the resources and tips below at your own pace.</p>
+  </div>
+
+  <!-- STATS -->
+  <div class="stat-strip">
+    <div class="strip-stat">
+      <div class="big">1 in 5</div>
+      <p>U.S. adults experience a mental health condition each year</p>
+    </div>
+    <div class="strip-stat">
+      <div class="big">50%</div>
+      <p>of all lifetime mental health conditions begin by age 14</p>
+    </div>
+    <div class="strip-stat">
+      <div class="big">75%</div>
+      <p>of people with mental health conditions go without treatment</p>
+    </div>
+  </div>
+
+  <!-- SELF-CARE SECTION -->
+  <div class="section-header">
+    <div class="icon-circle">💚</div>
+    <h2><span>This Month's Focus</span>Self-Care in Every Dimension</h2>
+  </div>
+  <div class="divider"></div>
+  <p style="font-size:14.5px; color:var(--ink-light); margin-bottom:22px;">Self-care is not selfish — it is sustainable. It looks different for everyone, and it shows up in more areas of life than we often realize. Here are simple, meaningful ways to care for yourself across six key arenas.</p>
+
+  <div class="tips-grid">
+    <div class="tip-card">
+      <div class="tip-top">
+        <div class="tip-emoji">🧠</div>
+        <h3>Mental &amp; Emotional</h3>
+      </div>
+      <p>Give your mind permission to rest and reset.</p>
+      <ul>
+        <li>Journal for 5 minutes each morning</li>
+        <li>Name one thing you're grateful for daily</li>
+        <li>Limit doom-scrolling to 15 min/day</li>
+        <li>Try a free meditation app like Insight Timer</li>
+        <li>Say "no" to one thing this week without guilt</li>
+      </ul>
+    </div>
+    <div class="tip-card">
+      <div class="tip-top">
+        <div class="tip-emoji">🚶</div>
+        <h3>Physical</h3>
+      </div>
+      <p>Movement is medicine for the mind and body.</p>
+      <ul>
+        <li>Take a 10-minute walk outside each day</li>
+        <li>Stretch for 5 minutes before bed</li>
+        <li>Drink a glass of water before coffee</li>
+        <li>Prioritize 7-8 hours of sleep</li>
+        <li>Try one new vegetable this month</li>
+      </ul>
+    </div>
+    <div class="tip-card">
+      <div class="tip-top">
+        <div class="tip-emoji">🤝</div>
+        <h3>Social &amp; Relational</h3>
+      </div>
+      <p>Connection is a basic human need, not a luxury.</p>
+      <ul>
+        <li>Call or text one person you've been missing</li>
+        <li>Join a community group or class</li>
+        <li>Share how you really are with a trusted friend</li>
+        <li>Set a kind but clear boundary</li>
+        <li>Write a note of appreciation to someone</li>
+      </ul>
+    </div>
+    <div class="tip-card">
+      <div class="tip-top">
+        <div class="tip-emoji">✨</div>
+        <h3>Spiritual &amp; Purposeful</h3>
+      </div>
+      <p>Meaning and purpose sustain us through hard times.</p>
+      <ul>
+        <li>Spend time in nature intentionally</li>
+        <li>Revisit a value that matters to you</li>
+        <li>Volunteer for something you believe in</li>
+        <li>Practice a moment of silence or prayer</li>
+        <li>Do one thing purely for joy this week</li>
+      </ul>
+    </div>
+    <div class="tip-card">
+      <div class="tip-top">
+        <div class="tip-emoji">💼</div>
+        <h3>Professional &amp; Financial</h3>
+      </div>
+      <p>Stress at work and around money affects mental health deeply.</p>
+      <ul>
+        <li>Take your full lunch break away from your desk</li>
+        <li>Identify one work task you can delegate</li>
+        <li>Check your benefits for an EAP</li>
+        <li>Review one recurring expense this month</li>
+        <li>Name one professional win from this week</li>
+      </ul>
+    </div>
+    <div class="tip-card">
+      <div class="tip-top">
+        <div class="tip-emoji">🎨</div>
+        <h3>Creative &amp; Playful</h3>
+      </div>
+      <p>Play is not just for children — it heals adults too.</p>
+      <ul>
+        <li>Draw, doodle, or color for 10 minutes</li>
+        <li>Cook a new recipe just for fun</li>
+        <li>Listen to music you loved as a teenager</li>
+        <li>Watch something lighthearted, guilt-free</li>
+        <li>Rearrange one small corner of your home</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- QUOTE -->
+  <div class="quote-band">
+    <blockquote>"There is no health without mental health."</blockquote>
+    <cite>World Health Organization</cite>
+  </div>
+
+  <!-- WELLNESS WHEEL -->
+  <div class="section-header">
+    <div class="icon-circle">🌱</div>
+    <h2><span>Daily Practices</span>Small Habits, Big Impact</h2>
+  </div>
+  <div class="divider"></div>
+
+  <div class="wheel-grid">
+    <div class="wheel-item">
+      <div class="w-head"><span>😮‍💨</span><h3>Breathe on Purpose</h3></div>
+      <p>Box breathing (4 counts in, hold, out, hold) activates the nervous system's rest response in under 2 minutes. It works anywhere, anytime.</p>
+      <span class="tip-pill">Try it right now</span>
+    </div>
+    <div class="wheel-item">
+      <div class="w-head"><span>📵</span><h3>Create a Phone-Free Window</h3></div>
+      <p>Even 30 minutes without your phone — first thing in the morning or before bed — measurably reduces anxiety and improves sleep quality.</p>
+      <span class="tip-pill">Start with 30 minutes</span>
+    </div>
+    <div class="wheel-item">
+      <div class="w-head"><span>🌤️</span><h3>Get Morning Light</h3></div>
+      <p>10 minutes of natural light in the morning regulates your circadian rhythm, improves mood, and supports better sleep at night. No gym required.</p>
+      <span class="tip-pill">Step outside early</span>
+    </div>
+    <div class="wheel-item">
+      <div class="w-head"><span>💬</span><h3>Talk to Someone You Trust</h3></div>
+      <p>Simply naming how you feel out loud to another person reduces the intensity of that feeling. You don't need advice — just to be heard.</p>
+      <span class="tip-pill">One honest conversation</span>
+    </div>
+  </div>
+
+  <!-- RESOURCES: PARENTING -->
+  <div class="section-header">
+    <div class="icon-circle">👨‍👩‍👧</div>
+    <h2><span>Resources for Families</span>Parenting &amp; Child Mental Health</h2>
+  </div>
+  <div class="divider"></div>
+
+  <div class="resource-group">
+    <div class="resource-label">National Resources</div>
+    <div class="resource-cards">
+      <div class="resource-card">
+        <div class="r-icon">🧒</div>
+        <div>
+          <h4>Child Mind Institute</h4>
+          <p>Guides for parents on anxiety, ADHD, depression, and school struggles in children and teens. Includes symptom checkers and provider finders.</p>
+          <a href="https://childmind.org" target="_blank">childmind.org</a>
+        </div>
+      </div>
+      <div class="resource-card">
+        <div class="r-icon">🏫</div>
+        <div>
+          <h4>National Alliance on Mental Illness (NAMI) — Family Support</h4>
+          <p>Free peer-led support groups for parents and family members of children with mental health conditions.</p>
+          <a href="https://www.nami.org/Support-Education/Support-Groups" target="_blank">nami.org/support-groups</a>
+        </div>
+      </div>
+      <div class="resource-card">
+        <div class="r-icon">💬</div>
+        <div>
+          <h4>Crisis Text Line for Teens</h4>
+          <p>Text-based crisis support designed for young people. Easy to share with a teen who may not want to call a hotline.</p>
+          <a href="https://www.crisistextline.org" target="_blank">Text HOME to 741741</a>
+        </div>
+      </div>
+      <div class="resource-card">
+        <div class="r-icon">📖</div>
+        <div>
+          <h4>Zero to Three</h4>
+          <p>Science-based guidance for parents of children ages 0-3 on social-emotional development, behavior, and early mental health.</p>
+          <a href="https://www.zerotothree.org" target="_blank">zerotothree.org</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RESOURCES: ELDERLY -->
+  <div class="section-header">
+    <div class="icon-circle">🧓</div>
+    <h2><span>Resources for Older Adults</span>Elderly Mental Health &amp; Well-Being</h2>
+  </div>
+  <div class="divider"></div>
+
+  <div class="callout">
+    <h3>Older adults are often overlooked in mental health conversations.</h3>
+    <p>Depression and anxiety in adults over 65 are frequently mistaken for "normal aging." Isolation, loss of independence, grief, and chronic illness all elevate mental health risk in older adults — and they deserve support just as much as anyone.</p>
+  </div>
+
+  <div class="resource-group">
+    <div class="resource-label">National Resources</div>
+    <div class="resource-cards">
+      <div class="resource-card">
+        <div class="r-icon">📞</div>
+        <div>
+          <h4>Eldercare Locator</h4>
+          <p>A nationwide service connecting older adults and caregivers to local support services, including mental health resources.</p>
+          <a href="https://eldercare.acl.gov" target="_blank">eldercare.acl.gov &nbsp;·&nbsp; 1-800-677-1116</a>
+        </div>
+      </div>
+      <div class="resource-card">
+        <div class="r-icon">🏠</div>
+        <div>
+          <h4>AARP Mental Health Resources</h4>
+          <p>Articles, tools, and a caregiver helpline for adults 50+ navigating mental health, grief, loneliness, and caregiving stress.</p>
+          <a href="https://www.aarp.org/health/mental-health" target="_blank">aarp.org/health/mental-health</a>
+        </div>
+      </div>
+      <div class="resource-card">
+        <div class="r-icon">🤝</div>
+        <div>
+          <h4>Senior Companion Program</h4>
+          <p>Connects isolated older adults with trained volunteer companions to reduce loneliness and support independence.</p>
+          <a href="https://americorps.gov/serve/americorps-seniors/senior-companion-program" target="_blank">americorps.gov</a>
+        </div>
+      </div>
+      <div class="resource-card">
+        <div class="r-icon">🧠</div>
+        <div>
+          <h4>Geriatric Mental Health Foundation</h4>
+          <p>Resources on depression, anxiety, dementia, and mental wellness specifically for older adults and their families.</p>
+          <a href="https://www.gmhfonline.org" target="_blank">gmhfonline.org</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RESOURCES: CAREGIVERS -->
+  <div class="section-header">
+    <div class="icon-circle">💛</div>
+    <h2><span>You Matter Too</span>Support for Caregivers</h2>
+  </div>
+  <div class="divider"></div>
+  <p style="font-size:14.5px; color:var(--ink-light); margin-bottom:22px;">Caregiving is one of the most loving things a person can do — and one of the most exhausting. Caregiver burnout is real, it is common, and it is nothing to be ashamed of. These resources are for the people who take care of everyone else.</p>
+
+  <div class="resource-group">
+    <div class="resource-label">National Resources</div>
+    <div class="resource-cards">
+      <div class="resource-card">
+        <div class="r-icon">🫶</div>
+        <div>
+          <h4>Caregiver Action Network</h4>
+          <p>Peer support, education, and advocacy for family caregivers across all conditions and care situations.</p>
+          <a href="https://www.caregiveraction.org" target="_blank">caregiveraction.org</a>
+        </div>
+      </div>
+      <div class="resource-card">
+        <div class="r-icon">📱</div>
+        <div>
+          <h4>NAMI Caregiver Support Group</h4>
+          <p>Free online and in-person groups specifically for people caring for someone with a mental illness.</p>
+          <a href="https://www.nami.org/Support-Education/Support-Groups/NAMI-Family-Support-Group" target="_blank">nami.org/family-support</a>
+        </div>
+      </div>
+      <div class="resource-card">
+        <div class="r-icon">🧩</div>
+        <div>
+          <h4>SAMHSA Family Support Resources</h4>
+          <p>Guides for families and caregivers navigating a loved one's mental health or substance use challenges.</p>
+          <a href="https://www.samhsa.gov/families" target="_blank">samhsa.gov/families</a>
+        </div>
+      </div>
+      <div class="resource-card">
+        <div class="r-icon">🌐</div>
+        <div>
+          <h4>Alzheimer's Caregiver Support (ALZConnected)</h4>
+          <p>Online community and 24/7 helpline for people caring for those with Alzheimer's and dementia-related conditions.</p>
+          <a href="https://www.alz.org/help-support/community/alzconnected" target="_blank">alz.org &nbsp;·&nbsp; 1-800-272-3900</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RESOURCES: GENERAL MH -->
+  <div class="section-header">
+    <div class="icon-circle">🌐</div>
+    <h2><span>General Mental Health</span>For Everyone</h2>
+  </div>
+  <div class="divider"></div>
+
+  <div class="resource-group">
+    <div class="resource-label">National Helplines &amp; Platforms</div>
+    <div class="resource-cards">
+      <div class="resource-card">
+        <div class="r-icon">📞</div>
+        <div>
+          <h4>SAMHSA National Helpline</h4>
+          <p>Free, confidential, 24/7 treatment referral and information service for mental health and substance use disorders.</p>
+          <a href="https://www.samhsa.gov/find-help/national-helpline" target="_blank">1-800-662-4357 &nbsp;·&nbsp; samhsa.gov</a>
+        </div>
+      </div>
+      <div class="resource-card">
+        <div class="r-icon">💻</div>
+        <div>
+          <h4>MentalHealth.gov</h4>
+          <p>Government portal with plain-language information about mental health conditions, finding care, and supporting others.</p>
+          <a href="https://www.mentalhealth.gov" target="_blank">mentalhealth.gov</a>
+        </div>
+      </div>
+      <div class="resource-card">
+        <div class="r-icon">🔍</div>
+        <div>
+          <h4>Psychology Today Therapist Finder</h4>
+          <p>Search by insurance, specialty, location, and identity-affirmation to find a therapist that fits your specific needs.</p>
+          <a href="https://www.psychologytoday.com/us/therapists" target="_blank">psychologytoday.com/therapists</a>
+        </div>
+      </div>
+      <div class="resource-card">
+        <div class="r-icon">🟢</div>
+        <div>
+          <h4>Open Path Collective</h4>
+          <p>Reduced-cost therapy for individuals, couples, and families. Sessions from $30-$80 for those without adequate coverage.</p>
+          <a href="https://openpathcollective.org" target="_blank">openpathcollective.org</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CLOSING CALLOUT -->
+  <div style="background: var(--sage-pale); border-radius: 14px; padding: 36px; text-align: center; margin-top: 44px;">
+    <div style="font-size: 2rem; margin-bottom: 12px;">🌿</div>
+    <p style="font-family: 'DM Serif Display', serif; font-size: 1.4rem; color: var(--ink); margin-bottom: 10px;">This month and every month, your mental health matters.</p>
+    <p style="font-size: 14.5px; color: var(--ink-light); max-width: 500px; margin: 0 auto;">If you or someone you know is struggling, please reach out. Our clinic's behavioral health team is here, and so are the resources on this page. You are not alone.</p>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<div class="footer-band">
+  <span>Primary Care Clinic &nbsp;·&nbsp; <strong>Mental Health Awareness Month</strong></span>
+  <span>988 Suicide &amp; Crisis Lifeline: Call or Text <strong style="color:var(--ink-mid);">988</strong></span>
+</div>
+
+</body>
+</html>

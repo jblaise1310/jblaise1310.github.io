@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zero Suicide Staff Education | Issue 2: Populations at Higher Risk</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Source+Sans+3:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1a2e44; --teal: #2a8c82; --teal-light: #e6f4f3;
+    --amber: #e07b39; --amber-light: #fdf1e8;
+    --cream: #faf8f5; --text: #2c3340; --muted: #6b7685; --border: #dde3eb;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Source Sans 3', sans-serif; background: var(--cream); color: var(--text); line-height: 1.7; font-size: 16px; }
+  .crisis-bar { background: #c0392b; color: #fff; text-align: center; padding: 12px 24px; font-size: 14px; font-weight: 600; }
+  .crisis-bar span { font-weight: 300; margin: 0 8px; }
+  .header { background: var(--navy); color: #fff; padding: 40px 48px 36px; position: relative; overflow: hidden; }
+  .header::after { content: ''; position: absolute; right: -60px; top: -60px; width: 280px; height: 280px; border-radius: 50%; background: rgba(224,123,57,0.15); }
+  .series-label { font-size: 11px; font-weight: 600; letter-spacing: 2.5px; text-transform: uppercase; color: var(--amber); margin-bottom: 10px; display: flex; align-items: center; gap: 10px; }
+  .series-label span { display: inline-block; background: var(--amber); color: #fff; border-radius: 20px; padding: 2px 10px; font-size: 10px; letter-spacing: 1.5px; }
+  .header h1 { font-family: 'Playfair Display', serif; font-size: 2.5rem; line-height: 1.2; max-width: 600px; position: relative; z-index: 1; }
+  .header-meta { margin-top: 14px; font-size: 13px; color: rgba(255,255,255,0.5); }
+  .container { max-width: 860px; margin: 0 auto; padding: 0 32px 60px; }
+  .intro { background: #fff; border-left: 4px solid var(--amber); padding: 24px 28px; margin: 36px 0 24px; border-radius: 0 8px 8px 0; font-size: 1.05rem; font-weight: 300; }
+  .intro strong { font-weight: 600; color: var(--navy); }
+  .clinic-goal { background: var(--teal); color: #fff; border-radius: 10px; padding: 16px 24px; margin-bottom: 32px; display: flex; align-items: center; gap: 14px; font-size: 15px; }
+  .clinic-goal .goal-label { font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.7); display: block; margin-bottom: 3px; }
+  .stat-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 32px 0 8px; }
+  .stat-card { background: #fff; border-radius: 10px; padding: 24px 20px 20px; border-top: 4px solid var(--teal); box-shadow: 0 2px 10px rgba(0,0,0,0.05); text-align: center; }
+  .stat-card.amber { border-top-color: var(--amber); }
+  .stat-number { font-family: 'Playfair Display', serif; font-size: 2.6rem; color: var(--navy); line-height: 1; margin-bottom: 8px; }
+  .stat-card.amber .stat-number { color: var(--amber); }
+  .stat-label { font-size: 13px; color: var(--muted); line-height: 1.4; }
+  .section-title { font-family: 'Playfair Display', serif; font-size: 1.4rem; color: var(--navy); margin: 40px 0 18px; display: flex; align-items: center; gap: 12px; }
+  .section-title::before { content: ''; display: inline-block; width: 28px; height: 3px; background: var(--amber); border-radius: 2px; flex-shrink: 0; }
+  .pop-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 12px; }
+  .pop-card { background: #fff; border-radius: 10px; padding: 20px 22px; box-shadow: 0 1px 8px rgba(0,0,0,0.05); }
+  .pop-header { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+  .pop-icon { width: 36px; height: 36px; border-radius: 8px; background: var(--teal-light); display: flex; align-items: center; justify-content: center; font-size: 17px; flex-shrink: 0; }
+  .pop-card.amber-card .pop-icon { background: var(--amber-light); }
+  .pop-card h3 { font-size: 14.5px; font-weight: 600; color: var(--navy); }
+  .pop-card p { font-size: 13.5px; color: var(--muted); line-height: 1.5; }
+  .pop-stat { display: inline-block; margin-top: 10px; background: var(--teal-light); color: var(--teal); font-size: 12px; font-weight: 600; padding: 3px 10px; border-radius: 12px; }
+  .pop-card.amber-card .pop-stat { background: var(--amber-light); color: var(--amber); }
+
+  /* Underserved spotlight */
+  .spotlight { background: var(--navy); color: #fff; border-radius: 12px; padding: 28px 32px; margin: 32px 0; }
+  .spotlight h3 { font-family: 'Playfair Display', serif; font-size: 1.2rem; color: #fde9d5; margin-bottom: 18px; }
+  .spotlight-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .spotlight-stat { background: rgba(255,255,255,0.08); border-radius: 10px; padding: 16px 18px; }
+  .spotlight-stat .num { font-family: 'Playfair Display', serif; font-size: 2rem; color: #fde9d5; line-height: 1; margin-bottom: 6px; }
+  .spotlight-stat p { font-size: 13px; color: rgba(255,255,255,0.75); line-height: 1.5; }
+
+  .barrier-list { list-style: none; margin-bottom: 28px; }
+  .barrier-list li { background: #fff; border-radius: 8px; padding: 14px 20px; margin-bottom: 10px; display: flex; align-items: flex-start; gap: 14px; box-shadow: 0 1px 5px rgba(0,0,0,0.05); font-size: 14.5px; }
+  .barrier-list li::before { content: '⚠'; font-size: 16px; flex-shrink: 0; margin-top: 2px; }
+  .callout { background: var(--teal); color: #fff; border-radius: 12px; padding: 28px 32px; margin: 32px 0; }
+  .callout h3 { font-family: 'Playfair Display', serif; font-size: 1.15rem; margin-bottom: 10px; }
+  .callout p { font-size: 14.5px; color: rgba(255,255,255,0.88); line-height: 1.65; }
+  .key-action { background: var(--teal-light); border-left: 4px solid var(--teal); border-radius: 0 10px 10px 0; padding: 20px 24px; margin: 28px 0; }
+  .key-action h3 { font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 1.5px; color: var(--teal); margin-bottom: 8px; }
+  .key-action p { font-size: 14.5px; }
+  .references { margin-top: 48px; padding-top: 24px; border-top: 1px solid var(--border); }
+  .references h4 { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: var(--muted); margin-bottom: 10px; }
+  .references p { font-size: 12px; color: var(--muted); line-height: 1.7; }
+  .footer { border-top: 1px solid var(--border); margin-top: 28px; padding-top: 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
+  .footer-left { font-size: 12.5px; color: var(--muted); }
+</style>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- SITE NAV -->
+  <style>
+    .site-nav { background: #1a2e44; padding: 0 40px; display: flex; align-items: center; justify-content: space-between; height: 52px; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 12px rgba(0,0,0,0.18); }
+    .site-nav-logo { font-family: 'DM Serif Display', serif; font-size: 1.1rem; color: #fff; text-decoration: none; letter-spacing: 0.5px; flex-shrink: 0; }
+    .site-nav-logo span { color: #2a8c82; }
+    .site-nav-links { display: flex; gap: 4px; align-items: center; flex-wrap: nowrap; overflow-x: auto; }
+    .site-nav-links a { color: rgba(255,255,255,0.6); text-decoration: none; font-family: 'DM Sans', sans-serif; font-size: 12.5px; font-weight: 500; padding: 5px 10px; border-radius: 6px; transition: background 0.15s, color 0.15s; white-space: nowrap; }
+    .site-nav-links a:hover { background: rgba(255,255,255,0.1); color: #fff; }
+    .site-nav-links a.current { background: #2a8c82; color: #fff; }
+  </style>
+  <nav class="site-nav">
+    <a href="index.html" class="site-nav-logo">RHC <span>Today</span></a>
+    <div class="site-nav-links">
+      <a href="index.html">Home</a>
+      <a href="00-mental-health-awareness-month.html" >MH Awareness</a>
+      <a href="01-risk-factors.html" >Issue 1</a>
+      <a href="02-populations-at-risk.html" class="current">Issue 2</a>
+      <a href="03-crisis-resources.html" >Issue 3</a>
+      <a href="04-behavioral-health-referrals.html" >Issue 4</a>
+      <a href="05-staff-response-skills.html" >Issue 5</a>
+      <a href="06-commitment-year-ahead.html" >Issue 6</a>
+    </div>
+  </nav>
+  <!-- END SITE NAV -->
+
+
+<div class="crisis-bar">
+  988 Suicide &amp; Crisis Lifeline: Call or Text <strong>988</strong><span>|</span>Crisis Text Line: Text <strong>HOME to 741741</strong>
+</div>
+
+<div class="header">
+  <div class="series-label">Zero Suicide Staff Education <span>Issue 2</span></div>
+  <h1>Populations at Higher Risk &amp; Barriers to Care</h1>
+  <div class="header-meta">Primary Care Clinic </div>
+</div>
+
+<div class="container">
+
+  <div class="intro">
+    Suicide risk is not evenly distributed. Certain groups in our patient population face <strong>elevated risk</strong> and are more likely to encounter barriers that prevent them from getting help. Awareness is the first step to equitable care.
+  </div>
+
+  <div class="clinic-goal">
+    <span style="font-size:22px;">🎯</span>
+    <div>
+      <span class="goal-label">Our Clinic Goal</span>
+      <strong>Every patient, every visit.</strong> The C-SSRS screening helps us reach patients who may not volunteer that they are struggling, including those from communities that historically underutilize mental health services.
+    </div>
+  </div>
+
+  <div class="stat-row">
+    <div class="stat-card">
+      <div class="stat-number">2x</div>
+      <div class="stat-label">Veterans are twice as likely to die by suicide compared to non-veterans</div>
+    </div>
+    <div class="stat-card amber">
+      <div class="stat-number">4x</div>
+      <div class="stat-label">LGBTQ+ youth attempt suicide at 4 times the rate of their peers</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">1 in 5</div>
+      <div class="stat-label">Adults with a substance use disorder reported suicidal ideation in the past year</div>
+    </div>
+  </div>
+  <p style="font-size:12.5px; color:var(--muted); margin-bottom:32px;">See references below.</p>
+
+  <div class="section-title">A Closer Look: Underserved Populations</div>
+
+  <div class="spotlight">
+    <h3>Stats You Should Know About Underserved Communities</h3>
+    <div class="spotlight-grid">
+      <div class="spotlight-stat">
+        <div class="num">3.5x</div>
+        <p>American Indian and Alaska Native individuals have the highest suicide rates of any racial or ethnic group in the U.S.</p>
+      </div>
+      <div class="spotlight-stat">
+        <div class="num">40%</div>
+        <p>of transgender adults report having attempted suicide at some point in their lifetime</p>
+      </div>
+      <div class="spotlight-stat">
+        <div class="num">60%</div>
+        <p>of people experiencing homelessness have a mental health condition, yet most go without treatment</p>
+      </div>
+      <div class="spotlight-stat">
+        <div class="num">2x</div>
+        <p>People with disabilities are more than twice as likely to experience suicidal ideation as those without disabilities</p>
+      </div>
+      <div class="spotlight-stat">
+        <div class="num">56%</div>
+        <p>of rural residents live in areas with a shortage of mental health professionals, increasing suicide risk for rural patients</p>
+      </div>
+      <div class="spotlight-stat">
+        <div class="num">1 in 3</div>
+        <p>Black adults with serious mental illness who need care do not receive it, often due to cost, distrust, and lack of culturally responsive services</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-title">Populations Seen in Our Clinic</div>
+
+  <div class="pop-grid">
+    <div class="pop-card">
+      <div class="pop-header"><div class="pop-icon">🧠</div><h3>Mental Health Conditions</h3></div>
+      <p>Depression, bipolar disorder, schizophrenia, PTSD, and anxiety disorders significantly elevate risk, especially when untreated or newly diagnosed.</p>
+      <span class="pop-stat">Highest clinical risk factor</span>
+    </div>
+    <div class="pop-card amber-card">
+      <div class="pop-header"><div class="pop-icon">💊</div><h3>Substance Use Disorders</h3></div>
+      <p>Alcohol and drug use impair judgment, increase impulsivity, and worsen depression. Co-occurring SUD and mental health conditions multiply risk substantially.</p>
+      <span class="pop-stat">Often underscreened</span>
+    </div>
+    <div class="pop-card amber-card">
+      <div class="pop-header"><div class="pop-icon">🏥</div><h3>Chronic Medical Conditions</h3></div>
+      <p>Chronic pain, cancer, diabetes, heart disease, and neurological conditions are associated with elevated suicide risk, especially when patients feel quality of life is declining.</p>
+      <span class="pop-stat">Frequently seen in primary care</span>
+    </div>
+    <div class="pop-card">
+      <div class="pop-header"><div class="pop-icon">♿</div><h3>Individuals with Disabilities</h3></div>
+      <p>Physical, cognitive, and sensory disabilities can contribute to isolation, dependence, financial strain, and reduced quality of life, all risk factors for suicidal ideation.</p>
+      <span class="pop-stat">May underreport distress</span>
+    </div>
+    <div class="pop-card">
+      <div class="pop-header"><div class="pop-icon">🏠</div><h3>Social and Economic Barriers</h3></div>
+      <p>Patients facing housing instability, food insecurity, unemployment, or lack of insurance face compounding stressors with fewer resources and fewer safety nets.</p>
+      <span class="pop-stat">Social determinants matter</span>
+    </div>
+    <div class="pop-card amber-card">
+      <div class="pop-header"><div class="pop-icon">🌍</div><h3>Historically Marginalized Groups</h3></div>
+      <p>LGBTQ+ individuals, racial and ethnic minorities, and immigrant populations may face discrimination, stigma, and mistrust of healthcare, all of which increase risk and reduce help-seeking.</p>
+      <span class="pop-stat">Trust is foundational</span>
+    </div>
+  </div>
+
+  <div class="section-title">Common Barriers to Getting Help</div>
+  <ul class="barrier-list">
+    <li><strong>Stigma:</strong>&nbsp; Many patients feel shame about mental health struggles and fear being judged, even by healthcare staff.</li>
+    <li><strong>Language and cultural differences:</strong>&nbsp; Limited English proficiency or cultural norms around emotional expression can prevent disclosure.</li>
+    <li><strong>Past negative experiences:</strong>&nbsp; Distrust of healthcare systems, especially among marginalized communities, creates reluctance to seek care.</li>
+    <li><strong>Access:</strong>&nbsp; Transportation, cost, insurance gaps, and long wait times for behavioral health services are real obstacles.</li>
+    <li><strong>Fear of consequences:</strong>&nbsp; Patients may worry that disclosing suicidal thoughts will lead to hospitalization, job loss, or loss of custody.</li>
+  </ul>
+
+  <div class="callout">
+    <h3>Your role in reducing barriers</h3>
+    <p>You cannot fix systemic barriers alone, but you can reduce them in your daily interactions. A non-judgmental tone, a warm handoff, asking directly about distress, and following through on referrals all make a meaningful difference for patients who might otherwise fall through the cracks.</p>
+  </div>
+
+  <div class="key-action">
+    <h3>Your Action as Staff</h3>
+    <p>When working with any patient in a higher-risk group, pay extra attention to signs of distress and ensure behavioral health resources are offered, not just available. A proactive offer communicates that it is safe to ask for help here.</p>
+  </div>
+
+  <div class="references">
+    <h4>References</h4>
+    <p>
+      U.S. Department of Veterans Affairs. (2023). <em>National veteran suicide prevention annual report.</em> https://www.mentalhealth.va.gov<br>
+      Centers for Disease Control and Prevention (CDC). (2022). <em>Suicide prevention: risk and protective factors.</em> https://www.cdc.gov/suicide<br>
+      Trevor Project. (2022). <em>2022 national survey on LGBTQ youth mental health.</em> https://www.thetrevorproject.org<br>
+      Substance Abuse and Mental Health Services Administration (SAMHSA). (2022). <em>Key substance use and mental health indicators in the United States.</em> https://www.samhsa.gov/data<br>
+      National Alliance on Mental Illness (NAMI). (2023). <em>Mental health by the numbers.</em> https://www.nami.org<br>
+      Gonzales, G., et al. (2016). Transgender identity and experiences of violence victimization, substance use, suicide risk, and sexual risk behaviors among adults in the U.S. <em>American Journal of Public Health, 106</em>(2), 327-333.<br>
+      Rural Health Information Hub. (2023). <em>Rural mental health.</em> https://www.ruralhealthinfo.org<br>
+      Emerson, E., et al. (2016). Prevalence of psychiatric conditions and unmet need for mental health care among people with disabilities. <em>Disability and Health Journal, 9</em>(3), 525-532.
+    </p>
+  </div>
+
+  <div class="footer">
+    <div class="footer-left">Zero Suicide Staff Education Series &nbsp;·&nbsp; Primary Care Clinic &nbsp;·&nbsp; Issue 2</div>
+  </div>
+
+</div>
+</body>
+</html>

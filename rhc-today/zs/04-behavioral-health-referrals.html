@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zero Suicide Staff Education | Issue 4: Behavioral Health Referrals</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Source+Sans+3:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1a2e44; --teal: #2a8c82; --teal-light: #e6f4f3;
+    --purple: #5b4fcf; --purple-light: #eeecfa;
+    --amber: #e07b39; --amber-light: #fdf1e8;
+    --cream: #faf8f5; --text: #2c3340; --muted: #6b7685; --border: #dde3eb;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Source Sans 3', sans-serif; background: var(--cream); color: var(--text); line-height: 1.7; font-size: 16px; }
+  .crisis-bar { background: #c0392b; color: #fff; text-align: center; padding: 12px 24px; font-size: 14px; font-weight: 600; }
+  .crisis-bar span { font-weight: 300; margin: 0 8px; }
+  .header { background: var(--purple); color: #fff; padding: 40px 48px 36px; position: relative; overflow: hidden; }
+  .header::after { content: ''; position: absolute; left: -80px; bottom: -80px; width: 300px; height: 300px; border-radius: 50%; background: rgba(255,255,255,0.07); }
+  .series-label { font-size: 11px; font-weight: 600; letter-spacing: 2.5px; text-transform: uppercase; color: rgba(255,255,255,0.65); margin-bottom: 10px; display: flex; align-items: center; gap: 10px; }
+  .series-label span { display: inline-block; background: rgba(255,255,255,0.2); color: #fff; border-radius: 20px; padding: 2px 10px; font-size: 10px; letter-spacing: 1.5px; }
+  .header h1 { font-family: 'Playfair Display', serif; font-size: 2.5rem; line-height: 1.2; max-width: 600px; position: relative; z-index: 1; }
+  .header-meta { margin-top: 14px; font-size: 13px; color: rgba(255,255,255,0.5); }
+  .container { max-width: 860px; margin: 0 auto; padding: 0 32px 60px; }
+  .intro { background: #fff; border-left: 4px solid var(--purple); padding: 24px 28px; margin: 36px 0 24px; border-radius: 0 8px 8px 0; font-size: 1.05rem; font-weight: 300; }
+  .intro strong { font-weight: 600; color: var(--navy); }
+  .clinic-goal { background: var(--purple); color: #fff; border-radius: 10px; padding: 16px 24px; margin-bottom: 32px; display: flex; align-items: center; gap: 14px; font-size: 15px; }
+  .clinic-goal .goal-label { font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.65); display: block; margin-bottom: 3px; }
+  .stat-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 32px 0 8px; }
+  .stat-card { background: #fff; border-radius: 10px; padding: 24px 20px 20px; border-top: 4px solid var(--teal); box-shadow: 0 2px 10px rgba(0,0,0,0.05); text-align: center; }
+  .stat-card.purple { border-top-color: var(--purple); }
+  .stat-number { font-family: 'Playfair Display', serif; font-size: 2.6rem; color: var(--navy); line-height: 1; margin-bottom: 8px; }
+  .stat-card.purple .stat-number { color: var(--purple); }
+  .stat-label { font-size: 13px; color: var(--muted); line-height: 1.4; }
+  .section-title { font-family: 'Playfair Display', serif; font-size: 1.4rem; color: var(--navy); margin: 40px 0 18px; display: flex; align-items: center; gap: 12px; }
+  .section-title::before { content: ''; display: inline-block; width: 28px; height: 3px; background: var(--purple); border-radius: 2px; flex-shrink: 0; }
+  .refer-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 28px; }
+  .refer-item { background: #fff; border-radius: 10px; padding: 18px 20px; box-shadow: 0 1px 8px rgba(0,0,0,0.05); display: flex; gap: 14px; align-items: flex-start; }
+  .refer-icon { width: 36px; height: 36px; background: var(--purple-light); color: var(--purple); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 17px; flex-shrink: 0; }
+  .refer-item strong { display: block; font-size: 14.5px; font-weight: 600; color: var(--navy); margin-bottom: 3px; }
+  .refer-item span { font-size: 13px; color: var(--muted); }
+
+  /* Equity spotlight */
+  .equity-box { background: var(--navy); color: #fff; border-radius: 12px; padding: 28px 32px; margin: 32px 0; }
+  .equity-box h3 { font-family: 'Playfair Display', serif; font-size: 1.15rem; color: #ddd8ff; margin-bottom: 14px; }
+  .equity-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .eq-stat { background: rgba(255,255,255,0.08); border-radius: 10px; padding: 16px 18px; }
+  .eq-stat .num { font-family: 'Playfair Display', serif; font-size: 1.9rem; color: #ddd8ff; line-height: 1; margin-bottom: 6px; }
+  .eq-stat p { font-size: 13px; color: rgba(255,255,255,0.75); line-height: 1.5; }
+
+  .handoff-steps { list-style: none; margin-bottom: 28px; }
+  .handoff-steps li { background: #fff; border-radius: 10px; padding: 16px 22px; margin-bottom: 10px; display: flex; gap: 16px; align-items: flex-start; box-shadow: 0 1px 6px rgba(0,0,0,0.05); }
+  .step-bullet { width: 10px; height: 10px; border-radius: 50%; background: var(--purple); flex-shrink: 0; margin-top: 8px; }
+  .handoff-steps li p { font-size: 14.5px; }
+  .handoff-steps li strong { color: var(--navy); }
+  .barrier-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 0; margin-bottom: 28px; border-radius: 10px; overflow: hidden; box-shadow: 0 1px 8px rgba(0,0,0,0.06); }
+  .barrier-col { padding: 20px 22px; }
+  .barrier-col:first-child { background: #fff5f5; border-right: 1px solid #f0e0e0; }
+  .barrier-col:last-child { background: var(--purple-light); }
+  .barrier-col h4 { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 10px; }
+  .barrier-col:first-child h4 { color: #c0392b; }
+  .barrier-col:last-child h4 { color: var(--purple); }
+  .barrier-col p { font-size: 13.5px; line-height: 1.55; }
+  .callout { background: var(--navy); color: #fff; border-radius: 12px; padding: 28px 32px; margin: 32px 0; }
+  .callout h3 { font-family: 'Playfair Display', serif; font-size: 1.15rem; margin-bottom: 10px; color: #e0dcfa; }
+  .callout p { font-size: 14.5px; color: rgba(255,255,255,0.8); line-height: 1.65; }
+  .key-action { background: var(--purple-light); border-left: 4px solid var(--purple); border-radius: 0 10px 10px 0; padding: 20px 24px; margin: 28px 0; }
+  .key-action h3 { font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 1.5px; color: var(--purple); margin-bottom: 8px; }
+  .key-action p { font-size: 14.5px; }
+  .references { margin-top: 48px; padding-top: 24px; border-top: 1px solid var(--border); }
+  .references h4 { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: var(--muted); margin-bottom: 10px; }
+  .references p { font-size: 12px; color: var(--muted); line-height: 1.7; }
+  .footer { border-top: 1px solid var(--border); margin-top: 28px; padding-top: 20px; display: flex; justify-content: space-between; align-items: center; }
+  .footer-left { font-size: 12.5px; color: var(--muted); }
+</style>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- SITE NAV -->
+  <style>
+    .site-nav { background: #1a2e44; padding: 0 40px; display: flex; align-items: center; justify-content: space-between; height: 52px; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 12px rgba(0,0,0,0.18); }
+    .site-nav-logo { font-family: 'DM Serif Display', serif; font-size: 1.1rem; color: #fff; text-decoration: none; letter-spacing: 0.5px; flex-shrink: 0; }
+    .site-nav-logo span { color: #2a8c82; }
+    .site-nav-links { display: flex; gap: 4px; align-items: center; flex-wrap: nowrap; overflow-x: auto; }
+    .site-nav-links a { color: rgba(255,255,255,0.6); text-decoration: none; font-family: 'DM Sans', sans-serif; font-size: 12.5px; font-weight: 500; padding: 5px 10px; border-radius: 6px; transition: background 0.15s, color 0.15s; white-space: nowrap; }
+    .site-nav-links a:hover { background: rgba(255,255,255,0.1); color: #fff; }
+    .site-nav-links a.current { background: #2a8c82; color: #fff; }
+  </style>
+  <nav class="site-nav">
+    <a href="index.html" class="site-nav-logo">RHC <span>Today</span></a>
+    <div class="site-nav-links">
+      <a href="index.html">Home</a>
+      <a href="00-mental-health-awareness-month.html" >MH Awareness</a>
+      <a href="01-risk-factors.html" >Issue 1</a>
+      <a href="02-populations-at-risk.html" >Issue 2</a>
+      <a href="03-crisis-resources.html" >Issue 3</a>
+      <a href="04-behavioral-health-referrals.html" class="current">Issue 4</a>
+      <a href="05-staff-response-skills.html" >Issue 5</a>
+      <a href="06-commitment-year-ahead.html" >Issue 6</a>
+    </div>
+  </nav>
+  <!-- END SITE NAV -->
+
+
+<div class="crisis-bar">
+  988 Suicide &amp; Crisis Lifeline: Call or Text <strong>988</strong><span>|</span>Crisis Text Line: Text <strong>HOME to 741741</strong>
+</div>
+
+<div class="header">
+  <div class="series-label">Zero Suicide Staff Education <span>Issue 4</span></div>
+  <h1>Behavioral Health Referrals &amp; Resources</h1>
+  <div class="header-meta">Primary Care Clinic </div>
+</div>
+
+<div class="container">
+
+  <div class="intro">
+    Connecting a patient to behavioral health care is one of the most impactful things we can do. But a referral is only as good as the <strong>follow-through</strong>: how we offer it, how we hand it off, and whether we confirm it actually happens.
+  </div>
+
+  <div class="clinic-goal">
+    <span style="font-size:22px;">🎯</span>
+    <div>
+      <span class="goal-label">Our Clinic Goal</span>
+      <strong>Every patient, every visit.</strong> A C-SSRS screen that identifies risk is only valuable if a warm referral follows. Screening without action leaves patients at the same place they started.
+    </div>
+  </div>
+
+  <div class="stat-row">
+    <div class="stat-card purple">
+      <div class="stat-number">45%</div>
+      <div class="stat-label">of patients referred for mental health never attend their first appointment</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">4x</div>
+      <div class="stat-label">A warm handoff increases the likelihood a patient follows through on a referral</div>
+    </div>
+    <div class="stat-card purple">
+      <div class="stat-number">1 in 2</div>
+      <div class="stat-label">patients with mental health needs seen in primary care are not identified or treated</div>
+    </div>
+  </div>
+  <p style="font-size:12.5px; color:var(--muted); margin-bottom:32px;">See references below.</p>
+
+  <div class="equity-box">
+    <h3>Equity in Referrals: What the Data Shows</h3>
+    <div class="equity-stats">
+      <div class="eq-stat">
+        <div class="num">3x</div>
+        <p>Black, Hispanic, and Asian patients are significantly less likely to receive a mental health referral compared to white patients with similar diagnoses</p>
+      </div>
+      <div class="eq-stat">
+        <div class="num">50%</div>
+        <p>of rural patients referred for behavioral health face barriers such as no local providers, no transportation, or no insurance coverage</p>
+      </div>
+      <div class="eq-stat">
+        <div class="num">68%</div>
+        <p>of LGBTQ+ individuals report difficulty finding affirming mental health care, making the referral source and framing especially important</p>
+      </div>
+      <div class="eq-stat">
+        <div class="num">2 in 3</div>
+        <p>patients with limited English proficiency do not receive behavioral health follow-up after a primary care referral, often due to language access gaps</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-title">When Should a Referral Happen?</div>
+  <div class="refer-grid">
+    <div class="refer-item">
+      <div class="refer-icon">😔</div>
+      <div>
+        <strong>Any mention of hopelessness or suicidal thoughts</strong>
+        <span>Even vague statements warrant a clinical check-in and referral consideration</span>
+      </div>
+    </div>
+    <div class="refer-item">
+      <div class="refer-icon">😰</div>
+      <div>
+        <strong>Elevated C-SSRS or depression screening scores</strong>
+        <span>PHQ-9 scores of 10 or above are a threshold for behavioral health follow-up</span>
+      </div>
+    </div>
+    <div class="refer-item">
+      <div class="refer-icon">💊</div>
+      <div>
+        <strong>Substance use concerns</strong>
+        <span>Any disclosure of risky alcohol or drug use warrants at minimum a brief intervention</span>
+      </div>
+    </div>
+    <div class="refer-item">
+      <div class="refer-icon">😤</div>
+      <div>
+        <strong>Chronic stress, grief, or life disruption</strong>
+        <span>Job loss, bereavement, domestic violence, or caregiver strain all elevate risk</span>
+      </div>
+    </div>
+    <div class="refer-item">
+      <div class="refer-icon">🏥</div>
+      <div>
+        <strong>New chronic diagnosis or worsening condition</strong>
+        <span>Patients adjusting to major illness often need emotional support, not just medical care</span>
+      </div>
+    </div>
+    <div class="refer-item">
+      <div class="refer-icon">🔄</div>
+      <div>
+        <strong>Repeated visits with unexplained symptoms</strong>
+        <span>Frequent high-utilizers with no clear medical cause may be experiencing mental health distress</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-title">What Is a Warm Handoff?</div>
+  <p style="font-size:14.5px; color:var(--muted); margin-bottom:16px;">A warm handoff means personally connecting the patient to the next person in their care, not just handing them a number or a paper referral.</p>
+
+  <ul class="handoff-steps">
+    <li>
+      <div class="step-bullet"></div>
+      <p><strong>Introduce the behavioral health team member by name.</strong> Even a brief introduction dramatically increases follow-through and removes the feeling that patients are being handed off or dismissed.</p>
+    </li>
+    <li>
+      <div class="step-bullet"></div>
+      <p><strong>Frame the referral positively.</strong> "We want to make sure you have as much support as possible" is more welcoming than "we're referring you for mental health."</p>
+    </li>
+    <li>
+      <div class="step-bullet"></div>
+      <p><strong>Give them something tangible before they leave.</strong> A phone number, a scheduled follow-up appointment, or a printed resource. Remove as many steps as possible between the patient and care.</p>
+    </li>
+    <li>
+      <div class="step-bullet"></div>
+      <p><strong>Document the referral and the patient's response.</strong> Did they agree? Express hesitation? This informs the follow-up plan and ensures continuity.</p>
+    </li>
+  </ul>
+
+  <div class="section-title">Addressing Common Patient Hesitations</div>
+  <div class="barrier-pair">
+    <div class="barrier-col">
+      <h4>What patients often say</h4>
+      <p>"I don't need therapy." / "I can handle it myself." / "I can't afford it." / "I don't have time." / "That's not really my thing."</p>
+    </div>
+    <div class="barrier-col">
+      <h4>What staff can say</h4>
+      <p>"It's just a conversation; you can see what you think." / "We have options that may fit your schedule and budget." / "A lot of our patients find it really helpful even after just one visit."</p>
+    </div>
+  </div>
+
+  <div class="callout">
+    <h3>The referral gap is real and closeable.</h3>
+    <p>Research consistently shows the biggest drop-off in behavioral health access happens between the referral and the first appointment. Warm handoffs, reduced wait times, and proactive follow-up calls have all been shown to close this gap meaningfully. These are not extra steps; they are the care.</p>
+  </div>
+
+  <div class="key-action">
+    <h3>Your Action as Staff</h3>
+    <p>Know what behavioral health services are available at our clinic and in the community. When you offer a referral, make it easy, not just available. And if a patient hesitates, note it and let the care team know so follow-up can happen.</p>
+  </div>
+
+  <div class="references">
+    <h4>References</h4>
+    <p>
+      Substance Abuse and Mental Health Services Administration (SAMHSA). (2022). <em>Behavioral health integration in primary care.</em> https://www.samhsa.gov<br>
+      Agency for Healthcare Research and Quality (AHRQ). (2021). <em>Warm handoff strategies to improve care transitions for patients with mental health conditions.</em> https://www.ahrq.gov<br>
+      Bridges, A.J., et al. (2014). Referral and attendance in primary care behavioral health: Does race/ethnicity matter? <em>Journal of Health Disparities Research and Practice, 7</em>(4).<br>
+      Andrilla, C.H.A., et al. (2018). Geographic variation in the supply of selected behavioral health providers. <em>American Journal of Preventive Medicine, 54</em>(6S3), S199-S207.<br>
+      National Institute on Minority Health and Health Disparities (NIMHD). (2022). <em>Mental health and mental health care for racial and ethnic minority populations.</em> https://www.nimhd.nih.gov
+    </p>
+  </div>
+
+  <div class="footer">
+    <div class="footer-left">Zero Suicide Staff Education Series &nbsp;·&nbsp; Primary Care Clinic &nbsp;·&nbsp; Issue 4</div>
+  </div>
+
+</div>
+</body>
+</html>
