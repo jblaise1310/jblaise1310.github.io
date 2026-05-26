@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PCC Provider 1:1 Program — Dashboard Overview</title>
+<style>
+  :root {
+    --teal:#0F6E56;--tmd:#1D9E75;--tlt:#E1F5EE;--tbd:#9FE1CB;
+    --navy:#1A1A2E;--navy-lt:#2D2D4A;
+    --gold:#BA7517;--glt:#FAEEDA;--gbd:#FAC775;
+    --text:#1A202C;--t2:#4A5568;--t3:#718096;
+    --bdr:#E2E8F0;--surf:#FFFFFF;--bg:#F7F8FA;
+    --r:8px;--rl:12px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);font-size:15px;line-height:1.6}
+
+  /* Header */
+  .header{background:var(--teal);padding:40px 48px 36px;color:#fff}
+  .header-label{font-size:12px;font-weight:500;text-transform:uppercase;letter-spacing:.1em;opacity:.7;margin-bottom:8px}
+  .header-title{font-size:32px;font-weight:700;margin-bottom:6px;line-height:1.2}
+  .header-sub{font-size:15px;opacity:.8}
+
+  /* Shell */
+  .shell{max-width:920px;margin:0 auto;padding:40px 48px 80px}
+
+  /* Intro */
+  .intro{background:var(--surf);border:1px solid var(--bdr);border-radius:var(--rl);padding:24px 28px;margin-bottom:36px;font-size:15px;color:var(--t2);line-height:1.8}
+  .intro p + p{margin-top:10px}
+
+  /* Dashboard cards */
+  .card{background:var(--surf);border:1px solid var(--bdr);border-radius:var(--rl);overflow:hidden;margin-bottom:28px}
+  .card-header{padding:22px 28px 20px;display:flex;align-items:flex-start;gap:18px;border-bottom:1px solid var(--bdr)}
+  .card-icon{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;margin-top:2px}
+  .card-header-text{}
+  .card-title{font-size:18px;font-weight:700;color:var(--text);margin-bottom:3px}
+  .card-audience{font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;padding:3px 10px;border-radius:99px;display:inline-block;margin-bottom:6px}
+  .card-desc{font-size:14px;color:var(--t2);line-height:1.7}
+  .card-filename{font-size:12px;font-family:monospace;background:var(--bg);padding:4px 10px;border-radius:6px;border:1px solid var(--bdr);color:var(--t3);margin-top:8px;display:inline-block}
+
+  /* Tabs inside card */
+  .tabs-section{padding:22px 28px 0}
+  .tabs-label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--t3);margin-bottom:14px}
+  .tab-list{display:flex;flex-direction:column;gap:0;border:1px solid var(--bdr);border-radius:var(--r);overflow:hidden;margin-bottom:22px}
+  .tab-row{display:grid;grid-template-columns:180px 1fr;border-bottom:1px solid var(--bdr)}
+  .tab-row:last-child{border-bottom:none}
+  .tab-name{padding:13px 16px;font-size:13px;font-weight:600;color:#fff;display:flex;align-items:center;gap:8px}
+  .tab-name span{font-size:16px}
+  .tab-body{padding:13px 18px;font-size:13px;color:var(--t2);line-height:1.65;border-left:1px solid var(--bdr)}
+
+  /* Feature bullets */
+  .features{padding:0 28px 24px}
+  .feature-list{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  @media(max-width:640px){.feature-list{grid-template-columns:1fr}}
+  .feature{display:flex;gap:10px;align-items:flex-start;background:var(--bg);border-radius:var(--r);padding:11px 14px}
+  .feature-icon{font-size:16px;flex-shrink:0;margin-top:1px}
+  .feature-text{font-size:13px;color:var(--t2);line-height:1.5}
+  .feature-text strong{color:var(--text);font-weight:600;display:block;margin-bottom:1px}
+
+  /* Quick ref */
+  .quick-ref{background:var(--surf);border:1px solid var(--bdr);border-radius:var(--rl);padding:24px 28px;margin-bottom:28px}
+  .qr-title{font-size:15px;font-weight:600;color:var(--text);margin-bottom:16px}
+  .qr-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media(max-width:640px){.qr-grid{grid-template-columns:1fr}}
+  .qr-card{border-radius:var(--r);padding:14px 16px;border:1px solid}
+  .qr-label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;margin-bottom:5px}
+  .qr-text{font-size:13px;line-height:1.6}
+
+  /* Divider */
+  .divider{border:none;border-top:1px solid var(--bdr);margin:36px 0}
+
+  @media print{
+    .header{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    .tab-name{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    .card{break-inside:avoid}
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-label">Pagosa Springs Community Center &nbsp;&middot;&nbsp; Provider 1:1 Program</div>
+  <div class="header-title">Dashboard Overview</div>
+  <div class="header-sub">A brief guide to your two tools &nbsp;&middot;&nbsp; Q1 2026</div>
+</div>
+
+<div class="shell">
+
+  <div class="intro">
+    <p>The provider 1:1 program now has two separate HTML files. Each is designed for a different moment in your workflow. This page gives you a quick reference for what each one does, what tabs it contains, and when to use it.</p>
+    <p>Both files open in any browser — no login, no installation. Just download and open. Charts load automatically as long as you have an internet connection.</p>
+  </div>
+
+  <!-- ── FILE 1: PROVIDER DASHBOARD ── -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon" style="background:var(--tlt)">&#128202;</div>
+      <div class="card-header-text">
+        <div class="card-audience" style="background:var(--tlt);color:var(--teal)">Shared with providers</div>
+        <div class="card-title">PCC Provider 1:1 Dashboard</div>
+        <div class="card-desc">The main dashboard you use in meetings and post on the site. Designed to be viewed together with providers — everything in it is appropriate for them to see. Contains collective data, peer comparison tools, and individual provider reports.</div>
+        <div class="card-filename"><a href="https://jblaise1310.github.io/provider-reports/provider-view.html" target="_blank" style="color:var(--teal);text-decoration:none">jblaise1310.github.io/provider-reports/provider-view.html</a></div>
+      </div>
+    </div>
+
+    <div class="tabs-section">
+      <div class="tabs-label">What each tab does</div>
+      <div class="tab-list">
+        <div class="tab-row">
+          <div class="tab-name" style="background:var(--teal)"><span>&#9776;</span> Collective Dashboard</div>
+          <div class="tab-body">The big picture. Shows overall visit volume, after-hours and message center burden, panel sizes, specialty encounter trends, surgical case comparisons, appointment wait times, and no-show totals — all as charts. Ends with the Director Analysis: three color-coded sections covering what is going well, what to monitor, and what needs action. <strong>Use this as a starting point for leadership discussions.</strong></div>
+        </div>
+        <div class="tab-row">
+          <div class="tab-name" style="background:#4A5568"><span>&#8652;</span> Provider Comparison</div>
+          <div class="tab-body">Side-by-side charts for all primary care providers — visits per day trends, after-hours trends, message center trends, EHR documentation time, no-shows, and a burnout risk composite score. Also includes a bubble chart plotting workload against after-hours burden. <strong>Use this to spot patterns across the group and identify outliers.</strong></div>
+        </div>
+        <div class="tab-row">
+          <div class="tab-name" style="background:#639922"><span>&#128101;</span> Peer Benchmark</div>
+          <div class="tab-body">A privacy-respecting self-comparison tool. A provider selects their own name from a dropdown and sees their metrics highlighted alongside anonymized peers labeled Provider A, B, C. They can see exactly where they stand without seeing who the others are. Their own bars and lines appear in green; all peers appear in grey. <strong>Show this during individual interviews so providers can see their own context.</strong></div>
+        </div>
+        <div class="tab-row">
+          <div class="tab-name" style="background:var(--gold)"><span>&#128203;</span> Individual Reports</div>
+          <div class="tab-body">Click any provider name to open their full report — key indicator cards (next available appointment, next new patient slot, average visits per day), a monthly metrics table, four to six mini-charts, and their interview notes summary. A <strong>Print report</strong> button at the top lets you print a clean one-page handout to share with the provider during the meeting.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="features">
+      <div class="tabs-label">Key features</div>
+      <div class="feature-list">
+        <div class="feature"><div class="feature-icon">&#128197;</div><div class="feature-text"><strong>Q1 2026 data</strong>January through April, with Q4 2025 context where relevant</div></div>
+        <div class="feature"><div class="feature-icon">&#128065;</div><div class="feature-text"><strong>Blinded peer comparison</strong>Providers see their rank without seeing colleagues' names</div></div>
+        <div class="feature"><div class="feature-icon">&#128438;</div><div class="feature-text"><strong>Print-ready individual reports</strong>Clean formatted output for in-meeting handout</div></div>
+        <div class="feature"><div class="feature-icon">&#127381;</div><div class="feature-text"><strong>Walk-in providers separated</strong>Brown and Liverett shown in their own section with appropriate context</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── FILE 2: DIRECTOR VIEW ── -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon" style="background:#FADBD8">&#128274;</div>
+      <div class="card-header-text">
+        <div class="card-audience" style="background:#FADBD8;color:#A32D2D">Director use only &mdash; not for provider distribution</div>
+        <div class="card-title">PCC Director View</div>
+        <div class="card-desc">Vicki's private prep tool. Contains everything needed to prepare for each individual 1:1 — forecasting, risk scores, data anomalies to be aware of, open action items, and suggested talking points. Never shown to providers directly.</div>
+        <div class="card-filename"><a href="https://jblaise1310.github.io/provider-reports/director-view.html" target="_blank" style="color:#A32D2D;text-decoration:none">jblaise1310.github.io/provider-reports/director-view.html</a></div>
+      </div>
+    </div>
+
+    <div class="tabs-section">
+      <div class="tabs-label">What it contains — per provider</div>
+      <div class="tab-list">
+        <div class="tab-row">
+          <div class="tab-name" style="background:var(--navy)"><span>&#128270;</span> Provider selector</div>
+          <div class="tab-body">Choose any provider from the dropdown — Primary Care, Specialty, or Behavioral Health. The full prep view populates instantly. A <strong>Print prep packet</strong> button at the top lets you print everything for that provider before the meeting.</div>
+        </div>
+        <div class="tab-row">
+          <div class="tab-name" style="background:#6B46C1"><span>&#128200;</span> Burnout risk score</div>
+          <div class="tab-body">A composite score from 0 to 100 built from four weighted factors: after-hours EHR % (40%), message center % (25%), EHR documentation time (20%), and no-show rate (15%). Each factor shows as a bar so you can see what is driving the score. Color-coded: green is low risk, amber is moderate, red is high.</div>
+        </div>
+        <div class="tab-row">
+          <div class="tab-name" style="background:var(--teal)"><span>&#128202;</span> Performance trends</div>
+          <div class="tab-body">Charts spanning Q4 2025 and Q1 2026 together — visits per day and after-hours across eight months so you can see the full trajectory, not just the most recent quarter.</div>
+        </div>
+        <div class="tab-row">
+          <div class="tab-name" style="background:#D4830A"><span>&#128257;</span> Panel forecast</div>
+          <div class="tab-body">For providers with panels, shows actual panel size through April 2026 projected forward through October 2026 at the current monthly growth rate. Threshold lines mark the attention level and capacity concern level. For declining panels (RSM, Zappone) the chart shows the drop with a note explaining the concern.</div>
+        </div>
+        <div class="tab-row">
+          <div class="tab-name" style="background:#534AB7"><span>&#128221;</span> Items of note</div>
+          <div class="tab-body">Numbered flags Vicki needs to know before the interview — data anomalies (like the EHR formula error for certain providers), context notes (Mashburn returning from maternity leave), unresolved issues from prior interviews (Hintzman's February data distortion, Abbas's contract renewal), and anything that should not be presented to the provider without verification first.</div>
+        </div>
+        <div class="tab-row">
+          <div class="tab-name" style="background:#A32D2D"><span>&#9989;</span> Open action items</div>
+          <div class="tab-body">A table of carry-forward action items from Q3 and Q4 2025 interviews, with current status (Completed, In Progress, Planned, Not Started), owner, and due date. Lets Vicki close the loop on prior commitments at the start of each interview.</div>
+        </div>
+        <div class="tab-row">
+          <div class="tab-name" style="background:#1E8449"><span>&#128172;</span> Conversation guide</div>
+          <div class="tab-body">Suggested talking points tailored to each provider's specific data patterns. Each point has a topic label and a suggested question in quotes. These are grounded in what the data actually shows — not generic check-in questions.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="features">
+      <div class="tabs-label">Key features</div>
+      <div class="feature-list">
+        <div class="feature"><div class="feature-icon">&#128274;</div><div class="feature-text"><strong>Director-only content</strong>Burnout scores, risk flags, and talking points never visible to providers</div></div>
+        <div class="feature"><div class="feature-icon">&#128257;</div><div class="feature-text"><strong>Six-month panel forecast</strong>Projected with threshold lines for attention and capacity concern</div></div>
+        <div class="feature"><div class="feature-icon">&#128203;</div><div class="feature-text"><strong>Open action item tracker</strong>Status of every carry-forward item from Q3/Q4 2025</div></div>
+        <div class="feature"><div class="feature-icon">&#128438;</div><div class="feature-text"><strong>Print prep packet</strong>One-click print of the full director prep sheet before each interview</div></div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- Quick reference -->
+  <div class="quick-ref">
+    <div class="qr-title">Quick reference &mdash; which file to use when</div>
+    <div class="qr-grid">
+      <div class="qr-card" style="background:var(--tlt);border-color:var(--tbd)">
+        <div class="qr-label" style="color:var(--teal)">Before the interview</div>
+        <div class="qr-text" style="color:var(--t2)">Open the <strong style="color:var(--text)">Director View</strong>. Select the provider, review the burnout score and items of note, check open action items, read through the talking points. Print your prep packet.</div>
+      </div>
+      <div class="qr-card" style="background:var(--tlt);border-color:var(--tbd)">
+        <div class="qr-label" style="color:var(--teal)">During the interview</div>
+        <div class="qr-text" style="color:var(--t2)">Open the <strong style="color:var(--text)">Provider Dashboard</strong>. Go to Individual Reports, select the provider, and show them their report. Use the Peer Benchmark tab to show blinded comparison. Print their report to hand to them.</div>
+      </div>
+      <div class="qr-card" style="background:var(--tlt);border-color:var(--tbd)">
+        <div class="qr-label" style="color:var(--teal)">Leadership presentations</div>
+        <div class="qr-text" style="color:var(--t2)">Use the <strong style="color:var(--text)">Provider Dashboard</strong>, Collective tab. The Director Analysis at the bottom is written for leadership review. The charts are sized for screen sharing.</div>
+      </div>
+      <div class="qr-card" style="background:var(--tlt);border-color:var(--tbd)">
+        <div class="qr-label" style="color:var(--teal)">Posting to the site</div>
+        <div class="qr-text" style="color:var(--t2)">The <strong style="color:var(--text)">Provider Dashboard</strong> is live at <a href="https://jblaise1310.github.io/provider-reports/provider-view.html" target="_blank" style="color:var(--teal)">provider-view.html</a>. The Director View at <a href="https://jblaise1310.github.io/provider-reports/director-view.html" target="_blank" style="color:#A32D2D">director-view.html</a> should be kept for Vicki only &mdash; do not share that link with providers.</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="text-align:center;font-size:12px;color:var(--t3);margin-top:8px">
+    PCC Provider 1:1 Program &nbsp;&middot;&nbsp; Q1 2026 &nbsp;&middot;&nbsp; Both dashboards are live on GitHub Pages &nbsp;&middot;&nbsp; Internet connection required for charts
+  </div>
+
+</div>
+</body>
+</html>
