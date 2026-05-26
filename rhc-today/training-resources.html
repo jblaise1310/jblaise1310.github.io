@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RHC — Training &amp; Resources</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  :root{--teal:#1a7a6e;--teal-light:#e8f5f3;--teal-mid:#2a9d8e;--navy:#1c2d40;--gold:#e9a84c;--gold-light:#fdf6ea;--rose:#d95f5f;--rose-light:#fdf0f0;--sage:#6b8f71;--sage-light:#eef4ef;--indigo:#4a5fc1;--indigo-light:#eef0fb;--orange:#e8792a;--orange-light:#fdf0e6;--text:#2c3840;--muted:#6b7c85;--border:#dde8e6;--white:#fff;--bg:#f5f7f6;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);line-height:1.6;}
+  nav{background:var(--white);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;}
+  .nav-inner{max-width:1200px;margin:0 auto;padding:0 32px;display:flex;align-items:center;gap:4px;height:52px;overflow-x:auto;}
+  .nav-logo{font-family:'DM Serif Display',serif;font-size:15px;color:var(--navy);margin-right:20px;white-space:nowrap;flex-shrink:0;}
+  .nav-home{font-family:'DM Serif Display',serif;font-size:14px;color:var(--navy);margin-right:8px;white-space:nowrap;flex-shrink:0;text-decoration:none;padding:6px 12px;border-radius:7px;border:1px solid var(--border);transition:background .15s;}
+  .nav-home:hover{background:var(--teal-light);}
+  .nav-link{font-size:13px;font-weight:500;padding:6px 12px;border-radius:7px;color:var(--muted);text-decoration:none;transition:background .15s,color .15s;white-space:nowrap;flex-shrink:0;}
+  .nav-link:hover{background:var(--teal-light);color:var(--teal);}
+  .nav-link.active{background:var(--orange-light);color:var(--orange);font-weight:600;}
+  header{background:linear-gradient(140deg,#1a4a3a 0%,#1a7a6e 50%,#2a9d8e 100%);position:relative;overflow:hidden;}
+  header::before{content:'';position:absolute;top:-60px;right:-40px;width:340px;height:340px;background:radial-gradient(circle,rgba(255,255,255,.1) 0%,transparent 65%);border-radius:50%;}
+  header::after{content:'';position:absolute;bottom:-40px;left:20%;width:220px;height:220px;background:radial-gradient(circle,rgba(233,168,76,.2) 0%,transparent 65%);border-radius:50%;}
+  .header-inner{max-width:1100px;margin:0 auto;padding:52px 32px 44px;position:relative;z-index:1;}
+  .header-tag{display:inline-block;background:rgba(255,255,255,.18);color:rgba(255,255,255,.95);font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;padding:4px 12px;border-radius:20px;margin-bottom:16px;}
+  header h1{font-family:'DM Serif Display',serif;font-size:clamp(26px,4.5vw,44px);color:var(--white);line-height:1.15;margin-bottom:14px;}
+  header h1 em{font-style:italic;color:#b8ead5;}
+  header p{color:rgba(255,255,255,.85);font-size:15px;max-width:580px;line-height:1.7;}
+  .header-meta{display:flex;gap:14px;margin-top:24px;flex-wrap:wrap;}
+  .header-pill{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.9);font-size:13px;padding:7px 14px;border-radius:8px;}
+  main{max-width:1100px;margin:0 auto;padding:40px 32px 80px;}
+  .section-label{display:flex;align-items:center;gap:12px;margin-bottom:20px;margin-top:48px;}
+  .section-label:first-child{margin-top:0;}
+  .section-label h2{font-size:11px;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;color:var(--muted);white-space:nowrap;}
+  .section-label::after{content:'';flex:1;height:1px;background:var(--border);}
+  .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px;}
+  .cards.wide{grid-template-columns:1fr;}
+  .card{background:var(--white);border-radius:14px;padding:24px 26px;border:1px solid var(--border);position:relative;overflow:hidden;transition:box-shadow .2s,transform .2s;}
+  .card:hover{box-shadow:0 8px 28px rgba(28,45,64,.09);transform:translateY(-2px);}
+  .card-accent{position:absolute;top:0;left:0;width:4px;height:100%;border-radius:4px 0 0 4px;}
+  .accent-teal{background:var(--teal-mid);}.accent-gold{background:var(--gold);}.accent-rose{background:var(--rose);}.accent-sage{background:var(--sage);}.accent-navy{background:var(--navy);}.accent-orange{background:var(--orange);}.accent-indigo{background:var(--indigo);}
+  .card-icon{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;margin-bottom:14px;}
+  .icon-teal{background:var(--teal-light);}.icon-gold{background:var(--gold-light);}.icon-rose{background:var(--rose-light);}.icon-sage{background:var(--sage-light);}.icon-orange{background:var(--orange-light);}.icon-indigo{background:var(--indigo-light);}
+  .card h3{font-family:'DM Serif Display',serif;font-size:18px;color:var(--navy);margin-bottom:6px;}
+  .card .subtitle{font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:10px;}
+  .card p{font-size:14px;color:#4a5c65;line-height:1.65;}
+  .badge{display:inline-block;font-size:11px;font-weight:600;padding:3px 10px;border-radius:20px;margin-bottom:10px;}
+  .badge-teal{background:var(--teal-light);color:var(--teal);}.badge-gold{background:var(--gold-light);color:#b07a1a;}.badge-rose{background:var(--rose-light);color:var(--rose);}.badge-sage{background:var(--sage-light);color:#3d5c42;}.badge-orange{background:var(--orange-light);color:var(--orange);}.badge-indigo{background:var(--indigo-light);color:var(--indigo);}
+  .notice{display:flex;gap:14px;align-items:flex-start;padding:16px 18px;border-radius:10px;margin-top:12px;font-size:13px;}
+  .notice-icon{font-size:20px;flex-shrink:0;margin-top:1px;}
+  .notice-teal{background:var(--teal-light);border:1px solid #b7ddd9;}.notice-gold{background:var(--gold-light);border:1px solid #f0d5a0;}.notice-rose{background:var(--rose-light);border:1px solid #f0c4c4;}.notice-sage{background:var(--sage-light);border:1px solid #c0d4c2;}.notice-orange{background:var(--orange-light);border:1px solid #f5c898;}
+  .notice p{color:var(--text);line-height:1.6;}
+  .checklist{list-style:none;margin-top:10px;}
+  .checklist li{display:flex;gap:10px;align-items:flex-start;padding:8px 0;font-size:14px;color:#4a5c65;border-bottom:1px solid #f0f4f3;}
+  .checklist li:last-child{border:none;}
+  .checklist .check{font-size:16px;flex-shrink:0;}
+  .num-steps{counter-reset:step;list-style:none;margin-top:12px;}
+  .num-steps li{display:flex;gap:14px;align-items:flex-start;padding:9px 0;font-size:13px;color:#4a5c65;border-bottom:1px solid #f0f4f3;counter-increment:step;}
+  .num-steps li:last-child{border:none;}
+  .num-steps li::before{content:counter(step);display:inline-flex;align-items:center;justify-content:center;min-width:24px;height:24px;background:var(--teal);color:white;border-radius:50%;font-size:12px;font-weight:700;flex-shrink:0;margin-top:1px;}
+  /* MOAB name table */
+  .name-table-wrap{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:14px;}
+  .name-table-block{background:var(--bg);border-radius:10px;padding:14px 16px;border:1px solid var(--border);}
+  .name-table-title{font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px;}
+  .name-table-title.half{color:var(--teal);}
+  .name-table-title.full{color:var(--orange);}
+  .name-row{font-size:13px;color:var(--text);padding:4px 0;border-bottom:1px solid var(--border);display:flex;gap:8px;}
+  .name-row:last-child{border:none;}
+  .name-last{font-weight:600;color:var(--navy);min-width:110px;}
+  footer{background:var(--navy);color:#a8bfc7;text-align:center;padding:24px 32px;font-size:13px;}
+  footer strong{color:white;}
+  footer a{color:#7dd4ca;text-decoration:none;}
+  @media(max-width:640px){main{padding:24px 16px 60px;}.header-inner{padding:32px 20px 28px;}.nav-inner{padding:0 16px;}.name-table-wrap{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+
+<nav>
+        <div class="nav-inner">
+    <a href="https://psmedcenter.sharepoint.com/sites/RHCTeamSpace/SitePages/Home.aspx" class="nav-home">&#127968; RHC Today</a>
+    <a href="https://jblaise1310.github.io/rhc-today/clinic-operations.html" class="nav-link">Clinic Operations</a>
+    <a href="https://jblaise1310.github.io/rhc-today/communication.html" class="nav-link">Communication</a>
+    <a href="https://jblaise1310.github.io/rhc-today/goals-kpis.html" class="nav-link">Goals &amp; KPIs</a>
+    <a href="https://jblaise1310.github.io/rhc-today/pto-planning.html" class="nav-link">PTO Planning</a>
+    <a href="https://jblaise1310.github.io/rhc-today/quick-reference.html" class="nav-link">Quick Reference</a>
+    <a href="https://jblaise1310.github.io/rhc-today/staffing-updates.html" class="nav-link">Staffing</a>
+    <a href="https://jblaise1310.github.io/rhc-today/survey-readiness.html" class="nav-link">Survey Readiness</a>
+    <a href="https://jblaise1310.github.io/rhc-today/team_cultures.html" class="nav-link">Team Culture</a>
+    <a href="https://jblaise1310.github.io/rhc-today/training-resources.html" class="nav-link active">Training</a>
+    <a href="https://jblaise1310.github.io/rhc-today/workflows-policy.html" class="nav-link">Workflows &amp; Policy</a>
+  </div>
+</nav>
+
+<header>
+  <div class="header-inner">
+    <div class="header-tag">RHC Internal</div>
+    <h1>Training &amp;<br><em>Staff Resources</em></h1>
+    <p>Required trainings, completion deadlines, enrollment instructions, and staff assignments — all in one place. Stay on track and complete your modules on time.</p>
+    <div class="header-meta">
+      <div class="header-pill">📅 MOAB Deadline: Sept 30, 2026</div>
+      <div class="header-pill">💻 HealthStream for All Modules</div>
+      <div class="header-pill">🧠 Zero Suicide Resources Available</div>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <!-- MOAB -->
+  <div class="section-label"><h2>MOAB Training — Required for All RHC Staff</h2></div>
+  <div class="cards wide">
+    <div class="card">
+      <div class="card-accent accent-orange"></div>
+      <div class="card-icon icon-orange">🛡️</div>
+      <div class="badge badge-orange">Deadline: September 30, 2026</div>
+      <h3>MOAB — Management of Aggressive Behavior</h3>
+      <p style="margin-bottom:14px;">MOAB is a nationally recognized program that equips healthcare staff with skills to safely manage challenging or escalating patient behaviors. Sessions are available monthly beginning April 2026. <strong>Early completion is strongly encouraged</strong> — Q4 becomes increasingly busy with evaluations and operational priorities.</p>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;margin-bottom:16px;">
+        <div style="background:var(--bg);border-radius:10px;padding:12px 14px;border:1px solid var(--border);">
+          <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:4px;">Focus Area</div>
+          <div style="font-size:13px;color:#4a5c65;">Early recognition of agitation &amp; escalation</div>
+        </div>
+        <div style="background:var(--bg);border-radius:10px;padding:12px 14px;border:1px solid var(--border);">
+          <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:4px;">Focus Area</div>
+          <div style="font-size:13px;color:#4a5c65;">Verbal de-escalation techniques</div>
+        </div>
+        <div style="background:var(--bg);border-radius:10px;padding:12px 14px;border:1px solid var(--border);">
+          <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:4px;">Focus Area</div>
+          <div style="font-size:13px;color:#4a5c65;">Personal &amp; patient safety</div>
+        </div>
+        <div style="background:var(--bg);border-radius:10px;padding:12px 14px;border:1px solid var(--border);">
+          <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:4px;">Focus Area</div>
+          <div style="font-size:13px;color:#4a5c65;">Professional communication during difficult interactions</div>
+        </div>
+      </div>
+      <div class="subtitle" style="margin-bottom:6px;">How to Enroll in HealthStream</div>
+      <ol class="num-steps">
+        <li>Log into HealthStream from your desktop icon</li>
+        <li>Select <strong>Catalog</strong> from the top menu</li>
+        <li>Search <strong>"MOAB"</strong></li>
+        <li>Choose the class that matches your assignment (see tables below)</li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- MOAB assignments -->
+  <div class="section-label"><h2>MOAB Training Assignments</h2></div>
+  <div class="cards">
+
+    <div class="card">
+      <div class="card-accent accent-teal"></div>
+      <div class="card-icon icon-teal">🗣️</div>
+      <div class="badge badge-teal">½ Day — Verbal De-Escalation</div>
+      <h3>Verbal De-Escalation Track</h3>
+      <p style="margin-bottom:14px; font-size:13px;">The following staff are assigned the half-day verbal de-escalation course:</p>
+      <table style="width:100%;border-collapse:collapse;font-size:13px;">
+        <thead><tr>
+          <th style="text-align:left;padding:6px 10px 6px 0;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);border-bottom:2px solid var(--border);">Last</th>
+          <th style="text-align:left;padding:6px 0;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);border-bottom:2px solid var(--border);">First</th>
+        </tr></thead>
+        <tbody>
+          <tr><td style="padding:6px 10px 6px 0;font-weight:600;color:var(--navy);border-bottom:1px solid #f0f4f3;">Albue</td><td style="padding:6px 0;color:#4a5c65;border-bottom:1px solid #f0f4f3;">David</td></tr>
+          <tr><td style="padding:6px 10px 6px 0;font-weight:600;color:var(--navy);border-bottom:1px solid #f0f4f3;">Albue</td><td style="padding:6px 0;color:#4a5c65;border-bottom:1px solid #f0f4f3;">Latia</td></tr>
+          <tr><td style="padding:6px 10px 6px 0;font-weight:600;color:var(--navy);border-bottom:1px solid #f0f4f3;">Brostek</td><td style="padding:6px 0;color:#4a5c65;border-bottom:1px solid #f0f4f3;">Hannah</td></tr>
+          <tr><td style="padding:6px 10px 6px 0;font-weight:600;color:var(--navy);border-bottom:1px solid #f0f4f3;">Calavan</td><td style="padding:6px 0;color:#4a5c65;border-bottom:1px solid #f0f4f3;">Debra</td></tr>
+          <tr><td style="padding:6px 10px 6px 0;font-weight:600;color:var(--navy);border-bottom:1px solid #f0f4f3;">Caldwell</td><td style="padding:6px 0;color:#4a5c65;border-bottom:1px solid #f0f4f3;">Charlene</td></tr>
+          <tr><td style="padding:6px 10px 6px 0;font-weight:600;color:var(--navy);border-bottom:1px solid #f0f4f3;">Carr</td><td style="padding:6px 0;color:#4a5c65;border-bottom:1px solid #f0f4f3;">Jennifer</td></tr>
+          <tr><td style="padding:6px 10px 6px 0;font-weight:600;color:var(--navy);border-bottom:1px solid #f0f4f3;">Dalton</td><td style="padding:6px 0;color:#4a5c65;border-bottom:1px solid #f0f4f3;">Alexa</td></tr>
+          <tr><td style="padding:6px 10px 6px 0;font-weight:600;color:var(--navy);border-bottom:1px solid #f0f4f3;">DeVooght</td><td style="padding:6px 0;color:#4a5c65;border-bottom:1px solid #f0f4f3;">Madison</td></tr>
+          <tr><td style="padding:6px 10px 6px 0;font-weight:600;color:var(--navy);border-bottom:1px solid #f0f4f3;">Garcia</td><td style="padding:6px 0;color:#4a5c65;border-bottom:1px solid #f0f4f3;">Pricilla</td></tr>
+          <tr><td style="padding:6px 10px 6px 0;font-weight:600;color:var(--navy);border-bottom:1px solid #f0f4f3;">Harding</td><td style="padding:6px 0;color:#4a5c65;border-bottom:1px solid #f0f4f3;">Edna</td></tr>
+          <tr><td style="padding:6px 10px 6px 0;font-weight:600;color:var(--navy);border-bottom:1px solid #f0f4f3;">Hughes</td><td style="padding:6px 0;color:#4a5c65;border-bottom:1px solid #f0f4f3;">Denise</td></tr>
+          <tr><td style="padding:6px 10px 6px 0;font-weight:600;color:var(--navy);border-bottom:1px solid #f0f4f3;">Marino</td><td style="padding:6px 0;color:#4a5c65;border-bottom:1px solid #f0f4f3;">Sara</td></tr>
+          <tr><td style="padding:6px 10px 6px 0;font-weight:600;color:var(--navy);border-bottom:1px solid #f0f4f3;">Oney</td><td style="padding:6px 0;color:#4a5c65;border-bottom:1px solid #f0f4f3;">Remy</td></tr>
+          <tr><td style="padding:6px 10px 6px 0;font-weight:600;color:var(--navy);border-bottom:1px solid #f0f4f3;">Perales</td><td style="padding:6px 0;color:#4a5c65;border-bottom:1px solid #f0f4f3;">Victoria</td></tr>
+          <tr><td style="padding:6px 10px 6px 0;font-weight:600;color:var(--navy);border-bottom:1px solid #f0f4f3;">Prestridge</td><td style="padding:6px 0;color:#4a5c65;border-bottom:1px solid #f0f4f3;">Brandy</td></tr>
+          <tr><td style="padding:6px 10px 6px 0;font-weight:600;color:var(--navy);border-bottom:1px solid #f0f4f3;">Quintana</td><td style="padding:6px 0;color:#4a5c65;border-bottom:1px solid #f0f4f3;">Paula</td></tr>
+          <tr><td style="padding:6px 10px 6px 0;font-weight:600;color:var(--navy);border-bottom:1px solid #f0f4f3;">Rader</td><td style="padding:6px 0;color:#4a5c65;border-bottom:1px solid #f0f4f3;">Sarah</td></tr>
+          <tr><td style="padding:6px 10px 6px 0;font-weight:600;color:var(--navy);border-bottom:1px solid #f0f4f3;">Sanchez</td><td style="padding:6px 0;color:#4a5c65;border-bottom:1px solid #f0f4f3;">Laura</td></tr>
+          <tr><td style="padding:6px 10px 6px 0;font-weight:600;color:var(--navy);border-bottom:1px solid #f0f4f3;">Smith</td><td style="padding:6px 0;color:#4a5c65;border-bottom:1px solid #f0f4f3;">Madilyn</td></tr>
+          <tr><td style="padding:6px 10px 6px 0;font-weight:600;color:var(--navy);border-bottom:1px solid #f0f4f3;">Sutton</td><td style="padding:6px 0;color:#4a5c65;border-bottom:1px solid #f0f4f3;">McKenna</td></tr>
+          <tr><td style="padding:6px 10px 6px 0;font-weight:600;color:var(--navy);border-bottom:1px solid #f0f4f3;">Swan</td><td style="padding:6px 0;color:#4a5c65;border-bottom:1px solid #f0f4f3;">Courtney</td></tr>
+          <tr><td style="padding:6px 10px 6px 0;font-weight:600;color:var(--navy);border-bottom:1px solid #f0f4f3;">Vance</td><td style="padding:6px 0;color:#4a5c65;border-bottom:1px solid #f0f4f3;">Virginia</td></tr>
+          <tr><td style="padding:6px 10px 6px 0;font-weight:600;color:var(--navy);">Waugh</td><td style="padding:6px 0;color:#4a5c65;">Meghan</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="card-accent accent-orange"></div>
+      <div class="card-icon icon-orange">💪</div>
+      <div class="badge badge-orange">2 Day — Physical De-Escalation</div>
+      <h3>Physical De-Escalation Track</h3>
+      <p style="margin-bottom:14px; font-size:13px;">The following staff are assigned the two-day physical de-escalation course:</p>
+      <div style="font-size:13px;">
+        <div class="name-row"><span class="name-last">Albach</span><span>Brianne</span></div>
+        <div class="name-row"><span class="name-last">Goeckner</span><span>Vicki</span></div>
+        <div class="name-row"><span class="name-last">Grooms</span><span>Lisa</span></div>
+        <div class="name-row"><span class="name-last">Niederkorn</span><span>Megan</span></div>
+        <div class="name-row"><span class="name-last">O'Dell</span><span>Kinsey</span></div>
+        <div class="name-row"><span class="name-last">Shabro</span><span>Ariana</span></div>
+        <div class="name-row"><span class="name-last">Wattier</span><span>Leah</span></div>
+        <div class="name-row"><span class="name-last">Watts</span><span>Tori</span></div>
+      </div>
+      <div class="notice notice-orange" style="margin-top:16px;">
+        <span class="notice-icon">📅</span>
+        <p>Not sure which track is yours? Check with <strong>Jo or Vicki</strong>.</p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ZERO SUICIDE / HEALTHSTREAM -->
+  <div class="section-label"><h2>Additional Required Training</h2></div>
+  <div class="cards">
+
+    <div class="card">
+      <div class="card-accent accent-indigo"></div>
+      <div class="card-icon icon-indigo">🧠</div>
+      <div class="badge badge-indigo">Ongoing — HealthStream</div>
+      <h3>Zero Suicide Training</h3>
+      <p style="margin-bottom:12px;">Ongoing training is available to support staff knowledge and comfort when interacting with patients who may be at risk for suicide.</p>
+      <ol class="num-steps">
+        <li>Open HealthStream from your desktop icon</li>
+        <li>Search <strong>"suicide risk"</strong> in the Catalog</li>
+        <li>Enroll in available training modules</li>
+      </ol>
+      <div class="notice notice-teal" style="margin-top:12px;">
+        <span class="notice-icon">💬</span>
+        <p>Survey results and supporting resources from the 2025 Zero Suicide Workforce Survey are available — ask Jo or Vicki for the attachment.</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-accent accent-teal"></div>
+      <div class="card-icon icon-teal">💻</div>
+      <div class="badge badge-teal">Ongoing</div>
+      <h3>HealthStream — General Reminders</h3>
+      <p style="margin-bottom:12px;">All mandatory HealthStream training must be completed on time. Per our 2026 KPI, the target is <strong>≥ 95% on-time completion</strong> with zero modules overdue beyond 7 days.</p>
+      <ul class="checklist">
+        <li><span class="check">📋</span><span>Check your HealthStream assignments regularly</span></li>
+        <li><span class="check">📅</span><span>Complete modules by the assigned due date — don't wait for reminders</span></li>
+        <li><span class="check">💬</span><span>Respond promptly to manager outreach about overdue modules</span></li>
+      </ul>
+    </div>
+
+  </div>
+
+</main>
+
+<footer>
+  <p><strong>RHC Training &amp; Resources</strong> &nbsp;•&nbsp; For internal use only &nbsp;•&nbsp;
+  Also see: <a href="https://jblaise1310.github.io/rhc-today/workflows-policy.html">Workflows &amp; Policy</a> &nbsp;|&nbsp;
+  <a href="https://jblaise1310.github.io/rhc-today/goals-kpis.html">2026 Goals &amp; KPIs</a> &nbsp;|&nbsp;
+  <a href="https://jblaise1310.github.io/rhc-today/quick-reference.html">Quick Reference</a></p>
+</footer>
+
+</body>
+</html>
