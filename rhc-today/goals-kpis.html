@@ -18,12 +18,14 @@
   body { font-family:'DM Sans',sans-serif; background:var(--bg); color:var(--text); line-height:1.6; }
 
   /* NAV */
-  nav { background:var(--white); border-bottom:1px solid var(--border); position:sticky; top:0; z-index:100; }
-  .nav-inner { max-width:1100px; margin:0 auto; padding:0 32px; display:flex; align-items:center; gap:4px; height:52px; flex-wrap:nowrap; overflow-x:auto; }
-  .nav-logo { font-family:'DM Serif Display',serif; font-size:15px; color:var(--navy); margin-right:20px; white-space:nowrap; flex-shrink:0; }
-  .nav-link { font-size:13px; font-weight:500; padding:6px 12px; border-radius:7px; color:var(--muted); text-decoration:none; transition:background .15s,color .15s; white-space:nowrap; flex-shrink:0; }
-  .nav-link:hover { background:var(--teal-light); color:var(--teal); }
-  .nav-link.active { background:var(--indigo-light); color:var(--indigo); font-weight:600; }
+  nav{background:var(--white);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;}
+  .nav-inner{max-width:1200px;margin:0 auto;padding:0 32px;display:flex;align-items:center;gap:4px;height:52px;overflow-x:auto;}
+  .nav-logo{font-family:'DM Serif Display',serif;font-size:15px;color:var(--navy);margin-right:20px;white-space:nowrap;flex-shrink:0;}
+  .nav-home{font-family:'DM Serif Display',serif;font-size:14px;color:var(--navy);margin-right:8px;white-space:nowrap;flex-shrink:0;text-decoration:none;padding:6px 12px;border-radius:7px;border:1px solid var(--border);transition:background .15s;}
+  .nav-home:hover{background:var(--teal-light);}
+  .nav-link{font-size:13px;font-weight:500;padding:6px 12px;border-radius:7px;color:var(--muted);text-decoration:none;transition:background .15s,color .15s;white-space:nowrap;flex-shrink:0;}
+  .nav-link:hover{background:var(--teal-light);color:var(--teal);}
+  .nav-link.active{background:var(--plum-light);color:var(--plum);font-weight:600;}
 
   /* HEADER */
   header { background:linear-gradient(150deg, #1c2d40 0%, #2a3a5c 60%, #3a3570 100%); position:relative; overflow:hidden; }
