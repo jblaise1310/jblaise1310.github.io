@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RHC — Workflows &amp; Policy</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --teal: #1a7a6e; --teal-light: #e8f5f3; --teal-mid: #2a9d8e;
+    --navy: #1c2d40; --gold: #e9a84c; --gold-light: #fdf6ea;
+    --rose: #d95f5f; --rose-light: #fdf0f0; --sage: #6b8f71; --sage-light: #eef4ef;
+    --indigo: #4a5fc1; --indigo-light: #eef0fb;
+    --text: #2c3840; --muted: #6b7c85; --border: #dde8e6; --white: #fff; --bg: #f5f7f6;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'DM Sans',sans-serif; background:var(--bg); color:var(--text); line-height:1.6; }
+
+    /* NAV */
+  nav{background:var(--white);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;}
+  .nav-inner{max-width:1200px;margin:0 auto;padding:0 32px;display:flex;align-items:center;gap:4px;height:52px;overflow-x:auto;}
+  .nav-logo{font-family:'DM Serif Display',serif;font-size:15px;color:var(--navy);margin-right:20px;white-space:nowrap;flex-shrink:0;}
+  .nav-home{font-family:'DM Serif Display',serif;font-size:14px;color:var(--navy);margin-right:8px;white-space:nowrap;flex-shrink:0;text-decoration:none;padding:6px 12px;border-radius:7px;border:1px solid var(--border);transition:background .15s;}
+  .nav-home:hover{background:var(--teal-light);}
+  .nav-link{font-size:13px;font-weight:500;padding:6px 12px;border-radius:7px;color:var(--muted);text-decoration:none;transition:background .15s,color .15s;white-space:nowrap;flex-shrink:0;}
+  .nav-link:hover{background:var(--teal-light);color:var(--teal);}
+  .nav-link.active{background:var(--teal-light);color:var(--teal);font-weight:600;}
+  .nav-link:hover { background:var(--teal-light); color:var(--teal); }
+  .nav-link.active { background:var(--teal-light); color:var(--teal); font-weight:600; }
+
+  header { background:linear-gradient(135deg, #2a3d50 0%, var(--navy) 100%); position:relative; overflow:hidden; }
+  header::before { content:''; position:absolute; top:-60px; right:-60px; width:320px; height:320px; background:radial-gradient(circle,rgba(107,143,113,.2) 0%,transparent 65%); border-radius:50%; }
+  header::after { content:''; position:absolute; bottom:-40px; left:15%; width:220px; height:220px; background:radial-gradient(circle,rgba(233,168,76,.12) 0%,transparent 65%); border-radius:50%; }
+  .header-inner { max-width:1100px; margin:0 auto; padding:52px 32px 44px; position:relative; z-index:1; }
+  .header-tag { display:inline-block; background:rgba(107,143,113,.3); color:#a8d4ad; font-size:11px; font-weight:600; letter-spacing:2px; text-transform:uppercase; padding:4px 12px; border-radius:20px; margin-bottom:16px; }
+  header h1 { font-family:'DM Serif Display',serif; font-size:clamp(28px,5vw,46px); color:var(--white); line-height:1.15; margin-bottom:14px; }
+  header h1 em { font-style:italic; color:#a8d4ad; }
+  header p { color:#a8bfc7; font-size:15px; max-width:560px; line-height:1.7; }
+
+  main { max-width:1100px; margin:0 auto; padding:40px 32px 80px; }
+
+  .section-label { display:flex; align-items:center; gap:12px; margin-bottom:20px; margin-top:48px; }
+  .section-label:first-child { margin-top:0; }
+  .section-label h2 { font-size:11px; font-weight:600; letter-spacing:2.5px; text-transform:uppercase; color:var(--muted); white-space:nowrap; }
+  .section-label::after { content:''; flex:1; height:1px; background:var(--border); }
+
+  .cards { display:grid; grid-template-columns:repeat(auto-fill,minmax(320px,1fr)); gap:16px; }
+  .cards.wide { grid-template-columns:1fr; }
+
+  .card { background:var(--white); border-radius:14px; padding:24px 26px; border:1px solid var(--border); position:relative; overflow:hidden; transition:box-shadow .2s,transform .2s; }
+  .card:hover { box-shadow:0 8px 28px rgba(28,45,64,.09); transform:translateY(-2px); }
+  .card-accent { position:absolute; top:0; left:0; width:4px; height:100%; border-radius:4px 0 0 4px; }
+  .accent-teal { background:var(--teal-mid); } .accent-gold { background:var(--gold); }
+  .accent-rose { background:var(--rose); } .accent-sage { background:var(--sage); } .accent-navy { background:var(--navy); } .accent-indigo { background:var(--indigo); }
+  .card-icon { width:38px; height:38px; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:18px; margin-bottom:14px; }
+  .icon-teal { background:var(--teal-light); } .icon-gold { background:var(--gold-light); }
+  .icon-rose { background:var(--rose-light); } .icon-sage { background:var(--sage-light); } .icon-indigo { background:var(--indigo-light); }
+  .badge { display:inline-block; font-size:11px; font-weight:600; padding:3px 10px; border-radius:20px; margin-bottom:10px; }
+  .badge-teal { background:var(--teal-light); color:var(--teal); }
+  .badge-gold  { background:var(--gold-light); color:#b07a1a; }
+  .badge-rose  { background:var(--rose-light); color:var(--rose); }
+  .badge-sage  { background:var(--sage-light); color:#3d5c42; }
+  .badge-indigo{ background:var(--indigo-light); color:var(--indigo); }
+  .notice-indigo { background:var(--indigo-light); border:1px solid #c0c9f5; }
+  .card h3 { font-family:'DM Serif Display',serif; font-size:18px; color:var(--navy); margin-bottom:6px; }
+  .card .subtitle { font-size:11px; font-weight:600; letter-spacing:1.5px; text-transform:uppercase; color:var(--muted); margin-bottom:10px; }
+  .card p { font-size:14px; color:#4a5c65; line-height:1.65; }
+
+  .notice { display:flex; gap:14px; align-items:flex-start; padding:16px 18px; border-radius:10px; margin-top:12px; font-size:13px; }
+  .notice-icon { font-size:20px; flex-shrink:0; margin-top:1px; }
+  .notice-teal { background:var(--teal-light); border:1px solid #b7ddd9; }
+  .notice-gold { background:var(--gold-light); border:1px solid #f0d5a0; }
+  .notice-rose { background:var(--rose-light); border:1px solid #f0c4c4; }
+  .notice-sage { background:var(--sage-light); border:1px solid #c0d4c2; }
+  .notice p { color:var(--text); line-height:1.6; }
+
+  .checklist { list-style:none; margin-top:10px; }
+  .checklist li { display:flex; gap:10px; align-items:flex-start; padding:8px 0; font-size:14px; color:#4a5c65; border-bottom:1px solid #f0f4f3; }
+  .checklist li:last-child { border:none; }
+  .checklist .check { font-size:16px; flex-shrink:0; }
+
+  .it-steps { counter-reset:step; list-style:none; margin-top:12px; }
+  .it-steps li { display:flex; gap:14px; align-items:flex-start; padding:9px 0; font-size:13px; color:#4a5c65; border-bottom:1px solid #f0f4f3; counter-increment:step; }
+  .it-steps li:last-child { border:none; }
+  .it-steps li::before { content:counter(step); display:inline-flex; align-items:center; justify-content:center; min-width:24px; height:24px; background:var(--navy); color:white; border-radius:50%; font-size:12px; font-weight:700; flex-shrink:0; margin-top:1px; }
+
+  /* PAYROLL TABLE */
+  .payroll-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:10px; margin-top:14px; }
+  .payroll-item { background:var(--bg); border-radius:10px; padding:14px 16px; border:1px solid var(--border); }
+  .payroll-label { font-size:11px; font-weight:700; letter-spacing:1px; text-transform:uppercase; color:var(--muted); margin-bottom:4px; }
+  .payroll-val { font-size:14px; font-weight:600; color:var(--navy); }
+
+  /* COMMS SOURCE PILLS */
+  .source-list { display:flex; flex-direction:column; gap:8px; margin-top:12px; }
+  .source-item { display:flex; align-items:center; gap:12px; padding:10px 14px; background:var(--bg); border-radius:10px; border:1px solid var(--border); }
+  .source-icon { font-size:20px; flex-shrink:0; }
+  .source-name { font-size:14px; font-weight:600; color:var(--navy); }
+  .source-desc { font-size:12px; color:var(--muted); }
+
+  .num-steps{counter-reset:step;list-style:none;margin-top:12px;}
+  .num-steps li{display:flex;gap:14px;align-items:flex-start;padding:9px 0;font-size:13px;color:#4a5c65;border-bottom:1px solid #f0f4f3;counter-increment:step;}
+  .num-steps li:last-child{border:none;}
+  .num-steps li::before{content:counter(step);display:inline-flex;align-items:center;justify-content:center;min-width:24px;height:24px;background:var(--navy);color:white;border-radius:50%;font-size:12px;font-weight:700;flex-shrink:0;margin-top:1px;}
+
+  footer { background:var(--navy); color:#a8bfc7; text-align:center; padding:24px 32px; font-size:13px; }
+  footer strong { color:white; }
+  footer a { color:#7dd4ca; text-decoration:none; }
+
+  @media(max-width:600px) {
+    main { padding:24px 16px 60px; }
+    .header-inner { padding:32px 20px 28px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+        <div class="nav-inner">
+    <a href="https://psmedcenter.sharepoint.com/sites/RHCTeamSpace/SitePages/Home.aspx" class="nav-home">&#127968; RHC Today</a>
+    <a href="https://jblaise1310.github.io/rhc-today/clinic-operations.html" class="nav-link">Clinic Operations</a>
+    <a href="https://jblaise1310.github.io/rhc-today/communication.html" class="nav-link">Communication</a>
+    <a href="https://jblaise1310.github.io/rhc-today/goals-kpis.html" class="nav-link">Goals &amp; KPIs</a>
+    <a href="https://jblaise1310.github.io/rhc-today/pto-planning.html" class="nav-link">PTO Planning</a>
+    <a href="https://jblaise1310.github.io/rhc-today/quick-reference.html" class="nav-link">Quick Reference</a>
+    <a href="https://jblaise1310.github.io/rhc-today/staffing-updates.html" class="nav-link">Staffing</a>
+    <a href="https://jblaise1310.github.io/rhc-today/survey-readiness.html" class="nav-link">Survey Readiness</a>
+    <a href="https://jblaise1310.github.io/rhc-today/team_cultures.html" class="nav-link">Team Culture</a>
+    <a href="https://jblaise1310.github.io/rhc-today/training-resources.html" class="nav-link">Training</a>
+    <a href="https://jblaise1310.github.io/rhc-today/workflows-policy.html" class="nav-link active">Workflows &amp; Policy</a>
+  </div>
+</nav>
+
+<header>
+  <div class="header-inner">
+    <div class="header-tag" style="background:rgba(107,143,113,.3);color:#a8d4ad;">RHC Internal</div>
+    <h1>Workflows &amp;<br><em>Policy Updates</em></h1>
+    <p>The day-to-day policies, communication expectations, and processes that keep the clinic running smoothly and your pay accurate.</p>
+  </div>
+</header>
+
+<main>
+
+  <!-- COMMUNICATION -->
+  <div class="section-label"><h2>Communication Protocols</h2></div>
+  <div class="cards wide">
+    <div class="card">
+      <div class="card-accent accent-teal"></div>
+      <div class="card-icon icon-teal">📡</div>
+      <div class="subtitle">Required for All Staff</div>
+      <h3>Official Communication Channels</h3>
+      <p style="margin-bottom:14px;">All staff are required to check these channels regularly. These are the <strong>only official sources</strong> for schedule changes, provider coverage updates, workflow notices, and training assignments.</p>
+      <div class="source-list">
+        <div class="source-item">
+          <span class="source-icon">📧</span>
+          <div>
+            <div class="source-name">PSMC Email</div>
+            <div class="source-desc">Formal notices, HR communications, compliance updates</div>
+          </div>
+        </div>
+        <div class="source-item">
+          <span class="source-icon">💬</span>
+          <div>
+            <div class="source-name">Teams Chat &amp; All Staff Posts</div>
+            <div class="source-desc">Day-to-day updates, workflow changes, team announcements</div>
+          </div>
+        </div>
+        <div class="source-item">
+          <span class="source-icon">📰</span>
+          <div>
+            <div class="source-name">RHC Today</div>
+            <div class="source-desc">Organization-wide news, policy updates, clinic announcements</div>
+          </div>
+        </div>
+      </div>
+      <div class="notice notice-rose">
+        <span class="notice-icon">⚠️</span>
+        <p><strong>Missed communications = missed instructions.</strong> Staying current on all three channels is part of your role — not optional.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- TIMECARD -->
+  <div class="section-label"><h2>Timecard &amp; Payroll</h2></div>
+  <div class="cards">
+
+    <div class="card">
+      <div class="card-accent accent-sage"></div>
+      <div class="card-icon icon-sage">⏱️</div>
+      <div class="subtitle">Every Pay Period — No Exceptions</div>
+      <h3>Timecard Review &amp; Approval</h3>
+      <p style="margin-bottom:12px;">Every employee must review and approve their timecard each pay period and confirm their paycheck in <strong>Paycom</strong>.</p>
+      <ul class="checklist">
+        <li><span class="check">✅</span><span>Did my hours look right?</span></li>
+        <li><span class="check">✅</span><span>Did I request all my time off in Paycom?</span></li>
+        <li><span class="check">✅</span><span>Does my paycheck reflect what I expected?</span></li>
+      </ul>
+      <div class="notice notice-gold">
+        <span class="notice-icon">ℹ️</span>
+        <p><strong>Managers cannot add PTO or sick leave on your behalf.</strong> All requests must be submitted directly by you in Paycom.</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-accent accent-sage"></div>
+      <div class="card-icon icon-sage">📋</div>
+      <div class="subtitle">Quick Reference</div>
+      <h3>Payroll Reminders</h3>
+      <ul class="checklist" style="margin-top:4px;">
+        <li><span class="check">🔒</span><span>All time-off requests submitted directly in Paycom by the employee</span></li>
+        <li><span class="check">📅</span><span>Approve your timecard before the pay period closes to avoid delays</span></li>
+        <li><span class="check">❓</span><span>Questions about your paycheck? Contact HR or your manager — don't wait until next cycle</span></li>
+        <li><span class="check">🚫</span><span>Managers will not retroactively adjust PTO that wasn't submitted on time</span></li>
+      </ul>
+    </div>
+
+  </div>
+
+  <!-- IT SUPPORT -->
+  <div class="section-label"><h2>IT Support</h2></div>
+  <div class="cards wide">
+    <div class="card">
+      <div class="card-accent accent-navy"></div>
+      <div class="card-icon" style="background:#e8edf2;width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;margin-bottom:14px;">💻</div>
+      <div class="subtitle">Updated Routing Process</div>
+      <h3>IT Support Requests — New Flow</h3>
+      <p style="margin-bottom:14px;">To prevent duplicate tickets and get problems resolved faster, please follow the updated process:</p>
+      <ol class="num-steps">
+        <li><strong>Password resets</strong> — continue through the usual self-service process. No change here.</li>
+        <li><strong>Everything else</strong> (printers, desktop setup, device issues, software) — contact <strong>Vicki or Jo first</strong> before submitting to IT.</li>
+        <li>They will review, add the right details, and route to IT on your behalf.</li>
+      </ol>
+      <div class="notice notice-teal">
+        <span class="notice-icon">💡</span>
+        <p>This flow prevents duplicate tickets, ensures the right details are included the first time, and helps us prioritize clinic needs as a whole.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- PATIENT SCHEDULING -->
+  <div class="section-label"><h2>Patient Scheduling &amp; Access</h2></div>
+  <div class="cards">
+
+    <div class="card">
+      <div class="card-accent accent-teal"></div>
+      <div class="card-icon icon-teal">🕐</div>
+      <div class="badge badge-teal">Active Change</div>
+      <h3>Arrival Time vs. Appointment Time</h3>
+      <p style="margin-bottom:12px;">All patient appointment reminders now display the <strong>arrival time</strong>, not the appointment time. Staff must communicate arrival time at the point of booking, tailored by appointment type.</p>
+      <div class="notice notice-teal">
+        <span class="notice-icon">💡</span>
+        <p>This change is designed to reduce registration bottlenecks and provider delays. Please ensure all scheduling staff are aware.</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-accent accent-indigo"></div>
+      <div class="card-icon icon-indigo">📋</div>
+      <div class="badge badge-indigo">Active Process</div>
+      <h3>Patient Waitlist — Primary Care</h3>
+      <p style="margin-bottom:12px;">The Primary Care Clinic now uses a <strong>centralized waitlist</strong> for patients who cannot be scheduled immediately.</p>
+      <ul class="checklist">
+        <li><span class="check">🩺</span><span>RHC nurses triage for urgent needs first</span></li>
+        <li><span class="check">📝</span><span>Non-urgent patients are added to the waitlist</span></li>
+        <li><span class="check">📞</span><span>Patients are contacted in order of request date</span></li>
+      </ul>
+      <div class="notice notice-indigo">
+        <span class="notice-icon">💬</span>
+        <p>Direct questions about the waitlist to clinic leadership.</p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- WORKFLOW NOTICES -->
+  <div class="section-label"><h2>Workflow Notices</h2></div>
+  <div class="cards">
+
+    <div class="card">
+      <div class="card-accent accent-gold"></div>
+      <div class="card-icon icon-gold">🫁</div>
+      <div class="badge badge-gold">Dr. Holcomb — Pulmonary</div>
+      <h3>Pulmonary Document Labeling</h3>
+      <p style="margin-bottom:12px;">All documents associated with Dr. Holcomb's patients must include the following phrase in the file name:</p>
+      <div style="background:var(--bg);border-radius:8px;padding:12px 14px;border:1px solid var(--border);font-size:13px;font-weight:600;color:var(--navy);margin-bottom:12px;font-family:monospace;letter-spacing:.3px;">
+        UPLOAD WITH LABEL PULMONARY CONSULTATION
+      </div>
+      <p style="font-size:13px;color:#4a5c65;margin-bottom:8px;"><strong>Example:</strong> <span style="font-family:monospace;font-size:12px;">Smith, B. 01.02.2003 – NOC OX result – UPLOAD WITH LABEL PULMONARY CONSULTATION</span></p>
+      <ul class="checklist">
+        <li><span class="check">💻</span><span>Electronic uploads: include phrase in the file name</span></li>
+        <li><span class="check">📄</span><span>Paper documents: write the phrase on the document itself</span></li>
+      </ul>
+      <div class="notice notice-gold">
+        <span class="notice-icon">ℹ️</span>
+        <p>Medical Records (Shelly &amp; Elizabeth) are already aware of this process. Questions? Contact <strong>Ariana</strong>.</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-accent accent-rose"></div>
+      <div class="card-icon icon-rose">📤</div>
+      <div class="badge badge-rose">Routing Correction</div>
+      <h3>PT/OT Referral Routing</h3>
+      <p style="margin-bottom:12px;">PT and OT referrals have been found misrouted, causing delays in patient follow-up. <strong>All PT and OT referrals</strong> — faxed, scanned, or uploaded — must go in the <strong>PT/OT Referrals folder</strong>.</p>
+      <div class="notice notice-rose">
+        <span class="notice-icon">⚠️</span>
+        <p>Do <strong>not</strong> place these in the Clinic &gt; Specialist Referrals folder. If you find misfiled PT/OT referrals there, please move them. Questions? Contact Jen (Director of PT/OT).</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-accent accent-sage"></div>
+      <div class="card-icon icon-sage">🐭</div>
+      <div class="badge badge-sage">Facility Protocol</div>
+      <h3>Mouse Droppings — Cleanup Protocol</h3>
+      <p style="margin-bottom:12px;">If you find evidence of mice, follow the CDC-recommended protocol. <strong>Do not sweep or vacuum droppings.</strong></p>
+      <ul class="checklist">
+        <li><span class="check">🧤</span><span>Wear surgical mask (purple or yellow) and gloves</span></li>
+        <li><span class="check">🧴</span><span>Spray bleach-based cleaner on droppings — soak for at least 5 minutes</span></li>
+        <li><span class="check">🗑️</span><span>Wipe up with bleach wipe or paper towel, place in plastic bag, seal, and dispose</span></li>
+        <li><span class="check">🙌</span><span>Wash hands thoroughly with soap and water</span></li>
+        <li><span class="check">🪑</span><span>If carpet is affected, follow the above then submit a facilities ticket for assessment</span></li>
+      </ul>
+      <div class="notice notice-sage">
+        <span class="notice-icon">ℹ️</span>
+        <p>Facilities has activated Orkin and traps are in place. Keep all food in <strong>sealed containers</strong> at all times — desks, drawers, break rooms, and offices.</p>
+      </div>
+    </div>
+
+  </div>
+
+</main>
+
+<footer>
+  <p><strong>RHC Workflows &amp; Policy</strong> &nbsp;•&nbsp; For internal use only &nbsp;•&nbsp;
+  Also see: <a href="https://jblaise1310.github.io/rhc-today/staffing-updates.html">Staffing</a> &nbsp;|&nbsp;
+  <a href="https://jblaise1310.github.io/rhc-today/pto-planning.html">PTO Planning</a> &nbsp;|&nbsp;
+  <a href="https://jblaise1310.github.io/rhc-today/quick-reference.html">Quick Reference</a></p>
+</footer>
+
+</body>
+</html>
