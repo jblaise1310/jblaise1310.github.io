@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>F/U BP Reason for Visit Reminder</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --navy:  #1F5C99;
+      --blue:  #2E75B6;
+      --lb:    #D6E4F0;
+      --lb2:   #EAF2FB;
+      --g1:    #F4F4F4;
+      --g2:    #E2E2E2;
+      --g3:    #888;
+      --dark:  #1A1916;
+      --mid:   #555;
+      --green: #3B6D11;
+      --gbg:   #EAF3DE;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: #ECF2F8;
+      color: var(--dark);
+      padding: 2rem;
+    }
+    .page {
+      max-width: 720px;
+      margin: 0 auto;
+      background: #fff;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(31,92,153,0.12);
+    }
+
+    /* HEADER */
+    .header {
+      background: var(--navy);
+      padding: 18px 26px;
+    }
+    .header h1 { font-size: 17px; font-weight: 600; color: #fff; }
+    .header p  { font-size: 12px; color: #BFD7F0; margin-top: 3px; }
+
+    /* BODY */
+    .body { padding: 22px 26px; display: flex; flex-direction: column; gap: 20px; }
+
+    .section-label {
+      font-size: 10px; font-weight: 700; color: var(--blue);
+      text-transform: uppercase; letter-spacing: 0.08em;
+      margin-bottom: 8px;
+    }
+
+    /* PDSA PROGRESS */
+    .pdsa-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; }
+    .pdsa-card {
+      background: var(--g1); border: 1px solid var(--g2);
+      border-radius: 8px; padding: 12px 14px;
+    }
+    .pdsa-card-label { font-size: 11px; color: var(--g3); margin-bottom: 4px; line-height: 1.4; }
+    .pdsa-card-value { font-family: 'DM Mono', monospace; font-size: 26px; font-weight: 500; color: var(--dark); }
+    .pdsa-card-sub   { font-size: 11px; color: var(--g3); margin-top: 3px; }
+    .pdsa-card.up .pdsa-card-value { color: var(--navy); }
+
+    /* PROGRESS BAR */
+    .bar-wrap { background: var(--g2); border-radius: 6px; height: 12px; position: relative; overflow: visible; }
+    .bar-fill {
+      height: 100%; border-radius: 6px;
+      background: linear-gradient(90deg, var(--navy) 0%, var(--blue) 100%);
+    }
+    .bar-labels { display: flex; justify-content: space-between; font-size: 11px; color: var(--g3); margin-top: 5px; }
+    .bar-change { font-size: 12px; color: var(--green); font-weight: 600; margin-top: 4px; }
+
+    /* CODE CALLOUT */
+    .code-callout {
+      background: var(--lb2);
+      border: 1.5px solid var(--lb);
+      border-left: 5px solid var(--navy);
+      border-radius: 0 8px 8px 0;
+      padding: 16px 18px;
+      display: flex; align-items: center; gap: 18px;
+    }
+    .code-badge {
+      font-family: 'DM Mono', monospace;
+      font-size: 28px; font-weight: 500;
+      color: var(--navy);
+      background: #fff;
+      border: 2px solid var(--lb);
+      border-radius: 8px;
+      padding: 8px 18px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .code-callout p { font-size: 13px; color: var(--mid); line-height: 1.6; }
+    .code-callout strong { color: var(--dark); }
+
+    /* DO / DON'T */
+    .do-dont { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .do-card  { background: var(--gbg); border: 1px solid #C2DFA8; border-radius: 8px; padding: 13px 15px; }
+    .bad-card { background: #FFF4F1; border: 1px solid #F0C4B4; border-radius: 8px; padding: 13px 15px; }
+    .dd-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 8px; }
+    .do-card .dd-label  { color: #3B6D11; }
+    .bad-card .dd-label { color: #993C1D; }
+    .dd-item { font-size: 12px; color: var(--mid); display: flex; gap: 7px; margin-bottom: 5px; line-height: 1.4; }
+    .dd-item:last-child { margin-bottom: 0; }
+    .dd-item code {
+      font-family: 'DM Mono', monospace; font-size: 12px;
+      background: rgba(255,255,255,0.8); padding: 0 5px; border-radius: 3px;
+    }
+
+    /* FOOTER */
+    .footer {
+      background: var(--g1); border-top: 1px solid var(--g2);
+      padding: 12px 26px;
+      font-size: 11px; color: var(--g3); font-style: italic;
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <div class="header">
+    <h1>Hypertension Follow Up — Reason for Visit Reminder</h1>
+    <p>CMS-165 Controlling High Blood Pressure &nbsp;·&nbsp; PDSA Update &nbsp;·&nbsp; May 2026</p>
+  </div>
+
+  <div class="body">
+
+    <!-- PDSA PROGRESS -->
+    <div>
+      <div class="section-label">F/U BP Code Usage · PDSA Progress</div>
+      <div class="pdsa-row">
+        <div class="pdsa-card">
+          <div class="pdsa-card-label">Baseline &nbsp;·&nbsp; Jan 1 – Mar 24, 2026</div>
+          <div class="pdsa-card-value">20.4%</div>
+          <div class="pdsa-card-sub">of eligible encounters using F/U BP</div>
+        </div>
+        <div class="pdsa-card up">
+          <div class="pdsa-card-label">First Performance Period &nbsp;·&nbsp; Mar 25 – Apr 30, 2026</div>
+          <div class="pdsa-card-value">23.6%</div>
+          <div class="pdsa-card-sub">of eligible encounters using F/U BP</div>
+        </div>
+      </div>
+      <div class="bar-wrap">
+        <div class="bar-fill" style="width:47.2%"></div>
+      </div>
+      <div class="bar-labels">
+        <span>Baseline 20.4%</span>
+        <span>First period 23.6%</span>
+      </div>
+      <div class="bar-change">▲ +3.2 pts since workflow launch · keep it going</div>
+    </div>
+
+    <!-- CODE CALLOUT -->
+    <div>
+      <div class="section-label">The Code to Use</div>
+      <div class="code-callout">
+        <div class="code-badge">F/U BP</div>
+        <p>
+          When scheduling a patient whose visit includes a blood pressure assessment or hypertension follow up,
+          <strong>the Reason for Visit must be coded as F/U BP.</strong>
+          This is how the measure captures that a BP follow up occurred. Without it, the visit may not count.
+        </p>
+      </div>
+    </div>
+
+    <!-- DO DON'T -->
+    <div>
+      <div class="section-label">Quick Reference</div>
+      <div class="do-dont">
+        <div class="do-card">
+          <div class="dd-label">✓ Use</div>
+          <div class="dd-item"><span>✓</span><span>Reason for Visit: <code>F/U BP</code></span></div>
+          <div class="dd-item"><span>✓</span><span>Enter at scheduling before the visit</span></div>
+          <div class="dd-item"><span>✓</span><span>Confirm at rooming if visit includes a BP check</span></div>
+        </div>
+        <div class="bad-card">
+          <div class="dd-label">✗ Avoid</div>
+          <div class="dd-item"><span>✗</span><span>Generic codes: <code>F/U</code>, <code>Office Visit</code>, <code>Follow up</code></span></div>
+          <div class="dd-item"><span>✗</span><span>Leaving RFV blank or using a non BP reason</span></div>
+          <div class="dd-item"><span>✗</span><span>Assuming it will be corrected later</span></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="footer">
+    PCC Quality Team &nbsp;·&nbsp; PDSA launched January 2026 &nbsp;·&nbsp; Questions? Contact Jo or Vicki.
+  </div>
+
+</div>
+</body>
+</html>
