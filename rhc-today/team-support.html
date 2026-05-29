@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Supporting Our PSR Team</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Mulish:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#243240;
+    --soft-ink:#5a6b78;
+    --paper:#fbf9f5;
+    --line:#e4ded3;
+    --teal-bg:#e7f3ed;  --teal-bd:#bfddcb;  --teal-tx:#2f6b50;
+    --blue-bg:#e8f0f9;  --blue-bd:#c3d6ec;  --blue-tx:#2e5a8c;
+    --amber-bg:#f9f1e2; --amber-bd:#e8d4ab; --amber-tx:#9a6b1f;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    font-family:'Mulish',sans-serif;
+    background:
+      radial-gradient(1200px 600px at 85% -10%, #f4efe6 0%, transparent 60%),
+      radial-gradient(900px 500px at -10% 110%, #eef2ec 0%, transparent 55%),
+      var(--paper);
+    color:var(--ink);line-height:1.6;
+    padding:48px 20px 64px;-webkit-font-smoothing:antialiased;
+  }
+  .sheet{
+    max-width:820px;margin:0 auto;background:#fffdf9;
+    border:1px solid var(--line);border-radius:22px;
+    box-shadow:0 1px 2px rgba(60,50,30,.04),0 30px 60px -30px rgba(60,50,30,.18);
+    overflow:hidden;
+  }
+  .masthead{
+    padding:46px 56px 36px;border-bottom:1px solid var(--line);
+    background:linear-gradient(180deg,#ffffff 0%, #fdfbf6 100%);position:relative;
+  }
+  .masthead::after{
+    content:"";position:absolute;left:56px;right:56px;bottom:-1px;height:3px;
+    background:linear-gradient(90deg,var(--teal-bd),var(--blue-bd),var(--amber-bd));
+    border-radius:3px;opacity:.9;
+  }
+  .kicker{
+    font-size:12.5px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--soft-ink);
+  }
+  h1{
+    font-family:'Fraunces',serif;font-weight:500;font-size:39px;line-height:1.08;
+    letter-spacing:-.01em;margin:12px 0 6px;color:var(--ink);
+  }
+  .subtitle{
+    font-family:'Fraunces',serif;font-size:18px;font-style:italic;font-weight:400;color:var(--soft-ink);
+  }
+
+  .body{padding:38px 56px 8px;}
+  .body p{font-size:16px;color:#3a4753;margin-bottom:18px;}
+  .body p.lead{font-size:17px;}
+  .body strong{color:var(--ink);font-weight:700;}
+
+  .highlight{
+    background:var(--teal-bg);border:1px solid var(--teal-bd);border-radius:14px;
+    padding:18px 22px;margin:6px 0 24px;font-size:16px;color:#34504280;color:#345042;
+  }
+  .highlight strong{color:var(--teal-tx);}
+
+  .ask-head{
+    font-family:'Fraunces',serif;font-size:21px;font-weight:600;color:var(--ink);
+    margin:30px 0 16px;
+  }
+  .asks{list-style:none;display:grid;gap:12px;margin-bottom:26px;}
+  .asks li{
+    position:relative;padding:14px 18px 14px 50px;
+    background:#fffefb;border:1px solid var(--line);border-radius:12px;
+    font-size:15.5px;color:#3a4753;
+  }
+  .asks li::before{
+    content:"";position:absolute;left:18px;top:50%;transform:translateY(-50%);
+    width:16px;height:16px;border-radius:50%;
+    background:var(--teal-bg);border:1.5px solid var(--teal-tx);
+  }
+  .asks li::after{
+    content:"";position:absolute;left:23px;top:calc(50% - 2px);
+    width:5px;height:9px;border:solid var(--teal-tx);border-width:0 1.5px 1.5px 0;
+    transform:rotate(45deg) translateY(-1px);
+  }
+
+  .urgent{
+    background:var(--amber-bg);border:1px solid var(--amber-bd);border-radius:14px;
+    padding:20px 24px;margin:6px 0 26px;
+  }
+  .urgent h3{
+    font-family:'Fraunces',serif;font-size:18px;font-weight:600;color:var(--amber-tx);margin-bottom:8px;
+    display:flex;align-items:center;gap:9px;
+  }
+  .urgent h3 .flag{
+    display:inline-flex;width:22px;height:22px;border-radius:6px;background:var(--amber-tx);
+    align-items:center;justify-content:center;color:#fff;font-size:12px;font-weight:700;
+  }
+  .urgent p{font-size:15px;color:#5c4a28;margin-bottom:10px;}
+  .urgent p:last-child{margin-bottom:0;}
+
+  .closing{
+    border-top:1px solid var(--line);margin-top:8px;padding-top:24px;
+  }
+  .closing p{font-size:16px;color:#3a4753;}
+
+  .signoff{
+    padding:8px 56px 40px;
+  }
+  .signoff .thanks{
+    font-family:'Fraunces',serif;font-style:italic;font-size:18px;color:var(--ink);margin-bottom:18px;
+  }
+  .sig-name{font-family:'Fraunces',serif;font-size:18px;font-weight:600;color:var(--ink);}
+  .sig-cred{font-size:13.5px;color:var(--soft-ink);letter-spacing:.03em;margin-top:2px;}
+
+  @media (max-width:620px){
+    .masthead,.body,.signoff{padding-left:26px;padding-right:26px;}
+    h1{font-size:30px;}
+    .masthead::after{left:26px;right:26px;}
+  }
+  @media print{
+    body{background:#fff;padding:0;}
+    .sheet{box-shadow:none;border:none;border-radius:0;max-width:none;}
+    .asks li,.urgent,.highlight{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+  <div class="sheet">
+
+    <div class="masthead">
+      <div class="kicker">PSMC &nbsp;&middot;&nbsp; A Note to the Team</div>
+      <h1>Taking Care of Each Other While We're Short Staffed</h1>
+      <div class="subtitle">A few ways we can all lighten the load during this stretch.</div>
+    </div>
+
+    <div class="body">
+      <p class="lead">Team,</p>
+
+      <div class="highlight">
+        We're currently working through a stretch where several positions across the clinic are open, and we're carrying that workload with fewer hands than usual. I want to be upfront with you about it &mdash; and to ask for our help looking out for one another while we recruit.
+      </div>
+
+      <p>I've been actively recruiting to fill these openings. Finding candidates who are the right fit for our clinic and our patients has taken longer than anticipated, and I appreciate your patience as that work continues.</p>
+
+      <p>In the meantime, I'd like to ask everyone to be mindful of the workload your teammates are carrying. Across every role, from the front desk to the clinical team, people are supporting a high volume of patient calls, scheduling requests, referrals, messages, check in and check out activities, and countless patient questions throughout the day.</p>
+
+      <p>As a clinic team, we all share responsibility for creating a supportive work environment.</p>
+
+      <div class="ask-head">Here's how we can help:</div>
+      <ul class="asks">
+        <li>Extend patience and understanding when requests may take longer than usual.</li>
+        <li>Communicate respectfully and professionally.</li>
+        <li>Avoid duplicate requests or multiple follow up messages when possible.</li>
+        <li>Recognize that everyone is working hard to support both patients and one another.</li>
+      </ul>
+
+      <div class="urgent">
+        <h3><span class="flag">!</span> When something is truly urgent</h3>
+        <p>If you have an issue that genuinely requires same day attention, please communicate that clearly.</p>
+        <p>When sending a <strong>Message Center</strong> message, use the urgency flag when appropriate so priorities can be identified more easily. If you're speaking with someone directly, a kind conversation and a clear explanation of the urgency are always appreciated.</p>
+      </div>
+
+      <div class="closing">
+        <p>Every role here matters. Whether someone is a patient's first and last interaction at the front desk or part of the care they receive in the exam room, each person keeps our clinic running and shapes the patient experience. <strong>I appreciate the hard work all of you continue to provide each day, and I ask that we all support one another as we work to recruit outstanding additions to the team.</strong></p>
+      </div>
+    </div>
+
+    <div class="signoff">
+      <div class="thanks">Thank you for your patience, teamwork, and support as we navigate this transition together.</div>
+      <div class="sig-name">Jo Blaise, RN-DNP, BSN, MDSA</div>
+      <div class="sig-cred">Clinic Manager</div>
+    </div>
+
+  </div>
+</body>
+</html>
