@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RHC MA Foundations Module</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,500&family=Mulish:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#243240; --soft-ink:#5a6b78; --paper:#fbf9f5; --line:#e4ded3; --card:#fffdf9;
+    --teal-bg:#e7f3ed; --teal-bd:#bfddcb; --teal-tx:#2f6b50;
+    --blue-bg:#e8f0f9; --blue-bd:#c3d6ec; --blue-tx:#2e5a8c;
+    --purp-bg:#eee9f6; --purp-bd:#d2c6e6; --purp-tx:#5a4a8c;
+    --coral-bg:#f8ebe9; --coral-bd:#e6c5bf; --coral-tx:#a8483c;
+    --rosa-bg:#fbf3e7; --rosa-bd:#e7cfa6; --rosa-tx:#9a6b1f;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    font-family:'Mulish',sans-serif;color:var(--ink);line-height:1.62;
+    background:
+      radial-gradient(1200px 600px at 85% -10%, #f4efe6 0%, transparent 60%),
+      radial-gradient(900px 500px at -10% 110%, #eef2ec 0%, transparent 55%),
+      var(--paper);
+    padding:40px 20px 70px;-webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:880px;margin:0 auto;}
+
+  .masthead{
+    background:var(--card);border:1px solid var(--line);border-radius:22px 22px 0 0;
+    border-bottom:none;padding:42px 52px 30px;position:relative;overflow:hidden;
+  }
+  .masthead::after{
+    content:"";position:absolute;left:0;right:0;bottom:0;height:4px;
+    background:linear-gradient(90deg,var(--teal-bd),var(--blue-bd),var(--purp-bd),var(--coral-bd));
+  }
+  .kicker{font-size:12.5px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--soft-ink);}
+  h1{font-family:'Fraunces',serif;font-weight:500;font-size:40px;line-height:1.06;letter-spacing:-.01em;margin:10px 0 6px;}
+  .masthead .sub{font-family:'Fraunces',serif;font-style:italic;font-size:17.5px;color:var(--soft-ink);max-width:78%;}
+  .top-print{position:absolute;top:30px;right:40px;}
+
+  .tabnav{
+    display:flex;flex-wrap:wrap;gap:4px;background:var(--card);
+    border:1px solid var(--line);border-top:none;border-bottom:none;padding:14px 52px 0;
+  }
+  .tab{
+    font-family:'Mulish',sans-serif;font-size:14px;font-weight:700;
+    border:1px solid transparent;border-bottom:none;background:transparent;cursor:pointer;
+    padding:11px 17px;border-radius:11px 11px 0 0;color:var(--soft-ink);
+    transition:background .18s,color .18s;letter-spacing:.01em;
+  }
+  .tab:hover{color:var(--ink);background:#f3eee5;}
+  .tab[aria-selected="true"]{color:var(--ink);background:var(--paper);border-color:var(--line);}
+  .tab .num{
+    display:inline-flex;width:19px;height:19px;border-radius:50%;align-items:center;justify-content:center;
+    font-size:11px;margin-right:7px;background:#e6ddcd;color:#7a6a50;
+  }
+  .tab[data-c="teal"][aria-selected="true"] .num{background:var(--teal-bd);color:var(--teal-tx);}
+  .tab[data-c="blue"][aria-selected="true"] .num{background:var(--blue-bd);color:var(--blue-tx);}
+  .tab[data-c="purp"][aria-selected="true"] .num{background:var(--purp-bd);color:var(--purp-tx);}
+  .tab[data-c="coral"][aria-selected="true"] .num{background:var(--coral-bd);color:var(--coral-tx);}
+
+  .panels{
+    background:var(--card);border:1px solid var(--line);border-radius:0 0 22px 22px;
+    box-shadow:0 1px 2px rgba(60,50,30,.04),0 30px 60px -30px rgba(60,50,30,.18);
+  }
+  .panel{display:none;padding:40px 52px 48px;}
+  .panel.active{display:block;animation:fade .35s ease;}
+  @keyframes fade{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:none;}}
+
+  .eyebrow{font-size:12px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;margin-bottom:8px;}
+  .panel h2{font-family:'Fraunces',serif;font-weight:600;font-size:31px;letter-spacing:-.01em;margin-bottom:6px;}
+  .panel .dek{font-size:16.5px;color:var(--soft-ink);margin-bottom:26px;}
+  h3{font-family:'Fraunces',serif;font-weight:600;font-size:21px;margin:30px 0 12px;color:var(--ink);}
+  h4{font-size:15px;font-weight:700;letter-spacing:.04em;margin:20px 0 8px;color:var(--ink);}
+  p{font-size:15.5px;margin-bottom:14px;color:#374550;}
+  .panel ul{list-style:none;margin:0 0 16px;display:grid;gap:8px;}
+  .panel ul li{position:relative;padding-left:20px;font-size:15px;color:#374550;}
+  .panel ul li::before{content:"";position:absolute;left:2px;top:9px;width:6px;height:6px;border-radius:50%;background:var(--accent,#bbb);}
+  .term{font-family:'Fraunces',serif;font-style:italic;color:var(--ink);font-weight:500;}
+  strong{font-weight:700;color:var(--ink);}
+
+  #p-scope{--accent:var(--teal-tx);} #p-scope .eyebrow{color:var(--teal-tx);}
+  #p-term{--accent:var(--blue-tx);} #p-term .eyebrow{color:var(--blue-tx);}
+  #p-anat{--accent:var(--purp-tx);} #p-anat .eyebrow{color:var(--purp-tx);}
+  #p-meds{--accent:var(--coral-tx);} #p-meds .eyebrow{color:var(--coral-tx);}
+
+  .chips{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:6px 0 18px;}
+  .chip{background:var(--paper);border:1px solid var(--line);border-radius:11px;padding:11px 14px;font-size:14px;}
+  .chip b{color:var(--ink);}
+  @media(max-width:600px){.chips{grid-template-columns:1fr;}}
+
+  .note{border-radius:13px;padding:15px 18px;font-size:14.5px;margin:8px 0 20px;border:1px solid;}
+  .note.teal{background:var(--teal-bg);border-color:var(--teal-bd);color:#2c4f3e;}
+  .note.blue{background:var(--blue-bg);border-color:var(--blue-bd);color:#274a6f;}
+  .note .lbl{font-weight:700;}
+
+  .apply{margin:30px 0 8px;border:1.5px solid var(--rosa-bd);border-radius:16px;overflow:hidden;background:var(--rosa-bg);}
+  .apply-head{display:flex;align-items:center;gap:12px;padding:14px 20px;background:rgba(154,107,31,.10);border-bottom:1px solid var(--rosa-bd);}
+  .apply-head .pill{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;background:var(--rosa-tx);color:#fff;padding:4px 10px;border-radius:20px;}
+  .apply-head .who{font-family:'Fraunces',serif;font-weight:600;font-size:16px;color:var(--rosa-tx);}
+  .apply-body{padding:18px 22px;}
+  .apply-body p{font-size:15px;color:#5c4a28;}
+  .apply-body ul li{color:#5c4a28;}
+  .apply-body ul li::before{background:var(--rosa-tx);}
+  .chartline{font-family:'Fraunces',serif;font-style:italic;font-size:14.5px;color:#6b5526;background:#fff;border-left:3px solid var(--rosa-bd);border-radius:0 8px 8px 0;padding:12px 16px;margin-bottom:14px;}
+  .prompt{margin-top:14px;background:#fff;border:1px dashed var(--rosa-bd);border-radius:10px;padding:13px 16px;font-size:14.5px;color:#5c4a28;}
+  .prompt b{color:var(--rosa-tx);}
+
+  .test{margin-top:40px;border:1px solid var(--line);border-radius:16px;background:var(--paper);overflow:hidden;}
+  .test-head{padding:22px 26px 18px;border-bottom:1px solid var(--line);background:var(--card);}
+  .test-head .eyebrow{margin-bottom:6px;}
+  .test-head h3{margin:0 0 4px;}
+  .test-head p{font-size:14px;color:var(--soft-ink);margin:0;}
+  .namebar{display:flex;gap:22px;flex-wrap:wrap;margin-top:18px;}
+  .namebar .field{flex:1;min-width:180px;}
+  .namebar .field span{display:block;font-size:11.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--soft-ink);margin-bottom:4px;}
+  .ti{width:100%;border:none;border-bottom:1.5px solid #b9b0a0;background:transparent;font-family:'Mulish',sans-serif;font-size:15px;color:var(--ink);padding:5px 2px;outline:none;}
+  .ti:focus{border-color:var(--accent,#2e5a8c);}
+  .test-body{padding:24px 26px 28px;}
+  ol.q{list-style:none;counter-reset:q;display:grid;gap:22px;}
+  ol.q > li{counter-increment:q;position:relative;padding-left:38px;font-size:15px;color:#2f3c47;}
+  ol.q > li::before{content:counter(q);position:absolute;left:0;top:-2px;width:26px;height:26px;border-radius:50%;background:var(--card);border:1.5px solid var(--accent,#bbb);color:var(--accent,#555);font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center;}
+  .q .ask{font-weight:600;color:var(--ink);}
+  .fill{min-height:52px;border:1px solid #cfc7b8;border-radius:9px;background:#fff;padding:9px 13px;margin-top:10px;font-size:14.5px;color:var(--ink);line-height:1.7;outline:none;}
+  .fill:focus{border-color:var(--accent,#2e5a8c);box-shadow:0 0 0 3px rgba(46,90,140,.10);}
+  .fill:empty:before{content:attr(data-ph);color:#b3aa99;}
+  .subitems{margin-top:10px;display:grid;gap:10px;}
+  .subitems .row{font-size:14.5px;color:#52606b;display:flex;align-items:baseline;gap:10px;}
+  .subitems .row .lbl2{min-width:110px;font-weight:600;color:var(--ink);}
+  .fill-inline{flex:1;min-height:24px;border:none;border-bottom:1px solid #cfc7b8;padding:2px 4px;font-size:14.5px;color:var(--ink);outline:none;}
+  .fill-inline:focus{border-color:var(--accent,#2e5a8c);}
+
+  .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px;justify-content:center;}
+  .testbtns{margin-top:20px;display:flex;gap:10px;flex-wrap:wrap;}
+  button.act{font-family:'Mulish',sans-serif;font-size:13.5px;font-weight:700;cursor:pointer;border:1px solid var(--ink);background:var(--ink);color:#fff;border-radius:10px;padding:11px 18px;transition:opacity .15s;}
+  button.act:hover{opacity:.85;}
+  button.act.ghost{background:transparent;color:var(--ink);}
+
+  .footer-note{text-align:center;font-size:13px;color:var(--soft-ink);margin-top:26px;font-style:italic;font-family:'Fraunces',serif;}
+  .credit{text-align:center;font-size:13px;color:var(--soft-ink);margin-top:4px;}
+  .credit b{font-weight:600;color:var(--ink);font-style:normal;}
+
+  #printArea{display:none;}
+  @media print{
+    body{background:#fff;padding:0;}
+    .wrap{max-width:none;}
+    .fill,.fill-inline,.ti{color:#000 !important;}
+    .fill:empty:before,.fill-inline:empty:before{content:"" !important;}
+    /* full-module print */
+    body:not(.printing-single) .tabnav,
+    body:not(.printing-single) .top-print,
+    body:not(.printing-single) .actions,
+    body:not(.printing-single) .testbtns{display:none !important;}
+    body:not(.printing-single) .panel{display:block !important;page-break-before:always;}
+    body:not(.printing-single) .panel:first-of-type{page-break-before:avoid;}
+    body:not(.printing-single) .panels,
+    body:not(.printing-single) .masthead{box-shadow:none;border:none;}
+    .apply,.test,.note,ol.q > li{break-inside:avoid;}
+    /* single-test print */
+    body.printing-single .masthead,
+    body.printing-single .tabnav,
+    body.printing-single .actions,
+    body.printing-single .footer-note,
+    body.printing-single .credit,
+    body.printing-single .testbtns{display:none !important;}
+    body.printing-single .panels{box-shadow:none;border:none;}
+    body.printing-single .panel{display:none !important;}
+    body.printing-single .panel.active{display:block !important;padding:0;}
+    body.printing-single .panel.active > *:not(.print-target){display:none !important;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="masthead">
+    <button class="act ghost top-print" onclick="printFull()">Print full module</button>
+    <div class="kicker">RHC &nbsp;&middot;&nbsp; Medical Assistant Onboarding</div>
+    <h1>Foundations Module</h1>
+    <div class="sub">Scope of practice, terminology, anatomy &amp; physiology, and medication classes &mdash; your first week.</div>
+  </div>
+
+  <div class="tabnav" role="tablist" aria-label="Module sections">
+    <button class="tab" data-c="teal"  role="tab" aria-selected="true"  aria-controls="p-scope" id="t-scope"><span class="num">1</span>Scope of Practice</button>
+    <button class="tab" data-c="blue"  role="tab" aria-selected="false" aria-controls="p-term"  id="t-term"><span class="num">2</span>Terminology</button>
+    <button class="tab" data-c="purp"  role="tab" aria-selected="false" aria-controls="p-anat"  id="t-anat"><span class="num">3</span>Anatomy &amp; Physiology</button>
+    <button class="tab" data-c="coral" role="tab" aria-selected="false" aria-controls="p-meds"  id="t-meds"><span class="num">4</span>Medication Classes</button>
+  </div>
+
+  <div class="panels">
+
+    <section class="panel active" id="p-scope" role="tabpanel" aria-labelledby="t-scope">
+      <div class="eyebrow">Section 1</div>
+      <h2>Scope of Practice</h2>
+      <p class="dek">The boundary around what you are permitted to do &mdash; and how that boundary is set in Colorado.</p>
+
+      <h3>What "scope of practice" means for you</h3>
+      <p>Scope of practice is the boundary around what you are permitted to do in your role. For a Medical Assistant, that boundary is set by three things working together: <strong>state law</strong>, <strong>RHC's policies</strong>, and <strong>what your supervising provider delegates to you</strong> and has confirmed you're trained to do. A task has to clear all three to be inside your scope.</p>
+
+      <h3>The Colorado model: delegation</h3>
+      <p>In Colorado, Medical Assistants are <strong>unlicensed</strong> health care personnel. A national certification (CCMA, CMA, RMA) is valuable and may be required, but it is not a license &mdash; on its own it does not grant authority to perform medical tasks. Your authority comes from a supervising physician (or PA) delegating specific medical services to you under Colorado's delegation rules.</p>
+      <h4>What that means in practice at RHC</h4>
+      <ul>
+        <li>A provider may only delegate tasks a reasonable, prudent physician would consider sound to delegate, and only tasks consistent with that provider's own training and practice.</li>
+        <li>The supervising physician generally must be on-site while you perform delegated medical tasks, must monitor the quality of your work regularly, and must reassess your competence at least once a year, including direct observation.</li>
+        <li>You cannot re-delegate a task to someone else &mdash; if it was delegated to you, it stays with you.</li>
+      </ul>
+
+      <h3>What MAs commonly do (when delegated and trained)</h3>
+      <p>Rooming and intake, vital signs, collecting history, administering injections and immunizations, CLIA-waived testing, specimen collection, EKGs, phlebotomy, assisting with procedures, reinforcing patient education the provider has already given, and the full range of administrative work &mdash; scheduling, referrals, prior authorizations, documentation, and messaging.</p>
+
+      <h3>What is outside an MA's scope &mdash; always</h3>
+      <p>Diagnosing a condition, prescribing or adjusting medications, interpreting test results <em>for</em> a patient, making independent clinical-judgment calls (such as telephone triage decisions), and anything requiring a license you don't hold. When a patient asks "What does this result mean?" or "Should I change my dose?", the answer routes to the provider &mdash; never the MA independently.</p>
+
+      <div class="note teal"><span class="lbl">The golden rule.</span> If a task isn't clearly within what's been delegated to you, what you've been trained on, and what you feel competent to do &mdash; stop and ask. "I'll check with the provider" is always a safe, professional answer.</div>
+
+      <div class="test" id="test-scope">
+        <div class="test-head">
+          <div class="eyebrow">End-of-Section Test</div>
+          <h3>Section 1 &middot; Scope of Practice</h3>
+          <p>Type your answers below, then <strong>print, sign, and submit to your manager.</strong> You can also print it blank to complete by hand.</p>
+          <div class="namebar">
+            <div class="field"><span>Name</span><input class="ti" type="text"></div>
+            <div class="field"><span>Date</span><input class="ti" type="text"></div>
+          </div>
+        </div>
+        <div class="test-body">
+          <ol class="q">
+            <li><span class="ask">Name the three things that, working together, define a Medical Assistant's scope of practice.</span><div class="fill" contenteditable="true" data-ph="Type your answer here…"></div></li>
+            <li><span class="ask">True or false: a national certification (CCMA) gives you legal authority to perform medical tasks on your own. Explain your answer.</span><div class="fill" contenteditable="true" data-ph="Type your answer here…"></div></li>
+            <li><span class="ask">List three tasks that are commonly within an MA's scope when properly delegated and trained.</span><div class="fill" contenteditable="true" data-ph="Type your answer here…"></div></li>
+            <li><span class="ask">List three things that are <em>always</em> outside an MA's scope.</span><div class="fill" contenteditable="true" data-ph="Type your answer here…"></div></li>
+            <li><span class="ask">A patient asks you, "What does my lab result mean?" What do you do, and why?</span><div class="fill" contenteditable="true" data-ph="Type your answer here…"></div></li>
+            <li><span class="ask">In Colorado, name two supervision requirements the delegating physician must meet.</span><div class="fill" contenteditable="true" data-ph="Type your answer here…"></div></li>
+            <li><span class="ask">You're asked to perform a task you have not been trained on. What is the safe, professional action?</span><div class="fill" contenteditable="true" data-ph="Type your answer here…"></div></li>
+          </ol>
+          <div class="testbtns"><button class="act" onclick="printTest('test-scope')">Print this test</button></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel" id="p-term" role="tabpanel" aria-labelledby="t-term">
+      <div class="eyebrow">Section 2</div>
+      <h2>Medical Terminology</h2>
+      <p class="dek">Learn the parts, and you can decode words you've never seen before.</p>
+
+      <h3>The logic behind the language</h3>
+      <p>Almost every medical term is built from Greek and Latin parts. Read terms <strong>back to front</strong> &mdash; suffix first, then the beginning, then the middle.</p>
+      <h4>The four building blocks</h4>
+      <ul>
+        <li><span class="term">Root</span> &mdash; the core meaning, usually a body part (<span class="term">cardi</span> = heart)</li>
+        <li><span class="term">Combining form</span> &mdash; a root plus a combining vowel, written <span class="term">cardi/o</span></li>
+        <li><span class="term">Prefix</span> &mdash; attaches to the front, modifies meaning (<span class="term">peri-</span> = around)</li>
+        <li><span class="term">Suffix</span> &mdash; attaches to the end; names a condition, procedure, or specialty (<span class="term">-itis</span> = inflammation)</li>
+      </ul>
+      <div class="note blue"><span class="lbl">The combining-vowel rule.</span> Keep the "o" when the suffix starts with a consonant (<span class="term">cardi-o-megaly</span>); drop it when the suffix starts with a vowel (<span class="term">carditis</span>). Always keep it between two roots (<span class="term">gastr-o-enteritis</span>).</div>
+
+      <h3>Roots, by body system</h3>
+      <div class="chips">
+        <div class="chip"><b>Cardiovascular:</b> cardi/o, angi/o, ven/o, arteri/o, hem/o</div>
+        <div class="chip"><b>Respiratory:</b> pulmon/o, pneum/o, bronch/o, rhin/o</div>
+        <div class="chip"><b>Musculoskeletal:</b> oste/o, arthr/o, my/o, chondr/o</div>
+        <div class="chip"><b>Digestive:</b> gastr/o, enter/o, hepat/o, col/o</div>
+        <div class="chip"><b>Urinary:</b> nephr/o, ren/o, cyst/o, ur/o</div>
+        <div class="chip"><b>Nervous:</b> neur/o, encephal/o, myel/o</div>
+      </div>
+
+      <h3>Prefixes, by what they do</h3>
+      <ul>
+        <li><b>Negation:</b> <span class="term">a-/an-</span> (without), <span class="term">anti-</span> (against)</li>
+        <li><b>Position:</b> <span class="term">peri-</span> (around), <span class="term">sub-</span> (under), <span class="term">intra-</span> (within), <span class="term">trans-</span> (across)</li>
+        <li><b>Timing:</b> <span class="term">pre-</span> (before), <span class="term">post-</span> (after)</li>
+        <li><b>Amount:</b> <span class="term">hyper-</span> (excessive), <span class="term">hypo-</span> (deficient), <span class="term">poly-</span> (many)</li>
+        <li><b>Quality/speed:</b> <span class="term">brady-</span> (slow), <span class="term">tachy-</span> (fast), <span class="term">dys-</span> (difficult/painful)</li>
+      </ul>
+
+      <h3>Suffixes, by meaning</h3>
+      <ul>
+        <li><b>Conditions:</b> <span class="term">-itis</span> (inflammation), <span class="term">-osis</span> (abnormal condition), <span class="term">-emia</span> (blood condition), <span class="term">-algia</span> (pain), <span class="term">-megaly</span> (enlargement)</li>
+        <li><b>Procedures:</b> <span class="term">-ectomy</span> (removal), <span class="term">-otomy</span> (incision), <span class="term">-ostomy</span> (new opening), <span class="term">-plasty</span> (repair)</li>
+        <li><b>Diagnostic:</b> <span class="term">-scopy</span> (visual exam), <span class="term">-graphy</span> (recording), <span class="term">-gram</span> (the record)</li>
+        <li><b>Specialties:</b> <span class="term">-ology</span> (study of), <span class="term">-ologist</span> (specialist)</li>
+      </ul>
+
+      <h3>Making words plural</h3>
+      <div class="chips">
+        <div class="chip">-a &rarr; -ae &nbsp;(vertebra &rarr; vertebrae)</div>
+        <div class="chip">-us &rarr; -i &nbsp;(bronchus &rarr; bronchi)</div>
+        <div class="chip">-um &rarr; -a &nbsp;(bacterium &rarr; bacteria)</div>
+        <div class="chip">-is &rarr; -es &nbsp;(diagnosis &rarr; diagnoses)</div>
+      </div>
+
+      <h3>Spatial language you'll use every shift</h3>
+      <ul>
+        <li><b>Directions:</b> anterior/posterior, medial/lateral, proximal/distal, superior/inferior</li>
+        <li><b>Planes:</b> sagittal (L/R), frontal/coronal (front/back), transverse (top/bottom)</li>
+        <li><b>Abdominal quadrants:</b> RUQ, LUQ, RLQ, LLQ &mdash; used to locate a finding</li>
+      </ul>
+
+      <div class="note blue"><span class="lbl">Safety reminder.</span> RHC uses an approved-abbreviations list and a "do not use" list. Spell out "unit" instead of "U," and "daily" instead of "QD." When in doubt, write it out.</div>
+
+      <div class="apply">
+        <div class="apply-head"><span class="pill">Apply It</span><span class="who">Rosa Linden, 64</span></div>
+        <div class="apply-body">
+          <div class="chartline">64 y/o female, here for follow-up. C/o bilateral knee arthralgia, worse with ambulation. Hx of HTN, DM2, and hyperlipidemia. Denies dyspnea or chest pain.</div>
+          <p>Decode Rosa's note using what you just learned:</p>
+          <ul>
+            <li><b>c/o</b> = complains of &nbsp;&middot;&nbsp; <b>Hx</b> = history</li>
+            <li><b>bilateral</b> = both sides (both knees)</li>
+            <li><b>arthralgia</b> = <span class="term">arthr</span> (joint) + <span class="term">-algia</span> (pain) &rarr; joint pain</li>
+            <li><b>ambulation</b> = walking</li>
+            <li><b>dyspnea</b> = <span class="term">dys</span> (difficult) + <span class="term">-pnea</span> (breathing) &rarr; "denies dyspnea" = reports no trouble breathing</li>
+          </ul>
+          <div class="prompt"><b>Your turn:</b> Rosa's note says she denies dyspnea and chest pain. In your own words, what is the provider checking for &mdash; and why might it matter for someone with her history?</div>
+        </div>
+      </div>
+
+      <div class="test" id="test-term">
+        <div class="test-head">
+          <div class="eyebrow">End-of-Section Test</div>
+          <h3>Section 2 &middot; Medical Terminology</h3>
+          <p>Type your answers below, then <strong>print, sign, and submit to your manager.</strong> You can also print it blank to complete by hand.</p>
+          <div class="namebar">
+            <div class="field"><span>Name</span><input class="ti" type="text"></div>
+            <div class="field"><span>Date</span><input class="ti" type="text"></div>
+          </div>
+        </div>
+        <div class="test-body">
+          <ol class="q">
+            <li><span class="ask">Name the four building blocks of a medical term.</span><div class="fill" contenteditable="true" data-ph="Type your answer here…"></div></li>
+            <li><span class="ask">Decode each term &mdash; break it into parts and give the meaning.</span>
+              <div class="subitems">
+                <div class="row"><span class="lbl2">pericarditis</span><span class="fill-inline" contenteditable="true"></span></div>
+                <div class="row"><span class="lbl2">nephromegaly</span><span class="fill-inline" contenteditable="true"></span></div>
+                <div class="row"><span class="lbl2">dyspnea</span><span class="fill-inline" contenteditable="true"></span></div>
+                <div class="row"><span class="lbl2">hematuria</span><span class="fill-inline" contenteditable="true"></span></div>
+                <div class="row"><span class="lbl2">osteoarthritis</span><span class="fill-inline" contenteditable="true"></span></div>
+              </div></li>
+            <li><span class="ask">Give the meaning of each prefix: <em>brady-, hyper-, peri-, dys-</em></span><div class="fill" contenteditable="true" data-ph="Type your answer here…"></div></li>
+            <li><span class="ask">Give the meaning of each suffix: <em>-itis, -ectomy, -emia, -megaly</em></span><div class="fill" contenteditable="true" data-ph="Type your answer here…"></div></li>
+            <li><span class="ask">Make each word plural: <em>vertebra, diagnosis, bronchus</em></span><div class="fill" contenteditable="true" data-ph="Type your answer here…"></div></li>
+            <li><span class="ask">From Rosa's chart: decode "bilateral knee arthralgia" in plain language.</span><div class="fill" contenteditable="true" data-ph="Type your answer here…"></div></li>
+            <li><span class="ask">Why does RHC ask you to spell out "unit" instead of writing "U"?</span><div class="fill" contenteditable="true" data-ph="Type your answer here…"></div></li>
+          </ol>
+          <div class="testbtns"><button class="act" onclick="printTest('test-term')">Print this test</button></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel" id="p-anat" role="tabpanel" aria-labelledby="t-anat">
+      <div class="eyebrow">Section 3</div>
+      <h2>Anatomy &amp; Physiology</h2>
+      <p class="dek">Structure is what a part <em>is</em>; physiology is what it <em>does</em>. Nearly every task reads one or the other.</p>
+
+      <h3>How the body is organized</h3>
+      <p><strong>Chemicals &rarr; cells &rarr; tissues &rarr; organs &rarr; organ systems &rarr; organism.</strong> The four basic tissue types are epithelial (covering/lining), connective (support &mdash; including blood and bone), muscle (movement), and nervous (communication).</p>
+
+      <h3>Homeostasis &mdash; the body's balancing act</h3>
+      <p>The body constantly works to keep its internal environment stable: temperature, blood sugar, fluid balance, pH. When you take a vital sign, you're sampling how well that balance is holding. A fever, a high glucose, or a rising blood pressure means the body is either responding to a stress or losing a balance &mdash; which is exactly why your accurate measurements matter.</p>
+
+      <h3>The reference map</h3>
+      <p><strong>Anatomical position</strong> is the agreed starting point &mdash; standing, facing forward, palms forward. Every directional term assumes it, so the whole team describes the body the same way.</p>
+
+      <h3>The body systems &mdash; tied to your work</h3>
+      <div class="chips">
+        <div class="chip"><b>Cardiovascular</b> &mdash; heart &amp; vessels move blood. <em>You:</em> BP, pulse, EKG.</div>
+        <div class="chip"><b>Respiratory</b> &mdash; gas exchange. <em>You:</em> resp. rate, SpO&#8322;, nebulizer.</div>
+        <div class="chip"><b>Musculoskeletal</b> &mdash; support &amp; movement. <em>You:</em> DME, ortho devices.</div>
+        <div class="chip"><b>Integumentary</b> &mdash; skin barrier. <em>You:</em> wound care, injection sites.</div>
+        <div class="chip"><b>Nervous</b> &mdash; control center. <em>You:</em> recognize &amp; escalate changes.</div>
+        <div class="chip"><b>Endocrine</b> &mdash; hormones, blood sugar. <em>You:</em> diabetes &amp; A1c care.</div>
+        <div class="chip"><b>Digestive</b> &mdash; breaks down food. <em>You:</em> GI history, specimens.</div>
+        <div class="chip"><b>Urinary</b> &mdash; filters waste. <em>You:</em> urinalysis, clean-catch.</div>
+      </div>
+      <p>The <b>lymphatic/immune</b> system defends against infection &mdash; the reason infection control exists. The <b>reproductive</b> system drives many screening and wellness visits.</p>
+
+      <h3>Vital signs, anchored in physiology (normal adult ranges)</h3>
+      <ul>
+        <li><b>Temperature</b> (~97.8&ndash;99.1&deg;F): heat balance; a rise often signals infection.</li>
+        <li><b>Pulse</b> (60&ndash;100 bpm): each beat is the heart contracting.</li>
+        <li><b>Respirations</b> (12&ndash;20/min): reflects gas exchange and effort.</li>
+        <li><b>Blood pressure</b> (around 120/80 mmHg): force against vessel walls, systolic over diastolic.</li>
+        <li><b>SpO&#8322;</b> (95&ndash;100%): percentage of hemoglobin carrying oxygen.</li>
+      </ul>
+
+      <div class="apply">
+        <div class="apply-head"><span class="pill">Apply It</span><span class="who">Rosa Linden, 64</span></div>
+        <div class="apply-body">
+          <div class="chartline">Vitals: BP 148/90 &middot; HR 78 &middot; RR 16 &middot; T 98.4&deg;F &middot; SpO&#8322; 98%. Hx: HTN, DM2, hyperlipidemia, knee osteoarthritis, GERD.</div>
+          <p>Map each of Rosa's conditions to the system it belongs to:</p>
+          <ul>
+            <li><b>Hypertension</b> &rarr; cardiovascular (her BP of 148/90 is the physiology in action)</li>
+            <li><b>Type 2 diabetes</b> &rarr; endocrine</li>
+            <li><b>Knee osteoarthritis</b> &rarr; musculoskeletal (explains the arthralgia with walking)</li>
+            <li><b>GERD</b> &rarr; digestive</li>
+          </ul>
+          <div class="prompt"><b>Your turn:</b> Rosa's blood pressure today is 148/90. Which number is systolic and which is diastolic, and what is each telling you about her heart? Would you escalate this reading &mdash; and to whom?</div>
+        </div>
+      </div>
+
+      <div class="test" id="test-anat">
+        <div class="test-head">
+          <div class="eyebrow">End-of-Section Test</div>
+          <h3>Section 3 &middot; Anatomy &amp; Physiology</h3>
+          <p>Type your answers below, then <strong>print, sign, and submit to your manager.</strong> You can also print it blank to complete by hand.</p>
+          <div class="namebar">
+            <div class="field"><span>Name</span><input class="ti" type="text"></div>
+            <div class="field"><span>Date</span><input class="ti" type="text"></div>
+          </div>
+        </div>
+        <div class="test-body">
+          <ol class="q">
+            <li><span class="ask">List the levels of organization from smallest to largest.</span><div class="fill" contenteditable="true" data-ph="Type your answer here…"></div></li>
+            <li><span class="ask">Name the body system responsible for each function: (a) gas exchange, (b) regulating blood sugar, (c) filtering waste and balancing fluids, (d) support and movement.</span><div class="fill" contenteditable="true" data-ph="Type your answer here…"></div></li>
+            <li><span class="ask">For each of Rosa's conditions, name the body system: HTN, DM2, knee osteoarthritis, GERD.</span><div class="fill" contenteditable="true" data-ph="Type your answer here…"></div></li>
+            <li><span class="ask">Give the normal adult range for: temperature, pulse, respirations, blood pressure.</span><div class="fill" contenteditable="true" data-ph="Type your answer here…"></div></li>
+            <li><span class="ask">Rosa's BP is 148/90. Which number is systolic, which is diastolic, and what does each represent?</span><div class="fill" contenteditable="true" data-ph="Type your answer here…"></div></li>
+            <li><span class="ask">What is homeostasis, and how does taking a vital sign relate to it?</span><div class="fill" contenteditable="true" data-ph="Type your answer here…"></div></li>
+            <li><span class="ask">Describe the anatomical position and explain why the team uses it.</span><div class="fill" contenteditable="true" data-ph="Type your answer here…"></div></li>
+            <li><span class="ask">Name the three injection routes (and the skin layer each targets) that connect to this section.</span><div class="fill" contenteditable="true" data-ph="Type your answer here…"></div></li>
+          </ol>
+          <div class="testbtns"><button class="act" onclick="printTest('test-anat')">Print this test</button></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel" id="p-meds" role="tabpanel" aria-labelledby="t-meds">
+      <div class="eyebrow">Section 4</div>
+      <h2>Medication Classes</h2>
+      <p class="dek">You won't prescribe or adjust &mdash; your job is recognition, accurate documentation, and allergy safety.</p>
+
+      <h3>Generic vs. brand &mdash; and the suffix trick</h3>
+      <p>Every drug has a <strong>generic name</strong> (lisinopril) and one or more <strong>brand names</strong> (Prinivil, Zestril). Generic names often share a <strong>suffix</strong> that signals the class &mdash; learn these and you can identify a class from the name alone:</p>
+      <div class="chips">
+        <div class="chip"><b>-pril</b> &rarr; ACE inhibitors (lisinopril) &mdash; BP</div>
+        <div class="chip"><b>-sartan</b> &rarr; ARBs (losartan) &mdash; BP</div>
+        <div class="chip"><b>-olol</b> &rarr; beta blockers (metoprolol) &mdash; HR/BP</div>
+        <div class="chip"><b>-dipine</b> &rarr; calcium channel blockers (amlodipine) &mdash; BP</div>
+        <div class="chip"><b>-statin</b> &rarr; statins (atorvastatin) &mdash; cholesterol</div>
+        <div class="chip"><b>-prazole</b> &rarr; PPIs (omeprazole) &mdash; stomach acid</div>
+        <div class="chip"><b>-cillin</b> &rarr; penicillin antibiotics (amoxicillin)</div>
+        <div class="chip"><b>-pam / -lam</b> &rarr; benzodiazepines (lorazepam) &mdash; anxiety</div>
+      </div>
+
+      <h3>The major classes</h3>
+      <ul>
+        <li><b>Analgesics</b> &mdash; relieve pain (acetaminophen, ibuprofen). Opioids are high-alert.</li>
+        <li><b>Antibiotics</b> &mdash; treat bacterial infection (amoxicillin, azithromycin). Allergies are critical to flag.</li>
+        <li><b>Antihypertensives</b> &mdash; lower BP (ACE inhibitors, ARBs, beta blockers, calcium channel blockers, diuretics). Often more than one.</li>
+        <li><b>Antidiabetics</b> &mdash; manage blood sugar (metformin, insulin). Insulin is high-alert.</li>
+        <li><b>Anticoagulants/antiplatelets</b> &mdash; reduce clotting (warfarin, apixaban, aspirin). Bleeding risk.</li>
+        <li><b>Bronchodilators</b> &mdash; open airways (albuterol). Note rescue vs. maintenance.</li>
+        <li><b>Corticosteroids</b> &mdash; reduce inflammation (prednisone). Often tapered &mdash; capture the schedule.</li>
+        <li><b>Statins</b> &mdash; lower cholesterol (atorvastatin).</li>
+        <li><b>Antidepressants/anxiolytics</b> &mdash; mood &amp; anxiety (sertraline; benzodiazepines are controlled).</li>
+        <li><b>Acid reducers</b> &mdash; PPIs (omeprazole), H2 blockers (famotidine).</li>
+        <li><b>Antihistamines</b> &mdash; allergy symptoms (cetirizine, diphenhydramine).</li>
+        <li><b>Thyroid</b> &mdash; replace/regulate hormone (levothyroxine).</li>
+      </ul>
+
+      <h3>Routes of administration</h3>
+      <p>PO (by mouth), SL (under the tongue), topical, inhaled, and the injection routes: <strong>ID</strong> (intradermal), <strong>SubQ</strong> (subcutaneous), <strong>IM</strong> (intramuscular) &mdash; each ties back to the skin layers in your A&amp;P section.</p>
+
+      <h3>The Seven Rights</h3>
+      <p>Right <strong>patient, medication, dose, route, time, documentation,</strong> and <strong>reason/indication.</strong> Run this every single time. When anything is uncertain, verify in <strong>Lexicomp</strong> or confirm with the provider before proceeding.</p>
+
+      <div class="apply">
+        <div class="apply-head"><span class="pill">Apply It</span><span class="who">Rosa Linden, 64</span></div>
+        <div class="apply-body">
+          <div class="chartline">Medications: lisinopril, amlodipine, metformin, atorvastatin, omeprazole, ibuprofen (prn). Allergy: penicillin (rash).</div>
+          <p>Use the suffix trick to identify each class:</p>
+          <ul>
+            <li><b>lisinopril</b> &rarr; <span class="term">-pril</span> &rarr; ACE inhibitor (BP)</li>
+            <li><b>amlodipine</b> &rarr; <span class="term">-dipine</span> &rarr; calcium channel blocker (BP)</li>
+            <li><b>metformin</b> &rarr; antidiabetic (blood sugar)</li>
+            <li><b>atorvastatin</b> &rarr; <span class="term">-statin</span> &rarr; cholesterol</li>
+            <li><b>omeprazole</b> &rarr; <span class="term">-prazole</span> &rarr; PPI (her GERD)</li>
+            <li><b>ibuprofen</b> &rarr; analgesic/NSAID (her knee pain)</li>
+          </ul>
+          <p>Her medication list alone tells the story of her chart &mdash; heart, blood sugar, cholesterol, stomach, joints &mdash; before you've read a word of her history.</p>
+          <div class="prompt"><b>Your turn:</b> Rosa is allergic to penicillin. If a provider were considering an antibiotic for her today, what would you make sure is flagged &mdash; and where would you confirm the drug information?</div>
+        </div>
+      </div>
+
+      <div class="test" id="test-meds">
+        <div class="test-head">
+          <div class="eyebrow">End-of-Section Test</div>
+          <h3>Section 4 &middot; Medication Classes</h3>
+          <p>Type your answers below, then <strong>print, sign, and submit to your manager.</strong> You can also print it blank to complete by hand.</p>
+          <div class="namebar">
+            <div class="field"><span>Name</span><input class="ti" type="text"></div>
+            <div class="field"><span>Date</span><input class="ti" type="text"></div>
+          </div>
+        </div>
+        <div class="test-body">
+          <ol class="q">
+            <li><span class="ask">Match each suffix to its drug class: <em>-pril, -statin, -olol, -prazole, -dipine, -cillin.</em></span><div class="fill" contenteditable="true" data-ph="Type your answer here…"></div></li>
+            <li><span class="ask">Identify the drug class for each of Rosa's medications: lisinopril, amlodipine, metformin, atorvastatin, omeprazole, ibuprofen.</span><div class="fill" contenteditable="true" data-ph="Type your answer here…"></div></li>
+            <li><span class="ask">List the Seven Rights of medication administration.</span><div class="fill" contenteditable="true" data-ph="Type your answer here…"></div></li>
+            <li><span class="ask">Define "generic name" and "brand name," and give one example of each.</span><div class="fill" contenteditable="true" data-ph="Type your answer here…"></div></li>
+            <li><span class="ask">What do these routes mean: PO, SubQ, IM, ID?</span><div class="fill" contenteditable="true" data-ph="Type your answer here…"></div></li>
+            <li><span class="ask">New patient &mdash; Theo, age 29 &mdash; takes albuterol and cetirizine. Identify the class of each.</span><div class="fill" contenteditable="true" data-ph="Type your answer here…"></div></li>
+            <li><span class="ask">Why does Rosa's penicillin allergy matter, and where would you verify drug information before acting?</span><div class="fill" contenteditable="true" data-ph="Type your answer here…"></div></li>
+          </ol>
+          <div class="testbtns"><button class="act" onclick="printTest('test-meds')">Print this test</button></div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <div class="actions">
+    <button class="act ghost" onclick="printFull()">Print full module</button>
+  </div>
+  <div class="footer-note">RHC Medical Assistant Onboarding &middot; Foundations Module</div>
+  <div class="credit">Developed by <b>Jo Blaise, RN-DNP</b> &middot; Clinic Manager</div>
+
+</div>
+
+<script>
+  const tabs = Array.from(document.querySelectorAll('.tab'));
+  const panels = Array.from(document.querySelectorAll('.panel'));
+  function select(tab){
+    tabs.forEach(t=>t.setAttribute('aria-selected', t===tab ? 'true':'false'));
+    panels.forEach(p=>p.classList.toggle('active', p.id===tab.getAttribute('aria-controls')));
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+  tabs.forEach((tab,i)=>{
+    tab.addEventListener('click',()=>select(tab));
+    tab.addEventListener('keydown',e=>{
+      if(e.key==='ArrowRight'||e.key==='ArrowLeft'){
+        e.preventDefault();
+        const dir = e.key==='ArrowRight'?1:-1;
+        const next = tabs[(i+dir+tabs.length)%tabs.length];
+        next.focus(); select(next);
+      }
+    });
+  });
+
+  function printFull(){
+    document.body.classList.remove('printing-single');
+    document.querySelectorAll('.test').forEach(t=>t.classList.remove('print-target'));
+    window.print();
+  }
+  function printTest(id){
+    document.querySelectorAll('.test').forEach(t=>t.classList.remove('print-target'));
+    document.getElementById(id).classList.add('print-target');
+    document.body.classList.add('printing-single');
+    window.print();
+  }
+  window.addEventListener('afterprint', ()=>{
+    document.body.classList.remove('printing-single');
+    document.querySelectorAll('.test').forEach(t=>t.classList.remove('print-target'));
+  });
+</script>
+</body>
+</html>
