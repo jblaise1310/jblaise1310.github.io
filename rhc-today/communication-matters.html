@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Communication Matters — Every Interaction Counts</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=Inter+Tight:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #23282b;
+    --ink-soft: #4a5258;
+    --line: #d9d6ce;
+    --line-soft: #e8e5dd;
+    --paper: #faf8f3;
+    --card: #ffffff;
+    --accent: #3f5d52;       /* muted forest green */
+    --accent-soft: #eef1ed;
+    --gold: #9a7b4f;
+    --shadow: 0 1px 2px rgba(35,40,43,.04), 0 8px 28px rgba(35,40,43,.06);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Newsreader', Georgia, serif;
+    font-size: 18px;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  .wrap {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 0 28px 100px;
+  }
+
+  /* ---------- Masthead ---------- */
+  header {
+    text-align: center;
+    padding: 78px 0 46px;
+    border-bottom: 1px solid var(--line);
+    margin-bottom: 54px;
+  }
+
+  .eyebrow {
+    font-family: 'Inter Tight', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: .26em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 26px;
+  }
+
+  h1 {
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    font-size: clamp(2.4rem, 6vw, 3.6rem);
+    line-height: 1.08;
+    letter-spacing: -0.015em;
+    color: var(--ink);
+  }
+
+  h1 .sub {
+    display: block;
+    font-style: italic;
+    font-weight: 400;
+    font-size: clamp(1.1rem, 3vw, 1.5rem);
+    color: var(--accent);
+    margin-top: 14px;
+    letter-spacing: 0;
+  }
+
+  .memo-to {
+    font-family: 'Inter Tight', sans-serif;
+    font-size: 13px;
+    letter-spacing: .04em;
+    color: var(--ink-soft);
+    margin-top: 30px;
+    text-transform: uppercase;
+  }
+  .memo-to strong { color: var(--accent); font-weight: 600; }
+
+  /* ---------- Intro ---------- */
+  .intro p {
+    font-size: 1.2rem;
+    line-height: 1.75;
+    margin-bottom: 22px;
+    color: var(--ink-soft);
+  }
+
+  .pull {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 1.5rem;
+    line-height: 1.45;
+    color: var(--ink);
+    text-align: center;
+    margin: 44px auto;
+    padding: 0 10px;
+    max-width: 600px;
+    position: relative;
+  }
+  .pull::before, .pull::after {
+    content: "";
+    display: block;
+    width: 46px;
+    height: 1px;
+    background: var(--gold);
+    margin: 22px auto;
+    opacity: .6;
+  }
+
+  /* ---------- Section headings ---------- */
+  h2 {
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    font-size: 1.7rem;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+    margin: 64px 0 8px;
+    padding-top: 30px;
+    border-top: 1px solid var(--line);
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+  }
+  h2 .num {
+    font-family: 'Inter Tight', sans-serif;
+    font-size: .8rem;
+    font-weight: 600;
+    color: var(--gold);
+    letter-spacing: .1em;
+  }
+
+  .lead { color: var(--ink-soft); margin-bottom: 26px; font-size: 1.08rem; }
+
+  h3 {
+    font-family: 'Inter Tight', sans-serif;
+    font-weight: 600;
+    font-size: 1.06rem;
+    letter-spacing: .01em;
+    color: var(--accent);
+    margin: 30px 0 12px;
+  }
+
+  /* ---------- Lists ---------- */
+  ul.clean { list-style: none; }
+  ul.clean li {
+    position: relative;
+    padding-left: 26px;
+    margin-bottom: 11px;
+    color: var(--ink-soft);
+  }
+  ul.clean li::before {
+    content: "";
+    position: absolute;
+    left: 4px;
+    top: 0.72em;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    opacity: .55;
+  }
+
+  /* ---------- Perspective table ---------- */
+  .table-card {
+    background: var(--card);
+    border: 1px solid var(--line-soft);
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    margin-top: 22px;
+  }
+  table { width: 100%; border-collapse: collapse; }
+  thead th {
+    font-family: 'Inter Tight', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    text-align: left;
+    padding: 16px 22px;
+    color: var(--ink-soft);
+    background: var(--accent-soft);
+  }
+  thead th:first-child { color: var(--ink-soft); }
+  thead th:last-child { color: var(--gold); }
+  tbody td {
+    padding: 16px 22px;
+    border-top: 1px solid var(--line-soft);
+    font-size: 1.02rem;
+    vertical-align: top;
+    width: 50%;
+  }
+  tbody td:first-child {
+    color: var(--ink-soft);
+    border-right: 1px solid var(--line-soft);
+  }
+  tbody td:last-child {
+    color: var(--ink);
+    font-style: italic;
+    background: #fcfbf8;
+  }
+
+  /* ---------- Positive language cards ---------- */
+  .swap {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 18px;
+    background: var(--card);
+    border: 1px solid var(--line-soft);
+    border-radius: 10px;
+    padding: 20px 24px;
+    margin-bottom: 16px;
+    box-shadow: var(--shadow);
+  }
+  .swap .from {
+    color: #8a8077;
+    text-decoration: line-through;
+    text-decoration-color: #cdbfae;
+    text-decoration-thickness: 1px;
+    font-size: 1.02rem;
+  }
+  .swap .to {
+    color: var(--accent);
+    font-weight: 500;
+    font-size: 1.05rem;
+  }
+  .swap .arrow {
+    font-family: 'Inter Tight', sans-serif;
+    color: var(--gold);
+    font-size: 1.2rem;
+  }
+  .swap .label {
+    display: block;
+    font-family: 'Inter Tight', sans-serif;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+    color: #b0a795;
+  }
+  .swap .to .label { color: var(--gold); }
+
+  /* ---------- Callout ---------- */
+  .callout {
+    background: var(--accent-soft);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 8px 8px 0;
+    padding: 22px 26px;
+    margin: 24px 0;
+    color: var(--ink-soft);
+    font-size: 1.08rem;
+    line-height: 1.65;
+  }
+
+  /* ---------- Human side ---------- */
+  .human-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px 28px;
+    margin: 22px 0 14px;
+  }
+  .human-grid div {
+    padding-left: 26px;
+    position: relative;
+    color: var(--ink-soft);
+    padding-bottom: 8px;
+    border-bottom: 1px dotted var(--line);
+  }
+  .human-grid div::before {
+    content: "·";
+    position: absolute;
+    left: 6px;
+    top: -2px;
+    color: var(--gold);
+    font-size: 1.6rem;
+    line-height: 1;
+  }
+
+  /* ---------- Standard / closing ---------- */
+  .standard {
+    background: var(--ink);
+    color: #f3efe7;
+    border-radius: 14px;
+    padding: 48px 44px;
+    margin-top: 64px;
+    text-align: center;
+  }
+  .standard .eyebrow { color: #c9a96a; margin-bottom: 18px; }
+  .standard h2 {
+    border: none;
+    margin: 0 0 12px;
+    padding: 0;
+    color: #fff;
+    justify-content: center;
+    font-size: 1.9rem;
+  }
+  .standard p.note { color: #bdb6a8; margin-bottom: 32px; font-size: 1.05rem; }
+  .checks {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 14px;
+    margin-bottom: 36px;
+  }
+  .check {
+    font-family: 'Inter Tight', sans-serif;
+    font-size: .95rem;
+    letter-spacing: .02em;
+    background: rgba(255,255,255,.06);
+    border: 1px solid rgba(255,255,255,.13);
+    border-radius: 999px;
+    padding: 9px 20px 9px 16px;
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+  }
+  .check .tick { color: #c9a96a; font-weight: 600; }
+
+  .standard .close {
+    font-family: 'Newsreader', serif;
+    font-style: italic;
+    font-size: 1.12rem;
+    line-height: 1.6;
+    color: #e6e0d4;
+    max-width: 540px;
+    margin: 0 auto;
+    padding-top: 26px;
+    border-top: 1px solid rgba(255,255,255,.12);
+  }
+
+  footer {
+    text-align: center;
+    font-family: 'Inter Tight', sans-serif;
+    font-size: 12px;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: #b3aa99;
+    margin-top: 40px;
+  }
+
+  /* ---------- Entrance ---------- */
+  .fade { opacity: 0; transform: translateY(14px); animation: rise .7s cubic-bezier(.2,.7,.3,1) forwards; }
+  @keyframes rise { to { opacity: 1; transform: none; } }
+  header .eyebrow { animation-delay: .05s; }
+  header h1 { animation-delay: .15s; }
+  header .memo-to { animation-delay: .3s; }
+
+  @media (max-width: 600px) {
+    body { font-size: 17px; }
+    .swap { grid-template-columns: 1fr; gap: 8px; text-align: left; }
+    .swap .arrow { display: none; }
+    .human-grid { grid-template-columns: 1fr; }
+    tbody td { display: block; width: 100%; }
+    tbody td:first-child { border-right: none; }
+    .standard { padding: 38px 24px; }
+  }
+
+  @media print {
+    body { background: #fff; }
+    .swap, .table-card, .callout { box-shadow: none; }
+    .standard { background: #fff; color: var(--ink); border: 1px solid var(--line); }
+    .standard h2, .standard .close { color: var(--ink); }
+    .fade { opacity: 1; transform: none; animation: none; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="eyebrow fade">Internal Memo · Patient Experience</div>
+    <h1 class="fade">Communication Matters<span class="sub">Every interaction counts</span></h1>
+    <p class="memo-to fade"><strong>To:</strong> &nbsp;Patient Service Representatives (PSRs)</p>
+  </header>
+
+  <section class="intro">
+    <p>As Patient Service Representatives, you are often the first and last person a patient interacts with during their visit. The way we communicate has a lasting impact on how patients feel about their care, regardless of the clinical outcome.</p>
+
+    <div class="pull">Patients may not always remember exactly what was said, but they will remember how they were treated.</div>
+  </section>
+
+  <section>
+    <h2><span class="num">01</span> Common Communication Concerns</h2>
+    <p class="lead">Some of the most frequent patient complaints across healthcare organizations are not related to medical care. Instead, they often involve perceptions such as:</p>
+    <ul class="clean">
+      <li>Feeling rushed</li>
+      <li>Feeling ignored</li>
+      <li>Feeling like they are an inconvenience</li>
+      <li>Receiving short or abrupt responses</li>
+      <li>Not being greeted warmly</li>
+      <li>Feeling that staff were distracted or uninterested</li>
+    </ul>
+    <p class="lead" style="margin-top:22px;">While these concerns may not reflect our intentions, they can significantly affect a patient's experience.</p>
+  </section>
+
+  <section>
+    <h2><span class="num">02</span> How Patients May View Our Interactions</h2>
+    <p class="lead">What may seem routine to us may feel very different to a patient.</p>
+    <div class="table-card">
+      <table>
+        <thead>
+          <tr><th>Staff Perspective</th><th>Patient Perspective</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>"I'm busy."</td><td>"They don't have time for me."</td></tr>
+          <tr><td>"I'm being efficient."</td><td>"They are rushing me."</td></tr>
+          <tr><td>"I've answered this question many times today."</td><td>"They seem annoyed."</td></tr>
+          <tr><td>"I'm focused on my work."</td><td>"They are not listening."</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout">Our goal is to ensure patients feel welcomed, respected, and supported during every interaction.</div>
+  </section>
+
+  <section>
+    <h2><span class="num">03</span> Communication Best Practices</h2>
+
+    <h3>Greet Every Patient</h3>
+    <ul class="clean">
+      <li>Make eye contact when possible</li>
+      <li>Smile</li>
+      <li>Acknowledge the patient promptly</li>
+      <li>Use a friendly greeting</li>
+    </ul>
+
+    <h3>Listen First</h3>
+    <ul class="clean">
+      <li>Allow patients to finish speaking</li>
+      <li>Avoid interrupting</li>
+      <li>Clarify concerns when needed</li>
+    </ul>
+
+    <h3>Use Positive Language</h3>
+    <div class="swap">
+      <span class="from"><span class="label">Instead of</span>"That's not my job."</span>
+      <span class="arrow">→</span>
+      <span class="to"><span class="label">Try</span>"Let me find the right person to help you."</span>
+    </div>
+    <div class="swap">
+      <span class="from"><span class="label">Instead of</span>"You'll have to wait."</span>
+      <span class="arrow">→</span>
+      <span class="to"><span class="label">Try</span>"We'll get you checked in as quickly as possible."</span>
+    </div>
+
+    <h3>Be Mindful of Tone</h3>
+    <p class="lead">Patients hear our tone before they process our words. A calm, friendly tone can de-escalate concerns and create trust.</p>
+
+    <h3>Remember the Human Side</h3>
+    <p class="lead">Patients may be:</p>
+    <div class="human-grid">
+      <div>Sick</div>
+      <div>In pain</div>
+      <div>Worried about test results</div>
+      <div>Concerned about finances</div>
+      <div>Caring for a loved one</div>
+      <div>Experiencing personal stress</div>
+    </div>
+    <div class="callout">A small act of kindness can make a significant difference.</div>
+  </section>
+
+  <div class="standard">
+    <div class="eyebrow">Our Standard</div>
+    <h2>Every patient should leave feeling</h2>
+    <p class="note">— welcome at PSMC —</p>
+    <div class="checks">
+      <span class="check"><span class="tick">✓</span> Respected</span>
+      <span class="check"><span class="tick">✓</span> Heard</span>
+      <span class="check"><span class="tick">✓</span> Valued</span>
+      <span class="check"><span class="tick">✓</span> Welcome</span>
+    </div>
+    <p class="close">Professional, compassionate communication is everyone's responsibility. Each interaction contributes to the experience our patients have and the trust they place in our organization.</p>
+  </div>
+
+  <footer>Patient Service Representatives · Patient Experience</footer>
+
+</div>
+</body>
+</html>
