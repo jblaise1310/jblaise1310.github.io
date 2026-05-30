@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RHC · Pediatric Vitals & Weight-Based Dosing</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400&family=Mulish:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#243240; --soft-ink:#5a6b78; --paper:#fbf9f5; --line:#e4ded3; --card:#fffdf9;
+    --purp-bg:#eee9f6; --purp-bd:#d2c6e6; --purp-tx:#5a4a8c;
+    --teal-bg:#e7f3ed; --teal-bd:#bfddcb; --teal-tx:#2f6b50;
+    --coral-bg:#f8ebe9; --coral-bd:#e6c5bf; --coral-tx:#a8483c;
+    --amber-bg:#f9f1e2; --amber-bd:#e8d4ab; --amber-tx:#9a6b1f;
+    --rosa-bg:#fbf3e7; --rosa-bd:#e7cfa6; --rosa-tx:#9a6b1f;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    font-family:'Mulish',sans-serif;color:var(--ink);line-height:1.6;
+    background:
+      radial-gradient(1200px 600px at 85% -10%, #f4efe6 0%, transparent 60%),
+      radial-gradient(900px 500px at -10% 110%, #eef2ec 0%, transparent 55%),
+      var(--paper);
+    padding:40px 20px 64px;-webkit-font-smoothing:antialiased;
+  }
+  .sheet{max-width:860px;margin:0 auto;background:var(--card);border:1px solid var(--line);border-radius:22px;box-shadow:0 1px 2px rgba(60,50,30,.04),0 30px 60px -30px rgba(60,50,30,.18);overflow:hidden;}
+
+  .masthead{padding:42px 52px 30px;border-bottom:1px solid var(--line);position:relative;background:linear-gradient(180deg,#fff,#fdfbf6);}
+  .masthead::after{content:"";position:absolute;left:52px;right:52px;bottom:-1px;height:3px;background:linear-gradient(90deg,var(--purp-bd),var(--teal-bd),var(--coral-bd));border-radius:3px;}
+  .kicker{font-size:12.5px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--soft-ink);}
+  h1{font-family:'Fraunces',serif;font-weight:500;font-size:36px;line-height:1.08;letter-spacing:-.01em;margin:10px 0 6px;}
+  .masthead .sub{font-family:'Fraunces',serif;font-style:italic;font-size:17px;color:var(--soft-ink);}
+  .top-print{position:absolute;top:30px;right:40px;}
+
+  .body{padding:36px 52px 44px;}
+  .eyebrow{font-size:12px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--purp-tx);margin-bottom:8px;}
+  h2{font-family:'Fraunces',serif;font-weight:600;font-size:24px;margin:34px 0 12px;color:var(--ink);}
+  h2:first-of-type{margin-top:0;}
+  p{font-size:15.5px;margin-bottom:14px;color:#374550;}
+  strong{font-weight:700;color:var(--ink);}
+  .lead{font-size:16.5px;color:#3a4753;}
+
+  ul{list-style:none;margin:0 0 16px;display:grid;gap:8px;}
+  ul li{position:relative;padding-left:20px;font-size:15px;color:#374550;}
+  ul li::before{content:"";position:absolute;left:2px;top:9px;width:6px;height:6px;border-radius:50%;background:var(--purp-tx);}
+
+  /* vitals table */
+  .vt-wrap{border:1px solid var(--line);border-radius:13px;overflow:hidden;margin:6px 0 10px;}
+  table{width:100%;border-collapse:collapse;font-size:13.5px;}
+  thead th{background:var(--purp-bg);color:var(--purp-tx);font-weight:700;text-align:left;padding:11px 14px;font-size:12.5px;letter-spacing:.03em;border-bottom:1px solid var(--purp-bd);}
+  tbody td{padding:10px 14px;border-bottom:1px solid var(--line);color:#374550;}
+  tbody tr:last-child td{border-bottom:none;}
+  tbody tr:nth-child(even){background:var(--paper);}
+  tbody td:first-child{font-weight:700;color:var(--ink);}
+  .src{font-size:12px;color:var(--soft-ink);font-style:italic;margin-top:8px;}
+
+  .note{border-radius:13px;padding:15px 18px;font-size:14.5px;margin:16px 0;border:1px solid;}
+  .note .lbl{font-weight:700;}
+  .note.teal{background:var(--teal-bg);border-color:var(--teal-bd);color:#2c4f3e;}
+  .note.amber{background:var(--amber-bg);border-color:var(--amber-bd);color:#5c4a28;}
+  .note.amber .lbl{color:var(--amber-tx);}
+  .note.coral{background:var(--coral-bg);border-color:var(--coral-bd);color:#7a342b;}
+  .note.coral .lbl{color:var(--coral-tx);}
+
+  .stat{display:flex;gap:18px;align-items:center;background:var(--coral-bg);border:1px solid var(--coral-bd);border-radius:14px;padding:18px 22px;margin:16px 0;}
+  .stat .big{font-family:'Fraunces',serif;font-weight:600;font-size:34px;color:var(--coral-tx);line-height:1;white-space:nowrap;}
+  .stat .txt{font-size:14.5px;color:#7a342b;}
+
+  /* steps */
+  .steps{counter-reset:s;display:grid;gap:12px;margin:8px 0 16px;}
+  .step{counter-increment:s;position:relative;padding:13px 16px 13px 52px;background:var(--paper);border:1px solid var(--line);border-radius:12px;font-size:14.5px;color:#374550;}
+  .step::before{content:counter(s);position:absolute;left:14px;top:50%;transform:translateY(-50%);width:26px;height:26px;border-radius:50%;background:var(--teal-bg);border:1.5px solid var(--teal-tx);color:var(--teal-tx);font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center;}
+  .step b{color:var(--ink);}
+
+  .formula{font-family:'Fraunces',serif;font-size:16px;color:var(--ink);background:#fff;border:1px solid var(--line);border-left:3px solid var(--teal-tx);border-radius:0 10px 10px 0;padding:13px 18px;margin:6px 0 14px;}
+
+  /* Rosa-style apply box, peds patient */
+  .apply{margin:26px 0 8px;border:1.5px solid var(--rosa-bd);border-radius:16px;overflow:hidden;background:var(--rosa-bg);}
+  .apply-head{display:flex;align-items:center;gap:12px;padding:14px 20px;background:rgba(154,107,31,.10);border-bottom:1px solid var(--rosa-bd);}
+  .apply-head .pill{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;background:var(--rosa-tx);color:#fff;padding:4px 10px;border-radius:20px;}
+  .apply-head .who{font-family:'Fraunces',serif;font-weight:600;font-size:16px;color:var(--rosa-tx);}
+  .apply-body{padding:18px 22px;}
+  .apply-body p{font-size:15px;color:#5c4a28;}
+  .apply-body ul li{color:#5c4a28;}
+  .apply-body ul li::before{background:var(--rosa-tx);}
+  .chartline{font-family:'Fraunces',serif;font-style:italic;font-size:14.5px;color:#6b5526;background:#fff;border-left:3px solid var(--rosa-bd);border-radius:0 8px 8px 0;padding:12px 16px;margin-bottom:14px;}
+  .yt{margin-top:14px;background:#fff;border:1px dashed var(--rosa-bd);border-radius:10px;padding:15px 17px;}
+  .yt-q{font-size:14.5px;color:#5c4a28;}
+  .yt-q b{color:var(--rosa-tx);}
+  .fill{min-height:50px;border:1px solid #cfc7b8;border-radius:9px;background:#fff;padding:9px 13px;margin-top:11px;font-size:14.5px;color:var(--ink);line-height:1.7;outline:none;}
+  .fill:focus{border-color:var(--purp-tx);box-shadow:0 0 0 3px rgba(90,74,140,.10);}
+  .fill:empty:before{content:attr(data-ph);color:#b3aa99;}
+  .ck{font-family:'Mulish',sans-serif;font-size:12.5px;font-weight:700;cursor:pointer;padding:9px 15px;margin-top:12px;background:var(--rosa-tx);border:1px solid var(--rosa-tx);color:#fff;border-radius:10px;}
+  .feedback{display:none;margin-top:14px;border-radius:10px;padding:14px 16px;background:var(--teal-bg);border:1px solid var(--teal-bd);}
+  .feedback.show{display:block;}
+  .fb-label{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--teal-tx);margin-bottom:6px;}
+  .feedback p{font-size:14px;color:#2c4f3e;margin:0;}
+
+  .actions{display:flex;gap:10px;justify-content:center;padding:0 52px 36px;}
+  button.act{font-family:'Mulish',sans-serif;font-size:13.5px;font-weight:700;cursor:pointer;border:1px solid var(--ink);background:var(--ink);color:#fff;border-radius:10px;padding:11px 18px;}
+  button.act.ghost{background:transparent;color:var(--ink);}
+  .footer-note{text-align:center;font-size:13px;color:var(--soft-ink);margin-top:8px;font-style:italic;font-family:'Fraunces',serif;}
+  .credit{text-align:center;font-size:13px;color:var(--soft-ink);margin-top:4px;padding-bottom:8px;}
+  .credit b{font-weight:600;color:var(--ink);font-style:normal;}
+
+  @media(max-width:600px){
+    .masthead,.body,.actions{padding-left:24px;padding-right:24px;}
+    h1{font-size:28px;} .top-print{position:static;margin-bottom:14px;}
+    table{font-size:12px;} thead th,tbody td{padding:8px 9px;}
+    .stat{flex-direction:column;align-items:flex-start;gap:8px;}
+  }
+  @media print{
+    body{background:#fff;padding:0;}
+    .sheet{box-shadow:none;border:none;border-radius:0;max-width:none;}
+    .top-print,.actions .act,.ck{display:none !important;}
+    .fill:empty:before{content:"" !important;}
+    .vt-wrap,.stat,.note,.apply,.step,.formula{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <div class="masthead">
+    <button class="act ghost top-print" onclick="window.print()">Print this sheet</button>
+    <div class="kicker">RHC &nbsp;&middot;&nbsp; MA Education &nbsp;&middot;&nbsp; Pediatrics</div>
+    <h1>Pediatric Vitals &amp; Weight-Based Dosing</h1>
+    <div class="sub">Why a child's numbers, and a child's weight, are never "just like an adult's."</div>
+  </div>
+
+  <div class="body">
+
+    <p class="lead">Children are not small adults. Their normal vital signs shift with every stage of growth, and the medications they receive are calculated from their exact weight. That makes two of your everyday MA tasks, taking accurate vitals and recording an accurate weight, directly protective of a child's safety.</p>
+
+    <h2>Part 1 &middot; Pediatric vital signs change with age</h2>
+    <p>A heart rate that is perfectly normal for a newborn would be alarming in a teenager, and the reverse is just as true. As children grow, heart rate and respiratory rate <strong>fall</strong>, while blood pressure gradually <strong>rises</strong>. Use the typical resting (awake) ranges below as a guide.</p>
+
+    <div class="vt-wrap">
+      <table>
+        <thead>
+          <tr><th>Age group</th><th>Heart rate (bpm)</th><th>Respirations (/min)</th><th>Systolic BP (mmHg)</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Newborn (0&ndash;1 mo)</td><td>100&ndash;160</td><td>30&ndash;60</td><td>~60&ndash;90</td></tr>
+          <tr><td>Infant (1&ndash;12 mo)</td><td>100&ndash;150</td><td>25&ndash;40</td><td>~70&ndash;100</td></tr>
+          <tr><td>Toddler (1&ndash;3 yr)</td><td>90&ndash;140</td><td>20&ndash;30</td><td>~80&ndash;110</td></tr>
+          <tr><td>Preschool (3&ndash;5 yr)</td><td>80&ndash;120</td><td>20&ndash;25</td><td>~80&ndash;110</td></tr>
+          <tr><td>School age (6&ndash;12 yr)</td><td>70&ndash;110</td><td>18&ndash;25</td><td>~85&ndash;120</td></tr>
+          <tr><td>Adolescent (13+ yr)</td><td>60&ndash;100</td><td>12&ndash;20</td><td>110&ndash;120</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="src">Typical resting awake ranges, compiled from pediatric references (Fleming et al., Lancet 2011; AAP/Flynn et al. 2017). Ranges vary slightly by source, sleep vs. awake state, and measurement site.</p>
+
+    <div class="note teal"><span class="lbl">Temperature &amp; SpO&#8322; (all ages).</span> Normal temperature is roughly 97.7&ndash;99.5&deg;F; a rectal temp of 100.4&deg;F (38.0&deg;C) is the standard definition of fever in infants. Oxygen saturation should be 95% or higher. Always note <em>how</em> a temperature was taken (rectal, axillary, oral, temporal, tympanic), the route changes the reading.</div>
+
+    <div class="note amber"><span class="lbl">One number rarely tells the story.</span> Rigid cutoffs can flag a healthy, crying, or recently-active child as "abnormal." Crying, fever, fear, and a full diaper all raise the numbers. Settle the child when you can, record what you actually measured, note the context, and let the provider interpret. <strong>Your job is an accurate measurement and timely escalation, not a diagnosis.</strong></div>
+
+    <h2>Part 2 &middot; Tips for getting an accurate pediatric vital</h2>
+    <ul>
+      <li><strong>Count a full 60 seconds</strong> for heart rate and respirations in infants and young children, their rates are fast and irregular, so a 15-second shortcut multiplies the error.</li>
+      <li><strong>Count respirations before you disturb the child</strong>, watch the belly rise and fall while they're calm, ideally before touching them.</li>
+      <li><strong>Use the right-size BP cuff.</strong> A cuff that's too small reads falsely high; too large reads falsely low. Cuff width should cover about two-thirds of the upper arm.</li>
+      <li><strong>Settle first when possible.</strong> A crying infant's heart and respiratory rates spike, a few minutes in a caregiver's arms gives a truer reading.</li>
+      <li><strong>Document the route and the context</strong> (asleep, crying, febrile) so the provider reads the number correctly.</li>
+    </ul>
+
+    <h2>Part 3 &middot; Why weight is a safety issue, not a formality</h2>
+    <p>For children, most medications are dosed by <strong>milligrams per kilogram (mg/kg)</strong> of body weight. The same 500 mg dose that's right for an adult could be a dangerous overdose for a 15 kg toddler, or too little to work. The child's <strong>weight is the foundation the entire dose is built on</strong>, if the weight is wrong, the dose is wrong, no matter how carefully everyone downstream does their job.</p>
+
+    <div class="stat">
+      <div class="big">53% &rarr; 33%</div>
+      <div class="txt">Documenting an infant's weight in <strong>kilograms</strong> (instead of pounds) has been shown to cut dosing errors from about 53% to 33%. Unit confusion, pounds mistaken for kilograms, is the single largest source of pediatric dosing errors.</div>
+    </div>
+
+    <div class="note coral"><span class="lbl">Weigh and record in kilograms.</span> A pound is about 2.2&times; a kilogram, so a weight entered in the wrong unit can more than double a child's dose. Many clinics set scales to <strong>kg only</strong> for exactly this reason. Always confirm the unit before you record, and never convert in your head under pressure, let the scale or the EHR do it.</div>
+
+    <h2>Part 4 &middot; How weight becomes a dose</h2>
+    <p>The provider orders the dose; you may not be the one calculating it. But understanding the math helps you see why your accurate weight matters and helps you catch something that looks off.</p>
+    <div class="steps">
+      <div class="step"><b>Get the weight in kilograms.</b> If the scale reads pounds, divide by 2.2 (a 22 lb child = 10 kg). Don't round until the very end.</div>
+      <div class="step"><b>Multiply weight &times; the mg/kg dose.</b> The order's mg/kg figure times the child's kg gives the total.</div>
+      <div class="step"><b>Divide by the number of daily doses</b> if the order is written per day rather than per dose.</div>
+    </div>
+    <div class="formula">Example: a 10 kg child, amoxicillin 40 mg/kg/day &divide; 2 doses &rarr; 10 &times; 40 = 400 mg/day &rarr; 200 mg per dose.</div>
+    <div class="note amber"><span class="lbl">When something looks off, speak up.</span> If a weight, unit, or dose doesn't look right, verify before anything is given. Confirm drug information in <strong>UpToDate</strong>, and raise it with the provider or pharmacist. High-alert pediatric medications often require a <strong>second qualified staff member</strong> to double-check. A respectful "Can we double-check this dose?" is always the right call.</div>
+
+    <div class="apply">
+      <div class="apply-head"><span class="pill">Apply It</span><span class="who">Mia, 18 months</span></div>
+      <div class="apply-body">
+        <div class="chartline">18-mo-old here for cough and fever. Caregiver reports she's been fussy. You room her: HR 150, RR 34, T 101.2&deg;F (temporal). Scale reads 24 lb 3 oz.</div>
+        <p>Put this sheet to work:</p>
+        <ul>
+          <li>Her HR of 150 and RR of 34 fall within the typical toddler ranges, and she's crying and febrile, which pushes both up. You record what you measured and note the context.</li>
+          <li>Her temp is a fever; you note that it was taken temporally.</li>
+          <li>That 24 lb 3 oz needs to reach the chart in <b>kilograms</b>, roughly 11 kg, because any medication she's prescribed today will be built on that number.</li>
+        </ul>
+        <div class="yt">
+          <p class="yt-q"><b>Your turn:</b> The provider may prescribe an antibiotic for Mia. Why does it matter that you record her weight in kilograms rather than pounds, and what would you do if the scale only showed pounds?</p>
+          <div class="fill" contenteditable="true" data-ph="Type your thoughts here…"></div>
+          <button class="ck" onclick="toggleFb('fb-mia')">Check your knowledge</button>
+          <div class="feedback" id="fb-mia">
+            <div class="fb-label">A strong answer would include</div>
+            <p>Mia's antibiotic will almost certainly be dosed in mg/kg, so her weight in kilograms is the foundation of a safe dose. Recording pounds where kilograms are expected could more than double her dose, unit confusion is the biggest cause of pediatric dosing errors. If the scale only reads pounds, set it to kilograms if you can, or let the EHR do the conversion rather than calculating in your head; confirm the unit before recording. If anything looks off, verify in UpToDate and check with the provider or pharmacist before any medication is given.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="note teal"><span class="lbl">The takeaway.</span> Two ordinary tasks, an accurate vital sign read in context, and a weight recorded in kilograms, are among the most protective things you do for a child all day. Measure carefully, record in the right units, note the context, and escalate anything that looks off.</div>
+
+  </div>
+
+  <div class="actions"><button class="act ghost" onclick="window.print()">Print this sheet</button></div>
+  <div class="footer-note">RHC Medical Assistant Onboarding &middot; Pediatric Education</div>
+  <div class="credit">Developed by <b>Jo Blaise, RN-DNP</b> &middot; Clinic Manager</div>
+
+</div>
+
+<script>
+  function toggleFb(id){
+    const el=document.getElementById(id);
+    const open=el.classList.toggle('show');
+    const btn=el.previousElementSibling;
+    if(btn && btn.classList.contains('ck')) btn.textContent = open ? 'Hide feedback' : 'Check your knowledge';
+  }
+</script>
+</body>
+</html>
