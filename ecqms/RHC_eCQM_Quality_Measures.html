@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RHC · eCQM Quality Measures</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400&family=Mulish:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#243240; --soft-ink:#5a6b78; --paper:#fbf9f5; --line:#e4ded3; --card:#fffdf9;
+    --teal-bg:#e7f3ed; --teal-bd:#bfddcb; --teal-tx:#2f6b50;
+    --blue-bg:#e8f0f9; --blue-bd:#c3d6ec; --blue-tx:#2e5a8c;
+    --purp-bg:#eee9f6; --purp-bd:#d2c6e6; --purp-tx:#5a4a8c;
+    --coral-bg:#f8ebe9; --coral-bd:#e6c5bf; --coral-tx:#a8483c;
+    --amber-bg:#f9f1e2; --amber-bd:#e8d4ab; --amber-tx:#9a6b1f;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Mulish',sans-serif;color:var(--ink);line-height:1.6;
+    background:radial-gradient(1200px 600px at 85% -10%, #f4efe6 0%, transparent 60%),radial-gradient(900px 500px at -10% 110%, #eef2ec 0%, transparent 55%),var(--paper);
+    padding:40px 20px 64px;-webkit-font-smoothing:antialiased;}
+  .sheet{max-width:880px;margin:0 auto;background:var(--card);border:1px solid var(--line);border-radius:22px;box-shadow:0 1px 2px rgba(60,50,30,.04),0 30px 60px -30px rgba(60,50,30,.18);overflow:hidden;}
+
+  .masthead{padding:42px 52px 30px;border-bottom:1px solid var(--line);position:relative;background:linear-gradient(180deg,#fff,#fdfbf6);}
+  .masthead::after{content:"";position:absolute;left:52px;right:52px;bottom:-1px;height:3px;background:linear-gradient(90deg,var(--teal-bd),var(--blue-bd),var(--purp-bd),var(--coral-bd));border-radius:3px;}
+  .kicker{font-size:12.5px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--soft-ink);}
+  h1{font-family:'Fraunces',serif;font-weight:500;font-size:37px;line-height:1.08;letter-spacing:-.01em;margin:10px 0 6px;}
+  .masthead .sub{font-family:'Fraunces',serif;font-style:italic;font-size:17px;color:var(--soft-ink);max-width:80%;}
+  .top-print{position:absolute;top:30px;right:40px;}
+
+  .body{padding:36px 52px 44px;}
+  .eyebrow{font-size:12px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--teal-tx);margin-bottom:8px;}
+  h2{font-family:'Fraunces',serif;font-weight:600;font-size:25px;margin:36px 0 12px;color:var(--ink);}
+  h2:first-of-type{margin-top:0;}
+  h3{font-family:'Fraunces',serif;font-weight:600;font-size:18px;margin:22px 0 8px;color:var(--ink);}
+  p{font-size:15.5px;margin-bottom:14px;color:#374550;}
+  strong{font-weight:700;color:var(--ink);}
+  .lead{font-size:16.5px;color:#3a4753;}
+  em.x{font-style:normal;font-family:'Fraunces',serif;font-style:italic;}
+
+  ul{list-style:none;margin:0 0 16px;display:grid;gap:9px;}
+  ul li{position:relative;padding-left:20px;font-size:15px;color:#374550;}
+  ul li::before{content:"";position:absolute;left:2px;top:9px;width:6px;height:6px;border-radius:50%;background:var(--accent,var(--teal-tx));}
+  ul li b{color:var(--ink);}
+
+  .acro{display:grid;grid-template-columns:auto 1fr;gap:6px 16px;margin:10px 0 18px;padding:18px 20px;background:var(--paper);border:1px solid var(--line);border-radius:13px;}
+  .acro .l{font-family:'Fraunces',serif;font-weight:700;font-size:22px;color:var(--teal-tx);grid-column:1;}
+  .acro .r{font-size:14.5px;color:#374550;align-self:center;}
+
+  .note{border-radius:13px;padding:15px 18px;font-size:14.5px;margin:16px 0;border:1px solid;}
+  .note .lbl{font-weight:700;}
+  .note.teal{background:var(--teal-bg);border-color:var(--teal-bd);color:#2c4f3e;}
+  .note.teal .lbl{color:var(--teal-tx);}
+  .note.blue{background:var(--blue-bg);border-color:var(--blue-bd);color:#274a6f;}
+  .note.blue .lbl{color:var(--blue-tx);}
+  .note.amber{background:var(--amber-bg);border-color:var(--amber-bd);color:#5c4a28;}
+  .note.amber .lbl{color:var(--amber-tx);}
+
+  /* how-it-works flow */
+  .flow{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:10px 0 18px;}
+  .fstep{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:14px;text-align:center;position:relative;}
+  .fstep .fn{font-family:'Fraunces',serif;font-weight:700;color:var(--blue-tx);font-size:15px;margin-bottom:5px;}
+  .fstep .ft{font-size:12.5px;color:#52606b;line-height:1.45;}
+  @media(max-width:600px){.flow{grid-template-columns:1fr 1fr;}}
+
+  /* measures table */
+  .mtable{border:1px solid var(--line);border-radius:13px;overflow:hidden;margin:8px 0 6px;}
+  .mrow{display:grid;grid-template-columns:96px 1fr 64px 92px;border-bottom:1px solid var(--line);}
+  .mrow:last-child{border-bottom:none;}
+  .mrow.h{background:var(--purp-bg);}
+  .mrow.h>div{font-weight:700;font-size:11.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--purp-tx);padding:10px 12px;}
+  .mrow:not(.h):nth-child(even){background:var(--paper);}
+  .mrow>div{padding:11px 12px;font-size:13.5px;color:#374550;border-right:1px solid var(--line);}
+  .mrow>div:last-child{border-right:none;}
+  .mrow .code{font-weight:700;color:var(--ink);}
+  .mrow .pts{text-align:center;font-weight:700;color:var(--teal-tx);}
+  .mrow .bm{text-align:right;font-variant-numeric:tabular-nums;}
+  a.mrow{text-decoration:none;color:inherit;transition:background .14s;cursor:pointer;}
+  a.mrow:hover{background:var(--blue-bg) !important;}
+  a.mrow .code{color:var(--blue-tx);}
+  a.mrow .arrow{display:inline-block;margin-left:6px;color:var(--blue-tx);opacity:0;transition:opacity .14s,transform .14s;font-weight:700;}
+  a.mrow:hover .arrow{opacity:1;transform:translateX(3px);}
+  .linkhint{font-size:13px;color:var(--soft-ink);font-style:italic;margin:2px 0 8px;}
+  .tag{display:inline-block;font-size:10.5px;font-weight:700;letter-spacing:.04em;padding:2px 7px;border-radius:20px;margin-left:6px;vertical-align:middle;}
+  .tag.inv{background:var(--amber-bg);color:var(--amber-tx);border:1px solid var(--amber-bd);}
+  @media(max-width:600px){
+    .mrow{grid-template-columns:74px 1fr 50px;}
+    .mrow .bm{display:none;}
+    .mrow.h .bm{display:none;}
+  }
+  .subhead{font-family:'Fraunces',serif;font-weight:600;font-size:16px;color:var(--coral-tx);margin:24px 0 8px;}
+
+  .pending{margin-top:14px;border:1px dashed var(--blue-bd);border-radius:12px;padding:16px 18px;background:#fff;font-size:14px;color:#52606b;}
+  .pending b{color:var(--blue-tx);}
+
+  /* Tier 3 hero callout */
+  .tier{margin:18px 0 8px;border-radius:18px;padding:30px 32px;color:#fff;position:relative;overflow:hidden;
+    background:linear-gradient(135deg,#2f6b50 0%, #2e5a8c 100%);box-shadow:0 18px 40px -22px rgba(46,90,140,.6);}
+  .tier::after{content:"";position:absolute;right:-40px;top:-40px;width:200px;height:200px;border-radius:50%;background:rgba(255,255,255,.06);}
+  .tier .tlabel{font-size:12.5px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.82);margin-bottom:8px;}
+  .tier .tbig{font-family:'Fraunces',serif;font-weight:600;font-size:62px;line-height:.95;letter-spacing:-.02em;}
+  .tier .tbig span{font-size:26px;font-weight:500;opacity:.9;}
+  .tier .tsub{font-size:15.5px;color:rgba(255,255,255,.92);margin-top:10px;max-width:560px;}
+  .tier .tsub b{color:#fff;font-weight:700;}
+  /* progress bar */
+  .prog{margin-top:34px;background:rgba(255,255,255,.18);border-radius:30px;height:34px;position:relative;max-width:560px;}
+  .prog .bar{height:100%;border-radius:30px;background:rgba(255,255,255,.92);width:66.7%;display:flex;align-items:center;justify-content:flex-end;padding-right:14px;}
+  .prog .bar span{font-size:12.5px;font-weight:700;color:#2f6b50;white-space:nowrap;}
+  .prog .target{position:absolute;top:-4px;bottom:-4px;left:88.9%;width:3px;background:#f9d65c;}
+  .prog .target em{position:absolute;top:-22px;left:50%;transform:translateX(-50%);font-style:normal;font-size:11px;font-weight:700;color:#f9d65c;white-space:nowrap;}
+  .progcap{font-size:13px;color:rgba(255,255,255,.85);margin-top:20px;}
+  @media(max-width:600px){.tier .tbig{font-size:46px;}.tier{padding:24px 22px;}}
+
+  .dashbtn{display:inline-flex;align-items:center;gap:9px;margin-top:16px;font-family:'Mulish',sans-serif;font-size:14px;font-weight:700;
+    background:#fff;color:#2e5a8c;border:none;border-radius:11px;padding:13px 20px;text-decoration:none;transition:transform .12s,box-shadow .15s;box-shadow:0 6px 16px -8px rgba(0,0,0,.4);}
+  .dashbtn:hover{transform:translateY(-1px);box-shadow:0 10px 22px -10px rgba(0,0,0,.5);}
+  .dashbtn .arr{font-size:16px;}
+
+  .actions{display:flex;gap:10px;justify-content:center;padding:0 52px 36px;}
+  button.act{font-family:'Mulish',sans-serif;font-size:13.5px;font-weight:700;cursor:pointer;border:1px solid var(--ink);background:transparent;color:var(--ink);border-radius:10px;padding:11px 18px;}
+  .footer-note{text-align:center;font-size:13px;color:var(--soft-ink);margin-top:8px;font-style:italic;font-family:'Fraunces',serif;}
+  .credit{text-align:center;font-size:13px;color:var(--soft-ink);margin-top:4px;padding-bottom:8px;}
+  .credit b{font-weight:600;color:var(--ink);font-style:normal;}
+
+  @media(max-width:600px){.masthead,.body,.actions{padding-left:24px;padding-right:24px;}h1{font-size:27px;}.top-print{position:static;margin-bottom:14px;}.masthead .sub{max-width:100%;}}
+  @media print{body{background:#fff;padding:0;}.sheet{box-shadow:none;border:none;border-radius:0;max-width:none;}.top-print,.actions{display:none !important;}.note,.mtable,.flow,.acro{break-inside:avoid;}}
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <div class="masthead">
+    <button class="act top-print" onclick="window.print()">Print this sheet</button>
+    <div class="kicker">RHC &nbsp;&middot;&nbsp; MA Onboarding &nbsp;&middot;&nbsp; Quality</div>
+    <h1>Understanding Our eCQM Quality Measures</h1>
+    <div class="sub">What they are, why RHC does them, how patients benefit, and the part you play.</div>
+  </div>
+
+  <div class="body">
+
+    <p class="lead">Quality measures can sound like paperwork for insurers. They're not. Each one represents a piece of care that's been shown to help patients live longer, healthier lives, a screening that catches a problem early, a follow-up that doesn't slip through the cracks. This page explains what these measures are and why your everyday work is central to meeting them. In the sections that follow, we'll walk through <em class="x">how</em> to meet each one, measure by measure.</p>
+
+    <h2>What is an eCQM?</h2>
+    <div class="acro">
+      <div class="l">e</div><div class="r"><b>electronic</b>: the data is pulled automatically from the EHR, not tallied by hand.</div>
+      <div class="l">C</div><div class="r"><b>Clinical</b>: it reflects real patient care.</div>
+      <div class="l">Q</div><div class="r"><b>Quality</b>: it measures whether recommended care actually happened.</div>
+      <div class="l">M</div><div class="r"><b>Measure</b>: a defined, countable standard.</div>
+    </div>
+    <p>An <strong>electronic clinical quality measure (eCQM)</strong> is a standardized measure that uses data pulled directly from the electronic health record to gauge the quality of care a practice delivers. The Centers for Medicare &amp; Medicaid Services (CMS) define each measure precisely, who counts, what care is expected, and in what timeframe, and update the specifications every year to keep them aligned with current clinical guidelines.</p>
+
+    <h2>How an eCQM actually works</h2>
+    <p>Every measure compares two groups: the patients who <em class="x">should</em> receive a certain care action, and the patients who actually <em class="x">did</em>. That comparison becomes a percentage.</p>
+    <div class="flow">
+      <div class="fstep"><div class="fn">Denominator</div><div class="ft">All patients the measure applies to (e.g., adults due for a depression screen)</div></div>
+      <div class="fstep"><div class="fn">Numerator</div><div class="ft">Those who received the care action and had it documented</div></div>
+      <div class="fstep"><div class="fn">The score</div><div class="ft">Numerator &divide; denominator = the practice's performance %</div></div>
+      <div class="fstep"><div class="fn">Benchmark</div><div class="ft">The target % we aim to meet or beat</div></div>
+    </div>
+    <div class="note amber"><span class="lbl">If it isn't documented, it didn't happen.</span> The measure can only count care that's recorded in the right place in the EHR. You might do everything right with a patient, but if it isn't documented in the structured field the measure looks at, it won't count. <strong>Accurate, complete documentation is how good care becomes measured care.</strong></div>
+    <div class="note teal"><span class="lbl">A note on "inverse" measures.</span> Most measures aim <em class="x">high</em>, a bigger percentage is better. A few are <strong>inverse</strong>, where a <em class="x">lower</em> number is better. For example, the diabetes measure tracks the share of diabetic patients whose blood sugar is poorly controlled, so we want that percentage <em class="x">down</em>.</div>
+
+    <h2>Why RHC does this</h2>
+    <ul>
+      <li><b>Better patient outcomes.</b> These measures are built around care that prevents disease, catches problems early, and keeps chronic conditions controlled. Hitting them means our patients are getting that care reliably.</li>
+      <li><b>Consistency for every patient.</b> Measures turn "we usually do this" into "we do this for everyone who needs it," so care doesn't depend on which day or which room a patient lands in.</li>
+      <li><b>It reflects who we are.</b> As a Rural Health Clinic, our patients count on us as their medical home. Strong quality performance is a measure of how well we keep that promise.</li>
+      <li><b>It sustains the clinic.</b> Quality performance is tied to how RHC is reimbursed and recognized, which keeps our doors open and our services funded for the community.</li>
+    </ul>
+
+    <h2>How patients benefit</h2>
+    <p>Behind every measure is a person. A depression screen opens a door someone might not have known how to open themselves. A controlled blood pressure prevents a future stroke. A colorectal or breast screening catches cancer when it's still treatable. A diabetic A1c kept in range protects eyes, kidneys, and nerves for years to come. These aren't abstractions, they're the difference these measures make in real lives, one visit at a time.</p>
+
+    <h2>Your role as the MA</h2>
+    <p>You are often the reason a measure is met. More than anyone, the MA is positioned to close care gaps during rooming and intake, the moments just before the provider walks in.</p>
+    <ul>
+      <li><b>Pre-visit planning:</b> spotting open care gaps before the patient arrives.</li>
+      <li><b>Capturing the data:</b> height, weight, BMI, blood pressure, screenings, recorded accurately, in the right field.</li>
+      <li><b>Prompting the care:</b> teeing up the screening, lab, or vaccine that's due so the provider can act on it.</li>
+      <li><b>Documenting it correctly:</b> the step that turns the care you delivered into care that counts.</li>
+    </ul>
+    <div class="note blue"><span class="lbl">Scope reminder.</span> Meeting measures never means working outside your scope. You gather, prompt, and document; the provider makes the clinical decisions. When something is unclear, check with the provider, just as with any other task.</div>
+
+    <h2>Our goal this year</h2>
+    <div class="tier">
+      <div class="tlabel">2026 Target &middot; Tier 3</div>
+      <div class="tbig">32 <span>points needed</span></div>
+      <div class="tsub">Our focus measures are worth <b>36 points</b> in total. To reach <b>Tier 3</b> this year, we need to earn at least <b>32 of them</b> by hitting benchmark on the measures that carry the most weight. Every accurate screening, vital, and bit of documentation you complete moves us toward that number.</div>
+      <div class="prog">
+        <div class="bar"><span>24 pts earned</span></div>
+        <div class="target"><em>32 = Tier 3</em></div>
+      </div>
+      <div class="progcap">As of April 2026: 24 points earned, 8 to go. The live dashboard shows where each measure stands right now.</div>
+      <a class="dashbtn" href="https://jblaise1310.github.io/ecqms/dashboard.html" target="_blank" rel="noopener">View the live eCQM dashboard <span class="arr">&rarr;</span></a>
+    </div>
+
+    <h2>Our measures at a glance</h2>
+    <p>These are the measures we track. We'll cover the workflow for each in its own section, this table is your map. <em class="x">Points</em> reflect the relative weight of each measure; <em class="x">benchmark</em> is the target we're aiming for.</p>
+
+    <div class="subhead">Focus measures</div>
+    <p class="linkhint">Click any measure to open its workflow page.</p>
+    <div class="mtable">
+      <div class="mrow h"><div>Measure</div><div>What it tracks</div><div class="pts">Pts</div><div class="bm">Benchmark</div></div>
+      <a class="mrow" href="ecqm/Depression.html"><div class="code">CMS-2</div><div>Screening for depression &amp; follow-up plan<span class="arrow">&rarr;</span></div><div class="pts">12</div><div class="bm">69.90%</div></a>
+      <a class="mrow" href="ecqm/Diabetes-A1c.html"><div class="code">CMS-122</div><div>Diabetes: glycemic status &gt;9% <span class="tag inv">inverse</span><span class="arrow">&rarr;</span></div><div class="pts">6</div><div class="bm">21.50%</div></a>
+      <a class="mrow" href="ecqm/Pharyngitis.html"><div class="code">CMS-146</div><div>Appropriate testing for pharyngitis<span class="arrow">&rarr;</span></div><div class="pts">4</div><div class="bm">95.52%</div></a>
+      <a class="mrow" href="ecqm/URI.html"><div class="code">CMS-154</div><div>Appropriate treatment for URI<span class="arrow">&rarr;</span></div><div class="pts">4</div><div class="bm">94.15%</div></a>
+      <a class="mrow" href="ecqm/BMI.html"><div class="code">CMS-155a</div><div>Weight assessment, ages 3&ndash;17 (height, weight &amp; BMI)<span class="arrow">&rarr;</span></div><div class="pts">4</div><div class="bm">71.14%</div></a>
+      <a class="mrow" href="ecqm/High-Blood-Pressure.html"><div class="code">CMS-165</div><div>Controlling high blood pressure<span class="arrow">&rarr;</span></div><div class="pts">12</div><div class="bm">75.71%</div></a>
+      <a class="mrow" href="ecqm/Chlamydia.html"><div class="code">CMS-153</div><div>Chlamydia screening (ages 16&ndash;24)<span class="arrow">&rarr;</span></div><div class="pts">6</div><div class="bm">59.14%</div></a>
+      <a class="mrow" href="ecqm/Kidney-Health.html"><div class="code">CMS-951</div><div>Kidney health evaluation<span class="arrow">&rarr;</span></div><div class="pts">4</div><div class="bm">54.15%</div></a>
+    </div>
+
+    <div class="subhead">Non-focus measures</div>
+    <p class="linkhint">These share a single overview page. Click any row to open it.</p>
+    <div class="mtable">
+      <div class="mrow h"><div>Measure</div><div>What it tracks</div><div class="pts">Pts</div><div class="bm">Benchmark</div></div>
+      <a class="mrow" href="ecqm/non-focus-overview.html"><div class="code">CMS-139</div><div>Screening for future fall risk<span class="arrow">&rarr;</span></div><div class="pts">N/A</div><div class="bm">63%</div></a>
+      <a class="mrow" href="ecqm/non-focus-overview.html"><div class="code">CMS-124</div><div>Cervical cancer screening<span class="arrow">&rarr;</span></div><div class="pts">6</div><div class="bm">69.19%</div></a>
+      <a class="mrow" href="ecqm/non-focus-overview.html"><div class="code">CMS-125</div><div>Breast cancer screening<span class="arrow">&rarr;</span></div><div class="pts">6</div><div class="bm">85.58%</div></a>
+      <a class="mrow" href="ecqm/non-focus-overview.html"><div class="code">CMS-130</div><div>Colorectal cancer screening<span class="arrow">&rarr;</span></div><div class="pts">6</div><div class="bm">83.54%</div></a>
+    </div>
+    <p style="font-size:13px;color:var(--soft-ink);font-style:italic;margin-top:10px;">Benchmarks and point values reflect our current reporting period and may be updated as CMS revises specifications each year.</p>
+
+    <div class="pending">
+      <b>Coming next: the workflows.</b> The sections that follow this one will take each measure in turn and walk through exactly how we meet it at RHC, who qualifies, what you do at rooming, and where to document it so it counts. Those workflows will be added here as they're finalized. In the meantime, the <a href="https://jblaise1310.github.io/ecqms/dashboard.html" target="_blank" rel="noopener" style="color:var(--blue-tx);font-weight:700;">live dashboard</a> shows our current standing on every measure.
+    </div>
+
+  </div>
+
+  <div class="actions"><button class="act" onclick="window.print()">Print this sheet</button></div>
+  <div class="footer-note">RHC Medical Assistant Onboarding &middot; eCQM Quality Measures</div>
+  <div class="credit">Developed by <b>Jo Blaise, RN-DNP</b> &middot; Clinic Manager</div>
+
+</div>
+</body>
+</html>

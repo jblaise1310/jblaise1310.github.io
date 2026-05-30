@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RHC · Non-Focus Measures Overview</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400&family=Mulish:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{--ink:#243240;--soft-ink:#5a6b78;--paper:#fbf9f5;--line:#e4ded3;--card:#fffdf9;
+    --teal-tx:#2f6b50;--teal-bg:#e7f3ed;--teal-bd:#bfddcb;
+    --blue-tx:#2e5a8c;--blue-bg:#e8f0f9;--blue-bd:#c3d6ec;
+    --slate-tx:#55617a;--slate-bg:#eef1f6;--slate-bd:#cdd5e2;}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Mulish',sans-serif;color:var(--ink);line-height:1.6;
+    background:radial-gradient(1200px 600px at 85% -10%, #f4efe6 0%, transparent 60%),radial-gradient(900px 500px at -10% 110%, #eef2ec 0%, transparent 55%),var(--paper);
+    padding:40px 20px 64px;-webkit-font-smoothing:antialiased;}
+  .sheet{max-width:840px;margin:0 auto;background:var(--card);border:1px solid var(--line);border-radius:22px;box-shadow:0 1px 2px rgba(60,50,30,.04),0 30px 60px -30px rgba(60,50,30,.18);overflow:hidden;}
+  .backbar{padding:18px 52px 0;}
+  .back{font-size:13px;font-weight:700;color:var(--soft-ink);text-decoration:none;display:inline-flex;gap:6px;}
+  .back:hover{color:var(--ink);}
+  .masthead{padding:16px 52px 28px;border-bottom:1px solid var(--line);position:relative;}
+  .masthead::after{content:"";position:absolute;left:52px;right:52px;bottom:-1px;height:3px;background:var(--slate-tx);opacity:.45;border-radius:3px;}
+  .kicker{font-size:12.5px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--soft-ink);}
+  h1{font-family:'Fraunces',serif;font-weight:500;font-size:34px;line-height:1.08;letter-spacing:-.01em;margin:10px 0 6px;}
+  .sub{font-family:'Fraunces',serif;font-style:italic;font-size:16.5px;color:var(--soft-ink);}
+  .body{padding:32px 52px 40px;}
+  .lead{font-size:16.5px;color:#3a4753;margin-bottom:20px;}
+  p{font-size:15.5px;margin-bottom:14px;color:#374550;}
+  strong{font-weight:700;color:var(--ink);}
+  h2{font-family:'Fraunces',serif;font-weight:600;font-size:21px;margin:26px 0 14px;color:var(--ink);}
+  .note{border-radius:13px;padding:15px 18px;font-size:14.5px;margin:16px 0;border:1px solid var(--blue-bd);background:var(--blue-bg);color:#274a6f;}
+  .note .l{font-weight:700;color:var(--blue-tx);}
+
+  .mcard{border:1px solid var(--line);border-radius:16px;overflow:hidden;margin-bottom:16px;background:#fff;}
+  .mcard .head{display:flex;align-items:center;gap:12px;padding:15px 20px;border-bottom:1px solid var(--line);background:var(--paper);}
+  .mcard .code{font-size:12.5px;font-weight:700;color:#fff;background:var(--slate-tx);padding:4px 11px;border-radius:20px;}
+  .mcard .nm{font-family:'Fraunces',serif;font-weight:600;font-size:17px;color:var(--ink);}
+  .mcard .bm{margin-left:auto;font-size:12.5px;color:var(--soft-ink);}
+  .mcard .bm b{color:var(--ink);font-size:14px;}
+  .mcard .content{padding:16px 20px;}
+  .mcard .content p{font-size:14.5px;margin-bottom:8px;}
+  .mcard .role{font-size:13.5px;color:#52606b;background:var(--teal-bg);border:1px solid var(--teal-bd);border-radius:10px;padding:10px 13px;margin-top:8px;}
+  .mcard .role b{color:var(--teal-tx);}
+
+  .actions{display:flex;gap:10px;justify-content:center;padding:0 52px 34px;}
+  button.act{font-family:'Mulish',sans-serif;font-size:13.5px;font-weight:700;cursor:pointer;border:1px solid var(--ink);background:transparent;color:var(--ink);border-radius:10px;padding:11px 18px;}
+  .footer-note{text-align:center;font-size:13px;color:var(--soft-ink);margin-top:8px;font-style:italic;font-family:'Fraunces',serif;}
+  .credit{text-align:center;font-size:13px;color:var(--soft-ink);margin-top:4px;padding-bottom:8px;}
+  .credit b{font-weight:600;color:var(--ink);font-style:normal;}
+  @media(max-width:600px){.backbar,.masthead,.body,.actions{padding-left:24px;padding-right:24px;}h1{font-size:27px;}.masthead::after{left:24px;right:24px;}.mcard .bm{margin-left:0;width:100%;}}
+  @media print{body{background:#fff;padding:0;}.sheet{box-shadow:none;border:none;border-radius:0;max-width:none;}.actions,.back{display:none !important;}.mcard{break-inside:avoid;}}
+</style>
+</head>
+<body>
+<div class="sheet">
+  <div class="backbar"><a class="back" href="../RHC_eCQM_Quality_Measures.html">&larr; Back to Quality Measures overview</a></div>
+  <div class="masthead">
+    <div class="kicker">RHC &nbsp;&middot;&nbsp; Quality Measures</div>
+    <h1>Non-Focus Measures: Overview</h1>
+    <div class="sub">Important screenings we monitor year-round, even though they're not our point-earning focus.</div>
+  </div>
+
+  <div class="body">
+    <p class="lead">These measures aren't our primary point-earning focus this year, but they matter just as much to our patients. They're preventive screenings that catch serious disease early, and we monitor them throughout the year. Your role on these is the same as anywhere else: spot who's due, prompt the care, and document it accurately.</p>
+
+    <div class="note"><span class="l">A note on timing.</span> Cancer-screening rates build up over the course of the year as patients come in for visits, so early-year percentages naturally look low and climb as the months go on. Don't be discouraged by a low January number; the goal is steady progress toward benchmark.</div>
+
+    <h2>The measures we monitor</h2>
+
+    <div class="mcard">
+      <div class="head"><span class="code">CMS-139</span><span class="nm">Screening for Future Fall Risk</span><span class="bm">Benchmark <b>63%</b></span></div>
+      <div class="content">
+        <p>Older adults are screened for their risk of future falls, so the care team can step in before an injury happens. Falls are a leading cause of serious harm in older patients, and a simple screening can flag who needs balance support, a medication review, or a home-safety conversation.</p>
+        <div class="role"><b>Your role:</b> identify eligible older patients during rooming and tee up the fall-risk screening so it isn't missed.</div>
+      </div>
+    </div>
+
+    <div class="mcard">
+      <div class="head"><span class="code">CMS-124</span><span class="nm">Cervical Cancer Screening</span><span class="bm">Benchmark <b>69.19%</b></span></div>
+      <div class="content">
+        <p>Eligible patients are screened for cervical cancer on the recommended schedule (for example, Pap testing, with HPV testing per guideline age). Regular screening catches changes early, when they're highly treatable.</p>
+        <div class="role"><b>Your role:</b> recognize when a patient is due, prompt the provider, and make sure results and dates land in the right place in the chart.</div>
+      </div>
+    </div>
+
+    <div class="mcard">
+      <div class="head"><span class="code">CMS-125</span><span class="nm">Breast Cancer Screening</span><span class="bm">Benchmark <b>85.58%</b></span></div>
+      <div class="content">
+        <p>Eligible patients are screened for breast cancer with mammography on the recommended schedule. Early detection dramatically improves outcomes, which is why keeping patients current matters so much.</p>
+        <div class="role"><b>Your role:</b> flag patients who are due or overdue, help coordinate the mammogram order or referral, and document completion.</div>
+      </div>
+    </div>
+
+    <div class="mcard">
+      <div class="head"><span class="code">CMS-130</span><span class="nm">Colorectal Cancer Screening</span><span class="bm">Benchmark <b>83.54%</b></span></div>
+      <div class="content">
+        <p>Eligible patients are screened for colorectal cancer by one of several accepted methods (for example, colonoscopy on its interval, or a stool-based test on its schedule). It's one of the most preventable cancers when caught early.</p>
+        <div class="role"><b>Your role:</b> identify who's due, help track stool-test kits sent and returned, and document the screening and date.</div>
+      </div>
+    </div>
+
+    <div class="note"><span class="l">Where we stand.</span> The <a href="https://jblaise1310.github.io/ecqms/dashboard.html" target="_blank" rel="noopener" style="color:var(--blue-tx);font-weight:700;">live dashboard</a> shows current monthly performance on each of these measures.</div>
+  </div>
+
+  <div class="actions"><button class="act" onclick="window.print()">Print this page</button></div>
+  <div class="footer-note">RHC Medical Assistant Onboarding &middot; Non-Focus Measures</div>
+  <div class="credit">Developed by <b>Jo Blaise, RN-DNP</b> &middot; Clinic Manager</div>
+</div>
+</body>
+</html>
