@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Summary — Comprehensive Intake (Adult)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,500&family=Mulish:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+
+  :root{
+    --ink:#243240; --soft-ink:#5a6b78; --faint:#8a96a0;
+    --paper:#fbf9f5; --line:#e4ded3; --card:#fffdf9; --inner:#ffffff;
+    --teal-bg:#e7f3ed; --teal-bd:#bfddcb; --teal-tx:#2f6b50;
+    --blue-bg:#e8f0f9; --blue-bd:#c3d6ec; --blue-tx:#2e5a8c;
+    --green-bg:#eef4e4; --green-bd:#cfdfb0; --green-tx:#5c7a2f;
+    --coral-bg:#f8ebe9; --coral-bd:#e6c5bf; --coral-tx:#a8483c;
+    --rosa-bg:#fbf3e7; --rosa-bd:#e7cfa6; --rosa-tx:#9a6b1f;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{font-family:'Mulish',sans-serif;color:var(--ink);line-height:1.62;font-size:16.5px;
+    background:radial-gradient(1200px 600px at 85% -10%, #f4efe6 0%, transparent 60%),radial-gradient(900px 500px at -10% 110%, #eef2ec 0%, transparent 55%),var(--paper);
+    -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;padding:0 0 50px;}
+  ::selection{background:var(--teal-tx);color:#fff;}
+  .wrap{max-width:880px;margin:0 auto;padding:0 22px;}
+  a{color:var(--teal-tx);}
+
+  .topbar{position:sticky;top:0;z-index:50;background:rgba(251,249,245,.86);backdrop-filter:saturate(140%) blur(9px);border-bottom:1px solid var(--line);}
+  .topbar-inner{max-width:880px;margin:0 auto;padding:13px 22px;display:flex;align-items:center;gap:14px;justify-content:space-between;}
+  .crumb{display:inline-flex;align-items:center;gap:9px;font-size:13.5px;font-weight:700;color:var(--teal-tx);text-decoration:none;}
+  .crumb svg{width:16px;height:16px;} .crumb:hover{opacity:.78;}
+  .crumb-tag{font-size:12px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--faint);}
+
+  .masthead{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:46px 50px 38px;position:relative;overflow:hidden;margin-top:46px;box-shadow:0 1px 2px rgba(60,50,30,.04),0 24px 48px -34px rgba(60,50,30,.30);}
+  .masthead::after{content:"";position:absolute;left:0;right:0;bottom:0;height:4px;background:linear-gradient(90deg,var(--rosa-bd),var(--teal-bd),var(--blue-bd),var(--green-bd));}
+  .eyebrow{font-size:12.5px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--teal-tx);margin-bottom:16px;}
+  .comp-index{font-family:'Fraunces',serif;font-style:italic;font-size:17px;color:var(--rosa-tx);margin-bottom:6px;}
+  h1{font-family:'Fraunces',serif;font-weight:600;font-size:clamp(2.1rem,5.2vw,3.1rem);line-height:1.05;letter-spacing:-.015em;color:var(--ink);}
+  .lede{font-size:18.5px;color:var(--soft-ink);max-width:62ch;margin-top:16px;}
+  .meta{margin-top:24px;display:flex;flex-wrap:wrap;gap:10px;}
+  .pill{display:inline-flex;align-items:center;gap:7px;background:#fff;border:1px solid var(--line);border-radius:100px;padding:7px 14px;font-size:13px;font-weight:600;color:var(--soft-ink);}
+  .pill svg{width:14px;height:14px;color:var(--teal-tx);}
+
+  .qm-ribbon{margin-top:24px;display:flex;flex-wrap:wrap;gap:10px;align-items:center;}
+  .qm-ribbon .label{font-size:12px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--blue-tx);display:inline-flex;align-items:center;gap:6px;}
+  .qm-ribbon .label svg{width:15px;height:15px;}
+  .qm-badge{display:inline-flex;align-items:center;gap:7px;background:var(--blue-bg);color:var(--blue-tx);border:1px solid var(--blue-bd);border-radius:100px;padding:5px 13px;font-size:13px;font-weight:700;}
+
+  .rule{display:flex;gap:14px;align-items:flex-start;margin-top:24px;padding:16px 18px;border-radius:14px;background:var(--coral-bg);border:1px solid var(--coral-bd);}
+  .rule .rk{flex:none;width:36px;height:36px;border-radius:10px;background:#fff;border:1px solid var(--coral-bd);color:var(--coral-tx);display:grid;place-items:center;}
+  .rule .rk svg{width:19px;height:19px;}
+  .rule .rt{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--coral-tx);margin-bottom:3px;}
+  .rule .rb{color:var(--ink);font-size:15.5px;line-height:1.5;} .rule .rb strong{font-weight:700;}
+
+  .section{scroll-margin-top:74px;border-radius:18px;border:1px solid var(--line);padding:28px 32px;margin-top:20px;box-shadow:0 1px 2px rgba(60,50,30,.03);}
+  .section-head{display:flex;align-items:center;gap:14px;margin-bottom:16px;}
+  .section-icon{flex:none;width:42px;height:42px;border-radius:12px;display:grid;place-items:center;}
+  .section-icon svg{width:21px;height:21px;}
+  .section-head h2{font-family:'Fraunces',serif;font-weight:600;font-size:1.5rem;letter-spacing:-.01em;line-height:1.15;color:var(--ink);}
+  .kicker{display:block;font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;margin-bottom:3px;}
+
+  .t-scenario{background:var(--rosa-bg);border-color:var(--rosa-bd);}
+  .t-scenario .section-icon{background:#fff;color:var(--rosa-tx);border:1px solid var(--rosa-bd);}
+  .t-scenario .kicker{color:var(--rosa-tx);} .t-scenario .section-head h2{color:var(--rosa-tx);}
+  .t-doc{background:var(--teal-bg);border-color:var(--teal-bd);}
+  .t-doc .section-icon{background:#fff;color:var(--teal-tx);border:1px solid var(--teal-bd);}
+  .t-doc .kicker{color:var(--teal-tx);} .t-doc .section-head h2{color:var(--teal-tx);}
+  .t-fn{background:var(--blue-bg);border-color:var(--blue-bd);}
+  .t-fn .section-icon{background:#fff;color:var(--blue-tx);border:1px solid var(--blue-bd);}
+  .t-fn .kicker{color:var(--blue-tx);} .t-fn .section-head h2{color:var(--blue-tx);}
+  .t-tips{background:var(--green-bg);border-color:var(--green-bd);}
+  .t-tips .section-icon{background:#fff;color:var(--green-tx);border:1px solid var(--green-bd);}
+  .t-tips .kicker{color:var(--green-tx);} .t-tips .section-head h2{color:var(--green-tx);}
+
+  .scenario p{margin-bottom:13px;font-size:16.5px;color:var(--ink);} .scenario p:last-child{margin-bottom:0;}
+  .say{font-family:'Fraunces',serif;font-style:italic;color:var(--rosa-tx);}
+  .case-meta{margin:2px 0 18px;padding:15px 18px;border-radius:12px;background:#fff;border:1px solid var(--rosa-bd);display:flex;flex-wrap:wrap;gap:16px 30px;}
+  .case-meta>div{min-width:84px;}
+  .case-meta dt{font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--rosa-tx);font-weight:700;margin-bottom:2px;}
+  .case-meta dd{font-weight:700;color:var(--ink);font-size:15px;}
+
+  .field{font-weight:700;color:var(--teal-tx);}
+  .val{display:inline-block;font-weight:700;font-size:.9em;background:#fff;color:var(--teal-tx);border:1px solid var(--teal-bd);border-radius:7px;padding:0 8px;line-height:1.5;}
+
+  .devs{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px;}
+  .dev{display:inline-flex;align-items:center;gap:7px;background:#fff;border:1px solid var(--teal-bd);border-radius:9px;padding:5px 11px;font-size:13.5px;font-weight:700;color:var(--ink);}
+  .dev svg{width:15px;height:15px;color:var(--teal-tx);}
+  .dev.off{color:var(--faint);border-color:var(--line);font-weight:600;} .dev.off svg{color:var(--faint);}
+
+  /* sub-groups within How to Document */
+  .sg{margin-top:26px;}
+  .sg:first-of-type{margin-top:2px;}
+  .sg-head{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:4px;padding-bottom:9px;border-bottom:2px solid var(--teal-bd);}
+  .sg-head .sg-t{font-family:'Fraunces',serif;font-weight:600;font-size:1.18rem;color:var(--teal-tx);}
+  .sg-head .sub{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);}
+
+  .fieldlist{list-style:none;}
+  .fieldlist>li{padding:14px 0;border-top:1px solid var(--teal-bd);}
+  .fieldlist>li:first-child{border-top:none;padding-top:10px;}
+  .fl-name{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:5px;}
+  .fl-name .n{font-family:'Fraunces',serif;font-weight:600;font-size:1.08rem;color:var(--ink);}
+  .qm{font-size:11px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;color:var(--blue-tx);background:var(--blue-bg);border:1px solid var(--blue-bd);border-radius:100px;padding:2px 9px;}
+  .req{font-size:11px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;color:var(--coral-tx);background:var(--coral-bg);border:1px solid var(--coral-bd);border-radius:100px;padding:2px 9px;}
+  .fl-body{color:var(--soft-ink);}
+  .fl-body ul{margin-top:6px;padding-left:20px;} .fl-body li{margin:4px 0;}
+
+  .clean{list-style:none;}
+  .clean>li{position:relative;padding:7px 0 7px 28px;color:var(--soft-ink);}
+  .clean>li::before{content:"";position:absolute;left:3px;top:15px;width:8px;height:8px;border-radius:50%;}
+  .t-fn .clean>li::before{background:var(--blue-tx);}
+  .t-tips .clean>li::before{background:var(--green-tx);}
+  .clean strong{color:var(--ink);font-weight:700;}
+
+  .note{margin:12px 0 4px;padding:14px 16px;border-radius:12px;font-size:15px;border:1px solid var(--coral-bd);background:var(--coral-bg);color:var(--ink);display:flex;gap:11px;align-items:flex-start;}
+  .note svg{width:18px;height:18px;flex:none;color:var(--coral-tx);margin-top:2px;}
+  .note .nt{font-weight:700;color:var(--coral-tx);}
+  hr.soft{border:none;border-top:1px solid var(--blue-bd);margin:22px 0;}
+
+  .why-list{list-style:none;display:grid;gap:13px;margin-top:4px;}
+  .why-list li{display:flex;gap:13px;align-items:flex-start;}
+  .why-list .ico{flex:none;width:30px;height:30px;border-radius:9px;background:#fff;border:1px solid var(--blue-bd);color:var(--blue-tx);display:grid;place-items:center;}
+  .why-list .ico svg{width:16px;height:16px;}
+  .why-list b{color:var(--ink);font-weight:700;} .why-list span.tx{color:var(--soft-ink);font-size:15px;}
+
+  .avatar{width:42px;height:42px;border-radius:50%;background:var(--rosa-tx);color:#fff;display:grid;place-items:center;font-family:'Fraunces',serif;font-weight:600;font-size:18px;flex:none;}
+
+  .toc-label{font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--teal-tx);margin:42px 0 14px;font-weight:700;}
+  .complist{display:grid;gap:12px;list-style:none;}
+  .comp-link{display:flex;align-items:center;gap:18px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px 22px;text-decoration:none;color:inherit;transition:transform .16s,box-shadow .16s,border-color .16s;box-shadow:0 1px 2px rgba(60,50,30,.04);}
+  .comp-link:hover{transform:translateY(-2px);border-color:var(--teal-bd);box-shadow:0 18px 36px -24px rgba(60,50,30,.32);}
+  .comp-link .num{flex:none;width:40px;height:40px;border-radius:12px;background:var(--teal-bg);color:var(--teal-tx);display:grid;place-items:center;font-family:'Fraunces',serif;font-weight:600;font-size:18px;}
+  .comp-link .meat{flex:1;min-width:0;}
+  .comp-link .meat .t{display:block;font-family:'Fraunces',serif;font-weight:600;font-size:1.2rem;color:var(--ink);line-height:1.2;}
+  .comp-link .meat .d{font-size:14px;color:var(--faint);margin-top:1px;}
+  .comp-link .qmtag{font-size:11px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;color:var(--blue-tx);background:var(--blue-bg);border:1px solid var(--blue-bd);border-radius:100px;padding:3px 10px;white-space:nowrap;}
+  .comp-link .arrow{flex:none;color:var(--faint);} .comp-link:hover .arrow{color:var(--teal-tx);}
+  .comp-link.soon{pointer-events:none;opacity:.6;box-shadow:none;border-style:dashed;}
+  .comp-link.soon .num{background:#efeadf;color:var(--faint);}
+  .comp-link.soon .meat .t{color:var(--soft-ink);}
+  .comp-link.soon .stat{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--faint);font-weight:700;}
+
+  .pagenav{display:flex;gap:14px;margin-top:34px;flex-wrap:wrap;}
+  .pagenav a{flex:1;min-width:210px;text-decoration:none;color:inherit;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px 20px;transition:border-color .16s,transform .16s;display:block;}
+  .pagenav a:hover{border-color:var(--teal-bd);transform:translateY(-1px);}
+  .pagenav a.dead{opacity:.55;pointer-events:none;}
+  .pagenav .dir{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);margin-bottom:3px;font-weight:700;}
+  .pagenav .ttl{font-family:'Fraunces',serif;font-weight:600;color:var(--teal-tx);}
+  .pagenav a.next{text-align:right;}
+
+  footer.foot{margin-top:34px;padding-top:24px;border-top:1px solid var(--line);color:var(--faint);font-size:13px;}
+  footer.foot .row{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;}
+
+</style>
+</head>
+<body>
+<nav class="topbar"><div class="topbar-inner">
+  <a class="crumb" href="index.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>All components</a>
+  <span class="crumb-tag">Component 1 / Summary</span>
+</div></nav>
+<div class="wrap">
+
+  <header class="masthead">
+    <p class="comp-index">Component 1</p>
+    <h1>Summary</h1>
+    <p class="lede">The opening of the visit: chief complaint, onset, LMP and menstrual status, measurements, and the full Vitals Section &mdash; blood pressure, pain, and respiratory.</p>
+    <div class="qm-ribbon">
+      <span class="label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="1" fill="currentColor"/></svg>Quality measures here</span>
+      <span class="qm-badge">BMI</span>
+      <span class="qm-badge">Hypertension (BP)</span>
+    </div>
+  </header>
+
+  <section class="section t-scenario scenario" id="scenario">
+    <div class="section-head"><span class="section-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span><div><span class="kicker">Scenario</span><h2>Mary&rsquo;s visit</h2></div></div>
+    <dl class="case-meta">
+      <div><dt>Chief complaint</dt><dd>Annual Wellness Exam</dd></div>
+      <div><dt>BP</dt><dd>148/92 mmHg</dd></div>
+      <div><dt>Pain</dt><dd>8/10 &middot; lower back</dd></div>
+      <div><dt>Oxygen</dt><dd>Room air</dd></div>
+    </dl>
+    <p>You review the visit summary fields with Mary. <span class="say">&ldquo;What brings you in today?&rdquo;</span> you ask. She smiles, <span class="say">&ldquo;Just my yearly checkup &mdash; nothing new going on.&rdquo;</span> You enter <span class="val">Annual Wellness Exam</span> as her <span class="field">Chief Complaint</span>, with nothing to add under <span class="field">Onset of Symptoms</span>. She&rsquo;s been postmenopausal for several years, so you record that for <span class="field">LMP</span> and <span class="field">Menstrual Status</span>.</p>
+    <p>At the scale (the <span class="field">Measurements</span> section, which feeds the BMI measure) you record <span class="val">182 lbs</span> and a height of <span class="val">5&prime;6&Prime;</span>. <span class="say">&ldquo;Same as last year &mdash; must be all my morning walks with Daisy,&rdquo;</span> she says. BMI auto-calculates. In the <span class="field">Vitals</span> section you carry over the check-in vitals: <span class="val">BP 148/92 mmHg</span>, <span class="val">HR 78 bpm</span>, and <span class="val">Temp 98.6&deg;F</span>.</p>
+    <p><strong>The pain screen.</strong> Mary said nothing was new, so you almost expect this to be quick &mdash; but when you ask, she pauses: <span class="say">&ldquo;Well&hellip; my lower back has been bothering me. I didn&rsquo;t think it counted &mdash; it&rsquo;s been a few months.&rdquo;</span> She rates it an 8. Because pain is present, you document the <em>whole</em> picture: <span class="field">Pain Present</span> <span class="val">Yes</span>, <span class="field">Pain (0&ndash;10)</span> <span class="val">8</span>, <span class="field">Primary Pain Location</span> <span class="val">Back lower</span>, and <span class="field">Pain Comments</span> <span class="val">patient reports pain ongoing for last 4 months</span>. It stays in the pain screen &mdash; not her Chief Complaint &mdash; unless the provider directs otherwise.</p>
+    <p><strong>Respiratory.</strong> Mary is breathing comfortably: <span class="field">Rate</span> <span class="val">18 br/min</span>, <span class="field">SpO2 %</span> <span class="val">97%</span>. She&rsquo;s on no supplemental oxygen, so you select Room air for <span class="field">Oxygen Therapy</span> and leave <span class="field">Oxygen Flow Rate</span> blank.</p>
+    <div class="devs">
+      <span class="dev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><polyline points="20 6 9 17 4 12"/></svg> Room air</span>
+      <span class="dev off"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2"/></svg> Nasal cannula</span>
+      <span class="dev off"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2"/></svg> Simple mask</span>
+      <span class="dev off"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2"/></svg> Nonrebreather</span>
+      <span class="dev off"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2"/></svg> &hellip; 30+ more</span>
+    </div>
+    <p style="margin-top:14px;">If Mary <em>were</em> on oxygen &mdash; say <span class="val">2 L/min</span> by <span class="val">Nasal cannula</span> &mdash; you&rsquo;d also record the flow rate and check that exact device, so the next clinician can see precisely how much support she needs.</p>
+  </section>
+
+  <section class="section t-doc" id="how">
+    <div class="section-head"><span class="section-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></span><div><span class="kicker">Do this</span><h2>How to document</h2></div></div>
+
+    <div class="sg">
+      <div class="sg-head"><span class="sg-t">Chief complaint &amp; history</span></div>
+      <ul class="fieldlist">
+        <li><div class="fl-name"><span class="n">Chief Complaint</span></div><div class="fl-body"><ul><li>Enter on <strong>one line with no hard returns</strong>.</li><li>For an AWV, document <span class="val">Annual Wellness Exam</span> unless an additional reason for visit is reported.</li></ul></div></li>
+        <li><div class="fl-name"><span class="n">Onset of Symptoms</span></div><div class="fl-body">Document as applicable.</div></li>
+        <li><div class="fl-name"><span class="n">LMP / Menstrual Status</span></div><div class="fl-body">Complete based on the patient&rsquo;s report.</div></li>
+      </ul>
+    </div>
+
+    <div class="sg">
+      <div class="sg-head"><span class="sg-t">Measurements</span><span class="qm">BMI Quality Measure</span></div>
+      <ul class="fieldlist">
+        <li><div class="fl-name"><span class="n">Weight &amp; Height</span></div><div class="fl-body"><ul><li>Enter measured weight and height in <strong>both fields available</strong>.</li><li>Use &ldquo;Patient stated height/weight&rdquo; in comments <strong>only if not measured</strong>.</li><li>Verify BMI auto-populates.</li></ul></div></li>
+      </ul>
+    </div>
+
+    <div class="sg">
+      <div class="sg-head"><span class="sg-t">Vitals</span><span class="sub">Blood pressure &amp; general</span><span class="qm">Hypertension Quality Measure</span></div>
+      <ul class="fieldlist">
+        <li><div class="fl-name"><span class="n">Blood Pressure</span></div><div class="fl-body">Enter <strong>SBP / DBP</strong> and <strong>BP Site</strong>. SBP/DBP entry is required for the hypertension measure.</div></li>
+        <li><div class="fl-name"><span class="n">Heart Rate &amp; Temperature</span></div><div class="fl-body">Record HR and Temp. (Respiratory rate and SpO&#8322; are entered in the Respiratory area below.)</div></li>
+      </ul>
+    </div>
+
+    <div class="sg">
+      <div class="sg-head"><span class="sg-t">Vitals &mdash; Pain</span><span class="req">If pain &rarr; all fields</span></div>
+      <div class="note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v4M12 17h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg><span><span class="nt">If the patient reports pain, every pain field is required.</span> A &ldquo;yes&rdquo; with no score, location, or comment is incomplete &mdash; this is the most common miss.</span></div>
+      <ul class="fieldlist">
+        <li><div class="fl-name"><span class="n">Pain Present</span></div><div class="fl-body">Select from the dropdown &mdash; e.g. <span class="val">Yes &mdash; actual or suspected pain</span>, or the appropriate no-pain option. <strong>This answer drives everything below.</strong></div></li>
+        <li><div class="fl-name"><span class="n">Pain (0&ndash;10)</span><span class="req">Required if pain</span></div><div class="fl-body">Enter the patient&rsquo;s own rating, 0 to 10. Use <em>their</em> number.</div></li>
+        <li><div class="fl-name"><span class="n">Primary Pain Location</span><span class="req">Required if pain</span></div><div class="fl-body">Choose from the dropdown (e.g. <span class="val">Back lower</span>). If pain is present, this cannot be blank.</div></li>
+        <li><div class="fl-name"><span class="n">Pain Comments</span><span class="req">Required if pain</span></div><div class="fl-body">Free text for onset, duration, quality &mdash; e.g. <span class="val">patient reports pain ongoing for last 4 months</span>.</div></li>
+      </ul>
+    </div>
+
+    <div class="sg">
+      <div class="sg-head"><span class="sg-t">Vitals &mdash; Respiratory</span><span class="req">If O&#8322; &rarr; all fields</span></div>
+      <div class="note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v4M12 17h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg><span><span class="nt">If the patient is on any supplemental oxygen, complete all respiratory fields.</span> This builds the oxygen-needs history a <strong>pulmonary specialist</strong> relies on at referral.</span></div>
+      <ul class="fieldlist">
+        <li><div class="fl-name"><span class="n">Rate</span></div><div class="fl-body">Respiratory rate in <span class="val">br/min</span>.</div></li>
+        <li><div class="fl-name"><span class="n">SpO2 %</span></div><div class="fl-body">Oxygen saturation as a percentage.</div></li>
+        <li><div class="fl-name"><span class="n">Oxygen Flow Rate</span><span class="req">Required if on O&#8322;</span></div><div class="fl-body">Flow in <span class="val">L/min</span>. Complete whenever the patient is on supplemental oxygen; leave blank for room air.</div></li>
+        <li><div class="fl-name"><span class="n">Oxygen Therapy</span><span class="req">Always select one</span></div><div class="fl-body">Check the delivery method &mdash; select <strong>Room air</strong> if the patient is on none; don&rsquo;t leave it blank. The list is long and scrolls (nasal cannula, masks, high-flow, CPAP/BiPAP, trach, ventilator, and more) &mdash; pick the <strong>exact</strong> device.</div></li>
+        <li><div class="fl-name"><span class="n">Temperature Calculator</span></div><div class="fl-body">A helper to convert <span class="val">&deg;F</span> if needed &mdash; the temperature itself is recorded with the general vitals above.</div></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section t-fn" id="function">
+    <div class="section-head"><span class="section-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="1" fill="currentColor"/></svg></span><div><span class="kicker">Why &amp; what it feeds</span><h2>Function of the component &amp; quality measures</h2></div></div>
+    <ul class="clean">
+      <li>Provides a <strong>concise summary of the visit purpose</strong> and relevant background.</li>
+      <li><strong>BMI Quality Measure.</strong> Documents height and weight to calculate BMI for quality reporting.</li>
+      <li><strong>Hypertension Quality Measure.</strong> Documents BP for quality reporting and triggers alerts if elevated.</li>
+      <li><strong>Pain.</strong> A complete pain entry (score + location + comments) supports pain-management decisions, follow-up, and referral &mdash; and a partial entry breaks the trend over time.</li>
+      <li><strong>Respiratory &amp; oxygen.</strong> Builds a documented history of the patient&rsquo;s oxygen needs &mdash; essential for a pulmonary-specialist referral. SpO&#8322;, flow rate, and device together describe how much support the patient needs.</li>
+    </ul>
+    <hr class="soft">
+    <p style="color:var(--soft-ink);"><strong style="color:var(--ink)">If the patient declines the scale or height measurement:</strong> document what they report in the weight fields and enter a comment of <span class="val">Patient Stated</span>. Document <strong style="color:var(--ink)">Weight</strong>, <strong style="color:var(--ink)">Height/Length</strong>, and <strong style="color:var(--ink)">Weight (Dosing)</strong>.</p>
+    <div class="note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v4M12 17h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg><span><span class="nt">Second set of vitals?</span> Document the <strong>first</strong> set here. If a second assessment is required, document it on the <strong>Ambulatory Vitals Height Weight</strong> form.</span></div>
+  </section>
+
+  <section class="section t-tips" id="tips">
+    <div class="section-head"><span class="section-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.3 1 2.3h6c0-1 .4-1.8 1-2.3A7 7 0 0 0 12 2z"/></svg></span><div><span class="kicker">Good habits</span><h2>Tips</h2></div></div>
+    <ul class="clean">
+      <li>Keep acute issues out of the Chief Complaint for an Annual Wellness Exam <strong>unless the provider directs you to</strong>.</li>
+      <li>Enter <strong>both height and weight</strong> in the correct fields to trigger the BMI calculation.</li>
+      <li>SBP/DBP entry is <strong>required</strong> for the hypertension measure &mdash; ensure accuracy.</li>
+      <li><strong>Pain:</strong> ask directly even at a wellness visit (patients often don&rsquo;t volunteer chronic pain), record the patient&rsquo;s own 0&ndash;10 number, and put onset/duration in Pain Comments. Don&rsquo;t stop at &ldquo;yes.&rdquo;</li>
+      <li><strong>Respiratory:</strong> document Room air too &mdash; a blank field reads as &ldquo;not assessed,&rdquo; not &ldquo;no oxygen.&rdquo; On oxygen, record the flow rate <em>and</em> the exact device.</li>
+      <li>Use the calculator tools for imperial/metric or &deg;F conversions.</li>
+    </ul>
+  </section>
+
+  <nav class="pagenav"><a href="index.html"><div class="dir">&larr; Back to</div><div class="ttl">Table of contents</div></a><a class="next" href="id_risk_screen.html"><div class="dir">Next component &rarr;</div><div class="ttl">ID Risk Screen</div></a></nav>
+
+  <footer class="foot"><div class="row">
+    <span>Comprehensive Intake (Adult) &middot; Component 1: Summary</span>
+    <span>Internal use &middot; Cerner workflow reference</span>
+  </div></footer>
+
+</div>
+</body>
+</html>
