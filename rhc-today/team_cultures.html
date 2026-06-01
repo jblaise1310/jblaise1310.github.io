@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>RHC Team — June 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:#F0F4F9;color:#1A2744;max-width:900px;margin:0 auto;padding:20px;font-size:15px;line-height:1.7}
+.masthead{background:linear-gradient(135deg,#0F2744 0%,#1A3A5C 60%,#1D6FBA 100%);border-radius:16px;padding:40px 36px;margin-bottom:24px;position:relative;overflow:hidden;color:white}
+.masthead::before{content:'';position:absolute;top:-40px;right:-40px;width:200px;height:200px;border-radius:50%;background:rgba(201,152,10,0.15)}
+.masthead::after{content:'';position:absolute;bottom:-60px;left:20%;width:300px;height:300px;border-radius:50%;background:rgba(45,134,212,0.1)}
+.pub-label{font-size:12px;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.6);margin-bottom:8px;position:relative;z-index:1}
+.pub-title{font-family:'Playfair Display',serif;font-size:52px;font-weight:900;line-height:1;color:white;margin-bottom:4px;position:relative;z-index:1}
+.pub-sub{font-size:14px;color:#E8B422;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:16px;position:relative;z-index:1}
+.pub-date{font-size:13px;color:rgba(255,255,255,0.55);position:relative;z-index:1}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+.card{background:white;border-radius:14px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,0.06);margin-bottom:16px}
+.card-header{padding:14px 18px 10px;border-bottom:1px solid #EDF0F5}
+.card-header h2{font-family:'Playfair Display',serif;font-size:18px;color:#0F2744}
+.card-header p{font-size:13px;color:#6B7280;margin-top:2px}
+.card-body{padding:16px 18px}
+.spotlight-banner{background:linear-gradient(135deg,#C9980A,#E8B422);padding:10px 18px;display:flex;align-items:center;gap:8px}
+.spotlight-banner span{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:white}
+.spotlight-avatar{width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,#0F2744,#1D6FBA);display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:700;color:white;margin:16px auto 12px;border:4px solid #E8B422;box-shadow:0 4px 16px rgba(201,152,10,0.3)}
+.spotlight-name{font-family:'Playfair Display',serif;font-size:24px;font-weight:700;color:#0F2744;text-align:center}
+.spotlight-role{font-size:14px;color:#6B7280;text-align:center;margin-top:3px;margin-bottom:16px}
+.spotlight-divider{height:2px;background:linear-gradient(90deg,transparent,#E8B422,transparent);margin:0 20px 16px}
+.spotlight-fact{background:linear-gradient(135deg,#F0F4F9,#E8F2FB);border-radius:10px;padding:16px 18px;font-size:15px;color:#1A2744;line-height:1.8;border-left:4px solid #C9980A;margin:0 4px 8px}
+.bday-row{display:flex;align-items:center;justify-content:space-between;padding:9px 0;border-bottom:1px solid #EDF0F5;font-size:14px}
+.bday-row:last-child{border-bottom:none}
+.bday-name{font-weight:600;color:#0F2744;font-size:15px}
+.bday-role{font-size:12px;color:#6B7280;margin-top:1px}
+.bday-date{background:#FDF5DC;color:#854D0E;font-size:12px;font-weight:600;padding:4px 12px;border-radius:20px;white-space:nowrap}
+.zodiac-card{background:#0F2744;border-radius:14px;padding:20px;color:white;margin-bottom:0}
+.zodiac-title{font-family:'Playfair Display',serif;font-size:22px;color:#E8B422;margin-bottom:4px}
+.zodiac-sub{font-size:13px;color:rgba(255,255,255,0.6);margin-bottom:14px}
+.zodiac-signs{font-size:15px;color:white;margin-bottom:14px;line-height:1.9}
+.gem-row{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,0.08);border-radius:8px;padding:10px 12px;margin-bottom:8px}
+.gem-icon{font-size:22px}
+.gem-label{font-size:12px;color:rgba(255,255,255,0.55);text-transform:uppercase;letter-spacing:0.06em}
+.gem-val{font-size:15px;font-weight:600;color:white}
+.fact-item{display:flex;align-items:flex-start;gap:10px;padding:8px 0;font-size:15px;border-bottom:1px solid #EDF0F5;line-height:1.6}
+.fact-item:last-child{border-bottom:none}
+.fact-dot{width:8px;height:8px;border-radius:50%;background:#C9980A;flex-shrink:0;margin-top:7px}
+.pop-chip{display:inline-flex;align-items:center;gap:6px;background:#EEF3FB;color:#1A3A5C;font-size:13px;font-weight:500;padding:7px 16px;border-radius:20px;margin:4px;border:1px solid #D0E4F5}
+/* EMS */
+.ems-card{background:linear-gradient(135deg,#0F2744,#1A3A5C);border-radius:14px;padding:24px;margin-bottom:16px;color:white;position:relative;overflow:hidden}
+.ems-card::before{content:'🚑';position:absolute;right:24px;top:50%;transform:translateY(-50%);font-size:72px;opacity:0.12}
+.ems-title{font-family:'Playfair Display',serif;font-size:22px;font-weight:900;margin-bottom:4px;color:white}
+.ems-sub{font-size:13px;color:#E8B422;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:14px}
+.ems-body{font-size:15px;line-height:1.8;color:rgba(255,255,255,0.90)}
+.ems-badge{display:inline-block;background:rgba(232,180,34,0.2);border:1px solid #E8B422;border-radius:20px;padding:5px 16px;font-size:13px;font-weight:600;color:#E8B422;margin-top:14px}
+/* Wellness */
+.wellness-card{background:linear-gradient(135deg,#FEFBF0,#FDF5DC);border-radius:14px;padding:24px;margin-bottom:16px;border-left:4px solid #C9980A}
+.wellness-title{font-family:'Playfair Display',serif;font-size:20px;color:#0F2744;margin-bottom:2px}
+.wellness-sub{font-size:13px;color:#C9980A;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:14px}
+.wellness-body{font-size:15px;line-height:1.8;color:#1A2744}
+.wellness-tip{background:white;border-radius:10px;padding:14px 16px;margin:14px 0;border-left:3px solid #C9980A;box-shadow:0 1px 6px rgba(0,0,0,0.05)}
+.wellness-tip ul{margin-left:18px;margin-top:8px}
+.wellness-tip li{font-size:15px;line-height:1.9;color:#1A2744}
+.wellness-link{color:#1A3A5C;font-weight:600;text-decoration:underline}
+/* Community */
+.community-card{background:linear-gradient(135deg,#F3F5F8,#FAFBFC);border-radius:14px;padding:24px;margin-bottom:16px;border-left:4px solid #C9980A;position:relative;overflow:hidden}
+.community-card::before{content:'🤝';position:absolute;right:24px;top:50%;transform:translateY(-50%);font-size:72px;opacity:0.10}
+.community-title{font-family:'Playfair Display',serif;font-size:20px;color:#0F2744;margin-bottom:2px}
+.community-sub{font-size:13px;color:#C9980A;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:14px}
+.community-body{font-size:15px;line-height:1.8;color:#1A2744}
+/* Chamber events */
+.chamber-card{background:linear-gradient(135deg,#1A7A4A,#2E8B5A);border-radius:14px;padding:24px;margin-bottom:16px;color:white;position:relative;overflow:hidden}
+.chamber-card::before{content:'🏔️';position:absolute;right:24px;top:50%;transform:translateY(-50%);font-size:72px;opacity:0.15}
+.chamber-title{font-family:'Playfair Display',serif;font-size:22px;font-weight:900;margin-bottom:4px;color:white}
+.chamber-sub{font-size:13px;color:rgba(255,255,255,0.75);font-weight:600;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:16px}
+.event-item{background:rgba(255,255,255,0.12);border-radius:10px;padding:12px 14px;margin-bottom:10px;border-left:3px solid rgba(232,180,34,0.8)}
+.event-item:last-child{margin-bottom:0}
+.event-date{font-size:11px;font-weight:700;color:#E8B422;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:3px}
+.event-name{font-size:15px;font-weight:600;color:white;margin-bottom:2px}
+.event-time{font-size:13px;color:rgba(255,255,255,0.7)}
+.event-desc{font-size:13px;color:rgba(255,255,255,0.85);margin-top:4px;line-height:1.6}
+.chamber-link{display:inline-block;margin-top:14px;background:rgba(232,180,34,0.2);border:1px solid #E8B422;border-radius:20px;padding:6px 18px;font-size:13px;font-weight:600;color:#E8B422;text-decoration:none}
+/* Thingamajig */
+.theatre-card{background:linear-gradient(135deg,#6B4FA0,#8B6FC0);border-radius:14px;padding:24px;margin-bottom:16px;color:white;position:relative;overflow:hidden}
+.theatre-card::before{content:'🎭';position:absolute;right:24px;top:50%;transform:translateY(-50%);font-size:72px;opacity:0.15}
+.theatre-title{font-family:'Playfair Display',serif;font-size:22px;font-weight:900;margin-bottom:4px;color:white}
+.theatre-sub{font-size:13px;color:rgba(255,255,255,0.75);font-weight:600;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:12px}
+.show-item{background:rgba(255,255,255,0.12);border-radius:10px;padding:12px 14px;margin-bottom:8px}
+.show-item:last-child{margin-bottom:0}
+.show-name{font-size:15px;font-weight:600;color:white}
+.show-dates{font-size:13px;color:rgba(255,255,255,0.75);margin-top:2px}
+.footer{text-align:center;padding:24px;font-size:13px;color:#9CA3AF;margin-top:8px;border-top:1px solid #EDF0F5}
+@media(max-width:600px){.grid2{grid-template-columns:1fr}.pub-title{font-size:36px}}
+</style>
+</head>
+<body>
+
+<!-- MASTHEAD -->
+<div class="masthead">
+  <div class="pub-label">RHC Team Culture · Monthly Edition</div>
+  <div class="pub-title">June</div>
+  <div class="pub-sub">2026 · Pagosa Springs Rural Health Clinic</div>
+  <div class="pub-date">Brought to you by your admin team · June 2026</div>
+</div>
+
+<!-- ZODIAC + BIRTHDAYS -->
+<div class="grid2">
+  <div class="zodiac-card">
+    <div class="zodiac-title">June Zodiac Signs</div>
+    <div class="zodiac-sub">The stars of June</div>
+    <div class="zodiac-signs">
+      ♊ Gemini (Jun 1–20)<br>
+      <span style="opacity:0.75">♋ Cancer (Jun 21–30)</span>
+    </div>
+    <div class="gem-row">
+      <div class="gem-icon">💎</div>
+      <div>
+        <div class="gem-label">Birthstone</div>
+        <div class="gem-val">Pearl &amp; Alexandrite</div>
+      </div>
+    </div>
+    <div class="gem-row">
+      <div class="gem-icon">🌸</div>
+      <div>
+        <div class="gem-label">Birth Flower</div>
+        <div class="gem-val">Rose &amp; Honeysuckle</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-bottom:0">
+    <div class="card-header">
+      <h2>🎂 June Birthdays</h2>
+      <p>5 team members celebrating this month</p>
+    </div>
+    <div class="card-body">
+      <div class="bday-row">
+        <div><div class="bday-name">Phil</div><div class="bday-role">FNP-C · Green Team</div></div>
+        <span class="bday-date">Jun 3 🎉</span>
+      </div>
+      <div class="bday-row">
+        <div><div class="bday-name">Corrinne</div><div class="bday-role">PA · Red Team</div></div>
+        <span class="bday-date">Jun 17 🎉</span>
+      </div>
+      <div class="bday-row">
+        <div><div class="bday-name">Matthew</div><div class="bday-role">PA · Blue Team</div></div>
+        <span class="bday-date">Jun 17 🎉</span>
+      </div>
+      <div class="bday-row">
+        <div><div class="bday-name">Vickie</div><div class="bday-role">Specialist: Referral</div></div>
+        <span class="bday-date">Jun 18 🎉</span>
+      </div>
+      <div class="bday-row">
+        <div><div class="bday-name">Rachel</div><div class="bday-role">FNP-C · Green Team</div></div>
+        <span class="bday-date">Jun 23 🎉</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FAMOUS BIRTHDAYS -->
+<div class="card">
+  <div class="card-header">
+    <h2>🌟 Born in June — Famous Birthdays</h2>
+    <p>Some well-known faces who share your birth month</p>
+  </div>
+  <div class="card-body">
+    <span class="pop-chip">⭐ Meryl Streep</span>
+    <span class="pop-chip">⭐ Natalie Portman</span>
+    <span class="pop-chip">⭐ Elon Musk</span>
+    <span class="pop-chip">⭐ Lionel Messi</span>
+    <span class="pop-chip">⭐ Anne Frank</span>
+  </div>
+</div>
+
+<!-- STAFF SPOTLIGHT -->
+<div class="card">
+  <div class="spotlight-banner"><span>⭐ Staff Spotlight of the Month</span></div>
+  <div class="card-body" style="text-align:center;padding:20px">
+    <div class="spotlight-avatar">JC</div>
+    <div class="spotlight-name">Jennifer Carr</div>
+    <div class="spotlight-role">Assistant: Medical · Float/PRN</div>
+    <div class="spotlight-divider"></div>
+    <div class="spotlight-fact">When Jen isn't caring for patients, you'll find her in her home studio creating beautiful quilts, caps, and bags — a craft that takes real patience and artistry. She loves the outdoors too, and makes the most of Pagosa's backyard with her family — camping, river outings, and hiking are regular family adventures. At work, Jen is passionate about keeping her clinical procedure skills sharp and is always eager for more hands-on opportunities. More, more, more — that's Jen's motto when it comes to growing her skills!</div>
+  </div>
+</div>
+
+<!-- FUN FACTS -->
+<div class="card">
+  <div class="card-header">
+    <h2>📅 Fun Facts About June</h2>
+  </div>
+  <div class="card-body">
+    <div class="fact-item"><div class="fact-dot"></div><span>June 21 is the Summer Solstice — the longest day of the year!</span></div>
+    <div class="fact-item"><div class="fact-dot"></div><span>June is National Safety Month — a great reminder for all of us in healthcare</span></div>
+    <div class="fact-item"><div class="fact-dot"></div><span>Father's Day is celebrated in June — shout out to all the dads on our team!</span></div>
+    <div class="fact-item"><div class="fact-dot"></div><span>Named after Juno, the Roman goddess of marriage and childbirth</span></div>
+    <div class="fact-item"><div class="fact-dot"></div><span>Pagosa Springs averages over 300 sunny days a year — June is one of the best!</span></div>
+  </div>
+</div>
+
+<!-- EMS -->
+<div class="ems-card">
+  <div class="ems-title">Every Thursday is Say YES to EMS 🚑</div>
+  <div class="ems-sub">Wear it. Share it. Make a difference.</div>
+  <div class="ems-body">
+    Our downtown EMS station needs a renovation — and <strong style="color:#E8B422">you</strong> can help make it happen. The PSMC Foundation is selling unisex shirts for just <strong style="color:#E8B422">$20</strong>, and every single purchase goes directly toward this important community project.
+    <br><br>
+    This is more than a shirt — it's a statement that our community stands behind the people who show up when it matters most. <strong style="color:#E8B422">Please consider buying one, and tell your friends and family too.</strong> The more shirts we sell, the closer we get to the finish line.
+    <br><br>
+    Contact <strong style="color:#E8B422">Jo, Coby, or Jodi</strong> to get yours — available through the Community Relations office.
+  </div>
+  <span class="ems-badge">🛒 $20 · Unisex · Every Thursday · Community Relations Office</span>
+</div>
+
+<!-- SUN SAFETY WELLNESS -->
+<div class="wellness-card">
+  <div class="wellness-title">Sun Safety at 7,000 Feet</div>
+  <div class="wellness-sub">You First: A Monthly Wellness Pause</div>
+  <div class="wellness-body">
+    Living and working in Pagosa Springs means we're at a higher elevation than most — and that means UV exposure is significantly stronger here than at sea level. Summer sun can feel wonderful, but unprotected exposure adds up fast.
+    <div class="wellness-tip">
+      <strong>Simple habits to protect yourself this summer:</strong>
+      <ul>
+        <li>Apply SPF 30+ sunscreen every morning — even on cloudy days</li>
+        <li>Reapply every 2 hours when outdoors, especially near water</li>
+        <li>Wear a hat and UV-protective sunglasses when outside</li>
+        <li>Seek shade during peak hours — 10 AM to 4 PM</li>
+        <li>Stay hydrated — dehydration and sun exposure are a tough combination</li>
+        <li>Check your skin regularly and schedule an annual skin exam</li>
+      </ul>
+    </div>
+    You spend your days taking care of others — take a few extra minutes to take care of yourself too. You are worth protecting.
+    <br><br>
+    <strong>Wellness Program Reminder:</strong> If you carry PSMC insurance, you have access to the <strong>Power of Vitality</strong> program — earn points, set personal wellness goals, and track progress toward rewards.
+    <br><br>
+    Contact <a href="mailto:wellness@powerofvitality.com" class="wellness-link">wellness@powerofvitality.com</a> or call <strong>877-224-7117</strong> · Register at <a href="https://www.powerofvitality.com/" class="wellness-link">PowerofVitality.com</a> or download the mobile app.
+  </div>
+</div>
+
+<!-- CHAMBER EVENTS -->
+<div class="chamber-card">
+  <div class="chamber-title">Get Out &amp; Explore Pagosa! 🏔️</div>
+  <div class="chamber-sub">June Events from the Pagosa Springs Chamber of Commerce</div>
+
+  <div class="event-item">
+    <div class="event-date">Every Thursday in June · 5:30–7:30 PM</div>
+    <div class="event-name">19th Hole Concert Series</div>
+    <div class="event-time">Pagosa Springs Golf Club</div>
+    <div class="event-desc">Different local music talent each Thursday evening. $10 cover — all proceeds pooled across four dates for a great cause.</div>
+  </div>
+
+  <div class="event-item">
+    <div class="event-date">June 5–7</div>
+    <div class="event-name">Festival of the Arts</div>
+    <div class="event-time">Tennyson Sculpture Garden, 475 Lewis Street · Fri 5–8 PM · Sat 10–5 PM · Sun 11–4 PM</div>
+    <div class="event-desc">A wonderful celebration of local and regional artists in one of Pagosa's most beautiful outdoor settings.</div>
+  </div>
+
+  <div class="event-item">
+    <div class="event-date">Fridays in June · 6:00–9:00 PM</div>
+    <div class="event-name">Friday Nights at Fox Fire</div>
+    <div class="event-desc">A perfect way to wind down the work week with good food, drinks, and great vibes.</div>
+  </div>
+
+  <div class="event-item">
+    <div class="event-date">June 6 · 7:00–9:00 PM</div>
+    <div class="event-name">2nd Annual "Guitars in the Round" Music Showcase</div>
+    <div class="event-time">Presented by Pagosa Springs Art Council &amp; Liberty Theatre</div>
+    <div class="event-desc">An intimate evening of original music in a unique round-robin format.</div>
+  </div>
+
+  <div class="event-item">
+    <div class="event-date">June 26–27</div>
+    <div class="event-name">Fiddler on the Roof</div>
+    <div class="event-time">Thingamajig Theatre · 2026 Season Now Open!</div>
+    <div class="event-desc">Thingamajig Theatre has opened for their 2026 season — a Pagosa treasure. Check their schedule for the full summer lineup!</div>
+  </div>
+
+  <a href="https://member.pagosachamber.com/event-calendar" class="chamber-link" target="_blank">📅 View Full Chamber Calendar →</a>
+</div>
+
+<!-- GIVING BACK -->
+<div class="community-card">
+  <div class="community-title">Giving Back to Our Community</div>
+  <div class="community-sub">We take care of each other</div>
+  <div class="community-body">
+    We take care of each other as part of how we care for our community. A reminder that we have a <strong>food shelf in the clinic breakroom</strong> — available to any staff who could use it.
+    <br><br>
+    Feel free to take what you need or add items when you're able. No sign-in, no questions — just a shared way to show up for one another.
+    <br><br>
+    Thanks to everyone who has helped keep it stocked. If you would like to help with restocking or organizing, let <strong>Jo</strong> know.
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  RHC Team Culture Page · June 2026 · Pagosa Springs Rural Health Clinic<br>
+  <span style="color:#C9980A">Made with ❤️ by your admin team</span>
+</div>
+
+</body>
+</html>
