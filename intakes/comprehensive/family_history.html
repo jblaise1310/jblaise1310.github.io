@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Family History — Comprehensive Intake (Adult)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,500&family=Mulish:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+
+  :root{
+    --ink:#243240; --soft-ink:#5a6b78; --faint:#8a96a0;
+    --paper:#fbf9f5; --line:#e4ded3; --card:#fffdf9; --inner:#ffffff;
+    --teal-bg:#e7f3ed; --teal-bd:#bfddcb; --teal-tx:#2f6b50;
+    --blue-bg:#e8f0f9; --blue-bd:#c3d6ec; --blue-tx:#2e5a8c;
+    --green-bg:#eef4e4; --green-bd:#cfdfb0; --green-tx:#5c7a2f;
+    --coral-bg:#f8ebe9; --coral-bd:#e6c5bf; --coral-tx:#a8483c;
+    --rosa-bg:#fbf3e7; --rosa-bd:#e7cfa6; --rosa-tx:#9a6b1f;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{font-family:'Mulish',sans-serif;color:var(--ink);line-height:1.62;font-size:16.5px;
+    background:radial-gradient(1200px 600px at 85% -10%, #f4efe6 0%, transparent 60%),radial-gradient(900px 500px at -10% 110%, #eef2ec 0%, transparent 55%),var(--paper);
+    -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;padding:0 0 50px;}
+  ::selection{background:var(--teal-tx);color:#fff;}
+  .wrap{max-width:880px;margin:0 auto;padding:0 22px;}
+  a{color:var(--teal-tx);}
+
+  .topbar{position:sticky;top:0;z-index:50;background:rgba(251,249,245,.86);backdrop-filter:saturate(140%) blur(9px);border-bottom:1px solid var(--line);}
+  .topbar-inner{max-width:880px;margin:0 auto;padding:13px 22px;display:flex;align-items:center;gap:14px;justify-content:space-between;}
+  .crumb{display:inline-flex;align-items:center;gap:9px;font-size:13.5px;font-weight:700;color:var(--teal-tx);text-decoration:none;}
+  .crumb svg{width:16px;height:16px;} .crumb:hover{opacity:.78;}
+  .crumb-tag{font-size:12px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--faint);}
+
+  .masthead{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:46px 50px 38px;position:relative;overflow:hidden;margin-top:46px;box-shadow:0 1px 2px rgba(60,50,30,.04),0 24px 48px -34px rgba(60,50,30,.30);}
+  .masthead::after{content:"";position:absolute;left:0;right:0;bottom:0;height:4px;background:linear-gradient(90deg,var(--rosa-bd),var(--teal-bd),var(--blue-bd),var(--green-bd));}
+  .eyebrow{font-size:12.5px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--teal-tx);margin-bottom:16px;}
+  .comp-index{font-family:'Fraunces',serif;font-style:italic;font-size:17px;color:var(--rosa-tx);margin-bottom:6px;}
+  h1{font-family:'Fraunces',serif;font-weight:600;font-size:clamp(2.1rem,5.2vw,3.1rem);line-height:1.05;letter-spacing:-.015em;color:var(--ink);}
+  .lede{font-size:18.5px;color:var(--soft-ink);max-width:62ch;margin-top:16px;}
+  .meta{margin-top:24px;display:flex;flex-wrap:wrap;gap:10px;}
+  .pill{display:inline-flex;align-items:center;gap:7px;background:#fff;border:1px solid var(--line);border-radius:100px;padding:7px 14px;font-size:13px;font-weight:600;color:var(--soft-ink);}
+  .pill svg{width:14px;height:14px;color:var(--teal-tx);}
+
+  .qm-ribbon{margin-top:24px;display:flex;flex-wrap:wrap;gap:10px;align-items:center;}
+  .qm-ribbon .label{font-size:12px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--blue-tx);display:inline-flex;align-items:center;gap:6px;}
+  .qm-ribbon .label svg{width:15px;height:15px;}
+  .qm-badge{display:inline-flex;align-items:center;gap:7px;background:var(--blue-bg);color:var(--blue-tx);border:1px solid var(--blue-bd);border-radius:100px;padding:5px 13px;font-size:13px;font-weight:700;}
+
+  .rule{display:flex;gap:14px;align-items:flex-start;margin-top:24px;padding:16px 18px;border-radius:14px;background:var(--coral-bg);border:1px solid var(--coral-bd);}
+  .rule .rk{flex:none;width:36px;height:36px;border-radius:10px;background:#fff;border:1px solid var(--coral-bd);color:var(--coral-tx);display:grid;place-items:center;}
+  .rule .rk svg{width:19px;height:19px;}
+  .rule .rt{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--coral-tx);margin-bottom:3px;}
+  .rule .rb{color:var(--ink);font-size:15.5px;line-height:1.5;} .rule .rb strong{font-weight:700;}
+
+  .section{scroll-margin-top:74px;border-radius:18px;border:1px solid var(--line);padding:28px 32px;margin-top:20px;box-shadow:0 1px 2px rgba(60,50,30,.03);}
+  .section-head{display:flex;align-items:center;gap:14px;margin-bottom:16px;}
+  .section-icon{flex:none;width:42px;height:42px;border-radius:12px;display:grid;place-items:center;}
+  .section-icon svg{width:21px;height:21px;}
+  .section-head h2{font-family:'Fraunces',serif;font-weight:600;font-size:1.5rem;letter-spacing:-.01em;line-height:1.15;color:var(--ink);}
+  .kicker{display:block;font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;margin-bottom:3px;}
+
+  .t-scenario{background:var(--rosa-bg);border-color:var(--rosa-bd);}
+  .t-scenario .section-icon{background:#fff;color:var(--rosa-tx);border:1px solid var(--rosa-bd);}
+  .t-scenario .kicker{color:var(--rosa-tx);} .t-scenario .section-head h2{color:var(--rosa-tx);}
+  .t-doc{background:var(--teal-bg);border-color:var(--teal-bd);}
+  .t-doc .section-icon{background:#fff;color:var(--teal-tx);border:1px solid var(--teal-bd);}
+  .t-doc .kicker{color:var(--teal-tx);} .t-doc .section-head h2{color:var(--teal-tx);}
+  .t-fn{background:var(--blue-bg);border-color:var(--blue-bd);}
+  .t-fn .section-icon{background:#fff;color:var(--blue-tx);border:1px solid var(--blue-bd);}
+  .t-fn .kicker{color:var(--blue-tx);} .t-fn .section-head h2{color:var(--blue-tx);}
+  .t-tips{background:var(--green-bg);border-color:var(--green-bd);}
+  .t-tips .section-icon{background:#fff;color:var(--green-tx);border:1px solid var(--green-bd);}
+  .t-tips .kicker{color:var(--green-tx);} .t-tips .section-head h2{color:var(--green-tx);}
+
+  .scenario p{margin-bottom:13px;font-size:16.5px;color:var(--ink);} .scenario p:last-child{margin-bottom:0;}
+  .say{font-family:'Fraunces',serif;font-style:italic;color:var(--rosa-tx);}
+  .case-meta{margin:2px 0 18px;padding:15px 18px;border-radius:12px;background:#fff;border:1px solid var(--rosa-bd);display:flex;flex-wrap:wrap;gap:16px 30px;}
+  .case-meta>div{min-width:84px;}
+  .case-meta dt{font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--rosa-tx);font-weight:700;margin-bottom:2px;}
+  .case-meta dd{font-weight:700;color:var(--ink);font-size:15px;}
+
+  .field{font-weight:700;color:var(--teal-tx);}
+  .val{display:inline-block;font-weight:700;font-size:.9em;background:#fff;color:var(--teal-tx);border:1px solid var(--teal-bd);border-radius:7px;padding:0 8px;line-height:1.5;}
+
+  .devs{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px;}
+  .dev{display:inline-flex;align-items:center;gap:7px;background:#fff;border:1px solid var(--teal-bd);border-radius:9px;padding:5px 11px;font-size:13.5px;font-weight:700;color:var(--ink);}
+  .dev svg{width:15px;height:15px;color:var(--teal-tx);}
+  .dev.off{color:var(--faint);border-color:var(--line);font-weight:600;} .dev.off svg{color:var(--faint);}
+
+  /* sub-groups within How to Document */
+  .sg{margin-top:26px;}
+  .sg:first-of-type{margin-top:2px;}
+  .sg-head{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:4px;padding-bottom:9px;border-bottom:2px solid var(--teal-bd);}
+  .sg-head .sg-t{font-family:'Fraunces',serif;font-weight:600;font-size:1.18rem;color:var(--teal-tx);}
+  .sg-head .sub{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);}
+
+  .fieldlist{list-style:none;}
+  .fieldlist>li{padding:14px 0;border-top:1px solid var(--teal-bd);}
+  .fieldlist>li:first-child{border-top:none;padding-top:10px;}
+  .fl-name{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:5px;}
+  .fl-name .n{font-family:'Fraunces',serif;font-weight:600;font-size:1.08rem;color:var(--ink);}
+  .qm{font-size:11px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;color:var(--blue-tx);background:var(--blue-bg);border:1px solid var(--blue-bd);border-radius:100px;padding:2px 9px;}
+  .req{font-size:11px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;color:var(--coral-tx);background:var(--coral-bg);border:1px solid var(--coral-bd);border-radius:100px;padding:2px 9px;}
+  .fl-body{color:var(--soft-ink);}
+  .fl-body ul{margin-top:6px;padding-left:20px;} .fl-body li{margin:4px 0;}
+
+  .clean{list-style:none;}
+  .clean>li{position:relative;padding:7px 0 7px 28px;color:var(--soft-ink);}
+  .clean>li::before{content:"";position:absolute;left:3px;top:15px;width:8px;height:8px;border-radius:50%;}
+  .t-fn .clean>li::before{background:var(--blue-tx);}
+  .t-tips .clean>li::before{background:var(--green-tx);}
+  .clean strong{color:var(--ink);font-weight:700;}
+
+  .note{margin:12px 0 4px;padding:14px 16px;border-radius:12px;font-size:15px;border:1px solid var(--coral-bd);background:var(--coral-bg);color:var(--ink);display:flex;gap:11px;align-items:flex-start;}
+  .note svg{width:18px;height:18px;flex:none;color:var(--coral-tx);margin-top:2px;}
+  .note .nt{font-weight:700;color:var(--coral-tx);}
+  hr.soft{border:none;border-top:1px solid var(--blue-bd);margin:22px 0;}
+
+  .why-list{list-style:none;display:grid;gap:13px;margin-top:4px;}
+  .why-list li{display:flex;gap:13px;align-items:flex-start;}
+  .why-list .ico{flex:none;width:30px;height:30px;border-radius:9px;background:#fff;border:1px solid var(--blue-bd);color:var(--blue-tx);display:grid;place-items:center;}
+  .why-list .ico svg{width:16px;height:16px;}
+  .why-list b{color:var(--ink);font-weight:700;} .why-list span.tx{color:var(--soft-ink);font-size:15px;}
+
+  .avatar{width:42px;height:42px;border-radius:50%;background:var(--rosa-tx);color:#fff;display:grid;place-items:center;font-family:'Fraunces',serif;font-weight:600;font-size:18px;flex:none;}
+
+  .toc-label{font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--teal-tx);margin:42px 0 14px;font-weight:700;}
+  .toc-label.toc-special{color:var(--rosa-tx);}
+  .complist{display:grid;gap:12px;list-style:none;}
+  .comp-link{display:flex;align-items:center;gap:18px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px 22px;text-decoration:none;color:inherit;transition:transform .16s,box-shadow .16s,border-color .16s;box-shadow:0 1px 2px rgba(60,50,30,.04);}
+  .comp-link:hover{transform:translateY(-2px);border-color:var(--teal-bd);box-shadow:0 18px 36px -24px rgba(60,50,30,.32);}
+  .comp-link .num{flex:none;width:40px;height:40px;border-radius:12px;background:var(--teal-bg);color:var(--teal-tx);display:grid;place-items:center;font-family:'Fraunces',serif;font-weight:600;font-size:18px;}
+  .comp-link .meat{flex:1;min-width:0;}
+  .comp-link .meat .t{display:block;font-family:'Fraunces',serif;font-weight:600;font-size:1.2rem;color:var(--ink);line-height:1.2;}
+  .comp-link .meat .d{font-size:14px;color:var(--faint);margin-top:1px;}
+  .comp-link .qmtag{font-size:11px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;color:var(--blue-tx);background:var(--blue-bg);border:1px solid var(--blue-bd);border-radius:100px;padding:3px 10px;white-space:nowrap;}
+  .comp-link .arrow{flex:none;color:var(--faint);} .comp-link:hover .arrow{color:var(--teal-tx);}
+  .comp-link.soon{pointer-events:none;opacity:.6;box-shadow:none;border-style:dashed;}
+  .comp-link.soon .num{background:#efeadf;color:var(--faint);}
+  .comp-link.soon .meat .t{color:var(--soft-ink);}
+  .comp-link.soon .stat{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--faint);font-weight:700;}
+
+  .pagenav{display:flex;gap:14px;margin-top:34px;flex-wrap:wrap;}
+  .pagenav a{flex:1;min-width:210px;text-decoration:none;color:inherit;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px 20px;transition:border-color .16s,transform .16s;display:block;}
+  .pagenav a:hover{border-color:var(--teal-bd);transform:translateY(-1px);}
+  .pagenav a.dead{opacity:.55;pointer-events:none;}
+  .pagenav .dir{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);margin-bottom:3px;font-weight:700;}
+  .pagenav .ttl{font-family:'Fraunces',serif;font-weight:600;color:var(--teal-tx);}
+  .pagenav a.next{text-align:right;}
+
+  footer.foot{margin-top:34px;padding-top:24px;border-top:1px solid var(--line);color:var(--faint);font-size:13px;}
+  footer.foot .row{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;}
+
+</style>
+</head>
+<body>
+<nav class="topbar"><div class="topbar-inner">
+  <a class="crumb" href="index.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>All components</a>
+  <span class="crumb-tag">Component 7 / Family History</span>
+</div></nav>
+<div class="wrap">
+
+  <header class="masthead">
+    <p class="comp-index">Component 7</p>
+    <h1>Family History</h1>
+    <p class="lede">Hereditary risk by relative &mdash; relationship, condition, and the ages that shape screening: age at diagnosis and, where it applies, age at death.</p>
+  </header>
+
+  <section class="section t-scenario scenario" id="scenario">
+    <div class="section-head"><span class="section-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span><div><span class="kicker">Scenario</span><h2>Mary&rsquo;s visit, continued</h2></div></div>
+    <dl class="case-meta">
+      <div><dt>Mother</dt><dd>Type 2 diabetes</dd></div>
+      <div><dt>Father</dt><dd>Hypertension</dd></div>
+      <div><dt>Brother</dt><dd>Colon cancer, dx 52, d. 54</dd></div>
+      <div><dt>Grandparents</dt><dd>Unknown</dd></div>
+    </dl>
+    <p>You review her family&rsquo;s medical history. <span class="say">&ldquo;My mom had type 2 diabetes, my dad had high blood pressure, and my younger brother had colon cancer at 52 &mdash; he passed two years later,&rdquo;</span> Mary says. She&rsquo;s unsure about her grandparents.</p>
+    <p>You document each relative. For her brother you record colon cancer with an <span class="field">Age at Diagnosis</span> of <span class="val">52</span> and an <span class="field">Age at Death</span> of <span class="val">54</span> &mdash; the early onset is exactly the kind of detail that can change Mary&rsquo;s own screening recommendations. For the grandparents you select <span class="val">Unknown</span> rather than leaving them blank.</p>
+    <p>Once everything is confirmed with Mary, you click <span class="field">Mark All as Reviewed</span>.</p>
+  </section>
+
+  <section class="section t-doc" id="how">
+    <div class="section-head"><span class="section-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></span><div><span class="kicker">Do this</span><h2>How to document</h2></div></div>
+    <ul class="fieldlist">
+      <li><div class="fl-name"><span class="n">Relationship</span></div><div class="fl-body">Mother, father, sibling, and so on.</div></li>
+      <li><div class="fl-name"><span class="n">Condition</span></div><div class="fl-body">Select from the list, using the <strong>most general term</strong> available. To add a positive history, click the white box in the field below the family member &mdash; the <strong>+ sign</strong> marks that relative as positive for that disease.</div></li>
+      <li><div class="fl-name"><span class="n">Age at Diagnosis</span></div><div class="fl-body">Document if known &mdash; important for cancer, diabetes, and cardiovascular disease.</div></li>
+      <li><div class="fl-name"><span class="n">Age at Death</span></div><div class="fl-body">Document if applicable; include the <strong>cause</strong> if known.</div></li>
+      <li><div class="fl-name"><span class="n">Unknown relatives</span></div><div class="fl-body">If history is unknown for certain relatives, select <span class="val">Unknown</span>.</div></li>
+      <li><div class="fl-name"><span class="n">Mark All as Reviewed</span></div><div class="fl-body">Click once the history is confirmed with the patient.</div></li>
+    </ul>
+    <div class="note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v4M12 17h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg><span><span class="nt">Whole-family options.</span> When they apply, you can use <strong>All Negative family history</strong>, <strong>Unknown</strong>, <strong>Unable to Obtain</strong>, or <strong>Patient Adopted</strong> instead of charting relative by relative.</span></div>
+  </section>
+
+  <section class="section t-fn" id="function">
+    <div class="section-head"><span class="section-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="1" fill="currentColor"/></svg></span><div><span class="kicker">Why it matters</span><h2>Function of the component</h2></div></div>
+    <ul class="clean">
+      <li>Records <strong>hereditary risk factors</strong> for certain diseases.</li>
+      <li>Supports provider decision-making for <strong>screening and prevention strategies</strong>.</li>
+    </ul>
+  </section>
+
+  <section class="section t-tips" id="tips">
+    <div class="section-head"><span class="section-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.3 1 2.3h6c0-1 .4-1.8 1-2.3A7 7 0 0 0 12 2z"/></svg></span><div><span class="kicker">Good habits</span><h2>Tips</h2></div></div>
+    <ul class="clean">
+      <li>Document <strong>age at diagnosis</strong> for cancer, diabetes, and cardiovascular disease &mdash; early onset can change screening recommendations.</li>
+      <li>When documenting a death, include the <strong>cause</strong> if known.</li>
+      <li>Ask about <strong>siblings</strong> as well as parents and grandparents &mdash; many risk factors run horizontally in families.</li>
+    </ul>
+  </section>
+
+  <nav class="pagenav"><a href="procedures_and_surgeries.html"><div class="dir">&larr; Previous</div><div class="ttl">Procedures &amp; Surgeries</div></a><a class="next" href="social_history.html"><div class="dir">Next &rarr;</div><div class="ttl">Social History</div></a></nav>
+
+  <footer class="foot"><div class="row">
+    <span>Comprehensive Intake (Adult) &middot; Component 7: Family History</span>
+    <span>Internal use &middot; Cerner workflow reference</span>
+  </div></footer>
+
+</div>
+</body>
+</html>

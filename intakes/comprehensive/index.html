@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Comprehensive Intake (Adult) — MA Documentation Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,500&family=Mulish:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+
+  :root{
+    --ink:#243240; --soft-ink:#5a6b78; --faint:#8a96a0;
+    --paper:#fbf9f5; --line:#e4ded3; --card:#fffdf9; --inner:#ffffff;
+    --teal-bg:#e7f3ed; --teal-bd:#bfddcb; --teal-tx:#2f6b50;
+    --blue-bg:#e8f0f9; --blue-bd:#c3d6ec; --blue-tx:#2e5a8c;
+    --green-bg:#eef4e4; --green-bd:#cfdfb0; --green-tx:#5c7a2f;
+    --coral-bg:#f8ebe9; --coral-bd:#e6c5bf; --coral-tx:#a8483c;
+    --rosa-bg:#fbf3e7; --rosa-bd:#e7cfa6; --rosa-tx:#9a6b1f;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{font-family:'Mulish',sans-serif;color:var(--ink);line-height:1.62;font-size:16.5px;
+    background:radial-gradient(1200px 600px at 85% -10%, #f4efe6 0%, transparent 60%),radial-gradient(900px 500px at -10% 110%, #eef2ec 0%, transparent 55%),var(--paper);
+    -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;padding:0 0 50px;}
+  ::selection{background:var(--teal-tx);color:#fff;}
+  .wrap{max-width:880px;margin:0 auto;padding:0 22px;}
+  a{color:var(--teal-tx);}
+
+  .topbar{position:sticky;top:0;z-index:50;background:rgba(251,249,245,.86);backdrop-filter:saturate(140%) blur(9px);border-bottom:1px solid var(--line);}
+  .topbar-inner{max-width:880px;margin:0 auto;padding:13px 22px;display:flex;align-items:center;gap:14px;justify-content:space-between;}
+  .crumb{display:inline-flex;align-items:center;gap:9px;font-size:13.5px;font-weight:700;color:var(--teal-tx);text-decoration:none;}
+  .crumb svg{width:16px;height:16px;} .crumb:hover{opacity:.78;}
+  .crumb-tag{font-size:12px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--faint);}
+
+  .masthead{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:46px 50px 38px;position:relative;overflow:hidden;margin-top:46px;box-shadow:0 1px 2px rgba(60,50,30,.04),0 24px 48px -34px rgba(60,50,30,.30);}
+  .masthead::after{content:"";position:absolute;left:0;right:0;bottom:0;height:4px;background:linear-gradient(90deg,var(--rosa-bd),var(--teal-bd),var(--blue-bd),var(--green-bd));}
+  .eyebrow{font-size:12.5px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--teal-tx);margin-bottom:16px;}
+  .comp-index{font-family:'Fraunces',serif;font-style:italic;font-size:17px;color:var(--rosa-tx);margin-bottom:6px;}
+  h1{font-family:'Fraunces',serif;font-weight:600;font-size:clamp(2.1rem,5.2vw,3.1rem);line-height:1.05;letter-spacing:-.015em;color:var(--ink);}
+  .lede{font-size:18.5px;color:var(--soft-ink);max-width:62ch;margin-top:16px;}
+  .meta{margin-top:24px;display:flex;flex-wrap:wrap;gap:10px;}
+  .pill{display:inline-flex;align-items:center;gap:7px;background:#fff;border:1px solid var(--line);border-radius:100px;padding:7px 14px;font-size:13px;font-weight:600;color:var(--soft-ink);}
+  .pill svg{width:14px;height:14px;color:var(--teal-tx);}
+
+  .qm-ribbon{margin-top:24px;display:flex;flex-wrap:wrap;gap:10px;align-items:center;}
+  .qm-ribbon .label{font-size:12px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--blue-tx);display:inline-flex;align-items:center;gap:6px;}
+  .qm-ribbon .label svg{width:15px;height:15px;}
+  .qm-badge{display:inline-flex;align-items:center;gap:7px;background:var(--blue-bg);color:var(--blue-tx);border:1px solid var(--blue-bd);border-radius:100px;padding:5px 13px;font-size:13px;font-weight:700;}
+
+  .rule{display:flex;gap:14px;align-items:flex-start;margin-top:24px;padding:16px 18px;border-radius:14px;background:var(--coral-bg);border:1px solid var(--coral-bd);}
+  .rule .rk{flex:none;width:36px;height:36px;border-radius:10px;background:#fff;border:1px solid var(--coral-bd);color:var(--coral-tx);display:grid;place-items:center;}
+  .rule .rk svg{width:19px;height:19px;}
+  .rule .rt{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--coral-tx);margin-bottom:3px;}
+  .rule .rb{color:var(--ink);font-size:15.5px;line-height:1.5;} .rule .rb strong{font-weight:700;}
+
+  .section{scroll-margin-top:74px;border-radius:18px;border:1px solid var(--line);padding:28px 32px;margin-top:20px;box-shadow:0 1px 2px rgba(60,50,30,.03);}
+  .section-head{display:flex;align-items:center;gap:14px;margin-bottom:16px;}
+  .section-icon{flex:none;width:42px;height:42px;border-radius:12px;display:grid;place-items:center;}
+  .section-icon svg{width:21px;height:21px;}
+  .section-head h2{font-family:'Fraunces',serif;font-weight:600;font-size:1.5rem;letter-spacing:-.01em;line-height:1.15;color:var(--ink);}
+  .kicker{display:block;font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;margin-bottom:3px;}
+
+  .t-scenario{background:var(--rosa-bg);border-color:var(--rosa-bd);}
+  .t-scenario .section-icon{background:#fff;color:var(--rosa-tx);border:1px solid var(--rosa-bd);}
+  .t-scenario .kicker{color:var(--rosa-tx);} .t-scenario .section-head h2{color:var(--rosa-tx);}
+  .t-doc{background:var(--teal-bg);border-color:var(--teal-bd);}
+  .t-doc .section-icon{background:#fff;color:var(--teal-tx);border:1px solid var(--teal-bd);}
+  .t-doc .kicker{color:var(--teal-tx);} .t-doc .section-head h2{color:var(--teal-tx);}
+  .t-fn{background:var(--blue-bg);border-color:var(--blue-bd);}
+  .t-fn .section-icon{background:#fff;color:var(--blue-tx);border:1px solid var(--blue-bd);}
+  .t-fn .kicker{color:var(--blue-tx);} .t-fn .section-head h2{color:var(--blue-tx);}
+  .t-tips{background:var(--green-bg);border-color:var(--green-bd);}
+  .t-tips .section-icon{background:#fff;color:var(--green-tx);border:1px solid var(--green-bd);}
+  .t-tips .kicker{color:var(--green-tx);} .t-tips .section-head h2{color:var(--green-tx);}
+
+  .scenario p{margin-bottom:13px;font-size:16.5px;color:var(--ink);} .scenario p:last-child{margin-bottom:0;}
+  .say{font-family:'Fraunces',serif;font-style:italic;color:var(--rosa-tx);}
+  .case-meta{margin:2px 0 18px;padding:15px 18px;border-radius:12px;background:#fff;border:1px solid var(--rosa-bd);display:flex;flex-wrap:wrap;gap:16px 30px;}
+  .case-meta>div{min-width:84px;}
+  .case-meta dt{font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--rosa-tx);font-weight:700;margin-bottom:2px;}
+  .case-meta dd{font-weight:700;color:var(--ink);font-size:15px;}
+
+  .field{font-weight:700;color:var(--teal-tx);}
+  .val{display:inline-block;font-weight:700;font-size:.9em;background:#fff;color:var(--teal-tx);border:1px solid var(--teal-bd);border-radius:7px;padding:0 8px;line-height:1.5;}
+
+  .devs{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px;}
+  .dev{display:inline-flex;align-items:center;gap:7px;background:#fff;border:1px solid var(--teal-bd);border-radius:9px;padding:5px 11px;font-size:13.5px;font-weight:700;color:var(--ink);}
+  .dev svg{width:15px;height:15px;color:var(--teal-tx);}
+  .dev.off{color:var(--faint);border-color:var(--line);font-weight:600;} .dev.off svg{color:var(--faint);}
+
+  /* sub-groups within How to Document */
+  .sg{margin-top:26px;}
+  .sg:first-of-type{margin-top:2px;}
+  .sg-head{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:4px;padding-bottom:9px;border-bottom:2px solid var(--teal-bd);}
+  .sg-head .sg-t{font-family:'Fraunces',serif;font-weight:600;font-size:1.18rem;color:var(--teal-tx);}
+  .sg-head .sub{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);}
+
+  .fieldlist{list-style:none;}
+  .fieldlist>li{padding:14px 0;border-top:1px solid var(--teal-bd);}
+  .fieldlist>li:first-child{border-top:none;padding-top:10px;}
+  .fl-name{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:5px;}
+  .fl-name .n{font-family:'Fraunces',serif;font-weight:600;font-size:1.08rem;color:var(--ink);}
+  .qm{font-size:11px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;color:var(--blue-tx);background:var(--blue-bg);border:1px solid var(--blue-bd);border-radius:100px;padding:2px 9px;}
+  .req{font-size:11px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;color:var(--coral-tx);background:var(--coral-bg);border:1px solid var(--coral-bd);border-radius:100px;padding:2px 9px;}
+  .fl-body{color:var(--soft-ink);}
+  .fl-body ul{margin-top:6px;padding-left:20px;} .fl-body li{margin:4px 0;}
+
+  .clean{list-style:none;}
+  .clean>li{position:relative;padding:7px 0 7px 28px;color:var(--soft-ink);}
+  .clean>li::before{content:"";position:absolute;left:3px;top:15px;width:8px;height:8px;border-radius:50%;}
+  .t-fn .clean>li::before{background:var(--blue-tx);}
+  .t-tips .clean>li::before{background:var(--green-tx);}
+  .clean strong{color:var(--ink);font-weight:700;}
+
+  .note{margin:12px 0 4px;padding:14px 16px;border-radius:12px;font-size:15px;border:1px solid var(--coral-bd);background:var(--coral-bg);color:var(--ink);display:flex;gap:11px;align-items:flex-start;}
+  .note svg{width:18px;height:18px;flex:none;color:var(--coral-tx);margin-top:2px;}
+  .note .nt{font-weight:700;color:var(--coral-tx);}
+  hr.soft{border:none;border-top:1px solid var(--blue-bd);margin:22px 0;}
+
+  .why-list{list-style:none;display:grid;gap:13px;margin-top:4px;}
+  .why-list li{display:flex;gap:13px;align-items:flex-start;}
+  .why-list .ico{flex:none;width:30px;height:30px;border-radius:9px;background:#fff;border:1px solid var(--blue-bd);color:var(--blue-tx);display:grid;place-items:center;}
+  .why-list .ico svg{width:16px;height:16px;}
+  .why-list b{color:var(--ink);font-weight:700;} .why-list span.tx{color:var(--soft-ink);font-size:15px;}
+
+  .avatar{width:42px;height:42px;border-radius:50%;background:var(--rosa-tx);color:#fff;display:grid;place-items:center;font-family:'Fraunces',serif;font-weight:600;font-size:18px;flex:none;}
+
+  .toc-label{font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--teal-tx);margin:42px 0 14px;font-weight:700;}
+  .toc-label.toc-special{color:var(--rosa-tx);}
+  .complist{display:grid;gap:12px;list-style:none;}
+  .comp-link{display:flex;align-items:center;gap:18px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px 22px;text-decoration:none;color:inherit;transition:transform .16s,box-shadow .16s,border-color .16s;box-shadow:0 1px 2px rgba(60,50,30,.04);}
+  .comp-link:hover{transform:translateY(-2px);border-color:var(--teal-bd);box-shadow:0 18px 36px -24px rgba(60,50,30,.32);}
+  .comp-link .num{flex:none;width:40px;height:40px;border-radius:12px;background:var(--teal-bg);color:var(--teal-tx);display:grid;place-items:center;font-family:'Fraunces',serif;font-weight:600;font-size:18px;}
+  .comp-link .meat{flex:1;min-width:0;}
+  .comp-link .meat .t{display:block;font-family:'Fraunces',serif;font-weight:600;font-size:1.2rem;color:var(--ink);line-height:1.2;}
+  .comp-link .meat .d{font-size:14px;color:var(--faint);margin-top:1px;}
+  .comp-link .qmtag{font-size:11px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;color:var(--blue-tx);background:var(--blue-bg);border:1px solid var(--blue-bd);border-radius:100px;padding:3px 10px;white-space:nowrap;}
+  .comp-link .arrow{flex:none;color:var(--faint);} .comp-link:hover .arrow{color:var(--teal-tx);}
+  .comp-link.soon{pointer-events:none;opacity:.6;box-shadow:none;border-style:dashed;}
+  .comp-link.soon .num{background:#efeadf;color:var(--faint);}
+  .comp-link.soon .meat .t{color:var(--soft-ink);}
+  .comp-link.soon .stat{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--faint);font-weight:700;}
+
+  .pagenav{display:flex;gap:14px;margin-top:34px;flex-wrap:wrap;}
+  .pagenav a{flex:1;min-width:210px;text-decoration:none;color:inherit;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px 20px;transition:border-color .16s,transform .16s;display:block;}
+  .pagenav a:hover{border-color:var(--teal-bd);transform:translateY(-1px);}
+  .pagenav a.dead{opacity:.55;pointer-events:none;}
+  .pagenav .dir{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);margin-bottom:3px;font-weight:700;}
+  .pagenav .ttl{font-family:'Fraunces',serif;font-weight:600;color:var(--teal-tx);}
+  .pagenav a.next{text-align:right;}
+
+  footer.foot{margin-top:34px;padding-top:24px;border-top:1px solid var(--line);color:var(--faint);font-size:13px;}
+  footer.foot .row{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;}
+
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="masthead">
+    <p class="eyebrow">Cerner &middot; Medical Assistant Reference</p>
+    <h1>Comprehensive Intake</h1>
+    <p class="lede">A field-by-field documentation guide for the adult Comprehensive Intake. Work through each component in the order it appears in Cerner &mdash; following one patient, Mary, from check-in to a complete chart.</p>
+    <div class="meta">
+      <span class="pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1"/></svg>Adult Comprehensive Intake</span>
+      <span class="pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>Follow Mary throughout</span>
+    </div>
+  </header>
+
+  <section class="section t-doc">
+    <div class="section-head"><span class="section-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></span><div><span class="kicker">Start here</span><h2>Purpose of this guide</h2></div></div>
+    <p style="color:var(--soft-ink);">These sheets walk you through <strong style="color:var(--ink)">what to enter, where, and why</strong> for every component of the Comprehensive Intake. Each component is its own page with the same four parts: a short <strong style="color:var(--ink)">scenario</strong> with our patient Mary, a <strong style="color:var(--ink)">How&nbsp;to&nbsp;Document</strong> checklist, the <strong style="color:var(--ink)">function of the component</strong> (including any quality measures it feeds), and quick <strong style="color:var(--ink)">tips</strong>. Use them at the elbow while you chart, or as a refresher before a shift.</p>
+  </section>
+
+  <section class="section t-fn">
+    <div class="section-head"><span class="section-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></span><div><span class="kicker">Why it matters</span><h2>Why accurate documentation matters</h2></div></div>
+    <ul class="why-list">
+      <li><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="1" fill="currentColor"/></svg></span><span class="tx"><b>Quality measures.</b> Fields like BMI and blood pressure feed reportable quality measures. If they aren&rsquo;t captured in the right place, the measure isn&rsquo;t met &mdash; even if the care happened.</span></li>
+      <li><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></span><span class="tx"><b>Patient safety &amp; continuity.</b> The provider and the next visit rely on what you entered. Clean, complete data prevents missed history, duplicated tests, and medication errors.</span></li>
+      <li><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18M8 4v16"/></svg></span><span class="tx"><b>Billing &amp; compliance.</b> Documentation supports the level of service billed and stands as the legal record of the visit. Consistent entry keeps the practice audit-ready.</span></li>
+      <li><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19V5M4 19h16M8 16l3-4 3 2 4-6"/></svg></span><span class="tx"><b>One source of truth.</b> Entering data in the field Cerner expects &mdash; not just in a comment &mdash; means it flows to flowsheets, trends, and downstream forms automatically.</span></li>
+    </ul>
+  </section>
+
+  <section class="section t-scenario">
+    <div class="section-head"><span class="avatar">M</span><div><span class="kicker">Your patient</span><h2>Meet Mary</h2></div></div>
+    <p style="color:var(--ink);margin-bottom:14px;">To make these sheets concrete, the same patient appears in every component. As you move through the form, you&rsquo;re building <em>her</em> chart &mdash; so each field connects to a real person rather than an abstract box.</p>
+    <dl class="case-meta">
+      <div><dt>Patient</dt><dd>Mary</dd></div>
+      <div><dt>Visit type</dt><dd>Annual Wellness Exam</dd></div>
+      <div><dt>Status</dt><dd>Postmenopausal</dd></div>
+      <div><dt>Companion</dt><dd>Daisy (her dog)</dd></div>
+    </dl>
+  </section>
+
+  <p class="toc-label">Required &mdash; in Cerner order</p>
+  <ul class="complist">
+    <li><a class="comp-link" href="summary.html">
+      <span class="num">1</span>
+      <span class="meat"><span class="t">Summary</span><span class="d">Chief complaint, LMP/menstrual status, measurements, and vitals &mdash; including pain &amp; respiratory</span></span>
+      <span class="qmtag">BMI &middot; HTN</span><span class="arrow"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+    </a></li>
+    <li><a class="comp-link" href="id_risk_screen.html">
+      <span class="num">2</span>
+      <span class="meat"><span class="t">ID Risk Screen</span><span class="d">Infectious-disease risk: recent &amp; contact travel, other exposures</span></span>
+      <span class="arrow"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+    </a></li>
+    <li><a class="comp-link" href="problems_medical_history.html">
+      <span class="num">3</span>
+      <span class="meat"><span class="t">Problems &amp; Medical History</span><span class="d">Review the problem list, add generic terms, mark reviewed</span></span>
+      <span class="arrow"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+    </a></li>
+    <li><a class="comp-link" href="meds_allergies.html">
+      <span class="num">4</span>
+      <span class="meat"><span class="t">Meds / Allergies</span><span class="d">Allergy list &amp; home-medication history &mdash; history only, no changes</span></span>
+      <span class="arrow"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+    </a></li>
+    <li><a class="comp-link" href="hearing_and_vision.html">
+      <span class="num">5</span>
+      <span class="meat"><span class="t">Hearing &amp; Vision</span><span class="d">Functional vision &amp; hearing status, corrective lenses, comments</span></span>
+      <span class="arrow"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+    </a></li>
+    <li><a class="comp-link" href="procedures_and_surgeries.html">
+      <span class="num">6</span>
+      <span class="meat"><span class="t">Procedures &amp; Surgeries</span><span class="d">Surgical history: name, date (or approximate), clarifying comments</span></span>
+      <span class="arrow"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+    </a></li>
+    <li><a class="comp-link" href="family_history.html">
+      <span class="num">7</span>
+      <span class="meat"><span class="t">Family History</span><span class="d">Hereditary risk: relationship, condition, age at diagnosis &amp; death</span></span>
+      <span class="arrow"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+    </a></li>
+    <li><a class="comp-link" href="social_history.html">
+      <span class="num">8</span>
+      <span class="meat"><span class="t">Social History</span><span class="d">Alcohol, tobacco &amp; substance use &mdash; lifestyle risk factors</span></span>
+      <span class="qmtag">Tobacco</span><span class="arrow"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+    </a></li>
+    <li><a class="comp-link" href="steadi_fall_risk.html">
+      <span class="num">9</span>
+      <span class="meat"><span class="t">STEADI Fall Risk</span><span class="d">Fall-risk screening: steadiness, falls in past year, worry about falling</span></span>
+      <span class="qmtag">Fall Risk</span><span class="arrow"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+    </a></li>
+    <li><a class="comp-link soon">
+      <span class="num">10</span>
+      <span class="meat"><span class="t">Depression Screening</span><span class="d">Mood screening (e.g. PHQ)</span></span>
+      <span class="stat">Coming soon</span>
+    </a></li>
+    <li><a class="comp-link soon">
+      <span class="num">11</span>
+      <span class="meat"><span class="t">C-SSRS Screen</span><span class="d">Columbia Suicide Severity Rating Scale, with triage (outpatient)</span></span>
+      <span class="stat">Coming soon</span>
+    </a></li>
+  </ul>
+
+  <p class="toc-label toc-special">Special circumstances &mdash; chart only when applicable</p>
+  <ul class="complist">
+    <li><a class="comp-link soon">
+      <span class="num">&middot;</span>
+      <span class="meat"><span class="t">Menstrual History</span><span class="d">When applicable to the patient</span></span>
+      <span class="stat">Coming soon</span>
+    </a></li>
+    <li><a class="comp-link soon">
+      <span class="num">&middot;</span>
+      <span class="meat"><span class="t">Advance Directive</span><span class="d">When the patient has or wants to discuss one</span></span>
+      <span class="stat">Coming soon</span>
+    </a></li>
+    <li><a class="comp-link soon">
+      <span class="num">&middot;</span>
+      <span class="meat"><span class="t">More Measurements</span><span class="d">Additional measurements when indicated</span></span>
+      <span class="stat">Coming soon</span>
+    </a></li>
+    <li><a class="comp-link soon">
+      <span class="num">&middot;</span>
+      <span class="meat"><span class="t">More Vitals</span><span class="d">Additional vitals when indicated</span></span>
+      <span class="stat">Coming soon</span>
+    </a></li>
+    <li><a class="comp-link soon">
+      <span class="num">&middot;</span>
+      <span class="meat"><span class="t">Orthostatics</span><span class="d">Orthostatic vital signs when indicated</span></span>
+      <span class="stat">Coming soon</span>
+    </a></li>
+  </ul>
+
+  <footer class="foot"><div class="row">
+    <span>Comprehensive Intake (Adult) &middot; MA Documentation Guide</span>
+    <span>Internal use &middot; Cerner workflow reference</span>
+  </div></footer>
+
+</div>
+</body>
+</html>
