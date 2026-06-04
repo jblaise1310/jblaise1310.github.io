@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Staff Bulletin — Clinic Medication Reference &amp; Study Tool</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Mulish:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#F7F2E7; --card:#FFFDF8; --ink:#26231C; --muted:#6F6857; --line:#E2DAC8;
+  --teal:#1F6F66; --blue:#2D5E8C; --purple:#6D4C9F; --coral:#C2533C; --amber:#B5791C; --green:#3E7A4E;
+  --shadow:0 1px 2px rgba(38,35,28,.05), 0 12px 30px rgba(38,35,28,.07);
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:
+   radial-gradient(900px 500px at 90% -10%, rgba(31,111,102,.08), transparent 60%),
+   radial-gradient(700px 460px at -10% 0%, rgba(181,121,28,.06), transparent 55%),
+   var(--paper);
+  color:var(--ink);font-family:"Mulish",system-ui,sans-serif;font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased}
+.sheet{max-width:820px;margin:26px auto;background:var(--card);border:1px solid var(--line);border-radius:20px;
+  box-shadow:var(--shadow);overflow:hidden}
+.band{background:linear-gradient(120deg,var(--teal),#2a8478);color:#fff;padding:26px 34px 22px}
+.kick{font-size:11px;letter-spacing:.24em;text-transform:uppercase;font-weight:700;color:#d6efe9}
+.band h1{font-family:"Fraunces",serif;font-weight:600;font-size:31px;line-height:1.05;margin:7px 0 6px;letter-spacing:-.01em}
+.band p{margin:0;color:#e7f4f1;font-size:15px;max-width:62ch}
+.band .meta{margin-top:12px;font-size:12px;color:#cfeae4;font-weight:600;letter-spacing:.02em}
+.body{padding:24px 34px 10px}
+.lead{font-size:15.5px;margin:0 0 20px}
+.sec{margin-bottom:20px}
+.sh{display:flex;align-items:center;gap:9px;font-family:"Fraunces",serif;font-size:18px;font-weight:600;margin:0 0 9px}
+.sh .ic{width:27px;height:27px;border-radius:8px;display:grid;place-items:center;color:#fff;flex:0 0 auto}
+.row{display:flex;gap:22px;flex-wrap:wrap}
+.col{flex:1;min-width:240px}
+.subh{font-weight:700;font-size:13.5px;color:var(--ink);margin:0 0 5px;display:flex;align-items:center;gap:7px}
+.subh .pip{width:9px;height:9px;border-radius:50%;flex:0 0 auto}
+ul{margin:0 0 0 2px;padding:0;list-style:none}
+li{position:relative;padding-left:20px;margin-bottom:6px;font-size:14px}
+li::before{content:"";position:absolute;left:2px;top:8px;width:7px;height:7px;border-radius:50%;background:var(--teal)}
+li.b::before{background:var(--blue)}li.p::before{background:var(--purple)}li.a::before{background:var(--amber)}li.g::before{background:var(--green)}li.c::before{background:var(--coral)}
+.tag{display:inline-block;font-size:11px;font-weight:700;padding:1px 7px;border-radius:5px;margin-left:4px;vertical-align:1px}
+.note{background:#FBF3E1;border:1px solid #E8CE92;border-radius:12px;padding:13px 16px;font-size:13.5px;color:#6f5413;margin-top:4px}
+.note b{color:#5a4310}
+.approve{display:inline-flex;gap:7px;align-items:center;margin-top:9px;color:#2f5d44;font-size:12.8px;font-weight:600}
+.approve svg{color:var(--green)}
+footer{border-top:1px solid var(--line);margin:14px 34px 0;padding:14px 0 22px;display:flex;justify-content:space-between;
+  align-items:center;gap:12px;flex-wrap:wrap;color:var(--muted);font-size:12px}
+footer b{color:var(--teal)}
+.link{font-weight:700;color:var(--teal);word-break:break-all;text-decoration:none}
+.link:hover{text-decoration:underline}
+.cta{display:flex;align-items:center;gap:16px;width:100%;text-decoration:none;color:#fff;
+  background:linear-gradient(120deg,var(--teal),#2a8478);border-radius:16px;padding:19px 22px;margin:2px 0 22px;
+  box-shadow:0 8px 22px rgba(31,111,102,.28);transition:transform .12s, box-shadow .12s}
+.cta:hover{transform:translateY(-2px);box-shadow:0 12px 30px rgba(31,111,102,.36)}
+.cta .ctic{flex:0 0 auto;width:46px;height:46px;border-radius:12px;background:rgba(255,255,255,.18);display:grid;place-items:center}
+.cta .ctt{flex:1;font-family:"Fraunces",serif;font-size:21px;font-weight:600;line-height:1.1}
+.cta .ctt small{display:block;font-family:"Mulish",sans-serif;font-size:12.5px;font-weight:500;color:#e0f1ed;margin-top:4px;letter-spacing:0}
+.cta .arr{flex:0 0 auto;opacity:.9}
+.printurl{display:none}
+@media print{.cta{box-shadow:none;color:#1F6F66 !important;background:#fff;border:2px solid var(--teal)}.cta .ctic{background:rgba(31,111,102,.12)}.cta .ctt small{color:var(--muted)}.cta .arr{display:none}.printurl{display:block;font-size:12px;color:var(--muted);margin:-14px 0 20px;word-break:break-all}}
+@media print{body{background:#fff}.sheet{box-shadow:none;border:none;margin:0;max-width:none}}
+@media (max-width:560px){.band,.body{padding-left:20px;padding-right:20px}footer{margin-left:20px;margin-right:20px}}
+</style>
+</head>
+<body>
+<div class="sheet">
+  <div class="band">
+    <div class="kick">RHC Staff Bulletin</div>
+    <h1>New Tool: Clinic Medication Reference &amp; Study Guide</h1>
+    <p>A quick-reference and learning resource for every medication stocked in our Pyxis cabinets — built for Medical Assistants &amp; RNs.</p>
+    <div class="meta">Now available &middot; June 2026</div>
+  </div>
+
+  <div class="body">
+    <p class="lead">We&rsquo;ve added a new resource to help you learn and safely administer the medications we stock. It covers all <b>112 items</b> in both clinic Pyxis cabinets — what each one is, what it&rsquo;s used for, how it&rsquo;s given, and the key things to watch for.</p>
+
+    <a class="cta" href="https://jblaise1310.github.io/staff-resources/Clinic_Medication_Reference.html" target="_blank" rel="noopener">
+      <span class="ctic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.1"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z"/><path d="M4 20.5A2.5 2.5 0 0 1 6.5 18H20v3H6.5A2.5 2.5 0 0 1 4 20.5z"/></svg></span>
+      <span class="ctt">Open the Medication Tool<small>Reference &amp; study guide &middot; opens in your browser</small></span>
+      <span class="arr"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+    </a>
+    <div class="printurl">Open at: https://jblaise1310.github.io/staff-resources/Clinic_Medication_Reference.html</div>
+
+    <div class="sec">
+      <div class="sh"><span class="ic" style="background:var(--blue)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2"><path d="M5 4h14v16l-7-3-7 3z"/></svg></span>Getting started</div>
+      <ul>
+        <li class="b">Open it in any web browser on your <b>phone or computer</b> — no app or login needed. Just tap the <b>Open the Medication Tool</b> button above.</li>
+        <li class="b">Tip: bookmark it or add it to your phone&rsquo;s home screen so it&rsquo;s one tap away between patients.</li>
+      </ul>
+    </div>
+
+    <div class="sec">
+      <div class="sh"><span class="ic" style="background:var(--teal)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg></span>Two ways to use it</div>
+      <div class="row">
+        <div class="col">
+          <div class="subh"><span class="pip" style="background:var(--teal)"></span>Browse &mdash; look something up</div>
+          <ul>
+            <li>Search any medication by name, brand, class, or condition.</li>
+            <li>Filter by <b>drug class</b>, by <b>what it&rsquo;s used for</b>, or by clinic location.</li>
+            <li>Each card shows the generic &amp; brand names, route, class, what it treats, and a <b>&ldquo;Key point&rdquo;</b> for safe administration.</li>
+          </ul>
+        </div>
+        <div class="col">
+          <div class="subh"><span class="pip" style="background:var(--purple)"></span>Study &mdash; learn it (phone-friendly)</div>
+          <ul>
+            <li class="p"><b>Flashcards</b> — flip to test recall; pick a category or the &ldquo;Tricky pairs&rdquo; deck.</li>
+            <li class="p"><b>Quick quiz</b> — 10 mixed questions; starts with safety must-knows.</li>
+            <li class="p"><b>Safety quiz</b> — high-alert traps specific to our cabinet.</li>
+            <li class="p"><b>Brand &harr; Generic speed match</b> — beat the clock matching trade and generic names.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="sec">
+      <div class="sh"><span class="ic" style="background:var(--coral)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2"><path d="M12 2 4 5v6c0 5 3.4 8.7 8 10 4.6-1.3 8-5 8-10V5z"/><path d="m9 12 2 2 4-4"/></svg></span>Built for safety</div>
+      <ul>
+        <li class="c"><b>High-value / Prior-Auth meds</b> (the knee viscosupplements) are clearly flagged — always confirm the prior authorization before administering.</li>
+        <li class="c"><b>Look-alike &amp; route reminders</b> are built in — for example the different epinephrine forms, Depo-Medrol vs. Depo-Provera, and which vaccines are subcutaneous vs. IM.</li>
+        <li class="c">Every card carries a <b>&ldquo;Key point&rdquo;</b> administration reminder.</li>
+      </ul>
+    </div>
+
+    <div class="note">
+      <b>Please remember:</b> this is an educational aid — not a substitute for the package insert, clinic protocols, or the provider&rsquo;s order. Always verify dose, route, and indication before giving any medication.
+      <div class="approve"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 2 4 5v6c0 5 3.4 8.7 8 10 4.6-1.3 8-5 8-10V5z"/><path d="m9 12 2 2 4-4"/></svg>Reviewed and approved by Christina Reeves, Director of Pharmacy &middot; 6/3/26</div>
+    </div>
+  </div>
+
+  <footer>
+    <span>Questions? Contact <b>Jo Blaise</b>, Clinic Manager.</span>
+    <span>Developed by Jo Blaise, RN-DNP &middot; Clinic Manager</span>
+  </footer>
+</div>
+</body>
+</html>
