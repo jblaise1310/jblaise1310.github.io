@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Knowing Your Medicare Wellness Visits: MA Education</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700&family=Mulish:ital,wght@0,400;0,500;0,600;0,700;0,800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#FBF7EF; --cream:#FDFAF3; --card:#FFFFFF;
+    --ink:#26303D; --ink-soft:#5C6671; --line:#EDE3D2;
+    --green:#2F7D54; --green-tint:#E8F1EA;
+    --blue:#3A6CA4; --blue-tint:#E6ECF6;
+    --amber:#9A6A1A; --amber-tint:#FBF0DB; --amber-line:#F0DEBC;
+    --radius:20px; --shadow:0 1px 2px rgba(38,48,61,.04), 0 10px 30px rgba(38,48,61,.06);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:'Mulish',system-ui,sans-serif;font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:840px;margin:0 auto;padding:34px 22px 90px;}
+  .eyebrow{font-weight:800;letter-spacing:.13em;text-transform:uppercase;font-size:12.5px;margin:0 0 14px;}
+  h1{font-family:'Fraunces',serif;font-weight:600;font-size:clamp(38px,6.5vw,60px);line-height:1.03;letter-spacing:-.015em;margin:0 0 18px;}
+  .serif{font-family:'Fraunces',serif;font-weight:600;letter-spacing:-.01em;}
+  .lede{font-size:20px;color:var(--ink-soft);max-width:58ch;margin:0;}
+
+  .hero{background:var(--cream);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:42px 44px 40px;position:relative;overflow:hidden;}
+  .hero .eyebrow{color:var(--green);}
+  .hero::after{content:"";position:absolute;left:0;right:0;bottom:0;height:5px;background:linear-gradient(90deg,var(--amber),var(--green),var(--blue));opacity:.85;}
+
+  .panel{border-radius:var(--radius);padding:28px 32px;margin-top:20px;border:1px solid var(--line);box-shadow:var(--shadow);}
+  .panel.blue{background:var(--blue-tint);border-color:#D6E1F1;}
+  .panel.green{background:var(--green-tint);border-color:#D3E5D8;}
+  .phead{display:flex;align-items:center;gap:14px;margin-bottom:6px;}
+  .picon{width:46px;height:46px;border-radius:13px;background:var(--card);box-shadow:var(--shadow);display:flex;align-items:center;justify-content:center;flex:0 0 auto;}
+  .picon svg{width:22px;height:22px;}
+  .ptitles .eyebrow{margin:0 0 2px;}
+  .ptitles h2{margin:0;font-size:26px;}
+  .panel.blue .eyebrow,.panel.blue h2{color:var(--blue);} .panel.blue .picon svg{stroke:var(--blue);}
+  .panel.green .eyebrow,.panel.green h2{color:var(--green);} .panel.green .picon svg{stroke:var(--green);}
+  .panel p{color:var(--ink-soft);margin:14px 0 0;} .panel p b{color:var(--ink);}
+  .panel ul{margin:12px 0 0;padding-left:20px;color:var(--ink-soft);} .panel li{margin:6px 0;} .panel li b{color:var(--ink);}
+
+  /* Timeline */
+  .timeline-eyebrow{color:var(--green);margin:46px 0 4px;}
+  .timeline-sub{color:var(--ink-soft);margin:0 0 22px;max-width:60ch;}
+  .track{height:6px;border-radius:6px;background:linear-gradient(90deg,var(--amber) 0%,var(--amber) 33%,var(--green) 33%,var(--green) 66%,var(--blue) 66%,var(--blue) 100%);margin:0 6px 18px;}
+  .stages{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .stage{background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);padding:18px 20px;border-top:4px solid var(--line);}
+  .stage.s1{border-top-color:var(--amber);} .stage.s2{border-top-color:var(--green);} .stage.s3{border-top-color:var(--blue);}
+  .stage .when{font-weight:800;font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-soft);margin:0 0 6px;}
+  .stage .vn{font-family:'Fraunces',serif;font-weight:600;font-size:19px;margin:0 0 4px;}
+  .stage .s1 .vn{} 
+  .stage .code{display:inline-block;font-weight:800;font-size:12px;border-radius:999px;padding:3px 10px;margin-top:6px;}
+  .stage.s1 .code{background:var(--amber-tint);color:var(--amber);}
+  .stage.s2 .code{background:var(--green-tint);color:var(--green);}
+  .stage.s3 .code{background:var(--blue-tint);color:var(--blue);}
+  @media (max-width:640px){.stages{grid-template-columns:1fr;} .track{background:linear-gradient(180deg,var(--amber),var(--green),var(--blue));height:auto;width:6px;display:none;}}
+
+  /* Visit-type cards */
+  .visit{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:30px 34px;margin-top:22px;border-left:6px solid var(--line);}
+  .visit.v1{border-left-color:var(--amber);} .visit.v2{border-left-color:var(--green);} .visit.v3{border-left-color:var(--blue);}
+  .visit .vhead{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;}
+  .visit h2{font-family:'Fraunces',serif;font-weight:600;font-size:27px;margin:0;letter-spacing:-.01em;}
+  .visit .nick{color:var(--ink-soft);font-style:italic;font-size:16px;}
+  .facts{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin:18px 0 4px;}
+  .fact{background:var(--paper-2,#F3ECDD);background:#F6EFE0;border-radius:11px;padding:12px 14px;}
+  .fact .k{font-weight:800;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);margin:0 0 3px;}
+  .fact .v{font-weight:700;color:var(--ink);font-size:15px;}
+  @media (max-width:600px){.facts{grid-template-columns:1fr;}}
+  .visit .lbl{font-weight:800;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);margin:18px 0 8px;}
+  .visit ul{margin:0;padding-left:20px;color:var(--ink-soft);} .visit li{margin:5px 0;} .visit li b{color:var(--ink);}
+  .manote{margin-top:16px;border-left:4px solid var(--amber);background:#FCF8EE;border-radius:0 12px 12px 0;padding:13px 16px;font-size:15.5px;}
+  .manote b{color:var(--ink);} .manote .tag{font-weight:800;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--amber);display:block;margin-bottom:4px;}
+
+  .reminders{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:26px 32px;margin-top:22px;}
+  .reminders h2{font-family:'Fraunces',serif;font-weight:600;font-size:24px;margin:0 0 10px;}
+  .reminders ul{margin:0;padding-left:20px;} .reminders li{margin:8px 0;} .reminders li b{color:var(--ink);}
+
+  .links{margin-top:22px;}
+  .links h2{font-family:'Fraunces',serif;font-weight:600;font-size:22px;margin:0 0 12px;}
+  .links a{display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);padding:15px 18px;margin:10px 0;text-decoration:none;color:var(--ink);font-weight:700;}
+  .links a:hover{border-color:#DCD0BA;}
+  .links svg{width:18px;height:18px;stroke:var(--blue);flex:0 0 auto;}
+  .links span.u{color:var(--ink-soft);font-weight:500;font-size:13px;display:block;margin-top:2px;word-break:break-all;}
+
+  .foot{margin-top:48px;padding-top:22px;border-top:1px solid var(--line);color:var(--ink-soft);font-size:14px;}
+  .foot b{color:var(--ink);}
+  .toolbar{display:flex;justify-content:flex-end;margin-bottom:8px;}
+  .printbtn{font-family:inherit;font-weight:700;font-size:13px;background:var(--card);border:1px solid var(--line);color:var(--ink-soft);border-radius:9px;padding:8px 14px;cursor:pointer;}
+
+  /* Quiz */
+  .quiz{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:30px 34px;margin-top:22px;}
+  .quiz .intro{color:var(--ink-soft);margin:14px 0 0;}
+  .namerow{display:flex;gap:18px;flex-wrap:wrap;margin:18px 0 4px;}
+  .namerow label{font-weight:800;font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-soft);display:flex;flex-direction:column;gap:6px;}
+  .namerow input{font-family:inherit;font-size:16px;font-weight:600;color:var(--ink);border:none;border-bottom:2px solid var(--line);padding:6px 4px;min-width:240px;background:transparent;}
+  .namerow input:focus{outline:none;border-bottom-color:var(--green);}
+  .qlist{list-style:none;margin:18px 0 0;padding:0;}
+  .q{padding:18px 0;border-top:1px solid var(--line);}
+  .qtext{font-weight:700;margin:0 0 10px;}
+  .opts label{display:flex;gap:10px;align-items:flex-start;padding:9px 13px;border:1px solid var(--line);border-radius:10px;margin:7px 0;cursor:pointer;}
+  .opts input{margin-top:3px;flex:0 0 auto;}
+  .q.revealed label.correct{background:var(--green-tint);border-color:var(--green);}
+  .q.revealed label.wrong{background:#FBE7E0;border-color:#C25738;}
+  .q.revealed .opts label{cursor:default;}
+  .explain{display:none;margin:10px 0 0;font-size:14.5px;color:var(--ink-soft);border-left:3px solid var(--green);padding-left:12px;}
+  .q.revealed .explain{display:block;}
+  .qactions{margin-top:22px;display:flex;gap:12px;flex-wrap:wrap;}
+  .qactions button{font-family:inherit;font-weight:700;font-size:15px;border-radius:10px;padding:11px 22px;cursor:pointer;border:none;background:var(--green);color:#fff;}
+  .qactions button.secondary{background:var(--card);color:var(--ink-soft);border:1px solid var(--line);}
+  .score{margin-top:18px;padding:16px 20px;background:var(--green-tint);border:1px solid #D3E5D8;border-radius:12px;font-weight:700;color:var(--green);}
+
+  @media print{body{background:#fff;font-size:12px;}.wrap{max-width:100%;padding:0;}.no-print{display:none!important;}.hero,.panel,.visit,.reminders,.links a,.stage{box-shadow:none;break-inside:avoid;}.hero::after{display:none;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="toolbar no-print"><button class="printbtn" onclick="window.print()">Print / Save PDF</button></div>
+
+  <div class="hero">
+    <p class="eyebrow">CMS · Medical Assistant Education</p>
+    <h1>Knowing Your Medicare Wellness Visits</h1>
+    <p class="lede">Three different visits, three different rules. Before you room a Medicare patient, know which one they are here for and why, because it shapes what you document.</p>
+  </div>
+
+  <div class="panel blue">
+    <div class="phead">
+      <span class="picon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg></span>
+      <div class="ptitles"><p class="eyebrow">Why it matters</p><h2 class="serif">Why the visit type matters</h2></div>
+    </div>
+    <p>In Cerner there is a single MAWV form used for all of these visits, so the form itself does not change. What changes is the patient's eligibility, where they are in their Medicare journey, and what the provider focuses on. Knowing which visit your patient is here for is foundational understanding that helps you room them well, and most new MAs have never been taught it.</p>
+    <ul>
+      <li><b>The type tells you where the patient is in their Medicare journey.</b> Each visit has its own eligibility window.</li>
+      <li><b>The type shapes the work.</b> A first visit establishes the baseline; a yearly visit updates it.</li>
+      <li><b>None of them is a head-to-toe physical exam.</b> Depending on the issue, the provider may also address a problem during the visit.</li>
+    </ul>
+  </div>
+
+  <p class="eyebrow timeline-eyebrow">The sequence over time</p>
+  <p class="timeline-sub">Most patients move through these in order, anchored to when their Medicare Part B coverage started.</p>
+  <div class="track"></div>
+  <div class="stages">
+    <div class="stage s1">
+      <p class="when">First 12 months of Part B</p>
+      <p class="vn">IPPE</p>
+      <p>Welcome to Medicare. Once per lifetime.</p>
+    </div>
+    <div class="stage s2">
+      <p class="when">After 12 months of Part B</p>
+      <p class="vn">First AWV</p>
+      <p>Builds the prevention baseline. Once per lifetime.</p>
+    </div>
+    <div class="stage s3">
+      <p class="when">Every year after</p>
+      <p class="vn">Subsequent AWV</p>
+      <p>Updates the baseline. Once per 12-month period.</p>
+    </div>
+  </div>
+
+  <!-- IPPE -->
+  <div class="visit v1">
+    <div class="vhead"><h2>IPPE</h2><span class="nick">"Welcome to Medicare" preventive visit</span></div>
+    <div class="facts">
+      <div class="fact"><p class="k">When</p><p class="v">First 12 months after Part B starts</p></div>
+      <div class="fact"><p class="k">How often</p><p class="v">Once per lifetime</p></div>
+    </div>
+    <p class="lbl">What it includes</p>
+    <ul>
+      <li>Review of medical and social history, including diet, activity, and tobacco, alcohol, and drug use</li>
+      <li>Depression risk and functional ability and safety review</li>
+      <li><b>A limited exam:</b> height, weight, BMI, blood pressure, balance, gait, and a <b>visual acuity screen</b></li>
+      <li>End-of-life planning, if the patient agrees</li>
+      <li>Opioid and substance-use review, education, counseling, and referrals</li>
+      <li>A written checklist of preventive services, including a referral for a once-in-a-lifetime screening EKG when appropriate</li>
+    </ul>
+    <div class="manote"><span class="tag">MA note</span>This is the only Medicare wellness visit with hands-on exam pieces (vision, balance, gait). It is tied to the <b>first 12 months of Part B</b>. If the patient is past that window, they are no longer eligible for an IPPE and the visit becomes an AWV.</div>
+  </div>
+
+  <!-- First AWV -->
+  <div class="visit v2">
+    <div class="vhead"><h2>First AWV</h2><span class="nick">Initial Annual Wellness Visit</span></div>
+    <div class="facts">
+      <div class="fact"><p class="k">When</p><p class="v">After 12 months of Part B, and not within 12 months of an IPPE</p></div>
+      <div class="fact"><p class="k">How often</p><p class="v">Once per lifetime</p></div>
+    </div>
+    <p class="lbl">What it includes (establishes the baseline)</p>
+    <ul>
+      <li>A Health Risk Assessment (HRA)</li>
+      <li>Establishes medical and family history, a current providers and suppliers list, a written screening schedule, and a list of risk factors and conditions</li>
+      <li>Measures height, weight, BMI, and blood pressure</li>
+      <li>Cognitive impairment is checked by the provider (Mini-Cog when applicable); depression risk and functional ability and safety are reviewed</li>
+      <li>Personalized health advice and referrals; advance care planning at the patient's discretion</li>
+    </ul>
+    <div class="manote"><span class="tag">MA note</span>This is where the prevention <b>baseline is built</b>, so the history, providers, and screening schedule are established for the first time. It is not a physical exam, and there is no required visual acuity or balance and gait exam like the IPPE has.</div>
+  </div>
+
+  <!-- Subsequent AWV -->
+  <div class="visit v3">
+    <div class="vhead"><h2>Subsequent AWV</h2><span class="nick">the yearly Annual Wellness Visit</span></div>
+    <div class="facts">
+      <div class="fact"><p class="k">When</p><p class="v">At least 12 months after the last AWV</p></div>
+      <div class="fact"><p class="k">How often</p><p class="v">Once per 12-month period</p></div>
+    </div>
+    <p class="lbl">What it includes (updates the baseline)</p>
+    <ul>
+      <li>Updates the HRA, medical and family history, providers list, screening schedule, and risk factor list</li>
+      <li>Measures weight and blood pressure</li>
+      <li>Cognitive impairment is checked by the provider (Mini-Cog when applicable); personalized health advice and advance care planning are updated at the patient's discretion</li>
+    </ul>
+    <div class="manote"><span class="tag">MA note</span>The work here is <b>updating, not establishing</b>. This is the visit most of your established Medicare patients return for each year. Still not a physical exam.</div>
+  </div>
+
+  <!-- How to tell -->
+  <div class="panel green">
+    <div class="phead">
+      <span class="picon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>
+      <div class="ptitles"><p class="eyebrow">At rooming</p><h2 class="serif">How to tell which visit it is</h2></div>
+    </div>
+    <ul>
+      <li><b>Start with the scheduled visit type</b> in Cerner, then confirm it fits the patient's Medicare timeline.</li>
+      <li><b>New to Medicare, still in the first year of Part B?</b> Likely an IPPE.</li>
+      <li><b>Past 12 months of Part B, never had a wellness visit here?</b> Likely a first AWV.</li>
+      <li><b>Comes in every year for the wellness visit?</b> A subsequent AWV.</li>
+      <li><b>When it is unclear,</b> ask the provider or front desk rather than guessing.</li>
+    </ul>
+  </div>
+
+  <div class="reminders">
+    <h2 class="serif">A few things to hold onto</h2>
+    <ul>
+      <li><b>One IPPE, ever,</b> and only in the first 12 months of Part B. After that window it is an AWV.</li>
+      <li><b>First vs subsequent AWV matters:</b> the first establishes the baseline, the yearly one updates it.</li>
+      <li><b>A wellness visit is not a physical exam.</b> Depending on the issue, the provider may also address a problem during the visit.</li>
+      <li><b>Coding the visit and the Mini-Cog are the provider's responsibility,</b> not the MA's. Your focus is recognizing the visit and rooming the patient well.</li>
+    </ul>
+  </div>
+
+  <div class="links">
+    <h2 class="serif">Learn more (CMS)</h2>
+    <a href="https://www.cms.gov/medicare/coverage/preventive-services/medicare-wellness-visits/annual-wellness-visit" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      <span>Annual Wellness Visit (CMS)<span class="u">cms.gov/medicare/coverage/preventive-services/medicare-wellness-visits/annual-wellness-visit</span></span>
+    </a>
+    <a href="https://www.cms.gov/medicare/coverage/preventive-services/medicare-wellness-visits/initial-preventive-physical-exam" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      <span>Initial Preventive Physical Exam (CMS)<span class="u">cms.gov/medicare/coverage/preventive-services/medicare-wellness-visits/initial-preventive-physical-exam</span></span>
+    </a>
+  </div>
+
+  <section class="quiz" id="quiz">
+    <div class="phead">
+      <span class="picon"><svg viewBox="0 0 24 24" fill="none" stroke="#2F7D54" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></span>
+      <div class="ptitles"><p class="eyebrow" style="color:var(--green)">Knowledge check</p><h2 class="serif" style="color:var(--green)">Ten questions</h2></div>
+    </div>
+    <p class="intro">Answer the questions, then choose <b>Check my answers</b> to see the correct answers and your score. Print the page and submit it to Jo.</p>
+    <div class="namerow">
+      <label>Name<input type="text" id="qname"></label>
+      <label>Date<input type="text" id="qdate"></label>
+    </div>
+
+    <ol class="qlist">
+      <li class="q" data-correct="b">
+        <p class="qtext">1. The IPPE ("Welcome to Medicare") can be provided only during which window?</p>
+        <div class="opts">
+          <label><input type="radio" name="q1" value="a"><span>Anytime after the patient turns 65</span></label>
+          <label><input type="radio" name="q1" value="b"><span>The first 12 months after Part B coverage starts</span></label>
+          <label><input type="radio" name="q1" value="c"><span>Within 12 months of an annual wellness visit</span></label>
+          <label><input type="radio" name="q1" value="d"><span>Any time, as long as it is the patient's first visit</span></label>
+        </div>
+        <p class="explain"><b>Correct: B.</b> The IPPE is only available in the first 12 months after Part B coverage starts.</p>
+      </li>
+
+      <li class="q" data-correct="a">
+        <p class="qtext">2. How many times in a patient's lifetime can the IPPE be performed?</p>
+        <div class="opts">
+          <label><input type="radio" name="q2" value="a"><span>Once</span></label>
+          <label><input type="radio" name="q2" value="b"><span>Once per year</span></label>
+          <label><input type="radio" name="q2" value="c"><span>Twice</span></label>
+          <label><input type="radio" name="q2" value="d"><span>No limit</span></label>
+        </div>
+        <p class="explain"><b>Correct: A.</b> The IPPE is a once-per-lifetime visit.</p>
+      </li>
+
+      <li class="q" data-correct="c">
+        <p class="qtext">3. Which visit uniquely includes a visual acuity screen and a balance and gait check?</p>
+        <div class="opts">
+          <label><input type="radio" name="q3" value="a"><span>Subsequent AWV</span></label>
+          <label><input type="radio" name="q3" value="b"><span>First AWV</span></label>
+          <label><input type="radio" name="q3" value="c"><span>IPPE</span></label>
+          <label><input type="radio" name="q3" value="d"><span>All of them</span></label>
+        </div>
+        <p class="explain"><b>Correct: C.</b> Only the IPPE includes a limited exam with a visual acuity screen and a balance and gait check.</p>
+      </li>
+
+      <li class="q" data-correct="b">
+        <p class="qtext">4. The first AWV establishes the prevention baseline. The subsequent AWV mainly:</p>
+        <div class="opts">
+          <label><input type="radio" name="q4" value="a"><span>Repeats the IPPE</span></label>
+          <label><input type="radio" name="q4" value="b"><span>Updates the baseline</span></label>
+          <label><input type="radio" name="q4" value="c"><span>Replaces the baseline from scratch</span></label>
+          <label><input type="radio" name="q4" value="d"><span>Becomes a physical exam</span></label>
+        </div>
+        <p class="explain"><b>Correct: B.</b> The first AWV establishes the baseline; subsequent AWVs update it.</p>
+      </li>
+
+      <li class="q" data-correct="b">
+        <p class="qtext">5. How often can a subsequent AWV be completed?</p>
+        <div class="opts">
+          <label><input type="radio" name="q5" value="a"><span>Every 6 months</span></label>
+          <label><input type="radio" name="q5" value="b"><span>Once per 12-month period</span></label>
+          <label><input type="radio" name="q5" value="c"><span>Twice a year</span></label>
+          <label><input type="radio" name="q5" value="d"><span>Once per lifetime</span></label>
+        </div>
+        <p class="explain"><b>Correct: B.</b> A subsequent AWV is completed once per 12-month period.</p>
+      </li>
+
+      <li class="q" data-correct="b">
+        <p class="qtext">6. A Medicare wellness visit is a head-to-toe physical exam.</p>
+        <div class="opts">
+          <label><input type="radio" name="q6" value="a"><span>True</span></label>
+          <label><input type="radio" name="q6" value="b"><span>False</span></label>
+        </div>
+        <p class="explain"><b>Correct: B (False).</b> A wellness visit is a prevention and screening visit, not a physical exam.</p>
+      </li>
+
+      <li class="q" data-correct="a">
+        <p class="qtext">7. How many MAWV forms are there in Cerner?</p>
+        <div class="opts">
+          <label><input type="radio" name="q7" value="a"><span>One, used for all of the wellness visits</span></label>
+          <label><input type="radio" name="q7" value="b"><span>One for each visit type</span></label>
+          <label><input type="radio" name="q7" value="c"><span>Three</span></label>
+          <label><input type="radio" name="q7" value="d"><span>It changes depending on the patient</span></label>
+        </div>
+        <p class="explain"><b>Correct: A.</b> Cerner uses a single MAWV form for all of these visits; the form does not change by type.</p>
+      </li>
+
+      <li class="q" data-correct="b">
+        <p class="qtext">8. Who is responsible for the visit's billing code?</p>
+        <div class="opts">
+          <label><input type="radio" name="q8" value="a"><span>The MA</span></label>
+          <label><input type="radio" name="q8" value="b"><span>The provider</span></label>
+          <label><input type="radio" name="q8" value="c"><span>The front desk</span></label>
+          <label><input type="radio" name="q8" value="d"><span>The patient</span></label>
+        </div>
+        <p class="explain"><b>Correct: B.</b> The provider, not the MA, is responsible for the billing code.</p>
+      </li>
+
+      <li class="q" data-correct="b">
+        <p class="qtext">9. Who completes the Mini-Cog when it is applicable?</p>
+        <div class="opts">
+          <label><input type="radio" name="q9" value="a"><span>The MA</span></label>
+          <label><input type="radio" name="q9" value="b"><span>The provider</span></label>
+          <label><input type="radio" name="q9" value="c"><span>Any staff member</span></label>
+          <label><input type="radio" name="q9" value="d"><span>The patient, on paper</span></label>
+        </div>
+        <p class="explain"><b>Correct: B.</b> The provider completes the Mini-Cog when applicable, not the MA.</p>
+      </li>
+
+      <li class="q" data-correct="b">
+        <p class="qtext">10. A patient has had Part B for 3 years and has never had a wellness visit at your clinic. They are most likely due for:</p>
+        <div class="opts">
+          <label><input type="radio" name="q10" value="a"><span>An IPPE</span></label>
+          <label><input type="radio" name="q10" value="b"><span>A first AWV</span></label>
+          <label><input type="radio" name="q10" value="c"><span>A subsequent AWV</span></label>
+          <label><input type="radio" name="q10" value="d"><span>A physical exam</span></label>
+        </div>
+        <p class="explain"><b>Correct: B.</b> Past the first 12 months of Part B with no prior wellness visit, the patient is due their first AWV. The IPPE window has closed.</p>
+      </li>
+    </ol>
+
+    <div class="qactions no-print">
+      <button onclick="checkQuiz()">Check my answers</button>
+      <button class="secondary" onclick="resetQuiz()">Reset</button>
+    </div>
+    <div id="score" class="score" hidden></div>
+  </section>
+
+  <div class="foot">
+    <p>Visit windows and elements summarized from the CMS Medicare Learning Network. Coding and billing are the provider's and billing team's responsibility; this sheet is for understanding which visit the patient is here for.</p>
+    <p>Developed by <b>Jo Blaise, RN-DNP</b> · Clinic Manager</p>
+  </div>
+
+</div>
+<script>
+  function checkQuiz(){
+    var correct = 0, answered = 0;
+    document.querySelectorAll('.q').forEach(function(q){
+      var right = q.dataset.correct;
+      var chosen = null;
+      q.querySelectorAll('input[type=radio]').forEach(function(inp){
+        var label = inp.closest('label');
+        label.classList.remove('correct','wrong');
+        if(inp.value === right){ label.classList.add('correct'); }
+        if(inp.checked){ chosen = inp.value; }
+      });
+      if(chosen !== null){
+        answered++;
+        if(chosen === right){ correct++; }
+        else {
+          q.querySelectorAll('input[type=radio]').forEach(function(inp){
+            if(inp.checked){ inp.closest('label').classList.add('wrong'); }
+          });
+        }
+      }
+      q.classList.add('revealed');
+    });
+    var s = document.getElementById('score');
+    s.hidden = false;
+    var name = (document.getElementById('qname').value || '').trim();
+    var msg = (name ? name + ', you' : 'You') + ' answered ' + correct + ' out of 10 correctly.';
+    if(answered < 10){ msg += ' (' + (10 - answered) + ' left blank.)'; }
+    msg += ' Print this page and submit it to Jo.';
+    s.textContent = msg;
+    s.scrollIntoView({behavior:'smooth', block:'center'});
+  }
+  function resetQuiz(){
+    document.querySelectorAll('.q').forEach(function(q){
+      q.classList.remove('revealed');
+      q.querySelectorAll('label').forEach(function(l){ l.classList.remove('correct','wrong'); });
+      q.querySelectorAll('input[type=radio]').forEach(function(i){ i.checked = false; });
+    });
+    var s = document.getElementById('score');
+    s.hidden = true; s.textContent = '';
+  }
+</script>
+</body>
+</html>
