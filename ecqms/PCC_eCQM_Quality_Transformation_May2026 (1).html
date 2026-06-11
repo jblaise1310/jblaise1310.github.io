@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>eCQM Performance Update — Quality Transformation Meeting May 2026</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500&family=DM+Mono:wght@400;500&family=Lora:ital,wght@0,400;0,500;1,400;1,500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --navy:   #1F5C99;
+      --blue:   #2E75B6;
+      --lb:     #D6E4F0;
+      --lb2:    #EAF2FB;
+      --g1:     #F4F4F4;
+      --g2:     #E2E2E2;
+      --g3:     #888;
+      --dark:   #1A1916;
+      --mid:    #555;
+      --green:  #3B6D11;
+      --gbg:    #EAF3DE;
+      --gborder:#C0DD97;
+      --orange: #854F0B;
+      --obg:    #FAEEDA;
+      --red:    #993C1D;
+      --rbg:    #FAECE7;
+      --gbar:   #639922;
+      --obar:   #BA7517;
+      --rbar:   #D85A30;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: #ECF2F8;
+      color: var(--dark);
+      padding: 2rem;
+      min-height: 100vh;
+    }
+    .page { max-width: 900px; margin: 0 auto; }
+
+    /* PAGE HEADER */
+    .page-header { background: var(--navy); border-radius: 12px; padding: 22px 28px 20px; margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 12px; }
+    .page-header-left h1 { font-size: 22px; font-weight: 500; color: #fff; letter-spacing: -0.3px; margin-bottom: 6px; }
+    .page-header-left p { font-size: 13px; color: #BFD7F0; }
+    .page-header-right { text-align: right; }
+    .page-header-right .big { font-size: 12px; color: #BFD7F0; }
+    .page-header-right .small { font-size: 11px; color: #85B7EB; margin-top: 3px; }
+
+    /* WINS */
+    .wins-section { background: var(--gbg); border: 1px solid var(--gborder); border-radius: 12px; padding: 22px 24px 20px; margin-bottom: 1rem; }
+    .wins-title { font-size: 11px; font-weight: 500; color: var(--green); text-transform: uppercase; letter-spacing: 0.09em; margin-bottom: 16px; }
+    .wins-grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 12px; }
+    .win-card { background: #fff; border-radius: 8px; padding: 16px 18px; border: 1px solid var(--gborder); }
+    .win-num { font-family: 'DM Mono', monospace; font-size: 38px; font-weight: 500; color: var(--green); line-height: 1; margin-bottom: 5px; }
+    .win-label { font-size: 14px; font-weight: 500; color: #27500A; margin-bottom: 3px; }
+    .win-sub { font-size: 12px; color: var(--green); }
+
+    /* MILESTONE */
+    .milestone-section { background: var(--navy); border-radius: 12px; padding: 22px 26px; margin-bottom: 1.5rem; }
+    .milestone-label { font-size: 11px; font-weight: 500; color: #85B7EB; text-transform: uppercase; letter-spacing: 0.09em; margin-bottom: 10px; }
+    .milestone-text { font-family: 'Lora', serif; font-size: 21px; font-style: italic; color: #fff; line-height: 1.55; margin-bottom: 16px; }
+    .milestone-prog-wrap { display: flex; align-items: center; gap: 14px; }
+    .milestone-prog-track { flex: 1; height: 10px; background: rgba(255,255,255,0.18); border-radius: 5px; overflow: hidden; }
+    .milestone-prog-fill { height: 100%; border-radius: 5px; background: #fff; width: 84%; }
+    .milestone-prog-lbl { font-size: 13px; color: #BFD7F0; white-space: nowrap; }
+    .milestone-prog-lbl strong { color: #fff; font-weight: 500; }
+
+    /* TIER ROW */
+    .tier-row { display: flex; align-items: center; gap: 12px; margin-bottom: 1.5rem; flex-wrap: wrap; }
+    .tier-badge { padding: 6px 16px; border-radius: 20px; font-size: 13px; font-weight: 500; background: var(--rbg); color: var(--red); white-space: nowrap; }
+    .tier-track { flex: 1; min-width: 100px; height: 7px; background: var(--g2); border-radius: 4px; overflow: hidden; }
+    .tier-fill { height: 100%; border-radius: 4px; background: var(--rbar); width: 75%; }
+    .tier-note { font-size: 12px; color: var(--g3); }
+
+    /* KPI GRID */
+    .kpi-grid { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 10px; margin-bottom: 1.5rem; }
+    .kpi { background: var(--g1); border: 1px solid var(--g2); border-radius: 8px; padding: 14px 16px; }
+    .kpi-label { font-size: 11px; color: var(--g3); margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.05em; }
+    .kpi-val { font-family: 'DM Mono', monospace; font-size: 22px; font-weight: 500; color: var(--dark); }
+    .kpi-sub { font-size: 11px; color: var(--g3); margin-top: 3px; }
+
+    /* DIVIDER */
+    .divider { height: 1px; background: var(--g2); margin: 1.75rem 0; }
+
+    /* SEC LABEL */
+    .sec-label { font-size: 11px; font-weight: 500; color: var(--g3); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 10px; }
+
+    /* LEGEND */
+    .legend { display: flex; gap: 14px; flex-wrap: wrap; font-size: 11px; color: var(--g3); margin-bottom: 8px; }
+    .legend span { display: flex; align-items: center; gap: 5px; }
+    .ld { width: 8px; height: 8px; border-radius: 2px; }
+
+    /* TABLE */
+    table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    thead th { font-size: 11px; font-weight: 500; color: var(--g3); text-transform: uppercase; letter-spacing: 0.06em; padding: 0 10px 8px; text-align: center; border-bottom: 1px solid var(--g2); }
+    thead th:first-child { text-align: left; }
+    tbody tr { border-bottom: 1px solid var(--g2); }
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr:hover { background: var(--g1); }
+    td { padding: 9px 10px; text-align: center; }
+    td:first-child { text-align: left; font-weight: 500; font-size: 12px; }
+    td.bench { color: var(--g3); font-size: 12px; }
+    td.pct { font-family: 'DM Mono', monospace; font-size: 12px; }
+    .focus-dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--blue); margin-right: 5px; vertical-align: 2px; }
+    .badge { display: inline-flex; align-items: center; padding: 3px 9px; border-radius: 20px; font-size: 11px; font-weight: 500; }
+    .badge-met   { background: var(--gbg); color: var(--green); }
+    .badge-gap   { background: var(--rbg); color: var(--red); }
+    .badge-close { background: var(--obg); color: var(--orange); }
+    .inv-tag { font-size: 10px; color: var(--g3); }
+
+    /* GAP SECTION */
+    .gap-section { background: #fff; border: 1px solid var(--g2); border-radius: 12px; padding: 4px 18px; }
+    .gap-row { display: flex; align-items: center; gap: 12px; padding: 9px 0; border-bottom: 1px solid var(--g2); }
+    .gap-row:last-child { border-bottom: none; }
+    .gap-name { font-size: 12px; font-weight: 500; color: var(--dark); flex: 2; display: flex; align-items: center; gap: 6px; min-width: 0; }
+    .gap-track { flex: 3; height: 7px; background: var(--g2); border-radius: 4px; overflow: hidden; }
+    .gap-fill { height: 100%; border-radius: 4px; }
+    .gap-nums { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--g3); flex: 1.2; text-align: right; white-space: nowrap; }
+    .gap-pts { font-size: 11px; font-weight: 500; color: #185FA5; background: var(--lb2); padding: 2px 7px; border-radius: 10px; white-space: nowrap; }
+
+    /* POINTS TRACKER */
+    .pts-tracker { background: #fff; border: 1px solid var(--g2); border-radius: 12px; overflow: hidden; }
+    .pts-tracker-hdr { background: var(--g1); padding: 12px 18px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--g2); }
+    .pts-tracker-hdr-title { font-size: 13px; font-weight: 500; color: var(--dark); }
+    .pts-tracker-hdr-sub { font-size: 12px; color: var(--g3); }
+    .pts-row { display: flex; align-items: center; justify-content: space-between; padding: 10px 18px; border-bottom: 1px solid var(--g2); }
+    .pts-row:last-child { border-bottom: none; }
+    .pts-row-left { display: flex; align-items: center; gap: 8px; }
+    .pts-name { font-size: 13px; font-weight: 500; color: var(--dark); }
+    .pts-avail { font-size: 11px; color: var(--g3); }
+    .pts-result { font-size: 13px; font-weight: 500; }
+    .pts-result.earned { color: var(--green); }
+    .pts-result.open { color: var(--g3); }
+    .dot-earned { width: 10px; height: 10px; border-radius: 50%; background: var(--gbar); flex-shrink: 0; }
+    .dot-near   { width: 10px; height: 10px; border-radius: 50%; background: var(--obar); flex-shrink: 0; }
+    .dot-open   { width: 10px; height: 10px; border-radius: 50%; border: 1.5px solid var(--g2); flex-shrink: 0; }
+    .pts-bar-track { width: 120px; height: 5px; background: var(--g2); border-radius: 3px; overflow: hidden; }
+    .pts-bar-fill { height: 100%; border-radius: 3px; }
+
+    /* TOTALS */
+    .pts-totals { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px; }
+    .ptc { border-radius: 8px; padding: 16px 20px; text-align: center; }
+    .ptc.now { background: var(--g1); border: 1px solid var(--g2); }
+    .ptc.future { background: var(--gbg); border: 1px solid var(--gborder); }
+    .ptc-label { font-size: 11px; color: var(--g3); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
+    .ptc-val { font-family: 'DM Mono', monospace; font-size: 34px; font-weight: 500; }
+    .ptc.now .ptc-val { color: var(--red); }
+    .ptc.future .ptc-val { color: var(--green); }
+    .ptc-sub { font-size: 12px; color: var(--g3); margin-top: 4px; }
+
+    /* TIER PROGRESS BAR */
+    .tier-prog-section { margin-top: 14px; }
+    .tier-prog-track { height: 10px; background: var(--g2); border-radius: 5px; overflow: visible; position: relative; }
+    .tier-prog-now { height: 100%; border-radius: 5px; background: var(--rbar); position: absolute; top: 0; left: 0; }
+    .tier-prog-future { height: 100%; border-radius: 5px; background: var(--gbar); position: absolute; top: 0; }
+    .tier-prog-labels { display: flex; justify-content: space-between; font-size: 11px; color: var(--g3); margin-top: 6px; }
+
+    /* ADDITIONAL MEASURES */
+    .additional-section { margin-top: 2rem; }
+    tbody.secondary tr td { color: var(--g3); }
+    tbody.secondary tr td:first-child { font-weight: 400; }
+
+    /* CLOSING */
+    .closing { border-top: 1px solid var(--g2); margin-top: 2.5rem; padding-top: 2.5rem; text-align: center; padding-bottom: 1.5rem; }
+    .closing-headline { font-family: 'Lora', serif; font-size: 34px; font-style: italic; color: var(--dark); margin-bottom: 1.75rem; }
+    .closing-body { font-family: 'Lora', serif; font-size: 16px; font-style: italic; color: var(--mid); line-height: 1.95; max-width: 560px; margin: 0 auto 1.75rem; }
+    .closing-cta { font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 500; color: var(--dark); letter-spacing: 0.03em; margin-bottom: 1.5rem; }
+    .closing-sig { font-size: 11px; color: var(--g3); letter-spacing: 0.06em; }
+
+    @media (max-width: 700px) {
+      body { padding: 1rem; }
+      .wins-grid { grid-template-columns: 1fr; }
+      .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+      .pts-totals { grid-template-columns: 1fr; }
+    }
+    @media print {
+      body { background: #fff; padding: 1rem; }
+      .page { max-width: 100%; }
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <div class="page-header">
+    <div class="page-header-left">
+      <h1>eCQM Performance Update</h1>
+      <p>Quality Transformation Meeting &nbsp;·&nbsp; June 2026 &nbsp;·&nbsp; Data through May 2026</p>
+    </div>
+    <div class="page-header-right">
+      <div class="big">CMS-165 · CMS-2 · CMS-122 · CMS-146 · CMS-154 · CMS-155a · CMS-153 · CMS-951</div>
+      <div class="small">8 focus measures &nbsp;·&nbsp; Tier 3 goal ≥32 pts</div>
+    </div>
+  </div>
+
+  <div class="wins-section">
+    <div class="wins-title">Wins through May — your work is showing up in the data</div>
+    <div class="wins-grid">
+      <div class="win-card">
+        <div class="win-num">+12.8%</div>
+        <div class="win-label">High Blood Pressure control still climbing</div>
+        <div class="win-sub">50.9% in January → 63.7% in May &nbsp;·&nbsp; biggest mover of the year</div>
+      </div>
+      <div class="win-card">
+        <div class="win-num">−35 pts</div>
+        <div class="win-label">Diabetes HbA1c trending the right direction</div>
+        <div class="win-sub">61% → 26.3% uncontrolled (inverse measure — lower is better)</div>
+      </div>
+      <div class="win-card">
+        <div class="win-num">+24.9%</div>
+        <div class="win-label">Kidney Health evaluations on the rise</div>
+        <div class="win-sub">6.3% in January → 31.2% in May &nbsp;·&nbsp; remarkable growth</div>
+      </div>
+      <div class="win-card">
+        <div class="win-num">5 / 5</div>
+        <div class="win-label">Depression screening above benchmark every month</div>
+        <div class="win-sub">January through May — consistent, reliable, above target</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="milestone-section">
+    <div class="milestone-label">Next milestone</div>
+    <div class="milestone-text">HBP has moved <strong style="font-style:normal; font-family:'DM Sans',sans-serif; font-size:20px;">12.8 points</strong> in five months. Close this one gap and we reach Tier 3. We are not far.</div>
+    <div class="milestone-prog-wrap">
+      <div class="milestone-prog-track"><div class="milestone-prog-fill"></div></div>
+      <div class="milestone-prog-lbl">HBP at <strong>63.7%</strong> &nbsp;·&nbsp; need <strong>75.7%</strong></div>
+    </div>
+  </div>
+
+  <div class="tier-row">
+    <div class="sec-label" style="margin:0;">Tier goal</div>
+    <div class="tier-badge">24 / 32 pts</div>
+    <div class="tier-track"><div class="tier-fill"></div></div>
+    <div class="tier-note">Tier 3 target ≥32 pts &nbsp;·&nbsp; 8 pts needed</div>
+  </div>
+
+  <div class="sec-label">Focus measure performance — Jan through May 2026</div>
+  <div class="legend">
+    <span><span class="ld" style="background:#2E75B6;"></span>Focus measure</span>
+    <span><span class="badge badge-met" style="padding:1px 7px; font-size:11px;">Above</span>&nbsp;above benchmark</span>
+    <span><span class="badge badge-close" style="padding:1px 7px; font-size:11px;">Close</span>&nbsp;within 5%</span>
+    <span><span class="badge badge-gap" style="padding:1px 7px; font-size:11px;">Below</span>&nbsp;below benchmark</span>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th style="width:22%; text-align:left;">Measure</th>
+        <th style="width:9%; text-align:left; font-weight:700; color:#1A1916;">Benchmark</th>
+        <th>Jan</th><th>Feb</th><th>Mar</th><th>Apr</th><th style="font-weight:700; color:#1A1916;">May</th>
+        <th>Apr → May</th>
+        <th>Forecast</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody id="focusTableBody"></tbody>
+  </table>
+  <p style="font-size:11px; color:#888; margin-top:8px; font-style:italic;">* Kidney Health forecast based on Mar–May trend, reflecting recent focused improvement effort. HBP and Diabetes HbA1c forecasts use full Jan–May trend.</p>
+
+  <div class="divider"></div>
+
+  <div style="text-align:center; margin-bottom:1.25rem; padding:0.5rem 0;">
+    <span style="font-family:'Lora',serif; font-size:34px; font-style:italic; font-weight:400; color:#1A1916; letter-spacing:0.01em;">Something to Reach for</span>
+  </div>
+
+  <div class="sec-label">Points tracker — focus measures</div>
+  <div class="pts-tracker">
+    <div class="pts-tracker-hdr">
+      <div class="pts-tracker-hdr-title">Focus measure point status</div>
+      <div class="pts-tracker-hdr-sub">Goal: 32 pts for Tier 3</div>
+    </div>
+    <div id="ptsList"></div>
+  </div>
+
+  <div class="pts-totals">
+    <div class="ptc now">
+      <div class="ptc-label">Points earned today</div>
+      <div class="ptc-val" id="ptsNow">—</div>
+      <div class="ptc-sub">4 measures above benchmark</div>
+    </div>
+    <div class="ptc future">
+      <div class="ptc-label">If all 8 focus measures met</div>
+      <div class="ptc-val" id="ptsFuture">—</div>
+      <div class="ptc-sub">✓ Tier 3 reached — and then some</div>
+    </div>
+  </div>
+
+  <div class="tier-prog-section">
+    <div class="tier-prog-track">
+      <div class="tier-prog-now" id="progNow"></div>
+      <div class="tier-prog-future" id="progFuture"></div>
+    </div>
+    <div class="tier-prog-labels">
+      <span style="color:#D85A30;">24 pts earned</span>
+      <span style="color:#3B6D11; font-weight:500;">32 pts = Tier 3 ✓</span>
+      <span style="color:#3B6D11;">52 pts potential</span>
+    </div>
+  </div>
+
+  <div class="additional-section">
+    <div class="divider"></div>
+    <div class="sec-label">Additional measures — for reference</div>
+    <table>
+      <thead>
+        <tr>
+          <th style="width:22%; text-align:left;">Measure</th>
+          <th style="width:9%; text-align:left;">Benchmark</th>
+          <th>Jan</th><th>Feb</th><th>Mar</th><th>Apr</th><th>May</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody id="otherTableBody" class="secondary"></tbody>
+    </table>
+  </div>
+
+  <div class="closing">
+    <div class="closing-headline">8 points to Tier 3</div>
+    <div class="closing-body">
+      Every percentage point in these measures is a patient whose blood pressure is better controlled,
+      whose diabetes is better managed, whose cancer screening did not get missed.
+      The numbers are moving because people in this building are doing the work —
+      scheduling the follow-up, entering the right code, asking the right question.
+      <br><br>
+      We are eight points from Tier 3.
+      <br>
+      Eight points is not a mountain. It is a hallway.
+    </div>
+    <div class="closing-cta">Keep going.</div>
+    <div class="closing-sig">PCC Quality Team &nbsp;·&nbsp; Quality Transformation Meeting &nbsp;·&nbsp; June 2026</div>
+  </div>
+
+</div>
+
+<script>
+const focusIds = new Set(['Depression','Diabetes HbA1c','Pharyngitis','URI Treatment','Weight (BMI)','HBP','Chlamydia','Kidney Health']);
+const measures = [
+  { id:'Depression',      pts:12, benchmark:0.699,  inverse:false, data:[0.8338,0.8380,0.8611,0.8771,0.8805] },
+  { id:'Diabetes HbA1c',  pts:6,  benchmark:0.215,  inverse:true,  data:[0.6101,0.4812,0.3973,0.3091,0.2633] },
+  { id:'Pharyngitis',     pts:4,  benchmark:0.9552, inverse:false, data:[1.0,1.0,1.0,1.0,1.0] },
+  { id:'URI Treatment',   pts:4,  benchmark:0.9415, inverse:false, data:[1.0,1.0,0.9852,0.9759,0.9684] },
+  { id:'Weight (BMI)',    pts:4,  benchmark:0.7114, inverse:false, data:[0.9344,0.9531,0.9333,0.9067,0.9225] },
+  { id:'HBP',             pts:12, benchmark:0.7571, inverse:false, data:[0.5087,0.5571,0.5876,0.6371,0.6368] },
+  { id:'Chlamydia',       pts:6,  benchmark:0.5914, inverse:false, data:[0.1000,0.0555,0.0952,0.0769,0.0740] },
+  { id:'Kidney Health',   pts:4,  benchmark:0.5415, inverse:false, data:[0.0625,0.1185,0.1968,0.2755,0.3119] },
+  { id:'Cervical Cancer', pts:6,  benchmark:0.6919, inverse:false, data:[0.2380,0.2359,0.2240,0.2277,0.2305] },
+  { id:'Breast Cancer',   pts:6,  benchmark:0.8558, inverse:false, data:[0.5708,0.5693,0.5801,0.5926,0.5932] },
+  { id:'Colorectal',      pts:6,  benchmark:0.8354, inverse:false, data:[0.5298,0.5232,0.5222,0.5309,0.5280] }
+];
+
+function fmt(v) { return (v*100).toFixed(1)+'%'; }
+function fmt2(v) { return (v*100).toFixed(2)+'%'; }
+
+function getStatus(m) {
+  const v = m.data[m.data.length-1];
+  if (m.inverse) return v<=m.benchmark?'met':v-m.benchmark<0.05?'close':'gap';
+  return v>=m.benchmark?'met':m.benchmark-v<0.05?'close':'gap';
+}
+
+function statusBadge(s) {
+  if (s==='met')   return '<span class="badge badge-met">Above</span>';
+  if (s==='close') return '<span class="badge badge-close">Close</span>';
+  return '<span class="badge badge-gap">Below</span>';
+}
+
+function pctColor(v, m) {
+  if (m.inverse) return v<=m.benchmark?'#3B6D11':v-m.benchmark<0.05?'#854F0B':'#993C1D';
+  return v>=m.benchmark?'#3B6D11':m.benchmark-v<0.05?'#854F0B':'#993C1D';
+}
+
+const focusList = measures.filter(m=>focusIds.has(m.id));
+const otherList = measures.filter(m=>!focusIds.has(m.id));
+
+focusList.forEach(m => {
+  const s = getStatus(m);
+  let row = `<tr><td><span class="focus-dot"></span>${m.id}</td>`;
+  row += `<td class="bench" style="font-weight:600;color:#1A1916;">${fmt(m.benchmark)}${m.inverse?' <span class="inv-tag">inv</span>':''}</td>`;
+  m.data.forEach((v, i) => {
+    const isLast = i === m.data.length - 1;
+    row += `<td class="pct" style="color:${pctColor(v,m)};${isLast?'font-weight:600;':''}">${fmt2(v)}</td>`;
+  });
+  // +/- Apr → May delta
+  const prev = m.data[m.data.length - 2];
+  const curr = m.data[m.data.length - 1];
+  const delta = ((curr - prev) * 100);
+  const absDelta = Math.abs(delta);
+  const sign = delta >= 0 ? '+' : '−';
+  const deltaFmt = sign + absDelta.toFixed(absDelta < 0.1 ? 2 : 1) + '%';
+  const goodDir = m.inverse ? delta <= 0 : delta >= 0;
+  const deltaColor = absDelta < 0.05 ? '#888' : goodDir ? '#3B6D11' : '#993C1D';
+  row += `<td style="font-size:12px;font-weight:600;color:${deltaColor};font-variant-numeric:tabular-nums;">${deltaFmt}</td>`;
+
+  // Forecast: only for HBP and Diabetes HbA1c
+  if (m.id === 'HBP' || m.id === 'Diabetes HbA1c' || m.id === 'Kidney Health') {
+    // For Kidney Health use recent 3 months to reflect focused improvement effort
+    const trendData = m.id === 'Kidney Health' ? m.data.slice(-3) : m.data;
+    const startIdx = m.id === 'Kidney Health' ? m.data.length - 3 : 0;
+    const n = trendData.length;
+    const xMean = (n - 1) / 2;
+    const yMean = trendData.reduce((a,b) => a+b, 0) / n;
+    let num = 0, den = 0;
+    trendData.forEach((v, i) => { num += (i - xMean) * (v - yMean); den += (i - xMean) ** 2; });
+    const slope = den !== 0 ? num / den : 0;
+    const intercept = yMean - slope * xMean;
+    const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    let forecastMonth = null;
+    // Project forward from last known data point
+    for (let i = m.data.length; i < 12; i++) {
+      const stepsFromStart = i - startIdx;
+      const proj = intercept + slope * stepsFromStart;
+      const met = m.inverse ? proj <= m.benchmark : proj >= m.benchmark;
+      if (met) { forecastMonth = months[i]; break; }
+    }
+    const fCell = forecastMonth
+      ? `<span style="font-size:11px;font-weight:600;color:#185FA5;background:#E6F1FB;padding:2px 8px;border-radius:10px;white-space:nowrap;">${forecastMonth} 2026${m.id === 'Kidney Health' ? ' *' : ''}</span>`
+      : `<span style="font-size:11px;color:#888;">Not in 2026</span>`;
+    row += `<td style="text-align:center;">${fCell}</td>`;
+  } else {
+    row += `<td></td>`;
+  }
+
+  row += `<td>${statusBadge(s)}</td></tr>`;
+  document.getElementById('focusTableBody').innerHTML += row;
+});
+
+otherList.forEach(m => {
+  const s = getStatus(m);
+  let row = `<tr><td>${m.id}</td><td class="bench">${fmt(m.benchmark)}</td>`;
+  m.data.forEach(v => { row += `<td class="pct">${fmt(v)}</td>`; });
+  row += `<td>${statusBadge(s)}</td></tr>`;
+  document.getElementById('otherTableBody').innerHTML += row;
+});
+
+let earnedPts=0, totalFocusPts=0;
+const ptsEl = document.getElementById('ptsList');
+focusList.forEach(m => {
+  const s=getStatus(m); const met=s==='met';
+  earnedPts+=met?m.pts:0; totalFocusPts+=m.pts;
+  const barPct = m.inverse
+    ? Math.min((m.benchmark/Math.max(m.data[3],0.01))*100,100).toFixed(1)
+    : Math.min((m.data[3]/m.benchmark)*100,100).toFixed(1);
+  const dotClass = met?'dot-earned':s==='close'?'dot-near':'dot-open';
+  const barColor = met?'#639922':s==='close'?'#BA7517':'#D85A30';
+  ptsEl.innerHTML += `<div class="pts-row">
+    <div class="pts-row-left">
+      <span class="${dotClass}"></span>
+      <span class="pts-name">${m.id}</span>
+      <span class="pts-avail">${m.pts} pts</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;">
+      <div class="pts-bar-track"><div class="pts-bar-fill" style="width:${barPct}%;background:${barColor};"></div></div>
+      <span class="pts-result ${met?'earned':'open'}">${met?'+ '+m.pts+' pts earned':'not yet met'}</span>
+    </div>
+  </div>`;
+});
+
+document.getElementById('ptsNow').textContent = earnedPts;
+document.getElementById('ptsFuture').textContent = totalFocusPts;
+const nowPct = (earnedPts/totalFocusPts*100).toFixed(1);
+const futurePct = ((totalFocusPts-earnedPts)/totalFocusPts*100).toFixed(1);
+document.getElementById('progNow').style.width = nowPct+'%';
+document.getElementById('progFuture').style.left = nowPct+'%';
+document.getElementById('progFuture').style.width = futurePct+'%';
+</script>
+</body>
+</html>
