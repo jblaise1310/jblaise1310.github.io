@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dr. Kate Gazenko — Surgical Referral Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#15201F;
+    --pine:#0E4D4A;
+    --pine-700:#0B3D3B;
+    --mist:#EAF3F2;
+    --line:#C9DAD8;
+    --slate:#586968;
+    --amber:#A85C18;
+    --amber-bg:#FBEEDE;
+    --amber-line:#E7C79A;
+    --paper:#FFFFFF;
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0;}
+
+  body{
+    font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+    color:var(--ink);
+    background:#DEE7E6;
+    -webkit-font-smoothing:antialiased;
+    padding:28px 16px;
+  }
+
+  .sheet{
+    width:8.5in;
+    min-height:11in;
+    margin:0 auto;
+    background:var(--paper);
+    box-shadow:0 18px 50px rgba(11,61,59,.18);
+    padding:0.55in 0.6in 0.5in;
+    display:flex;
+    flex-direction:column;
+  }
+
+  /* ---------- Header ---------- */
+  .eyebrow{
+    font-family:'Archivo',sans-serif;
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:.16em;
+    text-transform:uppercase;
+    color:var(--pine);
+  }
+  .eyebrow span{color:var(--slate);font-weight:600;}
+
+  .head{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-end;
+    gap:18px;
+    padding-bottom:14px;
+    border-bottom:2.5px solid var(--pine);
+  }
+  .head h1{
+    font-family:'Archivo',sans-serif;
+    font-weight:800;
+    font-size:34px;
+    line-height:1.02;
+    letter-spacing:-.015em;
+    color:var(--ink);
+    margin-top:6px;
+  }
+  .head h1 .md{color:var(--pine);font-weight:600;font-size:22px;letter-spacing:0;}
+  .role{
+    font-family:'Archivo',sans-serif;
+    font-size:14px;
+    font-weight:600;
+    color:var(--slate);
+    margin-top:5px;
+    letter-spacing:.01em;
+  }
+
+  .start{
+    text-align:right;
+    flex-shrink:0;
+  }
+  .start .pill{
+    display:inline-block;
+    background:var(--amber-bg);
+    border:1px solid var(--amber-line);
+    color:var(--amber);
+    font-family:'Archivo',sans-serif;
+    font-weight:700;
+    font-size:10px;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    padding:5px 11px;
+    border-radius:999px;
+  }
+  .start .date{
+    font-family:'Archivo',sans-serif;
+    font-weight:800;
+    font-size:19px;
+    color:var(--ink);
+    margin-top:7px;
+    line-height:1;
+  }
+  .start .sub{font-size:10px;color:var(--slate);margin-top:3px;}
+
+  .intro{
+    font-size:13px;
+    color:var(--slate);
+    line-height:1.55;
+    margin:15px 0 18px;
+    max-width:6.6in;
+  }
+  .intro strong{color:var(--ink);font-weight:600;}
+
+  /* ---------- Procedure grid ---------- */
+  .grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:13px 16px;
+    flex:1;
+  }
+
+  .card{
+    border:1px solid var(--line);
+    border-radius:7px;
+    overflow:hidden;
+    break-inside:avoid;
+  }
+  .card-head{
+    background:var(--mist);
+    border-bottom:1px solid var(--line);
+    padding:9px 13px 8px;
+    display:flex;
+    align-items:baseline;
+    gap:8px;
+  }
+  .card-head h2{
+    font-family:'Archivo',sans-serif;
+    font-size:13.5px;
+    font-weight:700;
+    letter-spacing:.02em;
+    color:var(--pine-700);
+    text-transform:uppercase;
+  }
+  .card-head .count{
+    margin-left:auto;
+    font-family:'Archivo',sans-serif;
+    font-size:11px;
+    font-weight:700;
+    color:var(--slate);
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:999px;
+    padding:2px 9px;
+  }
+
+  ul{list-style:none;padding:6px 13px 9px;}
+  li{
+    font-size:13px;
+    line-height:1.4;
+    color:var(--ink);
+    padding:5px 0 5px 17px;
+    position:relative;
+    border-bottom:1px solid #F0F4F4;
+  }
+  li:last-child{border-bottom:none;}
+  li::before{
+    content:"";
+    position:absolute;
+    left:2px;
+    top:11px;
+    width:6px;height:6px;
+    border-radius:1px;
+    background:var(--pine);
+    transform:rotate(45deg);
+  }
+  li .note{color:var(--slate);font-size:12px;}
+
+  .card.wide{grid-column:1 / -1;}
+
+  /* ---------- Footer / how to refer ---------- */
+  .refer{
+    margin-top:16px;
+    background:var(--pine);
+    border-radius:8px;
+    color:#EAF3F2;
+    padding:16px 20px;
+    display:flex;
+    align-items:center;
+    gap:20px;
+  }
+  .refer .label{
+    font-family:'Archivo',sans-serif;
+    font-weight:800;
+    font-size:14px;
+    letter-spacing:.04em;
+    text-transform:uppercase;
+    color:#fff;
+    line-height:1.15;
+    flex-shrink:0;
+    border-right:1px solid rgba(255,255,255,.25);
+    padding-right:20px;
+  }
+  .refer .route .k{
+    font-size:9.5px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:#9FC4C1;
+    font-weight:600;
+  }
+  .refer .route .v{
+    font-family:'Archivo',sans-serif;
+    font-weight:800;
+    font-size:23px;
+    color:#fff;
+    margin-top:2px;
+    line-height:1;
+  }
+  .refer .route .desc{
+    font-size:12px;
+    color:#CFE3E1;
+    margin-top:6px;
+    line-height:1.4;
+  }
+
+  .foot{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-top:12px;
+    font-size:10px;
+    color:var(--slate);
+    line-height:1.45;
+  }
+  .foot .disc{max-width:5.4in;}
+
+  /* ---------- Print button (screen only) ---------- */
+  .print-btn{
+    position:fixed;
+    top:18px;right:18px;
+    background:var(--pine);
+    color:#fff;
+    border:none;
+    font-family:'Archivo',sans-serif;
+    font-weight:600;
+    font-size:13px;
+    padding:10px 18px;
+    border-radius:8px;
+    cursor:pointer;
+    box-shadow:0 6px 18px rgba(11,61,59,.3);
+  }
+  .print-btn:hover{background:var(--pine-700);}
+
+  @media print{
+    body{background:#fff;padding:0;}
+    .sheet{box-shadow:none;width:auto;min-height:auto;margin:0;padding:0.45in 0.5in;}
+    .print-btn{display:none;}
+    @page{size:letter portrait;margin:0;}
+  }
+</style>
+</head>
+<body>
+<button class="print-btn" onclick="window.print()">Print / Save PDF</button>
+
+<div class="sheet">
+
+  <div class="eyebrow">Pagosa Springs Rural Health Clinic &nbsp;·&nbsp; <span>General Surgery — Provider Referral Guide</span></div>
+
+  <div class="head">
+    <div>
+      <h1>Kate Gazenko, <span class="md">MD</span></h1>
+      <div class="role">General Surgeon</div>
+    </div>
+    <div class="start">
+      <div class="pill">Now Accepting Referrals</div>
+      <div class="date">First patients June 15, 2026</div>
+      <div class="sub">Scheduling open now</div>
+    </div>
+  </div>
+
+  <p class="intro">A quick reference for providers and clinical support staff on the procedures Dr. Gazenko performs. Use it to guide referrals and patient conversations. <strong>When candidacy is unclear, send the referral and let the surgical team determine the best approach.</strong></p>
+
+  <div class="grid">
+
+    <div class="card">
+      <div class="card-head"><h2>Laparoscopic &amp; Minimally Invasive</h2><span class="count">6</span></div>
+      <ul>
+        <li>Diagnostic laparoscopy</li>
+        <li>Laparoscopic cholecystectomy <span class="note">— with cholangiogram</span></li>
+        <li>Laparoscopic cholecystectomy <span class="note">— without cholangiogram</span></li>
+        <li>Laparoscopic appendectomy</li>
+        <li>Laparoscopic colon resection</li>
+        <li>Laparoscopic gastric band removal</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="card-head"><h2>Hernia Repair</h2><span class="count">6</span></div>
+      <ul>
+        <li>Inguinal hernia <span class="note">— laparoscopic TEP</span></li>
+        <li>Inguinal hernia <span class="note">— laparoscopic TAPP</span></li>
+        <li>Inguinal hernia <span class="note">— open repair</span></li>
+        <li>Ventral / incisional hernia <span class="note">— laparoscopic</span></li>
+        <li>Ventral / incisional hernia <span class="note">— open</span></li>
+        <li>Umbilical or epigastric hernia repair</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="card-head"><h2>Breast</h2><span class="count">4</span></div>
+      <ul>
+        <li>Lumpectomy with sentinel lymph node biopsy</li>
+        <li>Breast biopsy with needle localization</li>
+        <li>Breast cyst biopsy</li>
+        <li>Mastectomy</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="card-head"><h2>Colorectal &amp; General Abdominal</h2><span class="count">5</span></div>
+      <ul>
+        <li>Exploratory laparotomy</li>
+        <li>Open appendectomy</li>
+        <li>Sigmoid colon resection</li>
+        <li>Ileostomy reversal</li>
+        <li>Hemorrhoidectomy</li>
+      </ul>
+    </div>
+
+    <div class="card wide">
+      <div class="card-head"><h2>Skin, Soft Tissue &amp; Vascular Access</h2><span class="count">5</span></div>
+      <ul style="columns:2;column-gap:24px;">
+        <li>Incision &amp; drainage <span class="note">— non-pilonidal abscess</span></li>
+        <li>Pilonidal cyst excision</li>
+        <li>Excision of sebaceous cyst</li>
+        <li>Implanted port placement</li>
+        <li>Implanted port removal</li>
+      </ul>
+    </div>
+
+  </div>
+
+  <div class="refer">
+    <div class="label">How to<br>refer</div>
+    <div class="route">
+      <div class="k">Route the referral to</div>
+      <div class="v">General Surgery</div>
+      <div class="desc">Place an internal referral through the standard workflow — no phone call needed.</div>
+    </div>
+  </div>
+
+  <div class="foot">
+    <div class="disc">Procedure list reflects services currently offered at PSRHC General Surgery. Patient-specific candidacy is determined by the surgical team. For internal staff reference.</div>
+    <div>Posted June 2026</div>
+  </div>
+
+</div>
+</body>
+</html>
