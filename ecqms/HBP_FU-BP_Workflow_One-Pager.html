@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Controlling High Blood Pressure — F/U-BP Workflow</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Figtree:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#173049;
+    --blue:#1F6FB2;
+    --teal:#0F8A6A;
+    --pulse:#E0533B;
+    --paper:#FFFFFF;
+    --tint:#F2F7F7;
+    --card:#E9F3F0;
+    --card2:#EAF1F8;
+    --line:#D7E2E5;
+    --muted:#5C7184;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family:'Figtree',-apple-system,sans-serif;
+    color:var(--ink);
+    background:var(--tint);
+    line-height:1.55;
+    -webkit-print-color-adjust:exact;
+    print-color-adjust:exact;
+  }
+  .page{
+    max-width:820px;
+    margin:0 auto;
+    background:var(--paper);
+    padding:38px 46px 26px;
+  }
+
+  /* Header */
+  .eyebrow{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11px;
+    letter-spacing:.16em;
+    text-transform:uppercase;
+    color:var(--blue);
+    margin:0 0 6px;
+  }
+  h1{
+    font-family:'Fraunces',serif;
+    font-weight:600;
+    font-size:34px;
+    line-height:1.08;
+    margin:0 0 6px;
+    color:var(--ink);
+  }
+  .lede{
+    font-size:16px;
+    color:var(--muted);
+    margin:0 0 14px;
+    max-width:60ch;
+  }
+  .pulse{display:block;width:100%;height:54px;margin:2px 0 22px;}
+
+  h2{
+    font-family:'Fraunces',serif;
+    font-weight:600;
+    font-size:21px;
+    margin:0 0 12px;
+    color:var(--ink);
+  }
+  .section{margin:0 0 22px;}
+
+  /* Story / charts */
+  .charts{
+    display:grid;
+    grid-template-columns:1fr 1.25fr;
+    gap:18px;
+  }
+  .panel{
+    background:var(--tint);
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:16px 18px 14px;
+  }
+  .panel .plabel{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:10.5px;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:var(--muted);
+    margin:0 0 12px;
+  }
+  .bars{display:flex;align-items:flex-end;gap:16px;height:118px;}
+  .bar{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;}
+  .bar .col{width:100%;max-width:54px;border-radius:7px 7px 0 0;position:relative;}
+  .bar .val{
+    font-family:'IBM Plex Mono',monospace;
+    font-weight:500;
+    font-size:14px;
+    margin-bottom:6px;
+    color:var(--ink);
+  }
+  .bar .cap{
+    font-size:11px;
+    color:var(--muted);
+    margin-top:7px;
+    text-align:center;
+    line-height:1.25;
+  }
+  .delta{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12px;
+    color:var(--teal);
+    margin:12px 0 0;
+    font-weight:500;
+  }
+  .story-line{
+    grid-column:1 / -1;
+    font-size:15px;
+    color:var(--ink);
+    margin:4px 2px 0;
+  }
+  .story-line strong{color:var(--teal);font-weight:600;}
+
+  /* Reminder callout */
+  .reminder{
+    background:var(--ink);
+    color:#fff;
+    border-radius:16px;
+    padding:22px 26px;
+    display:flex;
+    gap:18px;
+    align-items:flex-start;
+  }
+  .reminder .mark{
+    font-family:'Fraunces',serif;
+    font-size:30px;
+    line-height:1;
+    color:#FFD9CF;
+    flex-shrink:0;
+  }
+  .reminder h3{
+    font-family:'Fraunces',serif;
+    font-weight:600;
+    font-size:19px;
+    margin:0 0 6px;
+    color:#fff;
+  }
+  .reminder p{margin:0;font-size:15px;color:#D6E2EA;}
+  .reminder p strong{color:#fff;font-weight:600;}
+
+  /* Code box */
+  .codebox{
+    margin-top:14px;
+    background:var(--card2);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:14px 18px;
+    display:flex;
+    align-items:center;
+    gap:16px;
+  }
+  .codebox .tag{
+    font-family:'IBM Plex Mono',monospace;
+    font-weight:500;
+    font-size:18px;
+    color:var(--blue);
+    background:#fff;
+    border:1px solid #C5DBEF;
+    border-radius:8px;
+    padding:8px 14px;
+    white-space:nowrap;
+  }
+  .codebox .txt{font-size:14.5px;color:var(--ink);}
+  .codebox .txt b{font-weight:600;}
+
+  /* Stats */
+  .stats{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:12px;
+  }
+  .stat{
+    background:var(--card);
+    border-radius:13px;
+    padding:15px 14px;
+    text-align:center;
+  }
+  .stat .big{
+    font-family:'Fraunces',serif;
+    font-weight:600;
+    font-size:27px;
+    color:var(--teal);
+    line-height:1;
+    margin:0 0 6px;
+  }
+  .stat.warn .big{color:var(--pulse);}
+  .stat .sm{font-size:12px;color:var(--ink);line-height:1.35;}
+  .why-line{
+    font-size:15px;
+    color:var(--ink);
+    margin:14px 2px 0;
+    max-width:70ch;
+  }
+  .why-line strong{font-weight:600;}
+
+  /* Footer */
+  .foot{
+    margin-top:26px;
+    padding-top:14px;
+    border-top:1px solid var(--line);
+    display:flex;
+    justify-content:space-between;
+    align-items:baseline;
+    flex-wrap:wrap;
+    gap:8px;
+  }
+  .foot .q{font-size:14px;font-weight:600;color:var(--ink);}
+  .foot .src{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:10.5px;
+    color:var(--muted);
+    letter-spacing:.03em;
+  }
+
+  @media print{
+    body{background:#fff;}
+    .page{padding:24px 30px;max-width:none;}
+    @page{margin:0.5in;}
+  }
+  @media (max-width:620px){
+    .charts{grid-template-columns:1fr;}
+    .stats{grid-template-columns:repeat(2,1fr);}
+    .reminder{flex-direction:column;gap:8px;}
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <p class="eyebrow">F/U-BP Workflow Update</p>
+  <h1>Controlling High Blood Pressure</h1>
+  <p class="lede">Good news worth sharing: the F/U-BP workflow is catching on across the team, and the patients we are coding are getting to goal at a higher rate. The trend is heading the right way.</p>
+
+  <svg class="pulse" viewBox="0 0 820 54" preserveAspectRatio="none" aria-hidden="true">
+    <line x1="0" y1="38" x2="820" y2="38" stroke="#D7E2E5" stroke-width="1"/>
+    <polyline points="0,38 180,38 205,38 216,16 228,52 240,24 252,38 320,38 380,34 450,28 540,21 640,15 740,10 820,8"
+      fill="none" stroke="#E0533B" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="820" cy="8" r="4.5" fill="#E0533B"/>
+  </svg>
+
+  <!-- THE STORY -->
+  <div class="section">
+    <h2>The story so far</h2>
+    <div class="charts">
+
+      <div class="panel">
+        <p class="plabel">F/U-BP adoption · encounters</p>
+        <div class="bars">
+          <div class="bar">
+            <div class="val">1.5%</div>
+            <div class="col" style="height:11%;background:#9DBBD3;"></div>
+            <div class="cap">April</div>
+          </div>
+          <div class="bar">
+            <div class="val">12.1%</div>
+            <div class="col" style="height:88%;background:#1F6FB2;"></div>
+            <div class="cap">May</div>
+          </div>
+        </div>
+        <p class="delta">▲ roughly 8x in one month</p>
+      </div>
+
+      <div class="panel">
+        <p class="plabel">Controlled BP · coded patients</p>
+        <div class="bars">
+          <div class="bar">
+            <div class="val">20.4%</div>
+            <div class="col" style="height:68%;background:#8FCBB8;"></div>
+            <div class="cap">Baseline</div>
+          </div>
+          <div class="bar">
+            <div class="val">23.6%</div>
+            <div class="col" style="height:79%;background:#3FA987;"></div>
+            <div class="cap">Through Apr</div>
+          </div>
+          <div class="bar">
+            <div class="val">25.9%</div>
+            <div class="col" style="height:87%;background:#0F8A6A;"></div>
+            <div class="cap">Through May</div>
+          </div>
+        </div>
+        <p class="delta">▲ up 5.5 points from baseline</p>
+      </div>
+
+      <p class="story-line">More of us using the workflow, more patients reaching control. <strong>That is exactly the connection we are hoping to see.</strong></p>
+    </div>
+  </div>
+
+  <!-- THE REMINDER -->
+  <div class="section">
+    <div class="reminder">
+      <div class="mark">♥</div>
+      <div>
+        <h3>One small habit keeps this moving</h3>
+        <p>Any time a patient's blood pressure is <strong>above 140/90</strong> at the visit, add <strong>F/U-BP</strong> as a reason for visit. That single step is what lets the measure capture the follow up, and it is what is driving the numbers above.</p>
+      </div>
+    </div>
+    <div class="codebox">
+      <span class="tag">F/U-BP</span>
+      <span class="txt"><b>Follow up, blood pressure</b> &nbsp;·&nbsp; add it as a reason for visit whenever BP is above 140/90.</span>
+    </div>
+  </div>
+
+  <!-- WHY IT MATTERS -->
+  <div class="section">
+    <h2>Why our effort matters</h2>
+    <div class="stats">
+      <div class="stat">
+        <p class="big">~48%</p>
+        <p class="sm">of US adults have high blood pressure</p>
+      </div>
+      <div class="stat warn">
+        <p class="big">1 in 5</p>
+        <p class="sm">have it under control nationally</p>
+      </div>
+      <div class="stat warn">
+        <p class="big">~75%</p>
+        <p class="sm">of cardiovascular deaths involve it</p>
+      </div>
+      <div class="stat">
+        <p class="big">"Silent"</p>
+        <p class="sm">most patients feel completely fine</p>
+      </div>
+    </div>
+    <p class="why-line">High blood pressure rarely announces itself, which is why a controlled reading at the right visit is such a quiet win. <strong>Every patient we help get to goal is a real reduction in their risk of heart attack and stroke.</strong> Small documentation habits, repeated across the panel, add up to better outcomes for the people we serve.</p>
+  </div>
+
+  <div class="foot">
+    <span class="q">Questions? Contact Jo or Vicki.</span>
+    <span class="src">National figures: CDC / NCHS, 2021–2023</span>
+  </div>
+
+</div>
+</body>
+</html>
