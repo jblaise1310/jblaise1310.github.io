@@ -1,0 +1,883 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PSR Team Guide: Building Positive Working Relationships</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --forest:#20392B;
+    --forest-soft:#33503F;
+    --sage:#5C7A63;
+    --sage-surface:#E7ECE2;
+    --brass:#9E7322;
+    --brass-bright:#B5872E;
+    --gold-surface:#F0E5C8;
+    --paper:#F8F5EC;
+    --paper-deep:#F1ECDD;
+    --ink:#2B2A26;
+    --ink-soft:#54514A;
+    --clay:#9C6B52;
+    --clay-surface:#F1E5DC;
+    --line:#D9D2BF;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:"Newsreader",Georgia,serif;
+    font-size:19px;
+    line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:760px;margin:0 auto;padding:0 28px;}
+
+  /* ---------- Hero ---------- */
+  .hero{
+    background:var(--forest);
+    color:var(--paper);
+    padding:84px 0 64px;
+    position:relative;
+    overflow:hidden;
+  }
+  .hero::after{
+    content:"";
+    position:absolute;
+    right:-120px;top:-120px;
+    width:340px;height:340px;
+    border-radius:50%;
+    background:radial-gradient(circle at center,rgba(181,135,46,.28),transparent 68%);
+    pointer-events:none;
+  }
+  .eyebrow{
+    font-family:"Inter",sans-serif;
+    font-size:13px;
+    font-weight:600;
+    letter-spacing:.22em;
+    text-transform:uppercase;
+    color:var(--brass-bright);
+    margin:0 0 22px;
+  }
+  .hero h1{
+    font-family:"Fraunces",serif;
+    font-weight:500;
+    font-size:clamp(34px,6vw,52px);
+    line-height:1.08;
+    letter-spacing:-.01em;
+    margin:0 0 20px;
+    color:#FBF8EF;
+  }
+  .hero p{
+    font-size:20px;
+    max-width:54ch;
+    margin:0;
+    color:#DCE3D6;
+  }
+  .hero .rule{
+    width:64px;height:3px;background:var(--brass-bright);
+    margin:0 0 30px;border-radius:2px;
+  }
+
+  /* ---------- Goal panel ---------- */
+  .goal{
+    background:var(--paper-deep);
+    border-top:1px solid var(--line);
+    border-bottom:1px solid var(--line);
+    padding:54px 0;
+  }
+  .section-label{
+    font-family:"Inter",sans-serif;
+    font-size:12px;font-weight:600;
+    letter-spacing:.2em;text-transform:uppercase;
+    color:var(--brass);
+    margin:0 0 14px;
+  }
+  .goal h2{
+    font-family:"Fraunces",serif;
+    font-weight:500;font-size:30px;line-height:1.15;
+    color:var(--ink);margin:0 0 18px;
+  }
+  .goal p{margin:0 0 16px;color:var(--ink-soft);}
+  .goal p:last-child{margin-bottom:0;}
+  .goal .lead{color:var(--ink);font-size:20px;}
+
+  /* ---------- Principles ---------- */
+  .principles{padding:64px 0 16px;}
+  .intro-line{
+    font-family:"Inter",sans-serif;
+    font-size:12px;font-weight:600;letter-spacing:.2em;
+    text-transform:uppercase;color:var(--brass);
+    text-align:center;margin:0 0 8px;
+  }
+  .intro-head{
+    font-family:"Fraunces",serif;font-weight:500;
+    font-size:26px;text-align:center;color:var(--ink);
+    margin:0 0 56px;
+  }
+
+  .item{
+    display:grid;
+    grid-template-columns:88px 1fr;
+    gap:8px 24px;
+    padding:0 0 52px;
+    margin:0 0 52px;
+    border-bottom:1px solid var(--line);
+  }
+  .item:last-of-type{border-bottom:none;}
+  .num{
+    font-family:"Fraunces",serif;
+    font-weight:400;
+    font-size:60px;
+    line-height:.9;
+    color:var(--brass);
+    font-feature-settings:"lnum";
+    padding-top:4px;
+  }
+  .item h3{
+    font-family:"Fraunces",serif;
+    font-weight:500;
+    font-size:25px;
+    line-height:1.2;
+    color:var(--forest);
+    margin:6px 0 14px;
+  }
+  .item .body{grid-column:2;}
+  .item p{margin:0 0 14px;}
+  .item p:last-child{margin-bottom:0;}
+
+  @media (max-width:560px){
+    .item{grid-template-columns:1fr;gap:0;}
+    .num{font-size:46px;}
+    .item .body{grid-column:1;}
+    .item h3{margin-top:2px;}
+  }
+
+  /* pull quote rule */
+  .ask{
+    font-family:"Fraunces",serif;
+    font-style:italic;
+    font-weight:400;
+    font-size:23px;
+    color:var(--forest);
+    border-left:3px solid var(--brass-bright);
+    padding:4px 0 4px 22px;
+    margin:6px 0 18px;
+    line-height:1.35;
+  }
+
+  /* check / dash lists */
+  ul.checks{list-style:none;margin:6px 0 18px;padding:0;}
+  ul.checks li{
+    position:relative;padding:5px 0 5px 30px;
+    color:var(--ink);
+  }
+  ul.checks li::before{
+    content:"";position:absolute;left:2px;top:14px;
+    width:10px;height:10px;border-radius:50%;
+    background:var(--sage-surface);
+    border:2px solid var(--sage);
+  }
+
+  /* ---------- contrast / reframe cards ---------- */
+  .reframe{
+    display:grid;grid-template-columns:1fr 1fr;
+    gap:14px;margin:8px 0 18px;
+  }
+  @media (max-width:560px){.reframe{grid-template-columns:1fr;}}
+  .card{
+    border-radius:10px;padding:18px 20px;
+    border:1px solid transparent;
+  }
+  .card .tag{
+    font-family:"Inter",sans-serif;
+    font-size:11px;font-weight:600;letter-spacing:.16em;
+    text-transform:uppercase;margin:0 0 10px;display:block;
+  }
+  .card.from{background:var(--clay-surface);border-color:#E6D2C6;}
+  .card.from .tag{color:var(--clay);}
+  .card.to{background:var(--sage-surface);border-color:#CFDAC8;}
+  .card.to .tag{color:var(--forest);}
+  .card ul{list-style:none;margin:0;padding:0;}
+  .card li{padding:4px 0;font-size:17px;line-height:1.4;}
+  .card.from li{color:#6E5648;}
+  .card.to li{color:var(--forest-soft);}
+  .card.to li{font-style:normal;}
+
+  .quietnote{
+    color:var(--ink-soft);font-style:italic;
+    font-size:18px;margin:4px 0 0;
+  }
+
+  /* ---------- patient center callout ---------- */
+  .center-q{
+    background:var(--forest);color:#FBF8EF;
+    border-radius:12px;padding:26px 28px;
+    margin:8px 0 18px;
+  }
+  .center-q .q{
+    font-family:"Fraunces",serif;font-style:italic;
+    font-size:24px;line-height:1.3;margin:0;color:#FBF8EF;
+  }
+
+  /* ---------- redirect interlude ---------- */
+  .interlude{
+    background:var(--gold-surface);
+    border:1px solid #E4D3A3;
+    border-radius:14px;
+    padding:34px 30px;
+    margin:0 0 52px;
+  }
+  .interlude .section-label{color:var(--brass);}
+  .interlude h3{
+    font-family:"Fraunces",serif;font-weight:500;
+    font-size:24px;color:var(--forest);margin:0 0 12px;line-height:1.2;
+  }
+  .interlude > p{margin:0 0 22px;color:var(--ink-soft);}
+  .chips{display:flex;flex-wrap:wrap;gap:12px;margin:0 0 22px;}
+  .chip{
+    background:var(--paper);
+    border:1px solid #E6D6AB;
+    border-radius:10px;
+    padding:15px 18px 15px 42px;
+    position:relative;
+    font-family:"Fraunces",serif;
+    font-style:italic;
+    font-size:18px;
+    color:var(--forest);
+    line-height:1.32;
+    flex:1 1 282px;
+  }
+  .chip::before{
+    content:"\201C";
+    position:absolute;left:15px;top:8px;
+    font-family:"Fraunces",serif;
+    font-size:36px;color:var(--brass-bright);
+    line-height:1;
+  }
+  .interlude .foot{
+    margin:0;color:var(--forest-soft);font-size:18px;
+  }
+
+  /* ---------- interactive practice ---------- */
+  .practice{
+    background:var(--paper-deep);
+    border-top:1px solid var(--line);
+    padding:64px 0 70px;
+  }
+  .progress{
+    height:8px;background:#E2DAC6;border-radius:6px;
+    overflow:hidden;margin:0 0 10px;
+  }
+  .progress span{
+    display:block;height:100%;width:0;
+    background:var(--brass-bright);
+    transition:width .45s ease;border-radius:6px;
+  }
+  .progress-label{
+    font-family:"Inter",sans-serif;font-size:13px;
+    color:var(--ink-soft);text-align:right;margin:0 0 40px;letter-spacing:.02em;
+  }
+
+  .scenario{
+    background:var(--paper);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:26px 26px 22px;
+    margin:0 0 22px;
+  }
+  .scn-label{
+    font-family:"Inter",sans-serif;font-size:12px;font-weight:600;
+    letter-spacing:.18em;text-transform:uppercase;color:var(--brass);
+    margin:0 0 12px;display:flex;align-items:center;gap:10px;
+  }
+  .scn-label .done-pill{
+    font-size:11px;letter-spacing:.12em;color:var(--forest);
+    background:var(--sage-surface);border:1px solid #CFDAC8;
+    border-radius:20px;padding:2px 10px;display:none;
+  }
+  .scenario.solved .scn-label .done-pill{display:inline-block;}
+  .scn-q{
+    font-family:"Fraunces",serif;font-size:21px;line-height:1.34;
+    color:var(--ink);margin:0 0 18px;
+  }
+  .opts{display:flex;flex-direction:column;gap:10px;}
+  .opt{
+    text-align:left;font-family:"Newsreader",serif;font-size:17px;
+    color:var(--ink);background:#fff;border:1px solid var(--line);
+    border-radius:9px;padding:13px 16px;cursor:pointer;line-height:1.4;
+    transition:border-color .15s ease,background .15s ease;
+  }
+  .opt:hover{border-color:var(--sage);}
+  .opt:focus-visible{outline:3px solid var(--brass-bright);outline-offset:2px;}
+  .opt.chosen-right{background:var(--sage-surface);border-color:var(--sage);color:var(--forest);}
+  .opt.chosen-wrong{background:var(--clay-surface);border-color:#E0C3B4;color:#6E5648;}
+  .opt[disabled]{cursor:default;}
+  .fb{
+    margin:14px 0 0;font-size:16px;line-height:1.45;display:none;
+    font-style:italic;
+  }
+  .fb.show{display:block;}
+  .fb.right{color:var(--forest);}
+  .fb.wrong{color:var(--clay);}
+
+  /* ---------- commitment ---------- */
+  .commit{
+    background:var(--forest);color:var(--paper);
+    border-radius:14px;padding:36px 32px;margin:38px 0 0;
+  }
+  .commit .section-label{color:var(--brass-bright);}
+  .commit h3{
+    font-family:"Fraunces",serif;font-weight:500;font-size:26px;
+    color:#FBF8EF;margin:0 0 10px;line-height:1.2;
+  }
+  .commit .intro{color:#DCE3D6;margin:0 0 22px;font-size:18px;}
+  .ck{
+    display:flex;align-items:flex-start;gap:13px;
+    padding:11px 0;color:#EDEFE7;font-size:17px;line-height:1.4;
+    cursor:pointer;border-bottom:1px solid rgba(255,255,255,.1);
+  }
+  .ck:last-of-type{border-bottom:none;}
+  .ck input{
+    appearance:none;-webkit-appearance:none;
+    width:22px;height:22px;flex:0 0 22px;margin:1px 0 0;
+    border:2px solid var(--brass-bright);border-radius:5px;
+    background:transparent;cursor:pointer;position:relative;
+  }
+  .ck input:checked{background:var(--brass-bright);}
+  .ck input:checked::after{
+    content:"";position:absolute;left:6px;top:2px;width:6px;height:11px;
+    border:solid var(--forest);border-width:0 3px 3px 0;transform:rotate(45deg);
+  }
+  .ck input:focus-visible{outline:3px solid #fff;outline-offset:2px;}
+  .namerow{display:flex;gap:12px;margin:24px 0 8px;flex-wrap:wrap;}
+  .namerow input{
+    font-family:"Newsreader",serif;font-size:17px;color:var(--ink);
+    background:var(--paper);border:1px solid var(--line);border-radius:9px;
+    padding:13px 15px;
+  }
+  #psrName{flex:1 1 240px;}
+  #psrDate{flex:0 0 160px;}
+  .namerow input:focus-visible{outline:3px solid var(--brass-bright);outline-offset:2px;}
+  #finishBtn{
+    font-family:"Inter",sans-serif;font-weight:600;font-size:16px;letter-spacing:.02em;
+    color:var(--forest);background:var(--brass-bright);border:none;border-radius:9px;
+    padding:15px 26px;margin:14px 0 0;cursor:pointer;transition:opacity .2s ease,transform .1s ease;
+  }
+  #finishBtn:hover:not([disabled]){transform:translateY(-1px);}
+  #finishBtn[disabled]{background:#5C6F5F;color:#A9B6A8;cursor:not-allowed;}
+  #finishBtn:focus-visible{outline:3px solid #fff;outline-offset:3px;}
+  .gatehint{
+    font-family:"Inter",sans-serif;font-size:13px;color:#B9C4B5;
+    margin:12px 0 0;letter-spacing:.02em;
+  }
+  .gatehint.ready{color:var(--brass-bright);}
+
+  /* acknowledgment receipt */
+  .ack{
+    background:var(--gold-surface);border:1px solid #E4D3A3;border-radius:14px;
+    padding:38px 32px;margin:24px 0 0;text-align:center;
+  }
+  .ack .stamp{
+    font-family:"Inter",sans-serif;font-size:12px;font-weight:600;letter-spacing:.2em;
+    text-transform:uppercase;color:var(--brass);margin:0 0 14px;
+  }
+  .ack h3{
+    font-family:"Fraunces",serif;font-weight:500;font-size:30px;color:var(--forest);
+    margin:0 0 6px;
+  }
+  .ack .ackdate{font-family:"Inter",sans-serif;font-size:14px;color:var(--ink-soft);margin:0 0 16px;letter-spacing:.02em;}
+  .ack .ackbody{color:var(--ink-soft);font-size:17px;line-height:1.5;max-width:46ch;margin:0 auto 22px;}
+  .ack button{
+    font-family:"Inter",sans-serif;font-weight:600;font-size:15px;
+    color:#FBF8EF;background:var(--forest);border:none;border-radius:9px;
+    padding:13px 24px;cursor:pointer;
+  }
+  .ack button:focus-visible{outline:3px solid var(--brass-bright);outline-offset:3px;}
+  .ack .ackbtns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;}
+  .ack button.secondary{
+    background:transparent;color:var(--forest);border:1.5px solid var(--forest);
+  }
+  .ack .sendhint{
+    font-family:"Inter",sans-serif;font-size:13px;color:var(--ink-soft);
+    margin:16px 0 0;letter-spacing:.02em;
+  }
+
+  /* print only the acknowledgment slip when sent from the button */
+  @media print{
+    body.print-ack > *:not(.practice){display:none !important;}
+    body.print-ack .practice{background:#fff;padding:0;border:none;}
+    body.print-ack .practice .wrap > *:not(#ack){display:none !important;}
+    body.print-ack #ack{margin:0;border:none;background:#fff;}
+    body.print-ack #ack .ackbtns,body.print-ack #ack .sendhint{display:none !important;}
+  }
+
+  @media print{
+    .practice .opts,.progress,.progress-label,.commit,.intro-line,.intro-head,#finishBtn{display:none !important;}
+  }
+
+  /* ---------- closing ---------- */
+  .closing{
+    background:var(--forest);
+    color:var(--paper);
+    padding:64px 0 72px;
+    margin-top:36px;
+  }
+  .closing .section-label{color:var(--brass-bright);}
+  .closing h2{
+    font-family:"Fraunces",serif;font-weight:500;
+    font-size:30px;line-height:1.18;margin:0 0 20px;color:#FBF8EF;
+  }
+  .closing p{color:#DCE3D6;margin:0 0 16px;}
+  .closing p:last-child{margin-bottom:0;}
+  .closing .em{color:#FBF8EF;}
+
+  .signoff{
+    border-top:1px solid var(--line);
+    padding:34px 0 48px;text-align:center;
+  }
+  .signoff p{
+    font-family:"Inter",sans-serif;font-size:13px;
+    letter-spacing:.04em;color:var(--ink-soft);margin:0;
+  }
+
+  /* reveal */
+  @media (prefers-reduced-motion:no-preference){
+    .reveal{opacity:0;transform:translateY(14px);
+      transition:opacity .6s ease,transform .6s ease;}
+    .reveal.in{opacity:1;transform:none;}
+  }
+
+  @media print{
+    body{font-size:12pt;background:#fff;}
+    .hero,.closing{background:#20392B !important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+    .item{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+
+  <header class="hero">
+    <div class="wrap">
+      <p class="eyebrow">Patient Service Representatives &middot; Primary Care Clinic</p>
+      <div class="rule"></div>
+      <h1>Building Positive Working Relationships</h1>
+      <p>A short guide to how we treat one another, so that the people we serve always meet a team that is steady, kind, and working together.</p>
+    </div>
+  </header>
+
+  <section class="goal reveal">
+    <div class="wrap">
+      <p class="section-label">Our Goal</p>
+      <h2>A workplace where people feel respected, supported, and valued.</h2>
+      <p class="lead">The work we do is challenging. We serve patients who are often frustrated, worried, sick, or confused. Because of that, it matters that we create a work environment where team members feel respected, supported, and valued.</p>
+      <p>A positive workplace does not require everyone to be best friends. It does require professionalism, courtesy, and mutual respect.</p>
+    </div>
+  </section>
+
+  <main class="principles">
+    <div class="wrap">
+      <p class="intro-line">Eight Practices</p>
+      <p class="intro-head">The habits that build a team worth being part of</p>
+
+      <!-- 1 -->
+      <article class="item reveal">
+        <div class="num">1</div>
+        <h3>Speak About Coworkers as if They Were Standing Next to You</h3>
+        <div class="body">
+          <p>A simple rule: if you would not say it directly to the person, do not say it to someone else.</p>
+          <p>Before discussing a coworker, ask yourself:</p>
+          <ul class="checks">
+            <li>Is this helpful?</li>
+            <li>Is this necessary?</li>
+            <li>Have I spoken directly to the person first?</li>
+            <li>Would I be comfortable if they overheard this conversation?</li>
+          </ul>
+          <p>Whenever possible, leave coworkers' names out of conversations unless there is something positive, supportive, or work-related that needs to be discussed.</p>
+        </div>
+      </article>
+
+      <!-- redirect interlude -->
+      <div class="interlude reveal">
+        <p class="section-label">Redirecting in the Moment</p>
+        <h3>When the Conversation Turns</h3>
+        <p>You do not have to take part in a conversation that turns negative, and you do not have to wait for it to run its course. If someone begins to speak poorly about another person, you can change its direction in a single sentence. A gentle redirect is not rude. It is one of the kindest, most professional things you can do.</p>
+        <div class="chips">
+          <div class="chip">Can we change the subject?</div>
+          <div class="chip">I would rather not talk about someone like that.</div>
+          <div class="chip">I try not to discuss people who are not here to speak for themselves.</div>
+          <div class="chip">Have you been able to talk with them directly?</div>
+          <div class="chip">Let's focus on something we can actually fix.</div>
+          <div class="chip">I would like to keep things positive today.</div>
+        </div>
+        <p class="foot">Said warmly, these phrases end the conversation without ending the friendship. Most people will follow your lead.</p>
+      </div>
+
+      <!-- 2 -->
+      <article class="item reveal">
+        <div class="num">2</div>
+        <h3>Address Concerns Directly and Professionally</h3>
+        <div class="body">
+          <p>Misunderstandings happen. If a coworker does something that frustrates you:</p>
+          <ul class="checks">
+            <li>Assume positive intent first.</li>
+            <li>Seek clarification before making assumptions.</li>
+            <li>Have a respectful conversation if appropriate.</li>
+            <li>If the issue cannot be resolved, bring it to leadership.</li>
+          </ul>
+          <div class="reframe">
+            <div class="card to">
+              <span class="tag">Lean Into</span>
+              <ul>
+                <li>Going to the person first</li>
+                <li>Clarifying questions</li>
+                <li>Solving it once</li>
+              </ul>
+            </div>
+            <div class="card from">
+              <span class="tag">Step Away From</span>
+              <ul>
+                <li>Gossip</li>
+                <li>Side conversations</li>
+                <li>Recruiting others to take sides</li>
+                <li>Repeatedly rehashing the issue</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- 3 -->
+      <article class="item reveal">
+        <div class="num">3</div>
+        <h3>Focus on Behaviors, Not Personalities</h3>
+        <div class="body">
+          <p>Labels are rarely productive. Statements like "she is difficult," "he is lazy," or "they always do this" close a conversation before it starts. Specific behaviors and facts open it back up.</p>
+          <div class="reframe">
+            <div class="card from">
+              <span class="tag">Instead of a label</span>
+              <ul>
+                <li>"She is difficult."</li>
+                <li>"He is lazy."</li>
+                <li>"They always do this."</li>
+              </ul>
+            </div>
+            <div class="card to">
+              <span class="tag">Try a fact</span>
+              <ul>
+                <li>"I need clarification on this process."</li>
+                <li>"I was unsure how this task should be completed."</li>
+                <li>"There seems to be a communication breakdown."</li>
+              </ul>
+            </div>
+          </div>
+          <p class="quietnote">Professional conversations focus on solutions rather than labels.</p>
+        </div>
+      </article>
+
+      <!-- 4 -->
+      <article class="item reveal">
+        <div class="num">4</div>
+        <h3>Give Grace</h3>
+        <div class="body">
+          <p>Everyone has difficult days. On any given shift, a coworker may be managing:</p>
+          <ul class="checks">
+            <li>Personal stress</li>
+            <li>Family responsibilities</li>
+            <li>Health concerns</li>
+            <li>Heavy workloads</li>
+            <li>Challenging patient interactions</li>
+          </ul>
+          <p>A short response or a frustrated moment does not automatically mean someone intended harm. Give people the same grace you would want extended to you.</p>
+        </div>
+      </article>
+
+      <!-- 5 -->
+      <article class="item reveal">
+        <div class="num">5</div>
+        <h3>Keep Patient Care at the Center</h3>
+        <div class="body">
+          <p>When disagreements arise, there is one question that settles most of them:</p>
+          <div class="center-q">
+            <p class="q">"What is best for the patient?"</p>
+          </div>
+          <p>Patient care should always outweigh territorial behavior, personal preferences, hurt feelings, and department politics. We are one team serving the same patients.</p>
+        </div>
+      </article>
+
+      <!-- 6 -->
+      <article class="item reveal">
+        <div class="num">6</div>
+        <h3>Help When You Can</h3>
+        <div class="body">
+          <p>Workloads fluctuate throughout the day. If your work is caught up and another team member is struggling:</p>
+          <ul class="checks">
+            <li>Offer assistance.</li>
+            <li>Ask if help is needed.</li>
+            <li>Share knowledge.</li>
+            <li>Support one another.</li>
+          </ul>
+          <p>Success is measured by how well the team performs, not by how much work an individual protects.</p>
+        </div>
+      </article>
+
+      <!-- 7 -->
+      <article class="item reveal">
+        <div class="num">7</div>
+        <h3>Maintain Professional Communication</h3>
+        <div class="body">
+          <p>The message matters, but the tone matters too.</p>
+          <div class="reframe">
+            <div class="card to">
+              <span class="tag">This is professional</span>
+              <ul>
+                <li>Respectful tone</li>
+                <li>Active listening</li>
+                <li>Constructive feedback</li>
+                <li>Calm problem-solving</li>
+              </ul>
+            </div>
+            <div class="card from">
+              <span class="tag">This is not</span>
+              <ul>
+                <li>Sarcasm</li>
+                <li>Dismissive comments</li>
+                <li>Public criticism</li>
+                <li>Talking about coworkers behind their backs</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- 8 -->
+      <article class="item reveal">
+        <div class="num">8</div>
+        <h3>Be Part of the Solution</h3>
+        <div class="body">
+          <p>Every employee contributes to workplace culture. A few honest questions keep us pointed the right way:</p>
+          <p class="ask">Am I improving the environment today? Am I helping solve problems? Am I bringing concerns to the right people? Am I treating coworkers with respect?</p>
+          <p>Culture is built one interaction at a time.</p>
+        </div>
+      </article>
+
+    </div>
+  </main>
+
+  <section class="practice" id="practice">
+    <div class="wrap">
+      <p class="intro-line">Put It Into Practice</p>
+      <p class="intro-head">Before you finish, work through these</p>
+
+      <div class="progress"><span id="progressFill"></span></div>
+      <p class="progress-label" id="progressText">0 of 3 scenarios complete</p>
+
+      <div class="scenario" data-i="0">
+        <p class="scn-label">Scenario One <span class="done-pill">Done</span></p>
+        <p class="scn-q">Mid-shift, a coworker leans in and says, "Did you hear what she did again? I cannot even."</p>
+        <div class="opts">
+          <button class="opt" data-key="a">"No, what happened?"</button>
+          <button class="opt" data-key="b">"Can we change the subject? I would rather not talk about someone like that."</button>
+          <button class="opt" data-key="c">Nod along and keep listening.</button>
+        </div>
+        <p class="fb"></p>
+      </div>
+
+      <div class="scenario" data-i="1">
+        <p class="scn-label">Scenario Two <span class="done-pill">Done</span></p>
+        <p class="scn-q">A task keeps reaching you unfinished, and you want to raise it. How do you say it?</p>
+        <div class="opts">
+          <button class="opt" data-key="a">"He is so lazy. He never finishes anything."</button>
+          <button class="opt" data-key="b">"I have noticed this task is reaching me incomplete. Can we clarify who owns the final step?"</button>
+        </div>
+        <p class="fb"></p>
+      </div>
+
+      <div class="scenario" data-i="2">
+        <p class="scn-label">Scenario Three <span class="done-pill">Done</span></p>
+        <p class="scn-q">A coworker snapped at you this morning and has been short all day. What do you do?</p>
+        <div class="opts">
+          <button class="opt" data-key="a">Tell two other PSRs how rude she was.</button>
+          <button class="opt" data-key="b">Give grace, assume she may be having a hard day, and talk with her directly if it continues.</button>
+        </div>
+        <p class="fb"></p>
+      </div>
+
+      <div class="commit" id="commit">
+        <p class="section-label">Your Commitment</p>
+        <h3>I help build this team's culture.</h3>
+        <p class="intro">Check each commitment, add your name, and complete your acknowledgment.</p>
+
+        <label class="ck"><input type="checkbox"> I will speak about my coworkers as if they were standing next to me.</label>
+        <label class="ck"><input type="checkbox"> I will redirect conversations that turn negative instead of joining them.</label>
+        <label class="ck"><input type="checkbox"> I will address concerns directly, and bring them to leadership when needed.</label>
+        <label class="ck"><input type="checkbox"> I will focus on behaviors and facts, not labels.</label>
+        <label class="ck"><input type="checkbox"> I will give my coworkers grace and offer help when I can.</label>
+        <label class="ck"><input type="checkbox"> I will keep patient care at the center and treat my team with respect.</label>
+
+        <div class="namerow">
+          <input id="psrName" type="text" placeholder="Your name" autocomplete="name">
+          <input id="psrDate" type="text" aria-label="Date">
+        </div>
+
+        <button id="finishBtn" disabled>Complete acknowledgment</button>
+        <p class="gatehint" id="gateHint">Work through the three scenarios above to unlock.</p>
+      </div>
+
+      <div class="ack" id="ack" hidden>
+        <p class="stamp">Acknowledged</p>
+        <h3 id="ackName"></h3>
+        <p class="ackdate" id="ackDate"></p>
+        <p class="ackbody">I have read the PSR Team Guide and commit to building a respectful, supportive workplace for my team and our patients.</p>
+        <div class="ackbtns">
+          <button type="button" id="printAckBtn">Print my acknowledgment</button>
+          <button type="button" id="emailAckBtn" class="secondary">Email it to my manager</button>
+        </div>
+        <p class="sendhint">Print a copy to hand in, or email opens a pre-filled message you just send.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="closing reveal">
+    <div class="wrap">
+      <p class="section-label">Final Thought</p>
+      <h2>A strong team does not avoid conflict. It addresses conflict respectfully, professionally, and directly.</h2>
+      <p>We will not always agree. We will not always work the same way. We may occasionally frustrate one another.</p>
+      <p class="em">What matters is that we remain respectful, communicate professionally, support one another, and keep our focus where it belongs: providing exceptional care to our patients.</p>
+    </div>
+  </section>
+
+  <footer class="signoff">
+    <div class="wrap">
+      <p>Primary Care Clinic &middot; Patient Service Representatives</p>
+    </div>
+  </footer>
+
+<script>
+  (function(){
+    /* === EDIT THIS ONE LINE: your email address for emailed acknowledgments === */
+    var MANAGER_EMAIL = "jblaise@psmedicalcenter.org";
+
+    var scenarios=[
+      {correct:'b',fb:{
+        a:'That opens the door to gossip. Try redirecting instead.',
+        b:'Exactly. A warm redirect ends it in a single sentence.',
+        c:'Silence lets it continue. A gentle redirect is kinder to everyone, including the person not in the room.'
+      }},
+      {correct:'b',fb:{
+        a:'That is a label, and it shuts the conversation down. Name the behavior instead.',
+        b:'Yes. Specific, factual, and focused on the process rather than the person.'
+      }},
+      {correct:'b',fb:{
+        a:'That spreads the moment instead of resolving it. Give grace first.',
+        b:'Right. Assume positive intent, give grace, and go directly to her if it continues.'
+      }}
+    ];
+    var solved=[false,false,false];
+
+    function updateProgress(){
+      var n=solved.filter(Boolean).length;
+      document.getElementById('progressFill').style.width=(n/3*100)+'%';
+      document.getElementById('progressText').textContent=n+' of 3 scenarios complete';
+      checkGate();
+    }
+
+    document.querySelectorAll('.scenario').forEach(function(card){
+      var i=+card.getAttribute('data-i');
+      var fbEl=card.querySelector('.fb');
+      card.querySelectorAll('.opt').forEach(function(btn){
+        btn.addEventListener('click',function(){
+          if(card.classList.contains('solved')) return;
+          var key=btn.getAttribute('data-key');
+          var right=key===scenarios[i].correct;
+          card.querySelectorAll('.opt').forEach(function(b){b.classList.remove('chosen-right','chosen-wrong');});
+          btn.classList.add(right?'chosen-right':'chosen-wrong');
+          fbEl.textContent=scenarios[i].fb[key];
+          fbEl.className='fb show '+(right?'right':'wrong');
+          if(right){
+            card.classList.add('solved');
+            card.querySelectorAll('.opt').forEach(function(b){b.disabled=true;});
+            solved[i]=true;
+            updateProgress();
+          }
+        });
+      });
+    });
+
+    // date default = today
+    var d=new Date();
+    var dateStr=d.toLocaleDateString(undefined,{year:'numeric',month:'long',day:'numeric'});
+    document.getElementById('psrDate').value=dateStr;
+
+    var checks=document.querySelectorAll('.ck input');
+    var nameEl=document.getElementById('psrName');
+    var btn=document.getElementById('finishBtn');
+    var hint=document.getElementById('gateHint');
+
+    function allChecked(){return Array.prototype.every.call(checks,function(c){return c.checked;});}
+    function scenariosDone(){return solved.every(Boolean);}
+
+    function checkGate(){
+      var ready=scenariosDone()&&allChecked()&&nameEl.value.trim().length>0;
+      btn.disabled=!ready;
+      if(!scenariosDone()){
+        hint.textContent='Work through the three scenarios above to unlock.';hint.className='gatehint';
+      }else if(!allChecked()){
+        hint.textContent='Check each commitment to continue.';hint.className='gatehint';
+      }else if(!nameEl.value.trim()){
+        hint.textContent='Add your name to complete.';hint.className='gatehint';
+      }else{
+        hint.textContent='Ready. Complete your acknowledgment.';hint.className='gatehint ready';
+      }
+    }
+
+    checks.forEach(function(c){c.addEventListener('change',checkGate);});
+    nameEl.addEventListener('input',checkGate);
+    document.getElementById('psrDate').addEventListener('input',checkGate);
+
+    btn.addEventListener('click',function(){
+      if(btn.disabled) return;
+      document.getElementById('ackName').textContent=nameEl.value.trim();
+      document.getElementById('ackDate').textContent=document.getElementById('psrDate').value;
+      var ack=document.getElementById('ack');
+      ack.hidden=false;
+      document.getElementById('commit').style.display='none';
+      ack.scrollIntoView({behavior:'smooth',block:'center'});
+    });
+
+    document.getElementById('printAckBtn').addEventListener('click',function(){
+      document.body.classList.add('print-ack');
+      window.print();
+      setTimeout(function(){document.body.classList.remove('print-ack');},500);
+    });
+
+    document.getElementById('emailAckBtn').addEventListener('click',function(){
+      var nm=nameEl.value.trim();
+      var dt=document.getElementById('psrDate').value;
+      var subject='PSR Team Guide acknowledgment - '+nm;
+      var body='I have read the PSR Team Guide and commit to building a respectful, '
+        +'supportive workplace for my team and our patients.\n\n'
+        +'Name: '+nm+'\nDate: '+dt;
+      window.location.href='mailto:'+encodeURIComponent(MANAGER_EMAIL)
+        +'?subject='+encodeURIComponent(subject)
+        +'&body='+encodeURIComponent(body);
+    });
+
+    checkGate();
+  })();
+
+  (function(){
+    if(!('IntersectionObserver' in window)) return;
+    var io=new IntersectionObserver(function(entries){
+      entries.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+    },{threshold:.12});
+    document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+  })();
+</script>
+</body>
+</html>
