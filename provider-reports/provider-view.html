@@ -1,0 +1,1580 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PCC Provider 1:1 Dashboard &mdash; Q1 2026</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+:root{
+  --cbp:#ffffff;--cbs:#f8f9fa;--ctp:#1a202c;--cts:#4a5568;
+  --cbt:.5px solid #e2e8f0;--cbs2:#cbd5e0;
+  --rm:8px;--rl:12px;
+  --font:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font);background:#f7f8fa;color:var(--ctp);font-size:14px;line-height:1.5}
+.topbar{background:#0F6E56;padding:14px 28px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200}
+.topbar-t{font-size:15px;font-weight:600;color:#fff}
+.topbar-s{font-size:11px;color:rgba(255,255,255,.7);margin-top:2px}
+.topbar-r{font-size:11px;color:rgba(255,255,255,.6)}
+.shell{max-width:1280px;margin:0 auto;padding:0 24px 3rem}
+.tabs{display:flex;border-bottom:.5px solid #e2e8f0;margin-bottom:1.25rem;overflow-x:auto;background:#fff;padding:0 24px;margin-left:-24px;margin-right:-24px;position:sticky;top:57px;z-index:100}
+.tab{padding:10px 20px;font-size:13px;font-weight:500;cursor:pointer;border:none;background:none;color:var(--cts);border-bottom:2px solid transparent;white-space:nowrap;transition:all .15s}
+.tab.on{color:#0F6E56;border-bottom-color:#0F6E56}
+.tab:hover:not(.on){color:var(--ctp)}
+.pane{display:none}.pane.on{display:block}
+.kg{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:1.25rem}
+.kc{background:var(--cbs);border-radius:var(--rm);padding:13px 14px;text-align:center}
+.kl{font-size:11px;color:var(--cts);text-transform:uppercase;letter-spacing:.04em;margin-bottom:4px}
+.kv{font-size:24px;font-weight:500;line-height:1;color:var(--ctp)}
+.kv.g{color:#0F6E56}.kv.a{color:#D4830A}.kv.r{color:#A32D2D}
+.ks{font-size:11px;color:var(--cts);margin-top:3px}
+.sh{font-size:11px;font-weight:500;color:var(--cts);text-transform:uppercase;letter-spacing:.06em;margin:1.5rem 0 .75rem;padding-bottom:5px;border-bottom:.5px solid #e2e8f0}
+.sh.wi{color:#D4830A;border-bottom-color:#FAC775}
+.cg1{display:grid;grid-template-columns:1fr;gap:14px;margin-bottom:1.25rem}
+.cg2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:1.25rem}
+@media(max-width:800px){.cg2{grid-template-columns:1fr}.rcg{grid-template-columns:1fr!important}}
+.cc{background:var(--cbp);border:.5px solid #e2e8f0;border-radius:var(--rl);padding:16px}
+.cc.wi{border-color:#FAC775}
+.ct{font-size:12px;font-weight:500;color:var(--cts);margin-bottom:12px}
+.cw{position:relative;width:100%}
+.leg{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;font-size:11px;color:var(--cts)}
+.li{display:flex;align-items:center;gap:4px}
+.ls{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+.pg{display:grid;grid-template-columns:repeat(auto-fill,minmax(138px,1fr));gap:8px;margin-bottom:1.25rem}
+.gh{grid-column:1/-1;font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:.08em;color:var(--cts);padding:6px 0 3px;border-bottom:.5px solid #e2e8f0;margin-bottom:2px}
+.gh.wi{color:#D4830A;border-bottom-color:#FAC775}
+.pb{background:var(--cbs);border:.5px solid #e2e8f0;border-radius:var(--rm);padding:11px 13px;cursor:pointer;text-align:left;transition:all .12s;display:block;width:100%}
+.pb:hover,.pb.on{background:#E1F5EE;border-color:#1D9E75}
+.pb.wis{border-color:#FAC775}.pb.wis:hover{background:#FAEEDA;border-color:#D4830A}
+.pn{font-size:13px;font-weight:500;color:var(--ctp)}
+.pr{font-size:11px;color:var(--cts);margin-top:1px}
+.ps{font-size:10px;color:var(--cts);font-style:italic;margin-top:1px}
+.dot{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:4px;vertical-align:middle}
+#rpt{display:none}#rpt.on{display:block}
+.rh{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:1rem;padding-bottom:1rem;border-bottom:.5px solid #e2e8f0}
+.rn{font-size:19px;font-weight:500;color:var(--ctp)}
+.rm{font-size:12px;color:var(--cts);margin-top:3px;line-height:1.6}
+.rs{font-size:11px;font-weight:500;padding:4px 11px;border-radius:99px}
+.rkpi{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px;margin-bottom:1.25rem}
+.rkc{border-radius:var(--rm);padding:12px 13px;text-align:center;border:.5px solid #e2e8f0;background:var(--cbs)}
+.rkl{font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:.04em;color:var(--cts);margin-bottom:4px}
+.rkv{font-size:20px;font-weight:500;line-height:1;color:var(--ctp)}
+.rkv.g{color:#0F6E56}.rkv.a{color:#D4830A}.rkv.r{color:#A32D2D}
+.rks{font-size:10px;color:var(--cts);margin-top:3px}
+.mt{width:100%;border-collapse:collapse;font-size:12px}
+.mt th{text-align:center;padding:6px 8px;font-weight:500;font-size:11px;color:var(--cts);background:var(--cbs);border-bottom:.5px solid #e2e8f0}
+.mt th:first-child{text-align:left}
+.mt td{padding:7px 8px;border-bottom:.5px solid #e2e8f0;text-align:center}
+.mt td:first-child{text-align:left;font-weight:500;font-size:11px;color:var(--cts)}
+.tu{color:#0F6E56;font-weight:500}.td2{color:#A32D2D;font-weight:500}.ts{color:#D4830A}
+.rcg{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:1.25rem}
+.rcc{background:var(--cbp);border:.5px solid #e2e8f0;border-radius:var(--rl);padding:14px}
+.qb{border:.5px solid #e2e8f0;border-radius:var(--rl);overflow:hidden;margin-bottom:1rem}
+.qr{display:grid;grid-template-columns:130px 1fr;border-bottom:.5px solid #e2e8f0}
+.qr:last-child{border-bottom:none}
+.qk{font-size:11px;font-weight:500;color:var(--cts);padding:9px 10px;background:var(--cbs)}
+.qv{font-size:12px;color:var(--ctp);padding:9px 12px;line-height:1.5}
+.back{background:none;border:.5px solid var(--cbs2);border-radius:var(--rm);padding:6px 13px;font-size:12px;cursor:pointer;color:var(--cts);display:inline-flex;align-items:center;gap:5px;margin-bottom:1rem}
+.back:hover{background:var(--cbs)}
+.ac{border-radius:var(--rl);padding:15px 17px;border:.5px solid;margin-bottom:10px}
+.ah{font-size:13px;font-weight:500;margin-bottom:8px;display:flex;align-items:center;gap:7px}
+.ait{font-size:12px;line-height:1.7;padding-left:14px;position:relative;margin-bottom:6px;color:var(--ctp)}
+.ait::before{content:'';position:absolute;left:0;top:7px;width:5px;height:5px;border-radius:50%}
+.ait strong{font-weight:500}
+.tr2{display:flex;align-items:center;gap:8px;margin-bottom:5px}
+.tn{font-size:12px;min-width:200px;color:var(--ctp)}
+.tbw{flex:1;height:6px;background:var(--cbs);border-radius:3px;overflow:hidden}
+.tbar{height:6px;border-radius:3px;background:#1D9E75}
+.tc{font-size:12px;font-weight:500;color:#0F6E56;min-width:20px;text-align:right}
+.tcat{font-size:10px;padding:2px 7px;border-radius:99px;font-weight:500}
+.bsc{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.bsl{font-size:12px;color:var(--cts);min-width:80px}
+.bsb{flex:1;height:7px;background:var(--cbs);border-radius:4px;overflow:hidden}
+.bsf{height:7px;border-radius:4px}
+.bsv{font-size:12px;font-weight:500;min-width:32px;text-align:right}
+.win{background:#FAEEDA;border:.5px solid #FAC775;border-radius:var(--rm);padding:10px 14px;font-size:12px;color:#854F0B;margin-bottom:1rem;line-height:1.6}
+@media print{
+  .wb-bf,.wb-sc,.wb-dir-sc,.wb-bar-fill,.wb-open-text{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
+  .wb-bt,.wb-bar-track{background:#e8e8e8!important}
+  .topbar,.tabs,.sel-bar,.peer-intro,.back{display:none!important}
+  body{background:#fff;font-size:12px}
+  .shell{padding:0;max-width:100%}
+  #pane-col,#pane-cmp,#pane-peer{display:none!important}
+  #pane-ind{display:block!important}
+  #sel{display:none!important}
+  #rpt{display:block!important}
+  .rcg{grid-template-columns:1fr 1fr}
+  .rcc,.qb,.rkc{break-inside:avoid}
+  .sh{margin-top:12px}
+  .print-rpt-btn{display:none!important}
+  .print-rpt-header{display:block!important;padding:6px 0 10px;border-bottom:2px solid #0F6E56;margin-bottom:14px;font-size:13px;color:#4A5568}
+}
+.print-rpt-header{display:none}
+
+.wb-section{background:var(--cbp);border:.5px solid var(--cbt);border-radius:var(--rl);padding:18px 20px;margin-bottom:1.25rem}
+.wb-intro{font-size:12px;color:var(--cts);margin-bottom:14px;line-height:1.6;padding:9px 13px;background:#F0FDF9;border-radius:var(--rm);border:.5px solid #9FE1CB}
+.wb-scores{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:14px}
+.wb-sc{text-align:center;padding:13px 8px;border-radius:var(--rm);border:.5px solid;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.wb-sl{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin-bottom:3px}
+.wb-sv{font-size:24px;font-weight:700;line-height:1}
+.wb-ss{font-size:10px;margin-top:3px;line-height:1.4}
+.wb-bgl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--cts);margin:10px 0 7px;padding-bottom:3px;border-bottom:.5px solid var(--cbt)}
+.wb-br{display:flex;align-items:center;gap:8px;margin-bottom:5px}
+.wb-bl{font-size:11px;color:var(--ctp);min-width:155px;line-height:1.3}
+.wb-bt{flex:1;height:6px;background:#F0F0F0;border-radius:3px;overflow:hidden}
+.wb-bf{height:6px;border-radius:3px;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.wb-bv{font-size:10px;color:var(--cts);min-width:56px;text-align:right}
+.wb-ql{font-size:11px;font-weight:700;color:var(--cts);text-transform:uppercase;letter-spacing:.04em;margin:12px 0 4px}
+.wb-qt{font-size:13px;color:var(--ctp);line-height:1.7;font-style:italic;padding:9px 13px;background:var(--cbs);border-radius:var(--rm);border-left:3px solid #1D9E75}
+.wb-none{font-size:13px;color:var(--cts);font-style:italic;padding:12px}
+
+/* Print package */
+.pkg-cover{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:240px;background:#0F6E56;border-radius:var(--rl);padding:40px 32px;margin-bottom:28px;text-align:center;color:#fff}
+.pkg-cover-label{font-size:12px;font-weight:500;text-transform:uppercase;letter-spacing:.1em;opacity:.75;margin-bottom:12px}
+.pkg-cover-name{font-size:32px;font-weight:700;margin-bottom:8px}
+.pkg-cover-period{font-size:16px;opacity:.85;margin-bottom:20px}
+.pkg-cover-by{font-size:13px;opacity:.7}
+.pkg-divider{border:none;border-top:2px solid var(--bdr);margin:28px 0}
+.pkg-section-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--cts);margin-bottom:14px;padding:8px 0;border-bottom:.5px solid var(--bdr)}
+@media print{
+  /* When printing pkg, hide everything else */
+  body.printing-pkg .topbar,
+  body.printing-pkg .tabs,
+  body.printing-pkg #pane-col,
+  body.printing-pkg #pane-cmp,
+  body.printing-pkg #pane-peer,
+  body.printing-pkg #pane-ind{display:none!important}
+  body.printing-pkg #pane-pkg{display:block!important}
+  body.printing-pkg .pkg-select-bar{display:none!important}
+  /* Shell padding for print */
+  body.printing-pkg .shell{padding:0!important;max-width:100%!important}
+  /* Suppress browser header/footer */
+  @page{margin:12mm; size:auto}
+  .pkg-cover{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;break-after:page}
+  .pkg-divider{break-after:page}
+  .rcc,.kc,.rkc{break-inside:avoid}
+  .rcg{grid-template-columns:1fr 1fr}
+  .wb-bf,.wb-sc{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
+}
+
+/* Print package TOC */
+.pkg-toc{display:flex;align-items:center;justify-content:center;min-height:90vh;padding:40px 32px;break-before:page;page-break-before:always}
+.pkg-toc-inner{max-width:560px;width:100%}
+.pkg-toc-tag{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:#0F6E56;margin-bottom:10px}
+.pkg-toc-title{font-size:28px;font-weight:700;color:#1A202C;margin-bottom:6px;line-height:1.2}
+.pkg-toc-sub{font-size:14px;color:#718096;margin-bottom:32px;padding-bottom:24px;border-bottom:2px solid #0F6E56}
+.pkg-toc-items{display:flex;flex-direction:column;gap:0}
+.pkg-toc-item{display:flex;align-items:flex-start;gap:18px;padding:16px 0;border-bottom:1px solid #E2E8F0}
+.pkg-toc-item:last-child{border-bottom:none}
+.pkg-toc-num{font-size:22px;font-weight:700;color:#0F6E56;min-width:36px;opacity:.35;line-height:1;margin-top:2px}
+.pkg-toc-item-title{font-size:14px;font-weight:600;color:#1A202C;margin-bottom:3px}
+.pkg-toc-item-sub{font-size:12px;color:#718096;line-height:1.6}
+.pkg-toc-footer{font-size:11px;color:#A0AEC0;margin-top:28px;padding-top:16px;border-top:1px solid #E2E8F0;line-height:1.6}
+@media print{
+  .pkg-toc{-webkit-print-color-adjust:exact;print-color-adjust:exact;min-height:100vh}
+  .pkg-toc-num{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
+
+/* Thank you page */
+.pkg-ty{display:flex;align-items:center;justify-content:center;min-height:90vh;padding:60px 32px;break-before:page;page-break-before:always;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.pkg-ty-inner{max-width:520px;width:100%;text-align:center}
+.pkg-ty-title{font-size:36px;font-weight:700;color:#0F6E56;margin-bottom:36px}
+.pkg-ty-body p{font-size:15px;color:#4A5568;line-height:1.9;margin-bottom:16px}
+.pkg-ty-sig{margin-top:48px;padding-top:24px;border-top:1px solid #E2E8F0}
+.pkg-ty-name{font-size:16px;font-weight:600;color:#1A202C;margin-bottom:4px}
+.pkg-ty-role{font-size:13px;color:#718096}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <div>
+    <div class="topbar-t">PCC Provider 1:1 Dashboard &mdash; Q1 2026</div>
+    <div class="topbar-s">Pagosa Springs Medical Center &nbsp;&middot;&nbsp; Confidential &nbsp;&middot;&nbsp; Prepared by Vicki</div>
+  </div>
+  <div class="topbar-r">Data through April 2026</div>
+</div>
+<div class="shell">
+<div class="tabs">
+  <button class="tab on" onclick="sw('col')">Collective dashboard</button>
+  <button class="tab" onclick="sw('cmp')">Provider comparison</button>
+  <button class="tab" onclick="sw('peer')">Peer benchmark</button>
+  <button class="tab" onclick="sw('ind')">Individual reports</button>
+  <button class="tab" onclick="sw('pkg')" style="margin-left:auto;color:#0F6E56;font-weight:600">&#128438; Print package</button>
+</div>
+
+
+<!-- ===== PRINT PACKAGE ===== -->
+<div id="pane-pkg" class="pane">
+  <div class="pkg-select-bar" style="display:flex;align-items:center;gap:14px;margin-bottom:1.5rem;flex-wrap:wrap">
+    <label style="font-size:14px;font-weight:500;color:var(--ctp)">Select provider:</label>
+    <select id="pkg-select" onchange="buildPkg(this.value)" style="font-size:14px;padding:9px 16px;border-radius:var(--rm);border:1px solid var(--cbs2);background:var(--cbp);color:var(--ctp);min-width:220px;cursor:pointer">
+      <option value="">-- Choose a provider --</option>
+      <optgroup label="Primary Care">
+        <option value="Hintzman">Hintzman</option>
+        <option value="Johnson">Johnson</option>
+        <option value="Mashburn">Mashburn</option>
+        <option value="McIntyre">McIntyre</option>
+        <option value="Nobles">Nobles</option>
+        <option value="RSM">RSM</option>
+        <option value="Zappone">Zappone</option>
+      </optgroup>
+      <optgroup label="Walk-In">
+        <option value="Brown">Brown</option>
+        <option value="Liverett">Liverett</option>
+      </optgroup>
+      <optgroup label="Specialty">
+        <option value="Holcomb">Holcomb</option>
+        <option value="Steed">Steed</option>
+        <option value="Webb">Webb</option>
+      </optgroup>
+      <optgroup label="Behavioral Health">
+        <option value="Abbas">Abbas</option>
+      </optgroup>
+    </select>
+    <button onclick="triggerPkgPrint()" style="background:#0F6E56;color:#fff;border:none;border-radius:var(--rm);padding:9px 20px;font-size:13px;font-weight:500;cursor:pointer;display:flex;align-items:center;gap:6px">&#128438; Print packet</button>
+  </div>
+
+  <div id="pkg-preview"></div>
+</div>
+
+
+<!-- ===== COLLECTIVE ===== -->
+<div id="pane-col" class="pane on">
+  <div class="kg">
+    <div class="kc"><div class="kl">Scheduled PC providers</div><div class="kv">8</div><div class="ks">Excl. walk-in</div></div>
+    <div class="kc"><div class="kl">Total visits Q1</div><div class="kv g">1,834</div><div class="ks">All providers</div></div>
+    <div class="kc"><div class="kl">Avg VPD &mdash; sched. PC</div><div class="kv g">12.9</div><div class="ks">Jan&ndash;Apr 2026</div></div>
+    <div class="kc"><div class="kl">Highest after-hrs</div><div class="kv r">21.8%</div><div class="ks">Nobles (Apr)</div></div>
+    <div class="kc"><div class="kl">Total no-shows Q1</div><div class="kv a">312</div><div class="ks">All providers</div></div>
+    <div class="kc"><div class="kl">Longest appt wait</div><div class="kv r">74 days</div><div class="ks">RSM (Aug 3)</div></div>
+    <div class="kc"><div class="kl">New providers</div><div class="kv">3</div><div class="ks">Hintzman, Johnson, Barnes</div></div>
+    <div class="kc"><div class="kl">Steed surg YTD</div><div class="kv g">43</div><div class="ks">vs 23 in 2025 (+87%)</div></div>
+  </div>
+
+  <div class="sh">Scheduled primary care &mdash; monthly visits Jan&ndash;Apr 2026</div>
+  <div class="cg1"><div class="cc">
+    <div class="ct">Monthly visits &mdash; scheduled PC providers (walk-in excluded)</div>
+    <div class="cw" style="height:270px"><canvas id="c1"></canvas></div>
+    <div class="leg" id="l1"></div>
+  </div></div>
+
+  <div class="sh wi">Walk-in providers &mdash; Brown &amp; Liverett</div>
+  <div class="win">Brown and Liverett operate as walk-in providers. Their metrics reflect a different care model and are shown separately from scheduled primary care benchmarks.</div>
+  <div class="cg2">
+    <div class="cc wi"><div class="ct">Walk-in monthly visits</div>
+      <div class="cw" style="height:220px"><canvas id="cwi1"></canvas></div>
+      <div class="leg" id="lwi1"></div>
+    </div>
+    <div class="cc wi"><div class="ct">Walk-in visits per day &mdash; monthly trend</div>
+      <div class="cw" style="height:220px"><canvas id="cwi2"></canvas></div>
+      <div class="leg" id="lwi2"></div>
+    </div>
+  </div>
+
+  <div class="sh">Visits per day &mdash; scheduled primary care</div>
+  <div class="cg2">
+    <div class="cc"><div class="ct">Avg visits / day &mdash; Q1 2026 (scheduled PC)</div>
+      <div class="cw" style="height:240px"><canvas id="c2"></canvas></div>
+    </div>
+    <div class="cc"><div class="ct">VPD monthly trend &mdash; Jan to Apr 2026</div>
+      <div class="cw" style="height:240px"><canvas id="c3"></canvas></div>
+      <div class="leg" id="l3"></div>
+    </div>
+  </div>
+
+  <div class="sh">After-hours &amp; message center burden &mdash; all providers</div>
+  <div class="cg2">
+    <div class="cc"><div class="ct">After-hours EHR % &mdash; Q1 avg, all providers ranked</div>
+      <div class="cw" style="height:320px"><canvas id="c4"></canvas></div>
+    </div>
+    <div class="cc"><div class="ct">Message center % &mdash; Q1 avg, all providers ranked</div>
+      <div class="cw" style="height:320px"><canvas id="c5"></canvas></div>
+    </div>
+  </div>
+
+  <div class="sh">Panel size &amp; new provider ramp</div>
+  <div class="cg2">
+    <div class="cc"><div class="ct">Panel size &mdash; Jan vs Apr 2026</div>
+      <div class="cw" style="height:250px"><canvas id="c6"></canvas></div>
+      <div class="leg" id="l6"></div>
+    </div>
+    <div class="cc"><div class="ct">New provider ramp &mdash; Hintzman &amp; Johnson panel growth</div>
+      <div class="cw" style="height:250px"><canvas id="c7"></canvas></div>
+      <div class="leg" id="l7"></div>
+    </div>
+  </div>
+
+  <div class="sh">Specialty &mdash; encounters &amp; surgical cases</div>
+  <div class="cg2">
+    <div class="cc"><div class="ct">Monthly encounters &mdash; Steed (Ortho), Webb (Ortho), Holcomb (Pulm)</div>
+      <div class="cw" style="height:230px"><canvas id="c8"></canvas></div>
+      <div class="leg" id="l8"></div>
+    </div>
+    <div class="cc"><div class="ct">Surgical cases YTD &mdash; Steed vs Webb: 2025 vs 2026</div>
+      <div class="cw" style="height:230px"><canvas id="c9"></canvas></div>
+      <div class="leg" id="l9"></div>
+    </div>
+  </div>
+
+  <div class="sh">Access &mdash; days to next available appointment (as of May 21, 2026)</div>
+  <div class="cg1"><div class="cc">
+    <div class="ct">Days until next available &mdash; green &lt;30 &middot; amber 30&ndash;60 &middot; red &gt;60</div>
+    <div class="cw" style="height:220px"><canvas id="c11"></canvas></div>
+  </div></div>
+
+  <div class="sh">No-shows &mdash; Q1 2026 total by provider</div>
+  <div class="cg1"><div class="cc">
+    <div class="ct">Total no-shows Jan&ndash;Apr 2026</div>
+    <div class="cw" style="height:210px"><canvas id="c10"></canvas></div>
+  </div></div>
+
+  <div class="sh">Director analysis &mdash; Q1 2026</div>
+  <div class="ac" style="background:#EAF3DE;border-color:#C0DD97">
+    <div class="ah" style="color:#1E8449">&#10003; Doing well</div>
+    <div class="ait"><strong>Scheduled PC visit volume is strong.</strong> RSM (212/mo) and McIntyre (213/mo) lead volume. Nobles at 14.4 vpd and RSM at 12.8 vpd above group average despite different panel sizes and schedules.</div>
+    <div class="ait"><strong>Three new providers actively ramping.</strong> Hintzman panel +45% in 4 months (108&rarr;157). Johnson +24% (152&rarr;188). Barber starts July. Healthy pipeline.</div>
+    <div class="ait"><strong>Steed surgical volume grew 87% YTD</strong> &mdash; 43 cases vs 23 all of 2025. In only his second year. Positive, engaged, wants more volume.</div>
+    <div class="ait"><strong>Liverett zero no-shows across all four months.</strong> Walk-in model at work. VPD of 13.4 avg is notably high.</div>
+    <div class="ait"><strong>Holcomb and Steed maintain near-zero after-hours EHR.</strong> 0% and 0.8% respectively. Protected work-life separation.</div>
+  </div>
+  <div class="ac" style="background:#FAEEDA;border-color:#FAC775">
+    <div class="ah" style="color:#D4830A">&#9888; Monitor closely</div>
+    <div class="ait"><strong>Nobles after-hours reached 21.8% in April</strong> &mdash; highest in the dataset. Averaging 18.1% for Q1 on a part-time 8-day/month schedule.</div>
+    <div class="ait"><strong>Zappone no-shows spiked to 15 in April</strong> &mdash; Q1 total of 36 is highest of any provider. Pattern erratic (9, 4, 8, 15).</div>
+    <div class="ait"><strong>Mashburn message center at 21.4% avg &mdash; sustained from 2025.</strong> Returns from maternity leave July. Review before her first back interview.</div>
+    <div class="ait"><strong>Webb surgical volume declining sharply.</strong> 18 YTD vs 37 full-year 2025 (&minus;51%). Referral pipeline or OR access issue?</div>
+    <div class="ait"><strong>Johnson EHR doc time 16&ndash;24 min/patient.</strong> Expected for new provider &mdash; should decrease through Q2.</div>
+  </div>
+  <div class="ac" style="background:#FADBD8;border-color:#F7C1C1">
+    <div class="ah" style="color:#A32D2D">&#10007; Genuine concern &mdash; action required</div>
+    <div class="ait"><strong>Access crisis across scheduled primary care.</strong> RSM booked to Aug 3 (74 days), McIntyre Jul 15 (55 days), Mashburn Jul 28 (68 days). Five providers with waits exceeding 3 weeks simultaneously is systemic.</div>
+    <div class="ait"><strong>Nobles NP slot not until November 16 &mdash; 179 days out.</strong> No new patient NP slot for 6 months. Most acute access gap in the practice.</div>
+    <div class="ait"><strong>RSM panel declining while booked 74 days out.</strong> Panel dropped 32 patients (&minus;2.2%) while inaccessible to new patients. Likely attrition.</div>
+    <div class="ait"><strong>McIntyre March compression event root cause unknown.</strong> 21.6% after-hours, 17 visits/day in 10 days. Panel forecast ~900 by September without intervention.</div>
+  </div>
+</div>
+
+
+<!-- ===== COMPARISON ===== -->
+<div id="pane-cmp" class="pane">
+  <div class="kg" style="grid-template-columns:repeat(auto-fit,minmax(148px,1fr))">
+    <div class="kc"><div class="kl">Highest VPD (sched.)</div><div class="kv g">14.4</div><div class="ks">Nobles</div></div>
+    <div class="kc"><div class="kl">Lowest after-hrs</div><div class="kv g">0%</div><div class="ks">Holcomb, Mashburn</div></div>
+    <div class="kc"><div class="kl">Highest after-hrs</div><div class="kv r">18.1%</div><div class="ks">Nobles Q1 avg</div></div>
+    <div class="kc"><div class="kl">Highest msg ctr</div><div class="kv a">21.4%</div><div class="ks">Mashburn Q1 avg</div></div>
+    <div class="kc"><div class="kl">Fastest panel growth</div><div class="kv g">+45%</div><div class="ks">Hintzman Q1</div></div>
+    <div class="kc"><div class="kl">Most no-shows</div><div class="kv r">36</div><div class="ks">Zappone Q1</div></div>
+  </div>
+  <div class="sh">VPD monthly trend &mdash; scheduled primary care only</div>
+  <div class="cg1"><div class="cc">
+    <div class="ct">Visits per day monthly trend Jan&ndash;Apr 2026 (walk-in excluded)</div>
+    <div class="cw" style="height:290px"><canvas id="d1"></canvas></div>
+    <div class="leg" id="ld1"></div>
+  </div></div>
+  <div class="cg2">
+    <div class="cc"><div class="ct">After-hours % trend &mdash; Jan to Apr 2026</div>
+      <div class="cw" style="height:260px"><canvas id="d2"></canvas></div>
+      <div class="leg" id="ld2"></div>
+    </div>
+    <div class="cc"><div class="ct">Message center % trend &mdash; Jan to Apr 2026</div>
+      <div class="cw" style="height:260px"><canvas id="d3"></canvas></div>
+      <div class="leg" id="ld3"></div>
+    </div>
+  </div>
+  <div class="sh">Burnout risk composite &mdash; scheduled primary care</div>
+  <div class="cg1"><div class="cc">
+    <div class="ct">Burnout risk score &mdash; weighted: after-hrs % (40%) + msg center % (25%) + EHR doc time (20%) + no-show rate (15%) &middot; scale 0&ndash;100</div>
+    <div id="burnout-bars" style="margin-top:8px;padding:4px 0"></div>
+    <div style="font-size:11px;color:var(--cts);margin-top:10px;padding-top:8px;border-top:.5px solid #e2e8f0">Walk-in providers excluded &mdash; their model makes metrics non-comparable with scheduled providers.</div>
+  </div></div>
+  <div class="cg2">
+    <div class="cc"><div class="ct">After-hours % vs VPD &mdash; bubble size = Q1 total no-shows</div>
+      <div class="cw" style="height:260px"><canvas id="d4"></canvas></div>
+      <div class="leg" id="ld4"></div>
+    </div>
+    <div class="cc"><div class="ct">EHR doc time per patient (min) &mdash; Q1 2026 avg, corrected values</div>
+      <div class="cw" style="height:260px"><canvas id="d5"></canvas></div>
+    </div>
+  </div>
+  <div class="sh">Cross-cutting themes</div>
+  <div id="themes" style="margin-bottom:1.5rem"></div>
+</div>
+
+
+<!-- ===== PEER BENCHMARK ===== -->
+<div id="pane-peer" class="pane">
+  <div style="background:#E1F5EE;border:.5px solid #9FE1CB;border-radius:12px;padding:14px 18px;margin-bottom:1.25rem;font-size:13px;color:#0F6E56;line-height:1.6">
+    <strong>How this works:</strong> Select your name from the dropdown. Your metrics will be highlighted and labeled with your name. All other providers appear as Provider A, B, C&hellip; in a neutral color &mdash; you can see where you stand without seeing who is who.
+  </div>
+
+  <div style="display:flex;align-items:center;gap:12px;margin-bottom:1.5rem;flex-wrap:wrap">
+    <label style="font-size:13px;font-weight:500;color:var(--ctp)">I am:</label>
+    <select id="peer-select" onchange="buildPeer(this.value)" style="font-size:13px;padding:8px 14px;border-radius:8px;border:1px solid var(--cbs2);background:var(--cbp);color:var(--ctp);min-width:200px">
+      <option value="">-- Select your name --</option>
+      <optgroup label="Primary Care">
+        <option value="Hintzman">Hintzman</option>
+        <option value="Johnson">Johnson</option>
+        <option value="Mashburn">Mashburn</option>
+        <option value="McIntyre">McIntyre</option>
+        <option value="Nobles">Nobles</option>
+        <option value="RSM">RSM</option>
+        <option value="Zappone">Zappone</option>
+      </optgroup>
+      <optgroup label="Specialty">
+        <option value="Holcomb">Holcomb</option>
+        <option value="Steed">Steed</option>
+        <option value="Webb">Webb</option>
+      </optgroup>
+    </select>
+    <span id="peer-note" style="font-size:12px;color:var(--cts)"></span>
+  </div>
+
+  <div id="peer-content" style="display:none">
+    <div class="kg" id="peer-kpis" style="margin-bottom:1.5rem"></div>
+
+    <div class="sh">Visits per day &mdash; you vs peers (Jan&ndash;Apr 2026)</div>
+    <div class="cg1"><div class="cc">
+      <div class="ct" id="peer-vpd-title">Avg visits per day &mdash; monthly trend</div>
+      <div class="cw" style="height:280px"><canvas id="peer-c-vpd"></canvas></div>
+      <div class="leg" id="peer-l-vpd"></div>
+    </div></div>
+
+    <div class="cg2">
+      <div class="cc">
+        <div class="ct">After-hours EHR % &mdash; Q1 2026 avg comparison</div>
+        <div class="cw" style="height:260px"><canvas id="peer-c-ahr"></canvas></div>
+        <div class="leg" id="peer-l-ahr"></div>
+      </div>
+      <div class="cc">
+        <div class="ct">Message center % &mdash; Q1 2026 avg comparison</div>
+        <div class="cw" style="height:260px"><canvas id="peer-c-msg"></canvas></div>
+        <div class="leg" id="peer-l-msg"></div>
+      </div>
+    </div>
+
+    <div class="cg2">
+      <div class="cc">
+        <div class="ct">EHR doc time per patient (min) &mdash; Q1 avg</div>
+        <div class="cw" style="height:260px"><canvas id="peer-c-ehr"></canvas></div>
+        <div class="leg" id="peer-l-ehr"></div>
+      </div>
+      <div class="cc">
+        <div class="ct">No-shows &mdash; Q1 total</div>
+        <div class="cw" style="height:260px"><canvas id="peer-c-ns"></canvas></div>
+        <div class="leg" id="peer-l-ns"></div>
+      </div>
+    </div>
+
+    <div id="peer-panel-section">
+    <div class="sh">Panel size (Jan vs Apr) &mdash; providers with panels</div>
+    <div class="cg1"><div class="cc">
+      <div class="ct">Panel size change &mdash; Jan to Apr 2026 (you vs peers)</div>
+      <div class="cw" style="height:240px"><canvas id="peer-c-pan"></canvas></div>
+      <div class="leg" id="peer-l-pan"></div>
+    </div></div>
+    </div>
+
+    <div class="sh">Monthly visits trend &mdash; you vs peers</div>
+    <div class="cg1"><div class="cc">
+      <div class="ct">Monthly visits Jan&ndash;Apr 2026</div>
+      <div class="cw" style="height:260px"><canvas id="peer-c-vis"></canvas></div>
+      <div class="leg" id="peer-l-vis"></div>
+    </div></div>
+  </div>
+</div>
+
+
+<!-- ===== INDIVIDUAL ===== -->
+<div id="pane-ind" class="pane">
+  <div id="sel">
+    <p style="font-size:13px;color:var(--cts);margin-bottom:1rem">Select a provider to view their full report.</p>
+    <div class="pg" id="pg"></div>
+  </div>
+  <div id="rpt"></div>
+</div>
+
+</div><!-- /shell -->
+
+<script>
+const MO=['Jan','Feb','Mar','Apr'];
+const TODAY=new Date('2026-05-21');
+
+function daysOut(s){
+  if(!s) return null;
+  var p=s.split('/');
+  if(p.length!==3) return null;
+  var d=new Date(parseInt(p[2]),parseInt(p[0])-1,parseInt(p[1]));
+  return Math.round((d-TODAY)/86400000);
+}
+
+var P={
+  Brown:    {r:'MD',full_name:'Robert Brown',sp:'Walk-In',dp:'WI',st:'-',sn:'Neutral',
+    na:'06/03/2026',nn:null,vp:11.3,vt:-4.5,
+    vs:[137,126,130,135],vpd:[10.5,10.4,10.8,11.3],
+    ah:[47,0,0,0],mc:[10.8,13.0,11.6,11.9],
+    ep:[null,5.1,5.3,5.2,4.3],pan:[21,21,21,21],
+    ns:[6,4,2,8],nt:20,sg26:null,sg25:null,sgm:null,
+    bn:'Rooms not stocked. Forms should be pre-filled.',
+    sf:'Good.',fb:'N/A',wb:'Two days/week perfect.',
+    si:'ED follow-up no-shows recurring.',ai:'None'},
+  Hintzman: {r:'PA',full_name:'Matthew Hintzman',sp:'Primary Care',dp:'PC',st:'-',sn:'Positive',
+    na:'05/21/2026',nn:'08/20/2026',vp:null,vt:null,
+    vs:[0,79,120,157],vpd:[0,5.2,7.5,8.7],
+    ah:[null,77,0,0],mc:[null,9.4,10.9,13.0],
+    ep:[null,null,20.8,11.7,7.0],pan:[108,126,141,157],
+    ns:[0,9,9,11],nt:29,sg26:null,sg25:null,sgm:null,
+    bn:'New provider - still ramping.',sf:'Building relationships.',
+    fb:'N/A',wb:'N/A',si:'Strong panel growth trajectory.',ai:'None noted'},
+  Johnson:  {r:'PA',full_name:'Corrinne Johnson',sp:'Primary Care',dp:'PC',st:'-',sn:'Positive',
+    na:'06/10/2026',nn:'09/10/2026',vp:null,vt:null,
+    vs:[28,80,83,129],vpd:[5.6,7.3,8.2,9.5],
+    ah:[0,0,2.3,5.6],mc:[4.4,9.1,9.9,13.6],
+    ep:[null,83.6,24.0,23.2,16.2],pan:[152,167,175,188],
+    ns:[2,5,6,6],nt:19,sg26:null,sg25:null,sgm:null,
+    bn:'Still learning workflows.',sf:'Building team.',
+    fb:'N/A',wb:'Ramping up.',si:'Strong panel and visit growth.',ai:'None noted'},
+  Liverett: {r:'FNP-C',full_name:'Rachel Liverett',sp:'Walk-In',dp:'WI',st:'-',sn:'Mixed',
+    na:null,nn:null,vp:11.9,vt:39.8,
+    vs:[71,70,131,119],vpd:[11.8,14.0,14.6,13.2],
+    ah:[16.7,16.3,15.6,8.5],mc:[6.2,5.2,6.5,6.3],
+    ep:[null,17.5,15.0,7.4,7.4],pan:[3,2,2,3],
+    ns:[0,0,0,0],nt:0,sg26:null,sg25:null,sgm:null,
+    bn:'Rooms not always stocked.',sf:'Tori and Megan awesome. Remy disengaged.',
+    fb:'Yes.',wb:'AI reducing chart time.',si:'Retain providers. Straight cath for peds UA.',ai:'AI tools'},
+  McIntyre: {r:'MD',full_name:'Emilie McIntyre',sp:'Primary Care',dp:'PC',st:'09/01/2024',sn:'Positive',
+    na:'07/15/2026',nn:null,vp:12.1,vt:-1.6,
+    vs:[223,197,170,262],vpd:[13.9,13.7,15.7,13.9],
+    ah:[9.6,11.9,21.6,6.9],mc:[8.3,8.1,9.1,6.8],
+    ep:[null,7.8,9.3,12.5,6.5],pan:[754,754,759,764],
+    ns:[11,5,6,6],nt:28,sg26:null,sg25:null,sgm:null,
+    bn:'Check-in unpredictable. Results audit gap.',
+    sf:'Peyton amazing. Kinsey great. Feels vacant PSR.',
+    fb:'Yes.',wb:'Better than spring. Charting coaching helping.',
+    si:'Phone F/U visits. Portal billing. IUD order set.',ai:'Freed AI, Dragon'},
+  Mashburn: {r:'PA-C',full_name:'Kaela Mashburn',sp:'Primary Care',dp:'PC',st:'03/01/2022',sn:'Positive',
+    na:'07/28/2026',nn:'09/10/2026',vp:10.8,vt:2.8,
+    vs:[194,174,176,19],vpd:[12.0,10.2,10.2,7.0],
+    ah:[0,0.2,0,0],mc:[23.2,20.0,19.3,23.3],
+    ep:[null,4.3,4.7,5.2,71.1],pan:[1026,1024,1023,1014],
+    ns:[6,13,10,1],nt:30,sg26:null,sg25:null,sgm:null,
+    bn:'Registration always slow.',sf:'Kinsey amazing. Katy amazing.',
+    fb:'Yes within clinic.',wb:'On maternity leave - returns July 2026.',
+    si:'Bring PSRs back. Pediatric screening.',ai:'None noted'},
+  Nobles:   {r:'FNP-C',full_name:'Heather Nobles',sp:'Primary Care',dp:'PC',st:'01/01/2023',sn:'Mixed',
+    na:'06/16/2026',nn:'11/16/2026',vp:13.8,vt:3.7,
+    vs:[115,120,121,117],vpd:[13.9,14.8,14.8,14.0],
+    ah:[14.5,18.9,17.4,21.8],mc:[14.8,16.7,17.1,19.6],
+    ep:[25.3,18.0,13.7,18.3,16.0],pan:[796,794,788,790],
+    ns:[8,6,5,7],nt:26,sg26:null,sg25:null,sgm:null,
+    bn:'Registration dependent on staffing.',sf:'MA inconsistent.',
+    fb:'Yes, usually.',wb:'Hourly pay makes after-hours feel bad.',
+    si:'Risk stratification. Top-of-license staff use.',ai:'Considering AI'},
+  RSM:      {r:'DO',full_name:'Ryan Stopher-Mitchell',sp:'Primary Care',dp:'PC',st:'-',sn:'Positive',
+    na:'08/03/2026',nn:null,vp:13.3,vt:-1.5,
+    vs:[210,194,214,231],vpd:[13.0,12.1,13.3,12.9],
+    ah:[3.8,10.3,6.5,6.6],mc:[15.3,16.2,13.6,13.3],
+    ep:[null,5.7,6.3,5.5,4.6],pan:[1424,1418,1409,1392],
+    ns:[8,10,5,5],nt:28,sg26:null,sg25:null,sgm:null,
+    bn:'Registration/check-in slow.',sf:'Kinsey amazing.',
+    fb:'You hear us.',wb:'Fine.',
+    si:'No-show policy. DV screening for intakes.',ai:'Not using. Interested.'},
+  Zappone:  {r:'FNP-C',full_name:'Phil Zappone',sp:'Primary Care',dp:'PC',st:'03/2023',sn:'Concern',
+    na:'06/10/2026',nn:'08/24/2026',vp:13.8,vt:-8.4,
+    vs:[112,115,121,112],vpd:[14.0,14.0,13.0,12.3],
+    ah:[3.7,10.4,9.7,6.7],mc:[18.8,19.8,16.7,18.9],
+    ep:[null,8.1,7.7,6.2,7.4],pan:[824,814,805,791],
+    ns:[9,4,8,15],nt:36,sg26:null,sg25:null,sgm:null,
+    bn:'Need clear late policy.',sf:'Team is awesome.',
+    fb:'In clinic yes. Outside no.',wb:'Likes medicine.',
+    si:'Admin time. Monthly provider education.',ai:'Cerner AI'},
+  Abbas:    {r:'LCSW',full_name:'Jake Abbas',sp:'Behavioral Health',dp:'BH',st:'08/04/2025',sn:'Positive',
+    na:null,nn:null,vp:null,vt:null,
+    vs:[62,60,70,63],vpd:[3.6,3.0,3.3,3.1],
+    ah:[0,81,0,0],mc:[7.3,12.5,15.2,10.1],
+    ep:[null,8.7,7.4,6.3,7.3],pan:[null,null,null,null],
+    ns:[11,4,8,2],nt:25,sg26:null,sg25:null,sgm:null,
+    bn:'Office space limited. Crisis patients when full.',sf:'Everyone great.',
+    fb:'Definitely yes.',wb:'Emotionally heavy.',
+    si:'Family atmosphere. Mentorship interest.',ai:'None noted'},
+  Webb:     {r:'MD',full_name:'Bill Webb',sp:'Orthopedics',dp:'SP',st:'2010',sn:'Positive',
+    na:'05/21/2026',nn:null,vp:null,vt:null,
+    vs:[90,105,130,103],vpd:[18.0,12.4,13.7,11.4],
+    ah:[0.4,0.8,1.2,1.3],mc:[8.5,10.9,7.1,6.1],
+    ep:[null,6.0,5.2,4.4,5.0],pan:[null,null,null,null],
+    ns:[6,3,4,5],nt:18,sg26:18,sg25:37,sgm:[6,3,9],
+    bn:'Getting patients in afternoons.',sf:'Laura and Priscilla fantastic.',
+    fb:'Yes.',wb:'Loves job.',si:'Nothing jumps out.',ai:'None noted'},
+  Steed:    {r:'MD',full_name:'Jeremiah Steed',sp:'Orthopedics',dp:'SP',st:'07/31/2024',sn:'Positive',
+    na:'05/20/2026',nn:null,vp:null,vt:null,
+    vs:[194,124,145,136],vpd:[17.6,13.8,13.2,10.9],
+    ah:[1.0,2.1,0.1,0],mc:[6.4,6.0,7.3,5.5],
+    ep:[null,2.8,4.4,4.0,4.4],pan:[null,null,null,null],
+    ns:[14,8,3,4],nt:29,sg26:43,sg25:23,sgm:[15,13,15],
+    bn:'Some patients too ill for surgery here.',sf:'Priscilla great.',
+    fb:'Yes.',wb:'Very happy.',si:'Surgery profitability data.',ai:'None noted'},
+  Holcomb:  {r:'MD',full_name:'Barry Holcomb',sp:'Pulmonology',dp:'SP',st:'12/01/2024',sn:'Positive',
+    na:'05/20/2026',nn:'05/20/2026',vp:null,vt:null,
+    vs:[121,101,133,102],vpd:[9.7,6.7,9.5,7.0],
+    ah:[0,0,0,0],mc:[6.5,11.4,9.7,9.1],
+    ep:[null,4.8,7.3,5.0,6.7],pan:[null,null,null,null],
+    ns:[8,3,4,6],nt:21,sg26:1,sg25:0,sgm:[1,0,0],
+    bn:'PFT scheduling lacking.',sf:'Charlene fantastic.',
+    fb:'No complaints.',wb:'N/A',si:'RN refill protocol. Monthly data.',ai:'None noted'}
+};
+
+
+var SURVEY = {
+  _grp: {ee:10.4, dp:4.1, pa:16.6, ee_max:25, dp_max:15, pa_max:20},
+  Abbas: {
+    name:'Jake Abbas',
+    ee:13, dp:4, pa:19,
+    ee_max:25, dp_max:15, pa_max:20,
+    ee_level:'Low', dp_level:'Low', pa_level:'Low burnout',
+    q_resp:[3,3,3,2,2,1,2,1,5,4,5,5],
+    q_labels:['Emotionally drained','Used up at day end','Morning fatigue','Patient work is strain','Feel burned out','More callous','Job hardening me','Patients as objects','Positively influencing','Very energetic','Effective with patients','Meaningful contribution'],
+    likes:'Working with older patients',
+    challenge:'Being in a small community'
+  },
+  Barber: {
+    name:'Emily Barber',
+    ee:10, dp:3, pa:15,
+    ee_max:25, dp_max:15, pa_max:20,
+    ee_level:'Low', dp_level:'Low', pa_level:'Moderate',
+    q_resp:[2,2,3,2,1,1,1,1,4,3,4,4],
+    q_labels:['Emotionally drained','Used up at day end','Morning fatigue','Patient work is strain','Feel burned out','More callous','Job hardening me','Patients as objects','Positively influencing','Very energetic','Effective with patients','Meaningful contribution'],
+    likes:'I love our patients and our team.',
+    challenge:'My current position has been a great reset for me, I was struggling with burnout in the year before I came to PSMC. I\\\'m grateful for this job that has let me regain my center as a medical provider.   The greatest challenge about working in general is time away from my young children, but it\\\'s a seesaw as I also am a better parent when I have time away from them. Childcare logistics has been the biggest challenge this summer.   I am getting ready to switch from the specialty NP role to primary care in the next few weeks. I am sure there will be new challenges ahead but feel optimistic about the future.'
+  },
+  Barnes: {
+    name:'Courtney Barnes',
+    ee:10, dp:3, pa:18,
+    ee_max:25, dp_max:15, pa_max:20,
+    ee_level:'Low', dp_level:'Low', pa_level:'Low burnout',
+    q_resp:[2,2,2,2,2,1,1,1,5,4,4,5],
+    q_labels:['Emotionally drained','Used up at day end','Morning fatigue','Patient work is strain','Feel burned out','More callous','Job hardening me','Patients as objects','Positively influencing','Very energetic','Effective with patients','Meaningful contribution'],
+    likes:'The patients that I am able to see and work with!',
+    challenge:'No challenges at the moment.'
+  },
+  Steed: {
+    name:'Jeremiah Steed',
+    ee:7, dp:3, pa:15,
+    ee_max:25, dp_max:15, pa_max:20,
+    ee_level:'Low', dp_level:'Low', pa_level:'Moderate',
+    q_resp:[1,1,2,2,1,1,1,1,4,4,4,3],
+    q_labels:['Emotionally drained','Used up at day end','Morning fatigue','Patient work is strain','Feel burned out','More callous','Job hardening me','Patients as objects','Positively influencing','Very energetic','Effective with patients','Meaningful contribution'],
+    likes:'I like the environment.',
+    challenge:'Getting busier.'
+  },
+  Zappone: {
+    name:'Phil Zappone',
+    ee:10, dp:6, pa:16,
+    ee_max:25, dp_max:15, pa_max:20,
+    ee_level:'Low', dp_level:'Low', pa_level:'Moderate',
+    q_resp:[2,2,2,2,2,2,2,2,4,4,4,4],
+    q_labels:['Emotionally drained','Used up at day end','Morning fatigue','Patient work is strain','Feel burned out','More callous','Job hardening me','Patients as objects','Positively influencing','Very energetic','Effective with patients','Meaningful contribution'],
+    likes:'Impacting patients. Being part of our team.',
+    challenge:'Health insurance.'
+  },
+  Hintzman: {
+    name:'Matthew Hintzman',
+    ee:15, dp:7, pa:15,
+    ee_max:25, dp_max:15, pa_max:20,
+    ee_level:'Low', dp_level:'Moderate', pa_level:'Moderate',
+    q_resp:[3,4,3,3,2,2,3,2,3,4,4,4],
+    q_labels:['Emotionally drained','Used up at day end','Morning fatigue','Patient work is strain','Feel burned out','More callous','Job hardening me','Patients as objects','Positively influencing','Very energetic','Effective with patients','Meaningful contribution'],
+    likes:'Good crew. Cooperative and collaborative work environment.',
+    challenge:'Insurance companies denying medications making decisions for us.'
+  },
+  Holcomb: {
+    name:'Barry Holcomb',
+    ee:8, dp:3, pa:18,
+    ee_max:25, dp_max:15, pa_max:20,
+    ee_level:'Low', dp_level:'Low', pa_level:'Low burnout',
+    q_resp:[2,2,1,2,1,1,1,1,4,4,5,5],
+    q_labels:['Emotionally drained','Used up at day end','Morning fatigue','Patient work is strain','Feel burned out','More callous','Job hardening me','Patients as objects','Positively influencing','Very energetic','Effective with patients','Meaningful contribution'],
+    likes:'Team cohesiveness  Great morale  Patient satisfaction',
+    challenge:'Limited resources'
+  },
+};
+
+var PC={Hintzman:'#1D9E75',Johnson:'#BA7517',McIntyre:'#534AB7',Mashburn:'#D4830A',
+        Nobles:'#D85A30',RSM:'#3B6D11',Zappone:'#A32D2D'};
+var WI={Brown:'#378ADD',Liverett:'#7F77DD'};
+var SP={Webb:'#5DCAA5',Steed:'#639922',Holcomb:'#0F6E56'};
+var AC=Object.assign({},PC,WI,SP,{Abbas:'#EF9F27'});
+var SC={Positive:'#1E8449',Mixed:'#D4830A',Neutral:'#888780',Concern:'#A32D2D'};
+var SB={Positive:'#D5F5E3',Mixed:'#FDEBD0',Neutral:'#F4F4F4',Concern:'#FADBD8'};
+
+function av(a){
+  var v=(a||[]).filter(function(x){return x!=null&&!isNaN(x);});
+  return v.length?v.reduce(function(s,b){return s+b;},0)/v.length:null;
+}
+function leg(id,items){
+  var el=document.getElementById(id);
+  if(!el) return;
+  el.innerHTML=items.map(function(x){
+    return '<span class="li"><span class="ls" style="background:'+x.c+'"></span>'+x.l+'</span>';
+  }).join('');
+}
+function sw(name){
+  var tabs=['col','cmp','peer','ind','pkg'];
+  document.querySelectorAll('.tab').forEach(function(t,i){t.classList.toggle('on',tabs[i]===name);});
+  tabs.forEach(function(k){document.getElementById('pane-'+k).classList.toggle('on',k===name);});
+  document.body.classList.toggle('printing-pkg', name==='pkg');
+}
+
+function triggerPkgPrint(){
+  // Ensure body class is set before print dialog opens
+  document.body.classList.add('printing-pkg');
+  // Small timeout lets the browser repaint before opening print dialog
+  setTimeout(function(){
+    window.print();
+    // Remove class after print dialog closes (user may cancel)
+    setTimeout(function(){
+      // Only remove if still on pkg tab
+      if(!document.getElementById('pane-pkg').classList.contains('on')){
+        document.body.classList.remove('printing-pkg');
+      }
+    }, 1000);
+  }, 150);
+}
+
+// Themes
+var THEMES=[
+  {n:'Registration / check-in delays',c:8,cat:'Operations',cc:'#185FA5'},
+  {n:'After-hours charting burden',c:6,cat:'Wellbeing',cc:'#1E8449'},
+  {n:'Access / appointment wait times',c:5,cat:'Access',cc:'#A32D2D'},
+  {n:'Leadership / c-suite disconnect',c:5,cat:'Culture',cc:'#A32D2D'},
+  {n:'AI tool adoption',c:5,cat:'Innovation',cc:'#534AB7'},
+  {n:'Staffing inconsistency',c:4,cat:'Staffing',cc:'#BA7517'},
+  {n:'Provider recognition / morale',c:4,cat:'Culture',cc:'#A32D2D'},
+  {n:'Panel / risk stratification',c:3,cat:'Strategy',cc:'#0F6E56'},
+  {n:'New provider integration',c:3,cat:'Staffing',cc:'#BA7517'}
+];
+var thEl=document.getElementById('themes');
+if(thEl){
+  THEMES.forEach(function(t){
+    thEl.innerHTML+='<div class="tr2"><span class="tn">'+t.n+'</span><div class="tbw"><div class="tbar" style="width:'+Math.round(t.c/8*100)+'%"></div></div><span class="tc">'+t.c+'</span><span class="tcat" style="background:'+t.cc+'22;color:'+t.cc+'">'+t.cat+'</span></div>';
+  });
+}
+
+// ===== PRINT PACKAGE =====
+var pkgCharts = {};
+
+function buildPkg(key){
+  var el = document.getElementById('pkg-preview');
+  if(!key){ el.innerHTML = ''; return; }
+  var p = P[key];
+  if(!p){ return; }
+
+  // Destroy any old charts
+  Object.keys(pkgCharts).forEach(function(id){
+    if(pkgCharts[id]) pkgCharts[id].destroy();
+  });
+  pkgCharts = {};
+
+  function mkC(id, cfg){
+    var canvas = document.getElementById(id);
+    if(canvas) pkgCharts[id] = new Chart(canvas, cfg);
+  }
+
+  var MO=['Jan','Feb','Mar','Apr'];
+  var col = AC[key]||'#0F6E56';
+  var srv = (typeof SURVEY !== 'undefined') ? SURVEY[key] : null;
+  var grp = (typeof SURVEY !== 'undefined') ? SURVEY._grp : null;
+
+  // Peer label map for benchmark section
+  var pcKeys=['Hintzman','Johnson','Mashburn','McIntyre','Nobles','RSM','Zappone'];
+  var spKeys=['Holcomb','Steed','Webb'];
+  var spKeys=['Holcomb','Steed','Webb'];
+  var isPC=pcKeys.indexOf(selfKey)!==-1;
+  var isSP=spKeys.indexOf(selfKey)!==-1;
+  var peerGroup=isPC?pcKeys:spKeys;
+  var isPC=pcKeys.indexOf(key)!==-1;
+  var isSP=spKeys.indexOf(key)!==-1;
+  var peerGroup=isPC?pcKeys:spKeys;
+  var letters='ABCDEFG'; var li=0;
+  var labelMap={}, colorMap={};
+  var SELF_COL='#0F6E56', PEER_COL='#BBBBBB';
+  peerGroup.forEach(function(k){
+    if(k===key){ labelMap[k]=key+' (you)'; colorMap[k]=SELF_COL; }
+    else{ labelMap[k]='Provider '+letters[li++]; colorMap[k]=PEER_COL; }
+  });
+
+  function avp(a){var v=(a||[]).filter(function(x){return x!=null&&!isNaN(x)&&x>0;});return v.length?v.reduce(function(s,b){return s+b;},0)/v.length:null;}
+  var nd = null;
+  if(p.na){ var pts=p.na.split('/'); if(pts.length===3){ var dobj=new Date(parseInt(pts[2]),parseInt(pts[0])-1,parseInt(pts[1])); nd=Math.round((dobj-new Date('2026-05-21'))/86400000); } }
+
+  // ── EE/DP/PA colors
+  var eeC='#1E8449', dpC='#1E8449', paC='#1E8449';
+  if(srv){ eeC=srv.ee>=22?'#A32D2D':srv.ee>=17?'#D4830A':'#1E8449'; dpC=srv.dp>=11?'#A32D2D':srv.dp>=7?'#D4830A':'#1E8449'; paC=srv.pa>=18?'#1E8449':srv.pa>=14?'#D4830A':'#A32D2D'; }
+
+  var html = '';
+
+  // ── COVER SHEET ──────────────────────────────────────────────────────
+  html += '<div class="pkg-cover">';
+  html += '<div class="pkg-cover-label">PCC Provider 1:1 Program</div>';
+  html += '<div class="pkg-cover-name">'+key+'</div>';
+  html += '<div class="pkg-cover-period">1st Third of 2026</div>';
+  html += '<div class="pkg-cover-by">Presented by Vicki Goeckner, Clinic Director</div>';
+  html += '</div>';
+
+  // TABLE OF CONTENTS PAGE
+  html += '<div class="pkg-toc">';
+  html += '<div class="pkg-toc-inner">';
+  html += '<div class="pkg-toc-tag">Pagosa Springs Community Center</div>';
+  html += '<div class="pkg-toc-title">Clinic &amp; Provider Specific Data</div>';
+  html += '<div class="pkg-toc-sub">What is included in this report</div>';
+  html += '<div class="pkg-toc-items">';
+  html += '<div class="pkg-toc-item"><span class="pkg-toc-num">01</span><div class="pkg-toc-desc"><div class="pkg-toc-item-title">Key Performance Indicators</div><div class="pkg-toc-item-sub">Next available appointment, visits per day, after-hours EHR, no-shows, panel size, and burnout risk score</div></div></div>';
+  html += '<div class="pkg-toc-item"><span class="pkg-toc-num">02</span><div class="pkg-toc-desc"><div class="pkg-toc-item-title">Monthly Metrics and Trends</div><div class="pkg-toc-item-sub">Visits per month, visits per day trend, after-hours vs message center percentage, and EHR documentation time Jan through Apr 2026</div></div></div>';
+  html += '<div class="pkg-toc-item"><span class="pkg-toc-num">03</span><div class="pkg-toc-desc"><div class="pkg-toc-item-title">Interview Notes Summary</div><div class="pkg-toc-item-sub">Feedback captured during the 1:1 interview covering bottlenecks, staffing, feedback culture, wellbeing, and strategic input</div></div></div>';
+  html += '<div class="pkg-toc-item"><span class="pkg-toc-num">04</span><div class="pkg-toc-desc"><div class="pkg-toc-item-title">Provider Wellbeing Survey</div><div class="pkg-toc-item-sub">Maslach Burnout Inventory results across Emotional Exhaustion, Depersonalization, and Personal Accomplishment with group benchmarks</div></div></div>';
+  if(isPC || isSP){
+    html += '<div class="pkg-toc-item"><span class="pkg-toc-num">05</span><div class="pkg-toc-desc"><div class="pkg-toc-item-title">Peer Benchmark</div><div class="pkg-toc-item-sub">Blinded comparison of your metrics against scheduled primary care peers. Your data is labeled; all others are anonymized as Provider A, B, C etc.</div></div></div>';
+  }
+  html += '</div>';
+  html += '<div class="pkg-toc-footer">Data through April 2026 &nbsp;&middot;&nbsp; Prepared by Vicki Goeckner, Clinic Director &nbsp;&middot;&nbsp; Confidential</div>';
+  html += '</div>';
+  html += '</div>';
+
+
+  // ── SECTION 1: INDIVIDUAL REPORT ─────────────────────────────────────
+  html += '<div style="margin-bottom:24px;padding-bottom:20px;border-bottom:2px solid var(--bdr)">';
+  html += '<div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--cts);margin-bottom:8px">Prepared for</div>';
+  html += '<div style="font-size:28px;font-weight:700;color:var(--ctp);line-height:1.2">'+P[key].full_name+'</div>';
+  html += '<div style="font-size:13px;color:var(--cts);margin-top:4px">'+P[key].r+' &nbsp;&middot;&nbsp; '+P[key].sp+'</div>';
+  html += '</div>';
+  html += '<div class="pkg-section-label">Individual Report</div>';
+
+  // KPI strip
+  var vpdAvg = avp(p.vpd);
+  var ahrAvg = avp(p.ah);
+  html += '<div class="rkpi">';
+  html += '<div class="rkc"><div class="rkl">Next open appt</div><div class="rkv '+(nd==null?'':nd>60?'r':nd>30?'a':'g')+'">'+(nd!=null?nd+' days':'--')+'</div><div class="rks">'+(p.na||'--')+'</div></div>';
+  html += '<div class="rkc"><div class="rkl">Next new patient</div><div class="rkv '+(p.nn&&daysOut(p.nn)>90?'r':p.nn&&daysOut(p.nn)>60?'a':'g')+'">'+(p.nn?daysOut(p.nn)+' days':'--')+'</div><div class="rks">'+(p.nn||'--')+'</div></div>';
+  html += '<div class="rkc"><div class="rkl">Avg visits / day</div><div class="rkv '+(vpdAvg>=13?'g':vpdAvg>=10?'':'a')+'">'+(vpdAvg?vpdAvg.toFixed(1):'--')+'</div><div class="rks">'+(p.vt!=null?(p.vt>0?'+':'')+p.vt.toFixed(1)+'% vs prev Q':'New provider')+'</div></div>';
+  html += '<div class="rkc"><div class="rkl">Q1 no-shows</div><div class="rkv '+(p.nt>30?'r':p.nt>20?'a':'g')+'">'+p.nt+'</div><div class="rks">Jan-Apr total</div></div>';
+  html += '<div class="rkc"><div class="rkl">After-hrs % avg</div><div class="rkv '+(ahrAvg>15?'r':ahrAvg>8?'a':'g')+'">'+(ahrAvg?ahrAvg.toFixed(1)+'%':'--')+'</div><div class="rks">Q1 2026</div></div>';
+  if(p.pan[0]) html += '<div class="rkc"><div class="rkl">Panel (Apr)</div><div class="rkv">'+p.pan[3]+'</div><div class="rks">Jan: '+p.pan[0]+'</div></div>';
+  // Burnout risk score card
+  var ahFiltered=p.ah.filter(function(v){return v!=null&&!isNaN(v)&&v<=40;});
+  var ahrForScore=ahFiltered.length?ahFiltered.reduce(function(s,v){return s+v;},0)/ahFiltered.length:0;
+  var bScore = Math.min(100,Math.round(
+    Math.min(40,(ahrForScore/25)*40) +
+    Math.min(25,((avp(p.mc)||0)/25)*25) +
+    Math.min(20,((avp(p.ep.slice(1).filter(function(x){return x!=null&&x<50;}))||0)/30)*20) +
+    Math.min(15,((p.nt/Math.max(1,avp(p.vs.filter(function(v){return v>0;}))*4)*100)/10)*15)
+  ));
+  var bCol = bScore>=65?'#A32D2D':bScore>=40?'#D4830A':'#1E8449';
+  var bLvl = bScore>=65?'High':bScore>=40?'Moderate':'Low';
+  html += '<div class="rkc"><div class="rkl">Burnout risk score</div><div class="rkv" style="color:'+bCol+';">'+bScore+'</div><div class="rks" style="color:'+bCol+';">'+bLvl+' &nbsp;/ 100</div></div>';
+  html += '</div>';
+
+  // Metrics table
+  var mRows=[['Visits/month',p.vs],['Visits/day',p.vpd.map(function(v){return v>0?v:null;})],['After-hrs %',p.ah.map(function(v){return v!=null?v.toFixed(1)+'%':null;})],['Msg center %',p.mc.map(function(v){return v!=null?v.toFixed(1)+'%':null;})],['EHR min/pt',p.ep.slice(1).map(function(v){return v!=null?v.toFixed(1):null;})],['No shows',p.ns]];
+  html += '<div style="overflow-x:auto;margin:14px 0"><table class="mt"><thead><tr><th>Metric</th>'+MO.map(function(m){return'<th>'+m+'</th>';}).join('')+'</tr></thead><tbody>';
+  mRows.forEach(function(row){html+='<tr><td>'+row[0]+'</td>'+(row[1]||[]).map(function(v){return'<td>'+(v!=null?v:'--')+'</td>';}).join('')+'</tr>';});
+  html += '</tbody></table></div>';
+
+  // Charts
+  html += '<div class="rcg" style="margin-bottom:16px">';
+  html += '<div class="rcc"><div class="ct">Visits per month</div><div class="cw" style="height:160px"><canvas id="pkg-c1"></canvas></div></div>';
+  html += '<div class="rcc"><div class="ct">Avg visits per day - monthly trend</div><div class="cw" style="height:160px"><canvas id="pkg-cvpd"></canvas></div></div>';
+  html += '<div class="rcc"><div class="ct">After-hours % vs message center %</div><div class="cw" style="height:160px"><canvas id="pkg-c2"></canvas></div></div>';
+  html += '<div class="rcc"><div class="ct">EHR doc time (min/patient)</div><div class="cw" style="height:160px"><canvas id="pkg-c4"></canvas></div></div>';
+  if(p.pan[0]) html += '<div class="rcc"><div class="ct">Panel size</div><div class="cw" style="height:160px"><canvas id="pkg-c3"></canvas></div></div>';
+  html += '</div>';
+
+  // Interview notes
+  var qPairs=[['Bottleneck',p.bn],['Staffing',p.sf],['Feedback heard',p.fb],['Wellbeing',p.wb],['Strategic input',p.si],['AI tool',p.ai]];
+  html += '<div class="sh" style="margin-top:8px">Interview notes</div>';
+  html += '<div class="qb">'+qPairs.map(function(pair){return'<div class="qr"><div class="qk">'+pair[0]+'</div><div class="qv">'+(pair[1]||'--')+'</div></div>';}).join('')+'</div>';
+
+  // ── SECTION 2: WELLBEING SURVEY ───────────────────────────────────────
+  html += '<div class="pkg-divider"></div>';
+  html += '<div class="pkg-section-label">Wellbeing Survey - Q1 2026</div>';
+  html += '<div class="wb-section">';
+  if(srv&&grp){
+    var rl=['Never','Rarely','Sometimes','Often','Always'];
+    var rc=['#1E8449','#5A9A72','#D4830A','#C0582A','#A32D2D'];
+    var nR=Object.keys(SURVEY).filter(function(k){return k!=='_grp';}).length;
+    html += '<div class="wb-intro">Based on the Maslach Burnout Inventory. Lower EE and DP scores are better. Higher PA is better. Group average from '+nR+' respondents.</div>';
+    html += '<div class="wb-scores">';
+    html += '<div class="wb-sc" style="background:'+eeC+'18;border-color:'+eeC+'55"><div class="wb-sl" style="color:'+eeC+'">Emotional Exhaustion</div><div class="wb-sv" style="color:'+eeC+'">'+srv.ee+'</div><div class="wb-ss" style="color:'+eeC+'">'+srv.ee_level+'<br><span style="color:#999">Group avg: '+grp.ee+'</span></div></div>';
+    html += '<div class="wb-sc" style="background:'+dpC+'18;border-color:'+dpC+'55"><div class="wb-sl" style="color:'+dpC+'">Depersonalization</div><div class="wb-sv" style="color:'+dpC+'">'+srv.dp+'</div><div class="wb-ss" style="color:'+dpC+'">'+srv.dp_level+'<br><span style="color:#999">Group avg: '+grp.dp+'</span></div></div>';
+    html += '<div class="wb-sc" style="background:'+paC+'18;border-color:'+paC+'55"><div class="wb-sl" style="color:'+paC+'">Personal Accomplishment</div><div class="wb-sv" style="color:'+paC+'">'+srv.pa+'</div><div class="wb-ss" style="color:'+paC+'">'+srv.pa_level+'<br><span style="color:#999">Group avg: '+grp.pa+'</span></div></div>';
+    html += '</div>';
+    [{l:'Emotional Exhaustion - lower is better',idx:[0,1,2,3,4],bad:true},{l:'Depersonalization - lower is better',idx:[5,6,7],bad:true},{l:'Personal Accomplishment - higher is better',idx:[8,9,10,11],bad:false}].forEach(function(g){
+      html += '<div class="wb-bgl">'+g.l+'</div>';
+      g.idx.forEach(function(qi){
+        var v=srv.q_resp[qi],pct=(v-1)/4*100,fc=g.bad?rc[v-1]:rc[4-(v-1)];
+        html += '<div class="wb-br"><span class="wb-bl">'+srv.q_labels[qi]+'</span><div class="wb-bt"><div class="wb-bf" style="width:'+pct+'%;background:'+fc+'"></div></div><span class="wb-bv">'+rl[v-1]+'</span></div>';
+      });
+    });
+    html += '<div class="wb-ql">What I enjoy most</div><div class="wb-qt">'+srv.likes+'</div>';
+    html += '<div class="wb-ql">My biggest challenge</div><div class="wb-qt">'+srv.challenge+'</div>';
+  } else {
+    html += '<div class="wb-none">Survey response not submitted this quarter.</div>';
+  }
+  html += '</div>';
+
+  // ── SECTION 3: PEER BENCHMARK (PC providers only) ─────────────────────
+  if(isPC || isSP){
+    html += '<div class="pkg-divider"></div>';
+    html += '<div class="pkg-section-label">Peer Benchmark - Blinded Comparison</div>';
+    html += '<div style="font-size:12px;color:var(--cts);margin-bottom:14px;padding:9px 13px;background:#F0FDF9;border-radius:var(--rm);border:.5px solid #9FE1CB">Your metrics are highlighted in green. All other providers are anonymized as Provider A, B, C etc. so you can see where you stand without seeing who is who.</div>';
+
+    // KPI comparison row
+    var vpdA=avp(p.vpd), ahrA=avp(p.ah);
+    var grpVpdAll=peerGroup.map(function(k){return avp(P[k].vpd);}).filter(function(v){return v!=null;});
+    var grpAhrAll=peerGroup.map(function(k){return avp(P[k].ah);}).filter(function(v){return v!=null;});
+    var grpVpd=grpVpdAll.reduce(function(s,v){return s+v;},0)/grpVpdAll.length;
+    var grpAhr=grpAhrAll.reduce(function(s,v){return s+v;},0)/grpAhrAll.length;
+    function rank(val,all,hi){var s=all.slice().sort(function(a,b){return hi?b-a:a-b;});return s.indexOf(val)+1;}
+    html += '<div class="kg" style="margin-bottom:16px">';
+    html += '<div class="kc"><div class="kl">Your VPD avg</div><div class="kv g">'+(vpdA?vpdA.toFixed(1):'--')+'</div><div class="ks">Group avg: '+(grpVpd?grpVpd.toFixed(1):'--')+' | Rank: '+rank(vpdA,grpVpdAll,true)+' of '+grpVpdAll.length+'</div></div>';
+    html += '<div class="kc"><div class="kl">Your after-hrs %</div><div class="kv '+(ahrA>15?'r':ahrA>8?'a':'g')+'">'+(ahrA?ahrA.toFixed(1)+'%':'--')+'</div><div class="ks">Group avg: '+(grpAhr?grpAhr.toFixed(1)+'%':'--')+' | Rank: '+rank(ahrA,grpAhrAll,false)+' of '+grpAhrAll.length+' (lower=better)</div></div>';
+    html += '<div class="kc"><div class="kl">Q1 no-shows</div><div class="kv '+(p.nt>30?'r':p.nt>20?'a':'g')+'">'+p.nt+'</div><div class="ks">Group avg: '+Math.round(pcKeys.map(function(k){return P[k].nt;}).reduce(function(s,v){return s+v;},0)/pcKeys.length)+' | Rank: '+rank(p.nt,peerGroup.map(function(k){return P[k].nt;}),false)+' of '+peerGroup.length+' (lower=better)</div></div>';
+    html += '</div>';
+
+    // Charts - all 6 peer comparisons
+    html += '<div class="rcg" style="margin-bottom:14px">';
+    html += '<div class="rcc"><div class="ct">Visits per day - you vs peers (blinded)</div><div class="cw" style="height:180px"><canvas id="pkg-peer-vpd"></canvas></div></div>';
+    html += '<div class="rcc"><div class="ct">Monthly visits - you vs peers (blinded)</div><div class="cw" style="height:180px"><canvas id="pkg-peer-vis"></canvas></div></div>';
+    html += '</div>';
+    html += '<div class="rcg" style="margin-bottom:14px">';
+    html += '<div class="rcc"><div class="ct">After-hours EHR % - Q1 avg (lower is better)</div><div class="cw" style="height:180px"><canvas id="pkg-peer-ahr"></canvas></div></div>';
+    html += '<div class="rcc"><div class="ct">Message center % - Q1 avg (lower is better)</div><div class="cw" style="height:180px"><canvas id="pkg-peer-msg"></canvas></div></div>';
+    html += '</div>';
+    html += '<div class="rcg" style="margin-bottom:14px">';
+    html += '<div class="rcc"><div class="ct">EHR doc time per patient (min) - Q1 avg</div><div class="cw" style="height:180px"><canvas id="pkg-peer-ehr"></canvas></div></div>';
+    html += '<div class="rcc"><div class="ct">No-shows Q1 total</div><div class="cw" style="height:180px"><canvas id="pkg-peer-ns"></canvas></div></div>';
+    html += '</div>';
+  }
+
+
+  // THANK YOU PAGE
+  html += '<div class="pkg-ty">';
+  html += '<div class="pkg-ty-inner">';
+  html += '<div class="pkg-ty-title">Thank You</div>';
+  html += '<div class="pkg-ty-body">';
+  html += '<p>Thank you for taking the time to sit down with me. These conversations mean a lot to me personally and to the work we are doing together at Pagosa Springs Medical Center.</p>';
+  html += '<p>Your feedback shapes what we do next. I am looking forward to working through the things we talked about and making real improvements based on what you shared.</p>';
+  html += '<p>See you next quarter.</p>';
+  html += '</div>';
+  html += '<div class="pkg-ty-sig">';
+  html += '<div class="pkg-ty-name">Vicki Goeckner</div>';
+  html += '<div class="pkg-ty-role">Clinic Director, Pagosa Springs Medical Center</div>';
+  html += '</div>';
+  html += '</div>';
+  html += '</div>';
+
+  el.innerHTML = html;
+
+  // Draw all charts
+  requestAnimationFrame(function(){
+    mkC('pkg-c1',{type:'bar',data:{labels:MO,datasets:[{data:p.vs,backgroundColor:col+'99',borderColor:col,borderWidth:1.5}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{beginAtZero:false,ticks:{font:{size:10}}}}}});
+
+    var vpdDS=[{label:'VPD',data:p.vpd.map(function(v){return v>0?v:null;}),borderColor:col,backgroundColor:col+'22',fill:true,pointRadius:4,borderWidth:2,tension:.3}];
+    if(p.vp!=null) vpdDS.push({label:'Prev Q',data:[p.vp,p.vp,p.vp,p.vp],borderColor:col+'88',borderDash:[4,3],borderWidth:1.5,pointRadius:0,backgroundColor:'transparent'});
+    mkC('pkg-cvpd',{type:'line',data:{labels:MO,datasets:vpdDS},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{min:0,ticks:{font:{size:10}}}}}});
+
+    mkC('pkg-c2',{type:'line',data:{labels:MO,datasets:[{label:'After-hrs %',data:p.ah,borderColor:'#A32D2D',backgroundColor:'transparent',pointRadius:3,borderWidth:2,tension:.3},{label:'Msg ctr %',data:p.mc,borderColor:'#185FA5',backgroundColor:'transparent',pointRadius:3,borderWidth:2,borderDash:[4,3],tension:.3}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{boxWidth:8,font:{size:9}}}},scales:{y:{ticks:{callback:function(v){return v+'%';},font:{size:10}}}}}});
+
+    mkC('pkg-c4',{type:'bar',data:{labels:MO,datasets:[{data:p.ep.slice(1),backgroundColor:'#FAC77599',borderColor:'#BA7517',borderWidth:1.5}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,ticks:{font:{size:10}}}}}});
+
+    if(p.pan[0]){ var c3=document.getElementById('pkg-c3'); if(c3) pkgCharts['pkg-c3']=new Chart(c3,{type:'line',data:{labels:MO,datasets:[{data:p.pan,borderColor:col,backgroundColor:col+'22',fill:true,pointRadius:3,borderWidth:2,tension:.3}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{ticks:{font:{size:10}}}}}}); }
+
+    // Peer charts
+    if(pcKeys.indexOf(key)!==-1){
+      // VPD trend line
+      mkC('pkg-peer-vpd',{type:'line',data:{labels:MO,datasets:peerGroup.map(function(k){var s=k===key;return{label:labelMap[k],data:P[k].vpd.map(function(v){return v>0?v:null;}),borderColor:colorMap[k],backgroundColor:'transparent',pointRadius:s?5:2,borderWidth:s?2.5:1,tension:.3,order:s?0:1};})},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{min:0,ticks:{font:{size:10}}},x:{ticks:{font:{size:10}}}}}});
+
+      // Monthly visits line
+      mkC('pkg-peer-vis',{type:'line',data:{labels:MO,datasets:peerGroup.map(function(k){var s=k===key;return{label:labelMap[k],data:P[k].vs,borderColor:colorMap[k],backgroundColor:s?SELF_COL+'18':'transparent',fill:s,pointRadius:s?5:2,borderWidth:s?2.5:1,tension:.3,order:s?0:1};})},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{beginAtZero:false,ticks:{font:{size:10}}},x:{ticks:{font:{size:10}}}}}});
+
+      // After-hours bar (sorted)
+      var ahrSorted=peerGroup.map(function(k){return{k:k,v:+(avp(P[k].ah)||0).toFixed(1)};}).sort(function(a,b){return b.v-a.v;});
+      mkC('pkg-peer-ahr',{type:'bar',data:{labels:ahrSorted.map(function(x){return labelMap[x.k];}),datasets:[{data:ahrSorted.map(function(x){return x.v;}),backgroundColor:ahrSorted.map(function(x){return x.k===key?SELF_COL+'CC':'#BBBBBB55';}),borderColor:ahrSorted.map(function(x){return x.k===key?SELF_COL:'#BBBBBB';}),borderWidth:ahrSorted.map(function(x){return x.k===key?2:1;})}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{font:{size:9},autoSkip:false,maxRotation:30}},y:{ticks:{callback:function(v){return v+'%';},font:{size:10}}}}}});
+
+      // Message center bar (sorted)
+      var msgSorted=peerGroup.map(function(k){return{k:k,v:+(avp(P[k].mc)||0).toFixed(1)};}).sort(function(a,b){return b.v-a.v;});
+      mkC('pkg-peer-msg',{type:'bar',data:{labels:msgSorted.map(function(x){return labelMap[x.k];}),datasets:[{data:msgSorted.map(function(x){return x.v;}),backgroundColor:msgSorted.map(function(x){return x.k===key?SELF_COL+'CC':'#BBBBBB55';}),borderColor:msgSorted.map(function(x){return x.k===key?SELF_COL:'#BBBBBB';}),borderWidth:msgSorted.map(function(x){return x.k===key?2:1;})}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{font:{size:9},autoSkip:false,maxRotation:30}},y:{ticks:{callback:function(v){return v+'%';},font:{size:10}}}}}});
+
+      // EHR doc time bar (sorted, exclude outliers)
+      var ehrSorted=peerGroup.map(function(k){var vals=P[k].ep.slice(1).filter(function(x){return x!=null&&x<50;});return{k:k,v:vals.length?+(vals.reduce(function(s,v){return s+v;},0)/vals.length).toFixed(1):0};}).filter(function(x){return x.v>0;}).sort(function(a,b){return b.v-a.v;});
+      mkC('pkg-peer-ehr',{type:'bar',data:{labels:ehrSorted.map(function(x){return labelMap[x.k];}),datasets:[{data:ehrSorted.map(function(x){return x.v;}),backgroundColor:ehrSorted.map(function(x){return x.k===key?'#BA7517CC':'#BBBBBB55';}),borderColor:ehrSorted.map(function(x){return x.k===key?'#BA7517':'#BBBBBB';}),borderWidth:ehrSorted.map(function(x){return x.k===key?2:1;})}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{font:{size:9},autoSkip:false,maxRotation:30}},y:{ticks:{font:{size:10}}}}}});
+
+      // No-shows bar (sorted)
+      var nsSorted=peerGroup.map(function(k){return{k:k,v:P[k].nt};}).sort(function(a,b){return b.v-a.v;});
+      mkC('pkg-peer-ns',{type:'bar',data:{labels:nsSorted.map(function(x){return labelMap[x.k];}),datasets:[{data:nsSorted.map(function(x){return x.v;}),backgroundColor:nsSorted.map(function(x){return x.k===key?'#D85A30CC':'#BBBBBB55';}),borderColor:nsSorted.map(function(x){return x.k===key?'#D85A30':'#BBBBBB';}),borderWidth:nsSorted.map(function(x){return x.k===key?2:1;})}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{font:{size:9},autoSkip:false,maxRotation:30}},y:{ticks:{font:{size:10}}}}}});
+    }
+  });
+}
+
+
+// Provider grid
+var GROUPS=[
+  {label:'Primary Care - Scheduled',cls:'',keys:['Hintzman','Johnson','Mashburn','McIntyre','Nobles','RSM','Zappone']},
+  {label:'Walk-In Providers',cls:'wi',keys:['Brown','Liverett']},
+  {label:'Specialty',cls:'',keys:['Holcomb','Steed','Webb']},
+  {label:'Behavioral Health',cls:'',keys:['Abbas']}
+];
+var pgEl=document.getElementById('pg');
+GROUPS.forEach(function(g){
+  pgEl.innerHTML+='<div class="gh '+g.cls+'">'+g.label+'</div>';
+  g.keys.forEach(function(k){
+    var p=P[k];
+    var wi=p.dp==='WI'?' wis':'';
+    pgEl.innerHTML+='<button class="pb'+wi+'" id="pb-'+k+'" data-key="'+k+'">'
+      +'<div class="pn"><span class="dot" style="background:'+SC[p.sn]+'"></span>'+k+'</div>'
+      +'<div class="pr">'+p.r+'</div>'
+      +'<div class="ps">'+p.sp+'</div></button>';
+  });
+});
+// Delegated click handler
+pgEl.addEventListener('click', function(e){
+  var el = e.target;
+  // Walk up to find the button with data-key
+  while(el && el !== pgEl){
+    if(el.getAttribute && el.getAttribute('data-key')){
+      showRpt(el.getAttribute('data-key'));
+      return;
+    }
+    el = el.parentElement;
+  }
+});
+
+function showRpt(key){
+  if(!key || !P[key]) return;
+  var p=P[key];
+  document.querySelectorAll('.pb').forEach(function(b){b.classList.remove('on');});
+  var btn=document.getElementById('pb-'+key);
+  if(btn) btn.classList.add('on');
+
+  function ta(arr){
+    var v=arr.filter(function(x){return x!=null&&!isNaN(parseFloat(x));});
+    if(v.length<2) return '<span class="ts">-</span>';
+    var l=parseFloat(v[v.length-1]),f=parseFloat(v[0]);
+    if(l>f) return '<span class="tu">&#9650; Up</span>';
+    if(l<f) return '<span class="td2">&#9660; Down</span>';
+    return '<span class="ts">&#9658; Stable</span>';
+  }
+
+  var nd=daysOut(p.na), npd=daysOut(p.nn);
+  var ndCls=nd==null?'':nd>60?'r':nd>30?'a':'g';
+  var npdCls=npd==null?'':npd>90?'r':npd>60?'a':'g';
+  var vpdAvg=av(p.vpd.filter(function(v){return v>0;}));
+  var vpdCls=vpdAvg>=13?'g':vpdAvg>=10?'':'a';
+  var ahrAvg=av(p.ah);
+  var ahrCls=ahrAvg>15?'r':ahrAvg>8?'a':'g';
+
+  var wiNote=p.dp==='WI'?'<div class="win">Walk-in provider - metrics reflect a walk-in care model and are not directly comparable to scheduled primary care benchmarks.</div>':'';
+
+  var mRows=[
+    ['Visits / month',p.vs],
+    ['Visits / day',p.vpd.map(function(v){return v>0?v:null;})],
+    ['After-hrs EHR %',p.ah.map(function(v){return v!=null?v.toFixed(1)+'%':null;})],
+    ['Message center %',p.mc.map(function(v){return v!=null?v.toFixed(1)+'%':null;})],
+    ['EHR doc time (min/pt)',p.ep.slice(1).map(function(v){return v!=null?v.toFixed(1):null;})],
+    ['No shows',p.ns]
+  ];
+  var qPairs=[
+    ['Bottleneck',p.bn],['Staffing',p.sf],['Feedback heard',p.fb],
+    ['Wellbeing',p.wb],['Strategic input',p.si],['AI tool',p.ai]
+  ];
+
+  var html='<div class="print-rpt-header">PCC Provider 1:1 Report &nbsp;&middot;&nbsp; ' + key + ' &nbsp;&middot;&nbsp; Q1 2026 &nbsp;&middot;&nbsp; Confidential</div>';
+  html+='<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem">';
+  html+='<button class="back" onclick="clearRpt()">&#8592; All providers</button>';
+  html+='<button class="print-rpt-btn" onclick="window.print()" style="background:#0F6E56;color:#fff;border:none;border-radius:8px;padding:7px 16px;font-size:12px;font-weight:500;cursor:pointer">&#128438; Print report</button>';
+  html+='</div>';
+  html+=wiNote;
+  html+='<div class="rh"><div>';
+  html+='<div class="rn">'+key+' <span style="font-size:14px;font-weight:400;color:var(--cts)">'+p.r+'</span></div>';
+  html+='<div class="rm">'+p.sp+'  .  Started: '+p.st;
+  if(p.sg26!=null) html+='  .  Surg YTD: '+p.sg26+' (vs '+p.sg25+' in 2025)';
+  html+='</div></div>';
+  html+='<span class="rs" style="background:'+SB[p.sn]+';color:'+SC[p.sn]+'">'+p.sn+'</span></div>';
+
+  html+='<div class="sh">Key indicators</div><div class="rkpi">';
+  html+='<div class="rkc"><div class="rkl">Next available appt</div>';
+  html+='<div class="rkv '+ndCls+'">'+(nd!=null?nd+' days':'-')+'</div>';
+  html+='<div class="rks">'+(p.na||'-')+'</div></div>';
+  html+='<div class="rkc"><div class="rkl">Next new patient</div>';
+  html+='<div class="rkv '+npdCls+'">'+(npd!=null?npd+' days':'-')+'</div>';
+  html+='<div class="rks">'+(p.nn||'-')+'</div></div>';
+  html+='<div class="rkc"><div class="rkl">Avg visits / day</div>';
+  html+='<div class="rkv '+vpdCls+'">'+(vpdAvg?vpdAvg.toFixed(1):'-')+'</div>';
+  html+='<div class="rks">'+(p.vt!=null?(p.vt>0?'+':'')+p.vt.toFixed(1)+'% vs prev Q':'New provider')+'</div></div>';
+  html+='<div class="rkc"><div class="rkl">Q1 no-shows</div>';
+  html+='<div class="rkv '+(p.nt>30?'r':p.nt>20?'a':'g')+'">'+p.nt+'</div>';
+  html+='<div class="rks">Jan-Apr total</div></div>';
+  html+='<div class="rkc"><div class="rkl">After-hrs % avg</div>';
+  html+='<div class="rkv '+ahrCls+'">'+(ahrAvg!=null?ahrAvg.toFixed(1)+'%':'-')+'</div>';
+  html+='<div class="rks">Q1 2026 average</div></div>';
+  if(p.pan[0]){
+    html+='<div class="rkc"><div class="rkl">Panel size (Apr)</div>';
+    html+='<div class="rkv">'+p.pan[3]+'</div>';
+    html+='<div class="rks">Jan: '+p.pan[0]+'</div></div>';
+  }
+  html+='</div>';
+
+  html+='<div class="sh">Monthly metrics</div>';
+  html+='<div style="overflow-x:auto;margin-bottom:1.25rem"><table class="mt"><thead><tr><th>Metric</th>';
+  MO.forEach(function(m){html+='<th>'+m+'</th>';});
+  html+='<th>Trend</th></tr></thead><tbody>';
+  mRows.forEach(function(row){
+    html+='<tr><td>'+row[0]+'</td>';
+    (row[1]||[]).forEach(function(v){html+='<td>'+(v!=null?v:'-')+'</td>';});
+    html+='<td>'+ta((row[1]||[]).map(function(v){return parseFloat(v);}))+'</td></tr>';
+  });
+  html+='</tbody></table></div>';
+
+  html+='<div class="sh">Charts</div><div class="rcg">';
+  html+='<div class="rcc"><div class="ct">Visits per month</div><div class="cw" style="height:175px"><canvas id="rc1"></canvas></div></div>';
+  html+='<div class="rcc"><div class="ct">Avg visits per day - monthly trend</div><div class="cw" style="height:175px"><canvas id="rcvpd"></canvas></div></div>';
+  html+='<div class="rcc"><div class="ct">After-hours % vs message center %</div><div class="cw" style="height:175px"><canvas id="rc2"></canvas></div></div>';
+  html+='<div class="rcc"><div class="ct">EHR doc time (min/patient)</div><div class="cw" style="height:175px"><canvas id="rc4"></canvas></div></div>';
+  if(p.pan[0]) html+='<div class="rcc"><div class="ct">Panel size growth</div><div class="cw" style="height:175px"><canvas id="rc3"></canvas></div></div>';
+  if(p.sg26!=null) html+='<div class="rcc"><div class="ct">Surgical cases - monthly 2026</div><div class="cw" style="height:175px"><canvas id="rc5"></canvas></div></div>';
+  html+='</div>';
+
+  html+='<div class="sh">Interview notes</div><div class="qb">';
+  qPairs.forEach(function(pair){
+    html+='<div class="qr"><div class="qk">'+pair[0]+'</div><div class="qv">'+(pair[1]||'-')+'</div></div>';
+  });
+  html+='</div>';
+
+  // Wellbeing survey
+  var srv=(typeof SURVEY!=='undefined')?SURVEY[key]:null;
+  var grp=(typeof SURVEY!=='undefined')?SURVEY._grp:null;
+  html+='<div class="sh">Wellbeing Survey &#8212; Q1 2026</div>';
+  html+='<div class="wb-section">';
+  if(srv&&grp){
+    var rl=['Never','Rarely','Sometimes','Often','Always'];
+    var rc=['#1E8449','#5A9A72','#D4830A','#C0582A','#A32D2D'];
+    var eeC=srv.ee>=22?'#A32D2D':(srv.ee>=17?'#D4830A':'#1E8449');
+    var dpC=srv.dp>=11?'#A32D2D':(srv.dp>=7?'#D4830A':'#1E8449');
+    var paC=srv.pa>=18?'#1E8449':(srv.pa>=14?'#D4830A':'#A32D2D');
+    var nR=Object.keys(SURVEY).filter(function(k){return k!=='_grp';}).length;
+    html+='<div class="wb-intro">Based on the Maslach Burnout Inventory. Lower Emotional Exhaustion and Depersonalization scores are better. Higher Personal Accomplishment is better. Group average from '+nR+' respondents shown for context.</div>';
+    html+='<div class="wb-scores">';
+    html+='<div class="wb-sc" style="background:'+eeC+'18;border-color:'+eeC+'55"><div class="wb-sl" style="color:'+eeC+'">Emotional Exhaustion</div><div class="wb-sv" style="color:'+eeC+'">'+srv.ee+'</div><div class="wb-ss" style="color:'+eeC+'">'+srv.ee_level+'<br><span style="color:#999">Group avg: '+grp.ee+'</span></div></div>';
+    html+='<div class="wb-sc" style="background:'+dpC+'18;border-color:'+dpC+'55"><div class="wb-sl" style="color:'+dpC+'">Depersonalization</div><div class="wb-sv" style="color:'+dpC+'">'+srv.dp+'</div><div class="wb-ss" style="color:'+dpC+'">'+srv.dp_level+'<br><span style="color:#999">Group avg: '+grp.dp+'</span></div></div>';
+    html+='<div class="wb-sc" style="background:'+paC+'18;border-color:'+paC+'55"><div class="wb-sl" style="color:'+paC+'">Personal Accomplishment</div><div class="wb-sv" style="color:'+paC+'">'+srv.pa+'</div><div class="wb-ss" style="color:'+paC+'">'+srv.pa_level+'<br><span style="color:#999">Group avg: '+grp.pa+'</span></div></div>';
+    html+='</div>';
+    [{l:'Emotional Exhaustion - lower is better',idx:[0,1,2,3,4],bad:true},{l:'Depersonalization - lower is better',idx:[5,6,7],bad:true},{l:'Personal Accomplishment - higher is better',idx:[8,9,10,11],bad:false}].forEach(function(g){
+      html+='<div class="wb-bgl">'+g.l+'</div>';
+      g.idx.forEach(function(qi){
+        var v=srv.q_resp[qi],pct=(v-1)/4*100,fc=g.bad?rc[v-1]:rc[4-(v-1)];
+        html+='<div class="wb-br"><span class="wb-bl">'+srv.q_labels[qi]+'</span><div class="wb-bt"><div class="wb-bf" style="width:'+pct+'%;background:'+fc+'"></div></div><span class="wb-bv">'+rl[v]+'</span></div>';
+      });
+    });
+    html+='<div class="wb-ql">What I enjoy most</div><div class="wb-qt">'+srv.likes+'</div>';
+    html+='<div class="wb-ql">My biggest challenge</div><div class="wb-qt">'+srv.challenge+'</div>';
+  } else {
+    html+='<div class="wb-none">Survey response not submitted for this provider this quarter.</div>';
+  }
+  html+='</div>';
+
+  var r=document.getElementById('rpt');
+  var sel=document.getElementById('sel');
+  if(sel) sel.style.display='none';
+  r.className='on';
+  r.innerHTML=html;
+
+  var col=AC[key]||'#1D9E75';
+  requestAnimationFrame(function(){
+    new Chart(document.getElementById('rc1'),{type:'bar',
+      data:{labels:MO,datasets:[{data:p.vs,backgroundColor:col+'99',borderColor:col,borderWidth:1.5}]},
+      options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{beginAtZero:false,ticks:{font:{size:10}}}}}});
+
+    var vpdDS=[{label:'VPD',data:p.vpd.map(function(v){return v>0?v:null;}),
+      borderColor:col,backgroundColor:col+'22',fill:true,pointRadius:4,borderWidth:2,tension:.3}];
+    if(p.vp!=null) vpdDS.push({label:'Prev Q avg',
+      data:[p.vp,p.vp,p.vp,p.vp],borderColor:col+'88',borderDash:[4,3],borderWidth:1.5,pointRadius:0,backgroundColor:'transparent'});
+    new Chart(document.getElementById('rcvpd'),{type:'line',
+      data:{labels:MO,datasets:vpdDS},
+      options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{boxWidth:8,font:{size:10}}}},scales:{y:{min:0,ticks:{font:{size:10}}}}}});
+
+    new Chart(document.getElementById('rc2'),{type:'line',
+      data:{labels:MO,datasets:[
+        {label:'After-hrs %',data:p.ah,borderColor:'#A32D2D',backgroundColor:'transparent',pointRadius:3,borderWidth:2,tension:.3},
+        {label:'Msg ctr %',data:p.mc,borderColor:'#185FA5',backgroundColor:'transparent',pointRadius:3,borderWidth:2,borderDash:[4,3],tension:.3}]},
+      options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{boxWidth:8,font:{size:10}}}},
+        scales:{y:{ticks:{callback:function(v){return v+'%';},font:{size:10}}}}}});
+
+    new Chart(document.getElementById('rc4'),{type:'bar',
+      data:{labels:MO,datasets:[{data:p.ep.slice(1),backgroundColor:'#FAC77599',borderColor:'#BA7517',borderWidth:1.5}]},
+      options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,ticks:{font:{size:10}}}}}});
+
+    if(p.pan[0]){
+      var rc3=document.getElementById('rc3');
+      if(rc3) new Chart(rc3,{type:'line',
+        data:{labels:MO,datasets:[{data:p.pan,borderColor:col,backgroundColor:col+'22',fill:true,pointRadius:3,borderWidth:2,tension:.3}]},
+        options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{ticks:{font:{size:10}}}}}});
+    }
+    if(p.sg26!=null){
+      var rc5=document.getElementById('rc5');
+      if(rc5) new Chart(rc5,{type:'bar',
+        data:{labels:['Jan','Feb','Mar'],datasets:[{data:p.sgm,backgroundColor:col+'99',borderColor:col,borderWidth:1.5}]},
+        options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,ticks:{font:{size:10}}}}}});
+    }
+  });
+}
+
+function clearRpt(){
+  document.getElementById('rpt').className='';
+  document.getElementById('rpt').innerHTML='';
+  var sel=document.getElementById('sel');
+  if(sel) sel.style.display='';
+  document.querySelectorAll('.pb').forEach(function(b){b.classList.remove('on');});
+}
+
+// -- Collective charts ---------------------------------------------------
+// ===== PEER BENCHMARK =====
+var peerCharts = {};
+
+function buildPeer(selfKey){
+  if(!selfKey){ document.getElementById('peer-content').style.display='none'; return; }
+
+  var pcKeys=['Hintzman','Johnson','Mashburn','McIntyre','Nobles','RSM','Zappone'];
+  var spKeys=['Holcomb','Steed','Webb'];
+  var isPC=pcKeys.indexOf(selfKey)!==-1;
+  var isSP=spKeys.indexOf(selfKey)!==-1;
+  var peerGroup=isPC?pcKeys:spKeys;
+  // Build blinded label map: self = own name, others = Provider A, B, C...
+  var letters = 'ABCDEFG';
+  var li = 0;
+  var labelMap = {};
+  var colorMap = {};
+  var PEER_GREY = '#BBBBBB';
+  var SELF_COLOR = '#0F6E56';
+
+  peerGroup.forEach(function(k){
+    if(k === selfKey){
+      labelMap[k] = selfKey + ' (you)';
+      colorMap[k] = SELF_COLOR;
+    } else {
+      labelMap[k] = 'Provider ' + letters[li++];
+      colorMap[k] = PEER_GREY;
+    }
+  });
+
+  // Show content area
+  document.getElementById('peer-content').style.display = 'block';
+  document.getElementById('peer-note').textContent =
+    'Showing your metrics alongside ' + (peerGroup.length-1) + ' peers (anonymized)';
+
+  // Helper: destroy old chart and create new
+  function makeChart(id, cfg){
+    if(peerCharts[id]){ peerCharts[id].destroy(); }
+    var el = document.getElementById(id);
+    if(el) peerCharts[id] = new Chart(el, cfg);
+  }
+
+  function legHTML(keys){
+    return keys.map(function(k){
+      return '<span class="li"><span class="ls" style="background:'+colorMap[k]+'"></span>'+labelMap[k]+'</span>';
+    }).join('');
+  }
+
+  function setLeg(id, keys){ var el=document.getElementById(id); if(el) el.innerHTML=legHTML(keys); }
+
+  // --- KPI cards ---
+  var me = P[selfKey];
+  function avp(a){ var v=(a||[]).filter(function(x){return x!=null&&!isNaN(x);}); return v.length?v.reduce(function(s,b){return s+b;},0)/v.length:null; }
+  var myVpd    = avp(me.vpd.filter(function(v){return v>0;}));
+  var myAhr    = avp(me.ah);
+  var myMsg    = avp(me.mc);
+  var allVpd   = peerGroup.map(function(k){return avp(P[k].vpd.filter(function(v){return v>0;}));}).filter(function(v){return v!=null;});
+  var allAhr   = peerGroup.map(function(k){return avp(P[k].ah);}).filter(function(v){return v!=null;});
+  var allMsg   = peerGroup.map(function(k){return avp(P[k].mc);}).filter(function(v){return v!=null;});
+  var grpVpd   = avp(allVpd);
+  var grpAhr   = avp(allAhr);
+  var grpMsg   = avp(allMsg);
+
+  function rank(val, all, higherBetter){
+    var sorted = all.slice().sort(function(a,b){return higherBetter?b-a:a-b;});
+    return sorted.indexOf(val)+1;
+  }
+  var vpdRank = rank(myVpd, allVpd, true);
+  var ahrRank = rank(myAhr, allAhr, false); // lower is better
+  var msgRank = rank(myMsg, allMsg, false);
+
+  function rankLabel(r, n){ return r+' of '+n; }
+
+  var kpiEl = document.getElementById('peer-kpis');
+  kpiEl.innerHTML =
+    '<div class="kc"><div class="kl">Your VPD avg</div>'
+    +'<div class="kv" style="color:#0F6E56">'+(myVpd?myVpd.toFixed(1):'--')+'</div>'
+    +'<div class="ks">Group avg: '+(grpVpd?grpVpd.toFixed(1):'--')+' &nbsp;|&nbsp; Rank: '+rankLabel(vpdRank,allVpd.length)+'</div></div>'
+    +'<div class="kc"><div class="kl">Your after-hrs %</div>'
+    +'<div class="kv" style="color:'+(myAhr>15?'#A32D2D':myAhr>8?'#D4830A':'#0F6E56')+'">'+(myAhr?myAhr.toFixed(1)+'%':'--')+'</div>'
+    +'<div class="ks">Group avg: '+(grpAhr?grpAhr.toFixed(1)+'%':'--')+' &nbsp;|&nbsp; Rank: '+rankLabel(ahrRank,allAhr.length)+' (lower = better)</div></div>'
+    +'<div class="kc"><div class="kl">Your msg center %</div>'
+    +'<div class="kv" style="color:'+(myMsg>20?'#A32D2D':myMsg>15?'#D4830A':'#0F6E56')+'">'+(myMsg?myMsg.toFixed(1)+'%':'--')+'</div>'
+    +'<div class="ks">Group avg: '+(grpMsg?grpMsg.toFixed(1)+'%':'--')+' &nbsp;|&nbsp; Rank: '+rankLabel(msgRank,allMsg.length)+' (lower = better)</div></div>'
+    +'<div class="kc"><div class="kl">Q1 no-shows</div>'
+    +'<div class="kv" style="color:'+(me.nt>30?'#A32D2D':me.nt>20?'#D4830A':'#0F6E56')+'">'+me.nt+'</div>'
+    +'<div class="ks">Group avg: '+Math.round(avp(peerGroup.map(function(k){return P[k].nt;})))+' &nbsp;|&nbsp; Rank: '+rankLabel(rank(me.nt,peerGroup.map(function(k){return P[k].nt;}),false),peerGroup.length)+' (lower = better)</div></div>'
+    +(me.pan[0]?'<div class="kc"><div class="kl">Your panel (Apr)</div><div class="kv">'+me.pan[3]+'</div><div class="ks">Panel change Jan-Apr: '+(me.pan[3]-me.pan[0]>0?'+':'')+(me.pan[3]-me.pan[0])+'</div></div>':'')
+    +'<div class="kc"><div class="kl">Next available</div>'
+    +'<div class="kv" style="color:'+(daysOut(me.na)>60?'#A32D2D':daysOut(me.na)>30?'#D4830A':'#0F6E56')+'">'+(daysOut(me.na)!=null?daysOut(me.na)+' days':'--')+'</div>'
+    +'<div class="ks">'+(me.na||'--')+'</div></div>';
+
+  // --- VPD line chart (monthly trend) ---
+  var MO = ['Jan','Feb','Mar','Apr'];
+  makeChart('peer-c-vpd',{type:'line',
+    data:{labels:MO,datasets:peerGroup.map(function(k){
+      var isSelf = k===selfKey;
+      return{label:labelMap[k],data:P[k].vpd.map(function(v){return v>0?v:null;}),
+        borderColor:colorMap[k],backgroundColor:'transparent',
+        pointRadius:isSelf?5:3,borderWidth:isSelf?2.5:1.5,
+        tension:.3,zIndex:isSelf?10:1};
+    })},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},
+      scales:{y:{min:0,ticks:{font:{size:11}}},x:{ticks:{font:{size:11}}}}}});
+  setLeg('peer-l-vpd', peerGroup);
+
+  // --- After-hours bar ---
+  var ahrAvgs = peerGroup.map(function(k){return +(avp(P[k].ah)||0).toFixed(1);});
+  // Sort by value for easier reading, keep self position trackable
+  var ahrSorted = peerGroup.map(function(k,i){return{k:k,v:ahrAvgs[i]};}).sort(function(a,b){return b.v-a.v;});
+  makeChart('peer-c-ahr',{type:'bar',
+    data:{labels:ahrSorted.map(function(x){return labelMap[x.k];}),
+      datasets:[{label:'After-hrs %',
+        data:ahrSorted.map(function(x){return x.v;}),
+        backgroundColor:ahrSorted.map(function(x){return x.k===selfKey?SELF_COLOR+'CC':PEER_GREY+'88';}),
+        borderColor:ahrSorted.map(function(x){return x.k===selfKey?SELF_COLOR:PEER_GREY;}),
+        borderWidth:ahrSorted.map(function(x){return x.k===selfKey?2:1;})}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},
+      scales:{x:{ticks:{font:{size:10},autoSkip:false,maxRotation:30}},y:{ticks:{callback:function(v){return v+'%';},font:{size:10}}}}}});
+  setLeg('peer-l-ahr', ahrSorted.map(function(x){return x.k;}));
+
+  // --- Message center bar ---
+  var msgAvgs = peerGroup.map(function(k){return +(avp(P[k].mc)||0).toFixed(1);});
+  var msgSorted = peerGroup.map(function(k,i){return{k:k,v:msgAvgs[i]};}).sort(function(a,b){return b.v-a.v;});
+  makeChart('peer-c-msg',{type:'bar',
+    data:{labels:msgSorted.map(function(x){return labelMap[x.k];}),
+      datasets:[{label:'Msg ctr %',
+        data:msgSorted.map(function(x){return x.v;}),
+        backgroundColor:msgSorted.map(function(x){return x.k===selfKey?SELF_COLOR+'CC':PEER_GREY+'88';}),
+        borderColor:msgSorted.map(function(x){return x.k===selfKey?SELF_COLOR:PEER_GREY;}),
+        borderWidth:msgSorted.map(function(x){return x.k===selfKey?2:1;})}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},
+      scales:{x:{ticks:{font:{size:10},autoSkip:false,maxRotation:30}},y:{ticks:{callback:function(v){return v+'%';},font:{size:10}}}}}});
+  setLeg('peer-l-msg', msgSorted.map(function(x){return x.k;}));
+
+  // --- EHR doc time bar ---
+  var ehrAvgs = peerGroup.map(function(k){
+    var vals = P[k].ep.slice(1).filter(function(x){return x!=null&&x<50;});
+    return vals.length ? +(avp(vals)||0).toFixed(1) : 0;
+  });
+  var ehrSorted = peerGroup.map(function(k,i){return{k:k,v:ehrAvgs[i]};}).filter(function(x){return x.v>0;}).sort(function(a,b){return b.v-a.v;});
+  makeChart('peer-c-ehr',{type:'bar',
+    data:{labels:ehrSorted.map(function(x){return labelMap[x.k];}),
+      datasets:[{label:'Min/patient',
+        data:ehrSorted.map(function(x){return x.v;}),
+        backgroundColor:ehrSorted.map(function(x){return x.k===selfKey?'#BA7517CC':PEER_GREY+'88';}),
+        borderColor:ehrSorted.map(function(x){return x.k===selfKey?'#BA7517':PEER_GREY;}),
+        borderWidth:ehrSorted.map(function(x){return x.k===selfKey?2:1;})}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},
+      scales:{x:{ticks:{font:{size:10},autoSkip:false,maxRotation:30}},y:{ticks:{font:{size:10}}}}}});
+  setLeg('peer-l-ehr', ehrSorted.map(function(x){return x.k;}));
+
+  // --- No-shows bar ---
+  var nsSorted = peerGroup.map(function(k){return{k:k,v:P[k].nt};}).sort(function(a,b){return b.v-a.v;});
+  makeChart('peer-c-ns',{type:'bar',
+    data:{labels:nsSorted.map(function(x){return labelMap[x.k];}),
+      datasets:[{label:'No-shows',
+        data:nsSorted.map(function(x){return x.v;}),
+        backgroundColor:nsSorted.map(function(x){return x.k===selfKey?'#D85A30CC':PEER_GREY+'88';}),
+        borderColor:nsSorted.map(function(x){return x.k===selfKey?'#D85A30':PEER_GREY;}),
+        borderWidth:nsSorted.map(function(x){return x.k===selfKey?2:1;})}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},
+      scales:{x:{ticks:{font:{size:10},autoSkip:false,maxRotation:30}},y:{ticks:{font:{size:10}}}}}});
+  setLeg('peer-l-ns', nsSorted.map(function(x){return x.k;}));
+
+  // --- Panel size bar (providers with panels) ---
+  var panKeys = peerGroup.filter(function(k){return P[k].pan[0]!=null;});
+    var panSection = document.getElementById('peer-panel-section');
+    if(panSection) panSection.style.display = panKeys.length > 0 ? '' : 'none';
+  if(panKeys.length > 0){
+    var panSorted = panKeys.map(function(k){return{k:k,jan:P[k].pan[0],apr:P[k].pan[3]};}).sort(function(a,b){return b.apr-a.apr;});
+    makeChart('peer-c-pan',{type:'bar',
+      data:{labels:panSorted.map(function(x){return labelMap[x.k];}),
+        datasets:[
+          {label:'Jan 2026',data:panSorted.map(function(x){return x.jan;}),
+            backgroundColor:panSorted.map(function(x){return x.k===selfKey?SELF_COLOR+'55':PEER_GREY+'44';}),
+            borderColor:panSorted.map(function(x){return x.k===selfKey?SELF_COLOR:PEER_GREY;}),
+            borderWidth:1.5},
+          {label:'Apr 2026',data:panSorted.map(function(x){return x.apr;}),
+            backgroundColor:panSorted.map(function(x){return x.k===selfKey?SELF_COLOR+'CC':PEER_GREY+'88';}),
+            borderColor:panSorted.map(function(x){return x.k===selfKey?SELF_COLOR:PEER_GREY;}),
+            borderWidth:panSorted.map(function(x){return x.k===selfKey?2:1;})}]},
+      options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{boxWidth:8,font:{size:10}}}},
+        scales:{x:{ticks:{font:{size:10},autoSkip:false,maxRotation:30}},y:{ticks:{font:{size:10}}}}}});
+    setLeg('peer-l-pan', panSorted.map(function(x){return x.k;}));
+  }
+
+  // --- Monthly visits line ---
+  makeChart('peer-c-vis',{type:'line',
+    data:{labels:MO,datasets:peerGroup.map(function(k){
+      var isSelf = k===selfKey;
+      return{label:labelMap[k],data:P[k].vs,
+        borderColor:colorMap[k],backgroundColor:isSelf?SELF_COLOR+'18':'transparent',
+        fill:isSelf,pointRadius:isSelf?5:3,borderWidth:isSelf?2.5:1.5,tension:.3};
+    })},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},
+      scales:{y:{beginAtZero:false,ticks:{font:{size:11}}},x:{ticks:{font:{size:11}}}}}});
+  setLeg('peer-l-vis', peerGroup);
+}
+
+
+var pcK=['Hintzman','Johnson','Mashburn','McIntyre','Nobles','RSM','Zappone'];
+
+new Chart(document.getElementById('c1'),{type:'bar',
+  data:{labels:MO,datasets:pcK.map(function(k){return{label:k,data:P[k].vs,backgroundColor:PC[k]+'99',borderColor:PC[k],borderWidth:1};})},
+  options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{ticks:{font:{size:10}}},x:{ticks:{font:{size:10}}}}}});
+leg('l1',pcK.map(function(k){return{l:k,c:PC[k]};}));
+
+new Chart(document.getElementById('cwi1'),{type:'bar',
+  data:{labels:MO,datasets:[
+    {label:'Brown',data:P.Brown.vs,backgroundColor:WI.Brown+'99',borderColor:WI.Brown,borderWidth:1.5},
+    {label:'Liverett',data:P.Liverett.vs,backgroundColor:WI.Liverett+'99',borderColor:WI.Liverett,borderWidth:1.5}]},
+  options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{ticks:{font:{size:10}}},x:{ticks:{font:{size:10}}}}}});
+leg('lwi1',[{l:'Brown',c:WI.Brown},{l:'Liverett',c:WI.Liverett}]);
+
+new Chart(document.getElementById('cwi2'),{type:'line',
+  data:{labels:MO,datasets:[
+    {label:'Brown',data:P.Brown.vpd,borderColor:WI.Brown,backgroundColor:'transparent',pointRadius:4,borderWidth:2,tension:.3},
+    {label:'Liverett',data:P.Liverett.vpd,borderColor:WI.Liverett,backgroundColor:'transparent',pointRadius:4,borderWidth:2,tension:.3}]},
+  options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{min:0,ticks:{font:{size:10}}},x:{ticks:{font:{size:10}}}}}});
+leg('lwi2',[{l:'Brown VPD',c:WI.Brown},{l:'Liverett VPD',c:WI.Liverett}]);
+
+var vpdA=pcK.map(function(k){return +(av(P[k].vpd.filter(function(v){return v>0;}))||0).toFixed(1);});
+new Chart(document.getElementById('c2'),{type:'bar',
+  data:{labels:pcK,datasets:[{data:vpdA,backgroundColor:pcK.map(function(k){return PC[k]+'BB';}),borderColor:pcK.map(function(k){return PC[k];}),borderWidth:1.5}]},
+  options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{min:0,max:18,ticks:{font:{size:10}}},x:{ticks:{font:{size:10},autoSkip:false}}}}});
+
+new Chart(document.getElementById('c3'),{type:'line',
+  data:{labels:MO,datasets:pcK.map(function(k){return{label:k,data:P[k].vpd.map(function(v){return v>0?v:null;}),borderColor:PC[k],backgroundColor:'transparent',pointRadius:3,borderWidth:1.5,tension:.3};})},
+  options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{min:0,ticks:{font:{size:10}}},x:{ticks:{font:{size:10}}}}}});
+leg('l3',pcK.map(function(k){return{l:k,c:PC[k]};}));
+
+var allK=Object.keys(P);
+var aS=allK.filter(function(k){return av(P[k].ah)!=null;}).map(function(k){return{k:k,v:+(av(P[k].ah)||0).toFixed(1)};}).sort(function(a,b){return b.v-a.v;});
+new Chart(document.getElementById('c4'),{type:'bar',
+  data:{labels:aS.map(function(x){return x.k;}),datasets:[{data:aS.map(function(x){return x.v;}),backgroundColor:aS.map(function(x){return(AC[x.k]||'#888')+'BB';}),borderColor:aS.map(function(x){return AC[x.k]||'#888';}),borderWidth:1.5}]},
+  options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{callback:function(v){return v+'%';},font:{size:9}}},y:{ticks:{font:{size:10},autoSkip:false}}}}});
+
+var mS=allK.filter(function(k){return av(P[k].mc)!=null;}).map(function(k){return{k:k,v:+(av(P[k].mc)||0).toFixed(1)};}).sort(function(a,b){return b.v-a.v;});
+new Chart(document.getElementById('c5'),{type:'bar',
+  data:{labels:mS.map(function(x){return x.k;}),datasets:[{data:mS.map(function(x){return x.v;}),backgroundColor:mS.map(function(x){return(AC[x.k]||'#888')+'BB';}),borderColor:mS.map(function(x){return AC[x.k]||'#888';}),borderWidth:1.5}]},
+  options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{callback:function(v){return v+'%';},font:{size:9}}},y:{ticks:{font:{size:10},autoSkip:false}}}}});
+
+var panK=['Mashburn','RSM','Zappone','Nobles','McIntyre'];
+new Chart(document.getElementById('c6'),{type:'bar',
+  data:{labels:panK,datasets:[
+    {label:'Jan 2026',data:panK.map(function(k){return P[k].pan[0];}),backgroundColor:panK.map(function(k){return(PC[k]||'#888')+'55';}),borderColor:panK.map(function(k){return PC[k]||'#888';}),borderWidth:1.5},
+    {label:'Apr 2026',data:panK.map(function(k){return P[k].pan[3];}),backgroundColor:panK.map(function(k){return(PC[k]||'#888')+'CC';}),borderColor:panK.map(function(k){return PC[k]||'#888';}),borderWidth:1.5}]},
+  options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{ticks:{font:{size:10}}},x:{ticks:{font:{size:10}}}}}});
+leg('l6',[{l:'Jan 2026',c:'#aaa'},{l:'Apr 2026',c:'#333'}]);
+
+new Chart(document.getElementById('c7'),{type:'line',
+  data:{labels:MO,datasets:[
+    {label:'Hintzman',data:P.Hintzman.pan,borderColor:'#1D9E75',backgroundColor:'#1D9E7522',fill:true,pointRadius:4,borderWidth:2,tension:.3},
+    {label:'Johnson',data:P.Johnson.pan,borderColor:'#BA7517',backgroundColor:'#BA751722',fill:true,pointRadius:4,borderWidth:2,tension:.3}]},
+  options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,ticks:{font:{size:10}}},x:{ticks:{font:{size:10}}}}}});
+leg('l7',[{l:'Hintzman',c:'#1D9E75'},{l:'Johnson',c:'#BA7517'}]);
+
+new Chart(document.getElementById('c8'),{type:'line',
+  data:{labels:MO,datasets:[
+    {label:'Steed (Ortho)',data:P.Steed.vs,borderColor:'#639922',backgroundColor:'transparent',pointRadius:3,borderWidth:2,tension:.3},
+    {label:'Webb (Ortho)',data:P.Webb.vs,borderColor:'#5DCAA5',backgroundColor:'transparent',pointRadius:3,borderWidth:2,tension:.3},
+    {label:'Holcomb (Pulm)',data:P.Holcomb.vs,borderColor:'#0F6E56',backgroundColor:'transparent',pointRadius:3,borderWidth:2,borderDash:[4,3],tension:.3}]},
+  options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,ticks:{font:{size:10}}},x:{ticks:{font:{size:10}}}}}});
+leg('l8',[{l:'Steed (Ortho)',c:'#639922'},{l:'Webb (Ortho)',c:'#5DCAA5'},{l:'Holcomb (Pulm)',c:'#0F6E56'}]);
+
+new Chart(document.getElementById('c9'),{type:'bar',
+  data:{labels:['Steed (Ortho)','Webb (Ortho)'],datasets:[
+    {label:'2025 YTD',data:[23,37],backgroundColor:'#B5D4F499',borderColor:'#378ADD',borderWidth:1.5},
+    {label:'2026 YTD',data:[43,18],backgroundColor:['#9FE1CB99','#FADBD8'],borderColor:['#1D9E75','#A32D2D'],borderWidth:1.5}]},
+  options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{ticks:{font:{size:10}}},x:{ticks:{font:{size:10}}}}}});
+leg('l9',[{l:'2025 YTD',c:'#378ADD'},{l:'2026 YTD',c:'#1D9E75'}]);
+
+var waitData=[{k:'RSM',d:74},{k:'Mashburn',d:68},{k:'McIntyre',d:55},{k:'Barber',d:54},
+  {k:'Nobles',d:26},{k:'Johnson',d:20},{k:'Zappone',d:20},{k:'Brown',d:13},
+  {k:'Hintzman',d:0},{k:'Webb',d:0},{k:'Steed',d:0},{k:'Holcomb',d:0}].sort(function(a,b){return b.d-a.d;});
+new Chart(document.getElementById('c11'),{type:'bar',
+  data:{labels:waitData.map(function(x){return x.k;}),datasets:[{data:waitData.map(function(x){return x.d;}),
+    backgroundColor:waitData.map(function(x){return x.d>60?'#FADBD8':x.d>30?'#FAEEDA':'#D5F5E3';}),
+    borderColor:waitData.map(function(x){return x.d>60?'#A32D2D':x.d>30?'#D4830A':'#1E8449';}),borderWidth:1.5}]},
+  options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{font:{size:10}}},y:{ticks:{font:{size:10},autoSkip:false}}}}});
+
+var nsK=allK.filter(function(k){return P[k].nt>0;}).sort(function(a,b){return P[b].nt-P[a].nt;});
+new Chart(document.getElementById('c10'),{type:'bar',
+  data:{labels:nsK,datasets:[{data:nsK.map(function(k){return P[k].nt;}),
+    backgroundColor:nsK.map(function(k){return(AC[k]||'#888')+'BB';}),borderColor:nsK.map(function(k){return AC[k]||'#888';}),borderWidth:1.5}]},
+  options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{ticks:{font:{size:10}}},x:{ticks:{font:{size:10},autoSkip:false}}}}});
+
+// -- Comparison charts ---------------------------------------------------
+new Chart(document.getElementById('d1'),{type:'line',
+  data:{labels:MO,datasets:pcK.map(function(k){return{label:k,data:P[k].vpd.map(function(v){return v>0?v:null;}),borderColor:PC[k],backgroundColor:'transparent',pointRadius:3,borderWidth:1.5,tension:.3};})},
+  options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{min:0,ticks:{font:{size:10}}},x:{ticks:{font:{size:10}}}}}});
+leg('ld1',pcK.map(function(k){return{l:k,c:PC[k]};}));
+
+var ahrK=['McIntyre','Nobles','Zappone','RSM','Johnson'];
+new Chart(document.getElementById('d2'),{type:'line',
+  data:{labels:MO,datasets:ahrK.map(function(k){return{label:k,data:P[k].ah,borderColor:PC[k],backgroundColor:'transparent',pointRadius:3,borderWidth:1.5,tension:.3};})},
+  options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{ticks:{callback:function(v){return v+'%';},font:{size:10}}},x:{ticks:{font:{size:10}}}}}});
+leg('ld2',ahrK.map(function(k){return{l:k,c:PC[k]};}));
+
+var msgK=['Mashburn','Zappone','Nobles','RSM','McIntyre'];
+new Chart(document.getElementById('d3'),{type:'line',
+  data:{labels:MO,datasets:msgK.map(function(k){return{label:k,data:P[k].mc,borderColor:PC[k],backgroundColor:'transparent',pointRadius:3,borderWidth:1.5,tension:.3};})},
+  options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{ticks:{callback:function(v){return v+'%';},font:{size:10}}},x:{ticks:{font:{size:10}}}}}});
+leg('ld3',msgK.map(function(k){return{l:k,c:PC[k]};}));
+
+function burnout(k){
+  var p=P[k];
+  var ahr=av(p.ah)||0;
+  var msg=av(p.mc)||0;
+  var ehr=av(p.ep.slice(1).filter(function(x){return x!=null&&x<50;}))||0;
+  var nsr=(p.nt/Math.max(1,av(p.vs)*4))*100;
+  return Math.min(100,Math.round((ahr/25)*40+(msg/25)*25+(ehr/30)*20+(nsr/10)*15));
+}
+var bDiv=document.getElementById('burnout-bars');
+if(bDiv){
+  ['Nobles','McIntyre','Zappone','RSM','Mashburn','Johnson','Hintzman'].forEach(function(k){
+    var s=burnout(k);
+    var c=s>=65?'#A32D2D':s>=40?'#D4830A':'#1E8449';
+    bDiv.innerHTML+='<div class="bsc"><span class="bsl">'+k+'</span><div class="bsb"><div class="bsf" style="width:'+s+'%;background:'+c+'"></div></div><span class="bsv" style="color:'+c+'">'+s+'</span></div>';
+  });
+}
+
+new Chart(document.getElementById('d4'),{type:'bubble',
+  data:{datasets:pcK.filter(function(k){return P[k].vpd.some(function(v){return v>0;});}).map(function(k){
+    var vd=av(P[k].vpd.filter(function(v){return v>0;}))||10;
+    var ahr=av(P[k].ah)||0;
+    return{label:k,data:[{x:+vd.toFixed(1),y:+ahr.toFixed(1),r:Math.max(5,Math.sqrt(P[k].nt*3))}],backgroundColor:(PC[k]||'#888')+'88',borderColor:PC[k]||'#888',borderWidth:1.5};
+  })},
+  options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{boxWidth:8,font:{size:10}}}},
+    scales:{x:{title:{display:true,text:'Avg VPD',font:{size:10}},min:4,ticks:{font:{size:9}}},
+            y:{title:{display:true,text:'After-hrs %',font:{size:10}},min:0,ticks:{callback:function(v){return v+'%';},font:{size:9}}}}}});
+leg('ld4',pcK.map(function(k){return{l:k,c:PC[k]};}));
+
+var ehrK2=allK.filter(function(k){return av(P[k].ep.slice(1).filter(function(x){return x!=null&&x<50;}))!=null;});
+var ehrA2=ehrK2.map(function(k){return +(av(P[k].ep.slice(1).filter(function(x){return x!=null&&x<50;}))||0).toFixed(1);});
+new Chart(document.getElementById('d5'),{type:'bar',
+  data:{labels:ehrK2,datasets:[{data:ehrA2,backgroundColor:ehrK2.map(function(k){return(AC[k]||'#888')+'BB';}),borderColor:ehrK2.map(function(k){return AC[k]||'#888';}),borderWidth:1.5}]},
+  options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{ticks:{font:{size:10}}},x:{ticks:{font:{size:10},autoSkip:false,maxRotation:45}}}}});
+
+</script>
+</body>
+</html>
