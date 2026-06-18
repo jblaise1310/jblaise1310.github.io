@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>eCQM: Pharyngitis Testing</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,500&family=Mulish:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#243240; --soft-ink:#5a6b78; --paper:#fbf9f5; --line:#e4ded3; --card:#fffdf9;
+    --teal-bg:#e7f3ed; --teal-bd:#bfddcb; --teal-tx:#2f6b50;
+    --blue-bg:#e8f0f9; --blue-bd:#c3d6ec; --blue-tx:#2e5a8c;
+    --purp-bg:#eee9f6; --purp-bd:#d2c6e6; --purp-tx:#5a4a8c;
+    --coral-bg:#f8ebe9; --coral-bd:#e6c5bf; --coral-tx:#a8483c;
+    --grn-bg:#eef4e7; --grn-bd:#bcd3ad; --grn-tx:#4a7340;
+    --rosa-bg:#fbf3e7; --rosa-bd:#e7cfa6; --rosa-tx:#9a6b1f;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    font-family:'Mulish',sans-serif;color:var(--ink);line-height:1.62;
+    background:
+      radial-gradient(1200px 600px at 85% -10%, #f4efe6 0%, transparent 60%),
+      radial-gradient(900px 500px at -10% 110%, #eef2ec 0%, transparent 55%),
+      var(--paper);
+    padding:40px 20px 70px;-webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:880px;margin:0 auto;}
+
+  .masthead{background:var(--card);border:1px solid var(--line);border-radius:22px 22px 0 0;border-bottom:none;padding:42px 52px 30px;position:relative;overflow:hidden;}
+  .masthead::after{content:"";position:absolute;left:0;right:0;bottom:0;height:4px;background:linear-gradient(90deg,var(--teal-bd),var(--blue-bd),var(--purp-bd),var(--coral-bd),var(--grn-bd));}
+  .kicker{font-size:12.5px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--soft-ink);}
+  h1{font-family:'Fraunces',serif;font-weight:500;font-size:40px;line-height:1.06;letter-spacing:-.01em;margin:10px 0 6px;}
+  .masthead .sub{font-family:'Fraunces',serif;font-style:italic;font-size:17.5px;color:var(--soft-ink);max-width:78%;}
+  .mast-top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:18px;}
+  a.act{text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:7px;}
+
+  .tabnav{display:flex;flex-wrap:wrap;gap:4px;background:var(--card);border:1px solid var(--line);border-top:none;border-bottom:none;padding:14px 52px 0;}
+  .tab{font-family:'Mulish',sans-serif;font-size:13.5px;font-weight:700;border:1px solid transparent;border-bottom:none;background:transparent;cursor:pointer;padding:11px 15px;border-radius:11px 11px 0 0;color:var(--soft-ink);transition:background .18s,color .18s;letter-spacing:.01em;}
+  .tab:hover{color:var(--ink);background:#f3eee5;}
+  .tab[aria-selected="true"]{color:var(--ink);background:var(--paper);border-color:var(--line);}
+  .tab .num{display:inline-flex;width:19px;height:19px;border-radius:50%;align-items:center;justify-content:center;font-size:11px;margin-right:7px;background:#e6ddcd;color:#7a6a50;}
+  .tab[data-c="teal"][aria-selected="true"] .num{background:var(--teal-bd);color:var(--teal-tx);}
+  .tab[data-c="blue"][aria-selected="true"] .num{background:var(--blue-bd);color:var(--blue-tx);}
+  .tab[data-c="purp"][aria-selected="true"] .num{background:var(--purp-bd);color:var(--purp-tx);}
+  .tab[data-c="coral"][aria-selected="true"] .num{background:var(--coral-bd);color:var(--coral-tx);}
+  .tab[data-c="grn"][aria-selected="true"] .num{background:var(--grn-bd);color:var(--grn-tx);}
+
+  .panels{background:var(--card);border:1px solid var(--line);border-radius:0 0 22px 22px;box-shadow:0 1px 2px rgba(60,50,30,.04),0 30px 60px -30px rgba(60,50,30,.18);}
+  .panel{display:none;padding:40px 52px 48px;}
+  .panel.active{display:block;animation:fade .35s ease;}
+  @keyframes fade{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:none;}}
+
+  .eyebrow{font-size:12px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;margin-bottom:8px;}
+  .panel h2{font-family:'Fraunces',serif;font-weight:600;font-size:31px;letter-spacing:-.01em;margin-bottom:6px;}
+  .panel .dek{font-size:16.5px;color:var(--soft-ink);margin-bottom:26px;}
+  h3{font-family:'Fraunces',serif;font-weight:600;font-size:21px;margin:30px 0 12px;color:var(--ink);}
+  h4{font-size:15px;font-weight:700;letter-spacing:.04em;margin:20px 0 8px;color:var(--ink);}
+  p{font-size:15.5px;margin-bottom:14px;color:#374550;}
+  .panel ul{list-style:none;margin:0 0 16px;display:grid;gap:8px;}
+  .panel ul li{position:relative;padding-left:20px;font-size:15px;color:#374550;}
+  .panel ul li::before{content:"";position:absolute;left:2px;top:9px;width:6px;height:6px;border-radius:50%;background:var(--accent,#bbb);}
+  .term{font-family:'Fraunces',serif;font-style:italic;color:var(--ink);font-weight:500;}
+  strong{font-weight:700;color:var(--ink);}
+
+  #p-why{--accent:var(--teal-tx);} #p-why .eyebrow{color:var(--teal-tx);}
+  #p-measure{--accent:var(--blue-tx);} #p-measure .eyebrow{color:var(--blue-tx);}
+  #p-recognize{--accent:var(--purp-tx);} #p-recognize .eyebrow{color:var(--purp-tx);}
+  #p-roles{--accent:var(--coral-tx);} #p-roles .eyebrow{color:var(--coral-tx);}
+  #p-loop{--accent:var(--grn-tx);} #p-loop .eyebrow{color:var(--grn-tx);}
+
+  .chips{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:6px 0 18px;}
+  .chip{background:var(--paper);border:1px solid var(--line);border-radius:11px;padding:11px 14px;font-size:14px;}
+  .chip b{color:var(--ink);}
+  @media(max-width:600px){.chips{grid-template-columns:1fr;}}
+
+  .note{border-radius:13px;padding:15px 18px;font-size:14.5px;margin:8px 0 20px;border:1px solid;}
+  .note.teal{background:var(--teal-bg);border-color:var(--teal-bd);color:#2c4f3e;}
+  .note.blue{background:var(--blue-bg);border-color:var(--blue-bd);color:#274a6f;}
+  .note.grn{background:var(--grn-bg);border-color:var(--grn-bd);color:#3c5730;}
+  .note.purp{background:var(--purp-bg);border-color:var(--purp-bd);color:#473a6f;}
+  .note.coral{background:var(--coral-bg);border-color:var(--coral-bd);color:#7e342a;}
+  .note.rosa{background:var(--rosa-bg);border-color:var(--rosa-bd);color:#6b5526;}
+  .note .lbl{font-weight:700;}
+
+  /* stat cards */
+  .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:8px 0 20px;}
+  .stat{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:18px 16px 16px;text-align:center;}
+  .stat .big{font-family:'Fraunces',serif;font-weight:600;font-size:33px;line-height:1;letter-spacing:-.01em;color:var(--teal-tx);}
+  .stat .lbl3{font-size:12.8px;color:var(--soft-ink);margin-top:9px;line-height:1.42;}
+  .stat .src{font-size:10.5px;color:#a59c8d;margin-top:7px;letter-spacing:.02em;}
+  @media(max-width:600px){.stats{grid-template-columns:1fr;}}
+
+  /* equation */
+  .equation{display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;margin:14px 0 22px;}
+  .eq-box{background:var(--blue-bg);border:1.5px solid var(--blue-bd);border-radius:12px;padding:14px 20px;font-weight:700;font-size:15px;color:var(--blue-tx);text-align:center;}
+  .eq-box.eq-result{background:var(--teal-bg);border-color:var(--teal-bd);color:var(--teal-tx);}
+  .eq-op{font-family:'Fraunces',serif;font-size:26px;color:var(--soft-ink);font-weight:600;}
+  @media(max-width:600px){.equation{gap:10px;}.eq-box{padding:11px 14px;font-size:13.5px;}.eq-op{font-size:22px;}}
+
+  /* large key statement */
+  .bigstatement{font-family:'Fraunces',serif;font-weight:500;font-size:25px;line-height:1.34;color:var(--ink);text-align:center;margin:18px 0 6px;padding:18px 16px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
+  @media(max-width:600px){.bigstatement{font-size:20px;padding:14px 10px;}}
+
+  /* role two-column */
+  .twocol{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:10px 0 20px;}
+  .twocol .col{border:1px solid var(--line);border-radius:14px;overflow:hidden;}
+  .twocol .col-head{padding:12px 16px;font-weight:700;font-size:14.5px;color:#fff;letter-spacing:.01em;}
+  .twocol .col.prov .col-head{background:var(--coral-tx);}
+  .twocol .col.css .col-head{background:var(--teal-tx);}
+  .twocol .col-body{padding:14px 18px;}
+  .twocol .col-body ul{margin:0;display:grid;gap:9px;}
+  .twocol .col-body ul li{position:relative;padding-left:18px;font-size:14px;color:#374550;line-height:1.5;}
+  .twocol .col.prov .col-body ul li::before{content:"";position:absolute;left:1px;top:8px;width:6px;height:6px;border-radius:50%;background:var(--coral-tx);}
+  .twocol .col.css .col-body ul li::before{content:"";position:absolute;left:1px;top:8px;width:6px;height:6px;border-radius:50%;background:var(--teal-tx);}
+  @media(max-width:600px){.twocol{grid-template-columns:1fr;}}
+
+  /* chart example snippet */
+  .example{border:1px solid var(--line);background:var(--paper);border-radius:10px;padding:13px 16px;margin:6px 0 18px;font-size:14px;color:#4a5560;line-height:1.6;}
+  .example b{color:var(--ink);}
+
+  /* measure description card */
+  .mcard{border:1px solid var(--blue-bd);background:var(--blue-bg);border-radius:14px;padding:18px 20px;margin:6px 0 20px;}
+  .mcard .mtag{font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--blue-tx);margin-bottom:8px;}
+  .mcard p{font-size:15px;color:#27384a;margin:0;}
+
+  /* score bands */
+  .bands{display:grid;gap:10px;margin:10px 0 18px;}
+  .band{display:grid;grid-template-columns:158px 1fr;border:1px solid var(--line);border-radius:12px;overflow:hidden;}
+  .band .bl{padding:14px 16px;font-weight:700;font-size:13.5px;display:flex;flex-direction:column;justify-content:center;line-height:1.3;}
+  .band .bl .scr{font-family:'Fraunces',serif;font-size:19px;font-weight:600;}
+  .band .bd{padding:14px 16px;font-size:14px;color:#374550;background:var(--card);}
+  .band.ok .bl{background:var(--grn-bg);color:var(--grn-tx);}
+  .band.mild .bl{background:var(--rosa-bg);color:var(--rosa-tx);}
+  .band.sev .bl{background:var(--coral-bg);color:var(--coral-tx);}
+  @media(max-width:600px){.band{grid-template-columns:1fr;}}
+
+  /* numbered flow steps */
+  .flow{list-style:none;counter-reset:f;display:grid;gap:10px;margin:8px 0 18px;}
+  .flow li{counter-increment:f;position:relative;padding-left:42px;font-size:15px;color:#374550;min-height:28px;padding-top:3px;}
+  .flow li::before{content:counter(f);position:absolute;left:0;top:0;width:27px;height:27px;border-radius:50%;background:var(--card);border:1.5px solid var(--accent,#bbb);color:var(--accent,#555);font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center;}
+  .flow li::after{display:none;}
+
+  /* reference table */
+  .reftable{border:1px solid var(--line);border-radius:12px;overflow:hidden;margin:8px 0 18px;}
+  .refrow{display:grid;grid-template-columns:210px 1fr;border-bottom:1px solid var(--line);}
+  .refrow:last-child{border-bottom:none;}
+  .refrow:nth-child(even){background:var(--paper);}
+  .rclass{padding:11px 16px;font-weight:700;font-size:13.5px;color:var(--accent,#374550);border-right:1px solid var(--line);}
+  .rmeds{padding:11px 16px;font-size:13.5px;color:#374550;}
+  .rmeds .g{color:var(--ink);font-weight:600;}
+  @media(max-width:600px){.refrow{grid-template-columns:1fr;}.rclass{border-right:none;border-bottom:1px solid var(--line);}}
+
+  /* Rosa apply */
+  .apply{margin:30px 0 8px;border:1.5px solid var(--rosa-bd);border-radius:16px;overflow:hidden;background:var(--rosa-bg);}
+  .apply-head{display:flex;align-items:center;gap:12px;padding:14px 20px;background:rgba(154,107,31,.10);border-bottom:1px solid var(--rosa-bd);}
+  .apply-head .pill{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;background:var(--rosa-tx);color:#fff;padding:4px 10px;border-radius:20px;}
+  .apply-head .who{font-family:'Fraunces',serif;font-weight:600;font-size:16px;color:var(--rosa-tx);}
+  .apply-body{padding:18px 22px;}
+  .apply-body p{font-size:15px;color:#5c4a28;}
+  .apply-body ul li{color:#5c4a28;}
+  .apply-body ul li::before{background:var(--rosa-tx);}
+  .chartline{font-family:'Fraunces',serif;font-style:italic;font-size:14.5px;color:#6b5526;background:#fff;border-left:3px solid var(--rosa-bd);border-radius:0 8px 8px 0;padding:12px 16px;margin-bottom:14px;}
+
+  /* Your Turn interactive */
+  .yt{margin-top:14px;background:#fff;border:1px dashed var(--rosa-bd);border-radius:10px;padding:15px 17px;}
+  .yt-q{font-size:14.5px;color:#5c4a28;margin-bottom:0;}
+  .yt-q b{color:var(--rosa-tx);}
+  .yt .fill{margin-top:11px;}
+  .yt .ck{font-size:12.5px;padding:9px 15px;margin-top:12px;background:var(--rosa-tx);border-color:var(--rosa-tx);color:#fff;}
+
+  .feedback{display:none;margin-top:14px;border-radius:10px;padding:14px 16px;background:var(--teal-bg);border:1px solid var(--teal-bd);}
+  .feedback.show{display:block;animation:fade .3s ease;}
+  .fb-label{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--teal-tx);margin-bottom:6px;}
+  .feedback p{font-size:14px;color:#2c4f3e;margin:0;}
+
+  /* tests */
+  .test{margin-top:40px;border:1px solid var(--line);border-radius:16px;background:var(--paper);overflow:hidden;}
+  .test-head{padding:22px 26px 18px;border-bottom:1px solid var(--line);background:var(--card);}
+  .test-head .eyebrow{margin-bottom:6px;}
+  .test-head h3{margin:0 0 4px;}
+  .test-head p{font-size:14px;color:var(--soft-ink);margin:0;}
+  .namebar{display:flex;gap:22px;flex-wrap:wrap;margin-top:18px;}
+  .namebar .field{flex:1;min-width:180px;}
+  .namebar .field span{display:block;font-size:11.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--soft-ink);margin-bottom:4px;}
+  .ti{width:100%;border:none;border-bottom:1.5px solid #b9b0a0;background:transparent;font-family:'Mulish',sans-serif;font-size:15px;color:var(--ink);padding:5px 2px;outline:none;}
+  .ti:focus{border-color:var(--accent,#2e5a8c);}
+  .test-body{padding:24px 26px 28px;}
+  ol.q{list-style:none;counter-reset:q;display:grid;gap:22px;}
+  ol.q > li{counter-increment:q;position:relative;padding-left:38px;font-size:15px;color:#2f3c47;}
+  ol.q > li::before{content:counter(q);position:absolute;left:0;top:-2px;width:26px;height:26px;border-radius:50%;background:var(--card);border:1.5px solid var(--accent,#bbb);color:var(--accent,#555);font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center;}
+  .q .ask{font-weight:600;color:var(--ink);}
+  .fill{min-height:52px;border:1px solid #cfc7b8;border-radius:9px;background:#fff;padding:9px 13px;margin-top:10px;font-size:14.5px;color:var(--ink);line-height:1.7;outline:none;}
+  .fill:focus{border-color:var(--accent,#2e5a8c);box-shadow:0 0 0 3px rgba(46,90,140,.10);}
+  .fill:empty:before{content:attr(data-ph);color:#b3aa99;}
+
+  .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px;justify-content:center;}
+  .testbtns{margin-top:20px;display:flex;gap:10px;flex-wrap:wrap;}
+  .act{font-family:'Mulish',sans-serif;font-size:13.5px;font-weight:700;cursor:pointer;border:1px solid var(--ink);background:var(--ink);color:#fff;border-radius:10px;padding:11px 18px;transition:opacity .15s;}
+  .act:hover{opacity:.85;}
+  .act.ghost{background:transparent;color:var(--ink);}
+
+  .footer-note{text-align:center;font-size:13px;color:var(--soft-ink);margin-top:26px;font-style:italic;font-family:'Fraunces',serif;}
+  .credit{text-align:center;font-size:13px;color:var(--soft-ink);margin-top:4px;}
+  .credit b{font-weight:600;color:var(--ink);font-style:normal;}
+
+  @media print{
+    body{background:#fff;padding:0;}
+    .wrap{max-width:none;}
+    .fill,.fill-inline,.ti{color:#000 !important;}
+    .fill:empty:before,.fill-inline:empty:before{content:"" !important;}
+    .ck{display:none !important;}
+    body:not(.printing-single) .tabnav,
+    body:not(.printing-single) .mast-top,
+    body:not(.printing-single) .actions,
+    body:not(.printing-single) .testbtns{display:none !important;}
+    body:not(.printing-single) .panel{display:block !important;page-break-before:always;}
+    body:not(.printing-single) .panel:first-of-type{page-break-before:avoid;}
+    body:not(.printing-single) .panels,
+    body:not(.printing-single) .masthead{box-shadow:none;border:none;}
+    .apply,.test,.note,ol.q > li{break-inside:avoid;}
+    body.printing-single .masthead,
+    body.printing-single .tabnav,
+    body.printing-single .actions,
+    body.printing-single .footer-note,
+    body.printing-single .credit,
+    body.printing-single .testbtns{display:none !important;}
+    body.printing-single .panels{box-shadow:none;border:none;}
+    body.printing-single .panel{display:none !important;}
+    body.printing-single .panel.active{display:block !important;padding:0;}
+    body.printing-single .panel.active > *:not(.print-target){display:none !important;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="masthead">
+    <div class="mast-top">
+      <a class="act ghost" href="https://jblaise1310.github.io/ecqms/overview.html">&larr; eCQM Overview</a>
+      <button class="act ghost" onclick="printFull()">Print full module</button>
+    </div>
+    <div class="kicker">RHC &nbsp;&middot;&nbsp; Staff Training &amp; Onboarding</div>
+    <h1>eCQM: Pharyngitis Testing</h1>
+    <div class="sub">Appropriate testing for sore throat. A shared workflow, anchored by one habit: a sore throat means a strep test.</div>
+  </div>
+
+  <div class="tabnav" role="tablist" aria-label="Module sections">
+    <button class="tab" data-c="teal"  role="tab" aria-selected="true"  aria-controls="p-why"       id="t-why"><span class="num">1</span>Why It Matters</button>
+    <button class="tab" data-c="blue"  role="tab" aria-selected="false" aria-controls="p-measure"   id="t-measure"><span class="num">2</span>The Measure</button>
+    <button class="tab" data-c="purp"  role="tab" aria-selected="false" aria-controls="p-recognize" id="t-recognize"><span class="num">3</span>Recognizing the Visit</button>
+    <button class="tab" data-c="coral" role="tab" aria-selected="false" aria-controls="p-roles"     id="t-roles"><span class="num">4</span>Who Does What</button>
+    <button class="tab" data-c="grn"   role="tab" aria-selected="false" aria-controls="p-loop"      id="t-loop"><span class="num">5</span>Closing the Loop</button>
+  </div>
+
+  <div class="panels">
+
+    <!-- ===================== SECTION 1 ===================== -->
+    <section class="panel active" id="p-why" role="tabpanel" aria-labelledby="t-why">
+      <div class="eyebrow">Section 1</div>
+      <h2>Why It Matters</h2>
+      <p class="dek">Most sore throats are viral. The strep test is how we know when antibiotics actually help.</p>
+
+      <h3>The problem with treating every sore throat</h3>
+      <p>Most sore throats are caused by viruses, which antibiotics do nothing for. Only a minority are group A strep, the bacterial cause that antibiotics actually treat. A strep test is what tells the two apart. Prescribing antibiotics without testing means some patients get a drug they do not need, which carries side effects and helps drive antibiotic resistance.</p>
+
+      <h3>The bigger picture</h3>
+      <div class="stats">
+        <div class="stat">
+          <div class="big">70&ndash;95%</div>
+          <div class="lbl3">of sore throats are caused by viruses, so antibiotics will not help</div>
+          <div class="src">Clinical literature</div>
+        </div>
+        <div class="stat">
+          <div class="big">20&ndash;30%</div>
+          <div class="lbl3">of children's sore throats are strep (5&ndash;15% in adults); a test is what tells them apart</div>
+          <div class="src">CDC</div>
+        </div>
+        <div class="stat">
+          <div class="big">2.8M</div>
+          <div class="lbl3">antibiotic-resistant infections in the U.S. each year, which overprescribing drives</div>
+          <div class="src">CDC</div>
+        </div>
+      </div>
+      <div class="note teal"><span class="lbl">That is the whole point of CMS-146.</span> When antibiotics are prescribed for a sore throat, a strep test should go with them. That way we treat the patients who need antibiotics and spare the ones who do not.</div>
+
+      <h3>A joint workflow</h3>
+      <p>This is a <strong>shared</strong> workflow. The provider makes the diagnosis, decides on antibiotics, and can order the test. <strong>Clinical support staff (CSS)</strong> carry the habit that anchors it: when a patient reports a sore throat, run the strep test up front. With the test already done, the measure is covered no matter what the provider decides. Both roles matter, and they work best together.</p>
+
+      <div class="apply">
+        <div class="apply-head"><span class="pill">Apply It</span><span class="who">Aaron Vance, 26</span></div>
+        <div class="apply-body">
+          <div class="chartline">Walk-in with a sore throat, fever, and chills. He is hoping for "something to knock it out" so he can get back to work.</div>
+          <p>The instinct is to reach for antibiotics. The measure asks for one more step first.</p>
+          <div class="yt">
+            <p class="yt-q"><b>Your turn:</b> Why does it matter whether Aaron gets a strep test before antibiotics are prescribed?</p>
+            <div class="fill" contenteditable="true" data-ph="Type your thoughts here…"></div>
+            <button class="act ck" onclick="toggleFb('fb-why')">Check your knowledge</button>
+            <div class="feedback" id="fb-why">
+              <div class="fb-label">A strong answer would include</div>
+              <p>Most sore throats are viral, and antibiotics only help when the cause is strep. A strep test tells us which one Aaron has. Testing before prescribing means he gets antibiotics only if he needs them, which protects him from unnecessary side effects and helps slow antibiotic resistance. That pairing of test plus antibiotic is exactly what the measure looks for.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="test" id="test-why">
+        <div class="test-head">
+          <div class="eyebrow">End-of-Section Test</div>
+          <h3>Section 1 &middot; Why It Matters</h3>
+          <p>Type your answers below, then <strong>print, sign, and submit to your manager.</strong> You can also print it blank to complete by hand.</p>
+          <div class="namebar"><div class="field"><span>Name</span><input class="ti" type="text"></div><div class="field"><span>Date</span><input class="ti" type="text"></div></div>
+        </div>
+        <div class="test-body">
+          <ol class="q">
+            <li><span class="ask">Are most sore throats viral or bacterial, and why does that matter for antibiotics?</span><div class="fill" contenteditable="true" data-ph="Type your answer here…"></div></li>
+            <li><span class="ask">What does a strep test tell you that the symptoms alone may not?</span><div class="fill" contenteditable="true" data-ph="Type your answer here…"></div></li>
+            <li><span class="ask">Name one harm of prescribing antibiotics for a sore throat that is not strep.</span><div class="fill" contenteditable="true" data-ph="Type your answer here…"></div></li>
+            <li><span class="ask">How is this a shared workflow between CSS and the provider?</span><div class="fill" contenteditable="true" data-ph="Type your answer here…"></div></li>
+            <li><span class="ask">In your own words, what is CMS-146 trying to accomplish?</span><div class="fill" contenteditable="true" data-ph="Type your answer here…"></div></li>
+          </ol>
+          <div class="testbtns"><button class="act" onclick="printTest('test-why')">Print this test</button></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== SECTION 2 ===================== -->
+    <section class="panel" id="p-measure" role="tabpanel" aria-labelledby="t-measure">
+      <div class="eyebrow">Section 2</div>
+      <h2>The Measure</h2>
+      <p class="dek">CMS-146 checks that antibiotics for pharyngitis come with a strep test.</p>
+
+      <div class="mcard">
+        <div class="mtag">Measure Description &middot; eCQM CMS-146</div>
+        <p>The percentage of episodes for patients <strong>3 years and older</strong> with a diagnosis of pharyngitis that resulted in an <strong>antibiotic dispensing event</strong> and a <strong>group A streptococcus (strep) test</strong>.</p>
+      </div>
+
+      <h3>What satisfies the measure</h3>
+      <p>The requirement is met when a provider <strong>orders a strep test</strong> while entering a <strong>diagnosis of pharyngitis</strong> AND <strong>prescribing antibiotics</strong>.</p>
+
+      <div class="bigstatement">If antibiotics are given for a sore throat, a strep test goes with them.</div>
+
+      <div class="equation">
+        <span class="eq-box">Pharyngitis diagnosis</span>
+        <span class="eq-op">+</span>
+        <span class="eq-box">Antibiotic order</span>
+        <span class="eq-op">=</span>
+        <span class="eq-box eq-result">Strep test</span>
+      </div>
+
+      <div class="note teal"><span class="lbl">This is where CSS can really help.</span> Run the strep test on every sore-throat visit during rooming, placed with an associated diagnosis of Sore Throat. With the test already in place, the moment the provider diagnoses pharyngitis and prescribes antibiotics, all three pieces line up and the measure is met, with no scramble at the end of the visit.</div>
+
+      <div class="note blue"><span class="lbl">Antibiotics without a test miss the measure.</span> An episode where antibiotics are prescribed for pharyngitis but no strep test is ordered does not meet the measure, and it may mean a patient received antibiotics they did not need.</div>
+
+      <h3>Who is counted</h3>
+      <ul>
+        <li>Patients <strong>3 years of age and older</strong>.</li>
+        <li>With an episode that includes a <strong>diagnosis of pharyngitis</strong>.</li>
+        <li>That resulted in an <strong>antibiotic dispensing event</strong>.</li>
+      </ul>
+
+      <div class="apply">
+        <div class="apply-head"><span class="pill">Apply It</span><span class="who">Aaron Vance, 26</span></div>
+        <div class="apply-body">
+          <div class="chartline">The provider diagnoses Aaron with pharyngitis and decides to prescribe antibiotics.</div>
+          <p>The diagnosis and the prescription are two of the three pieces. One is still missing.</p>
+          <div class="yt">
+            <p class="yt-q"><b>Your turn:</b> For Aaron's episode to count as appropriate testing, what has to happen, and what happens to the measure if it does not?</p>
+            <div class="fill" contenteditable="true" data-ph="Type your thoughts here…"></div>
+            <button class="act ck" onclick="toggleFb('fb-measure')">Check your knowledge</button>
+            <div class="feedback" id="fb-measure">
+              <div class="fb-label">A strong answer would include</div>
+              <p>A group A strep test must be ordered along with the pharyngitis diagnosis and the antibiotic. Diagnosis plus antibiotic plus strep test equals appropriate testing. If antibiotics are prescribed but no strep test is ordered, the episode misses the measure, and it may mean Aaron got antibiotics without confirming he needed them.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="test" id="test-measure">
+        <div class="test-head">
+          <div class="eyebrow">End-of-Section Test</div>
+          <h3>Section 2 &middot; The Measure</h3>
+          <p>Type your answers below, then <strong>print, sign, and submit to your manager.</strong> You can also print it blank to complete by hand.</p>
+          <div class="namebar"><div class="field"><span>Name</span><input class="ti" type="text"></div><div class="field"><span>Date</span><input class="ti" type="text"></div></div>
+        </div>
+        <div class="test-body">
+          <ol class="q">
+            <li><span class="ask">What three things have to come together in an episode for CMS-146 to be satisfied?</span><div class="fill" contenteditable="true" data-ph="Type your answer here…"></div></li>
+            <li><span class="ask">What is the minimum age for a patient to be counted in this measure?</span><div class="fill" contenteditable="true" data-ph="Type your answer here…"></div></li>
+            <li><span class="ask">A provider prescribes antibiotics for pharyngitis but orders no strep test. Does the episode meet the measure? Why or why not?</span><div class="fill" contenteditable="true" data-ph="Type your answer here…"></div></li>
+            <li><span class="ask">If a patient has a sore throat but is not prescribed antibiotics, does a strep test become required by this measure? Explain.</span><div class="fill" contenteditable="true" data-ph="Type your answer here…"></div></li>
+            <li><span class="ask">In your own words, complete the equation: pharyngitis + antibiotics = ?</span><div class="fill" contenteditable="true" data-ph="Type your answer here…"></div></li>
+          </ol>
+          <div class="testbtns"><button class="act" onclick="printTest('test-measure')">Print this test</button></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== SECTION 3 ===================== -->
+    <section class="panel" id="p-recognize" role="tabpanel" aria-labelledby="t-recognize">
+      <div class="eyebrow">Section 3</div>
+      <h2>Recognizing the Visit</h2>
+      <p class="dek">When the complaint is a sore throat, think strep test.</p>
+
+      <h3>The reason for visit is your cue</h3>
+      <p>The <strong>reason for visit</strong> on the Ambulatory Organizer is an early cue that a sore-throat visit may be coming. As you room the patient, you <strong>document the chief complaint</strong> from what they tell you, and that is usually where the signal shows up: sore throat, tonsillitis, throat pain, or painful swallowing.</p>
+      <div class="example"><b>Reason for Visit:</b> Walk in follow up<br><b>Chief Complaint:</b> sore throat, blister on left tonsil, fever, chills, ...</div>
+
+      <h3>Make the connection: sore throat means a strep test</h3>
+      <p>This is the habit that matters most. When the chief complaint is a sore throat or something like it, run the strep test as part of rooming, up front, without waiting to see what the provider decides. Connecting the complaint to the test is what keeps the measure covered no matter how the diagnosis or the antibiotic decision lands.</p>
+
+      <h3>The Quick Visit protocol can help</h3>
+      <p>The <strong>Quick Visits &gt; Pharyngitis Protocol</strong> is a tool that can make this easier, setting up the strep order and the steps for you. CSS can use the (CSS) version; providers can use the (Provider) version.</p>
+      <div class="note purp"><span class="lbl">The Quick Visit is optional.</span> It is there to assist, not to gate the work, and no one is required to use it. What matters is that a sore-throat complaint leads to a strep test.</div>
+
+      <div class="apply">
+        <div class="apply-head"><span class="pill">Apply It</span><span class="who">Aaron Vance, 26</span></div>
+        <div class="apply-body">
+          <div class="chartline">Aaron's Ambulatory Organizer shows: Reason for Visit, Walk in follow up. Chief Complaint, sore throat, blister on left tonsil, fever, chills.</div>
+          <p>You are the CSS rooming him. What does that chief complaint tell you to do?</p>
+          <div class="yt">
+            <p class="yt-q"><b>Your turn:</b> What do you recognize here, and what is your first step?</p>
+            <div class="fill" contenteditable="true" data-ph="Type your thoughts here…"></div>
+            <button class="act ck" onclick="toggleFb('fb-recognize')">Check your knowledge</button>
+            <div class="feedback" id="fb-recognize">
+              <div class="fb-label">A strong answer would include</div>
+              <p>The chief complaint is a sore throat, so the connection is clear: run the strep test as part of rooming, placed with an associated diagnosis of Sore Throat. You can use the Quick Visits &gt; Pharyngitis Protocol (CSS) to help set up the order, but the key action is making sure the strep test gets done, regardless of what the provider decides next.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="test" id="test-recognize">
+        <div class="test-head">
+          <div class="eyebrow">End-of-Section Test</div>
+          <h3>Section 3 &middot; Recognizing the Visit</h3>
+          <p>Type your answers below, then <strong>print, sign, and submit to your manager.</strong> You can also print it blank to complete by hand.</p>
+          <div class="namebar"><div class="field"><span>Name</span><input class="ti" type="text"></div><div class="field"><span>Date</span><input class="ti" type="text"></div></div>
+        </div>
+        <div class="test-body">
+          <ol class="q">
+            <li><span class="ask">The reason for visit is a cue. Where does the sore-throat signal usually show up, and who documents it?</span><div class="fill" contenteditable="true" data-ph="Type your answer here…"></div></li>
+            <li><span class="ask">Name some chief complaints that should make you think "strep test."</span><div class="fill" contenteditable="true" data-ph="Type your answer here…"></div></li>
+            <li><span class="ask">When the chief complaint is a sore throat, what is the key action, and when do you do it?</span><div class="fill" contenteditable="true" data-ph="Type your answer here…"></div></li>
+            <li><span class="ask">Is the Quick Visits Pharyngitis Protocol required? What is it for?</span><div class="fill" contenteditable="true" data-ph="Type your answer here…"></div></li>
+            <li><span class="ask">In your own words, why does connecting a sore-throat complaint to a strep test keep the measure covered no matter what the provider does?</span><div class="fill" contenteditable="true" data-ph="Type your answer here…"></div></li>
+          </ol>
+          <div class="testbtns"><button class="act" onclick="printTest('test-recognize')">Print this test</button></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== SECTION 4 ===================== -->
+    <section class="panel" id="p-roles" role="tabpanel" aria-labelledby="t-roles">
+      <div class="eyebrow">Section 4</div>
+      <h2>Who Does What</h2>
+      <p class="dek">A shared workflow with a clear split. The provider owns the clinical decision; CSS run the strep test.</p>
+
+      <p>Here is who does what. The pieces overlap on purpose, which is what makes the measure hard to miss.</p>
+
+      <div class="twocol">
+        <div class="col prov">
+          <div class="col-head">Provider</div>
+          <div class="col-body">
+            <ul>
+              <li>Reviews the reason for visit for signs of pharyngitis, tonsillitis, or sore throat.</li>
+              <li>Makes the diagnosis and decides on antibiotics.</li>
+              <li>Can order the strep test, and orders a culture if one is required.</li>
+              <li>May use the Quick Visits &gt; Pharyngitis Protocol (Provider) to help.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="col css">
+          <div class="col-head">CSS</div>
+          <div class="col-body">
+            <ul>
+              <li>Watches for a sore-throat complaint while rooming the patient.</li>
+              <li>Runs the strep test, placed as a protocol order with an associated diagnosis of Sore Throat.</li>
+              <li>Notifies the provider of the strep test results.</li>
+              <li>May use the Quick Visits &gt; Pharyngitis Protocol (CSS) to help.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="note coral"><span class="lbl">When you place the Strep Test order.</span> Use an associated diagnosis of <strong>Sore Throat</strong>. ICD code <strong>J02.9</strong> includes sore throat.</div>
+
+      <div class="apply">
+        <div class="apply-head"><span class="pill">Apply It</span><span class="who">Aaron Vance, 26</span></div>
+        <div class="apply-body">
+          <div class="chartline">Aaron's visit is open in the Pharyngitis Protocol. You are the CSS; the provider will see him next.</div>
+          <p>Two roles, one episode. Be clear on which steps are yours.</p>
+          <div class="yt">
+            <p class="yt-q"><b>Your turn:</b> What do you do as CSS, and what does the provider do?</p>
+            <div class="fill" contenteditable="true" data-ph="Type your thoughts here…"></div>
+            <button class="act ck" onclick="toggleFb('fb-roles')">Check your knowledge</button>
+            <div class="feedback" id="fb-roles">
+              <div class="fb-label">A strong answer would include</div>
+              <p>As CSS, you run the strep test, placed as a protocol order with an associated diagnosis of Sore Throat (J02.9), then notify the provider of the results. You can use the Quick Visits &gt; Pharyngitis Protocol (CSS) to help, but it is optional. The provider owns the clinical side: the diagnosis, the antibiotic decision, and a culture if one is required. Shared workflow, clear split.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="test" id="test-roles">
+        <div class="test-head">
+          <div class="eyebrow">End-of-Section Test</div>
+          <h3>Section 4 &middot; Who Does What</h3>
+          <p>Type your answers below, then <strong>print, sign, and submit to your manager.</strong> You can also print it blank to complete by hand.</p>
+          <div class="namebar"><div class="field"><span>Name</span><input class="ti" type="text"></div><div class="field"><span>Date</span><input class="ti" type="text"></div></div>
+        </div>
+        <div class="test-body">
+          <ol class="q">
+            <li><span class="ask">What is the key action CSS takes for a sore-throat visit, and when?</span><div class="fill" contenteditable="true" data-ph="Type your answer here…"></div></li>
+            <li><span class="ask">When CSS place the Strep Test order, what associated diagnosis do they use, and what ICD code includes it?</span><div class="fill" contenteditable="true" data-ph="Type your answer here…"></div></li>
+            <li><span class="ask">Who makes the diagnosis and decides on antibiotics?</span><div class="fill" contenteditable="true" data-ph="Type your answer here…"></div></li>
+            <li><span class="ask">If a culture is required, who places that order?</span><div class="fill" contenteditable="true" data-ph="Type your answer here…"></div></li>
+            <li><span class="ask">In your own words, describe the difference between the provider's role and the CSS role here.</span><div class="fill" contenteditable="true" data-ph="Type your answer here…"></div></li>
+          </ol>
+          <div class="testbtns"><button class="act" onclick="printTest('test-roles')">Print this test</button></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== SECTION 5 ===================== -->
+    <section class="panel" id="p-loop" role="tabpanel" aria-labelledby="t-loop">
+      <div class="eyebrow">Section 5</div>
+      <h2>Closing the Loop</h2>
+      <p class="dek">The result has to get back to the provider. That is how the episode is complete.</p>
+
+      <h3>Notify the provider of the results</h3>
+      <p>Once the strep test results are back, <strong>CSS notify the provider</strong>. That lets the provider act on them: treat if the test is positive, manage symptoms and reassure if it is negative, and order a culture if one is required.</p>
+
+      <h3>When a culture is needed</h3>
+      <p>For some patients, a throat culture may be required, for example a symptomatic child age 3 or older with a negative rapid test. When that is the case, the <strong>provider</strong> places the culture order (the Quick Visits &gt; Pharyngitis Protocol can help, but is not required).</p>
+
+      <div class="note grn"><span class="lbl">The pieces have to line up.</span> The measure is met when a pharyngitis diagnosis, an antibiotic decision, and a strep test all land in the same episode. The provider owns the diagnosis and antibiotic decision; CSS make sure the strep test happens and the result gets back. Run the test on the sore-throat complaint up front, and the measure holds no matter how the visit unfolds.</div>
+
+      <div class="apply">
+        <div class="apply-head"><span class="pill">Apply It</span><span class="who">Aaron Vance, 26</span></div>
+        <div class="apply-body">
+          <div class="chartline">Aaron's strep test result comes back while he is still in the room.</div>
+          <p>You have a result in hand. The episode is not finished until it moves.</p>
+          <div class="yt">
+            <p class="yt-q"><b>Your turn:</b> As CSS, what is your job now that the result is back, and why does it matter?</p>
+            <div class="fill" contenteditable="true" data-ph="Type your thoughts here…"></div>
+            <button class="act ck" onclick="toggleFb('fb-loop')">Check your knowledge</button>
+            <div class="feedback" id="fb-loop">
+              <div class="fb-label">A strong answer would include</div>
+              <p>Notify the provider of the strep test result. That lets the provider act: treat Aaron if it is positive, manage symptoms if it is negative, and order a culture if one is required. Getting the result back closes the loop, so the episode has the diagnosis, the test, and the right antibiotic decision all documented together.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="test" id="test-loop">
+        <div class="test-head">
+          <div class="eyebrow">End-of-Section Test</div>
+          <h3>Section 5 &middot; Closing the Loop</h3>
+          <p>Type your answers below, then <strong>print, sign, and submit to your manager.</strong> You can also print it blank to complete by hand.</p>
+          <div class="namebar"><div class="field"><span>Name</span><input class="ti" type="text"></div><div class="field"><span>Date</span><input class="ti" type="text"></div></div>
+        </div>
+        <div class="test-body">
+          <ol class="q">
+            <li><span class="ask">Once the strep test results are back, what is the CSS's job?</span><div class="fill" contenteditable="true" data-ph="Type your answer here…"></div></li>
+            <li><span class="ask">Why does the provider need the result promptly?</span><div class="fill" contenteditable="true" data-ph="Type your answer here…"></div></li>
+            <li><span class="ask">If a throat culture is required, who places that order?</span><div class="fill" contenteditable="true" data-ph="Type your answer here…"></div></li>
+            <li><span class="ask">List the three things that must line up in an episode for the measure to be met.</span><div class="fill" contenteditable="true" data-ph="Type your answer here…"></div></li>
+            <li><span class="ask">In your own words, how do CSS and the provider share this workflow from start to finish?</span><div class="fill" contenteditable="true" data-ph="Type your answer here…"></div></li>
+          </ol>
+          <div class="testbtns"><button class="act" onclick="printTest('test-loop')">Print this test</button></div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <div class="actions">
+    <a class="act ghost" href="https://jblaise1310.github.io/ecqms/overview.html">&larr; eCQM Overview</a>
+    <button class="act ghost" onclick="printFull()">Print full module</button>
+  </div>
+  <div class="footer-note">RHC Staff Onboarding &middot; eCQM Appropriate Testing for Pharyngitis (CMS-146)</div>
+  <div class="credit">Developed by <b>Jo Blaise, RN-DNP</b> &middot; Clinic Manager &middot; Questions? Jo or Vicki, Quality Team</div>
+
+</div>
+
+<script>
+  const tabs = Array.from(document.querySelectorAll('.tab'));
+  const panels = Array.from(document.querySelectorAll('.panel'));
+  function select(tab){
+    tabs.forEach(t=>t.setAttribute('aria-selected', t===tab ? 'true':'false'));
+    panels.forEach(p=>p.classList.toggle('active', p.id===tab.getAttribute('aria-controls')));
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+  tabs.forEach((tab,i)=>{
+    tab.addEventListener('click',()=>select(tab));
+    tab.addEventListener('keydown',e=>{
+      if(e.key==='ArrowRight'||e.key==='ArrowLeft'){
+        e.preventDefault();
+        const dir=e.key==='ArrowRight'?1:-1;
+        const next=tabs[(i+dir+tabs.length)%tabs.length];
+        next.focus(); select(next);
+      }
+    });
+  });
+
+  function toggleFb(id){
+    const el=document.getElementById(id);
+    const open=el.classList.toggle('show');
+    const btn=el.previousElementSibling;
+    if(btn && btn.classList.contains('ck')) btn.textContent = open ? 'Hide feedback' : 'Check your knowledge';
+  }
+
+  function printFull(){
+    document.body.classList.remove('printing-single');
+    document.querySelectorAll('.test').forEach(t=>t.classList.remove('print-target'));
+    window.print();
+  }
+  function printTest(id){
+    document.querySelectorAll('.test').forEach(t=>t.classList.remove('print-target'));
+    document.getElementById(id).classList.add('print-target');
+    document.body.classList.add('printing-single');
+    window.print();
+  }
+  window.addEventListener('afterprint', ()=>{
+    document.body.classList.remove('printing-single');
+    document.querySelectorAll('.test').forEach(t=>t.classList.remove('print-target'));
+  });
+</script>
+</body>
+</html>
