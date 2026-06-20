@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Butter Together — A Savory Biscuit Bar Linner</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,800;1,9..144,500&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --buttermilk:#FBF4E4;--buttermilk-deep:#F4E8CE;--espresso:#3C2A1C;
+    --espresso-soft:#6B5642;--crust:#C9842E;--butter:#F4C04E;--honey:#E9A53C;
+    --sage:#6E7A4A;--line:#E2D2AC;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0;background:var(--buttermilk);color:var(--espresso);font-family:'Hanken Grotesk',system-ui,sans-serif;font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:860px;margin:0 auto;padding:0 22px;}
+  .eyebrow{font-weight:700;font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;color:var(--crust);}
+  h2{font-family:'Fraunces',serif;font-weight:600;font-size:2rem;line-height:1.1;margin:.4rem 0 1.1rem;letter-spacing:-.01em;}
+  p{margin:0 0 1rem;}
+  a{color:var(--sage);}
+
+  /* HERO */
+  .hero{position:relative;text-align:center;padding:74px 22px 60px;overflow:hidden;background:radial-gradient(120% 90% at 50% -10%, rgba(244,192,78,.55) 0%, rgba(244,192,78,0) 58%),radial-gradient(80% 60% at 50% 0%, rgba(233,165,60,.35) 0%, rgba(233,165,60,0) 60%);}
+  .hero .light{position:absolute;inset:0;background:radial-gradient(40% 30% at 50% 8%, rgba(255,255,255,.65), rgba(255,255,255,0) 70%);pointer-events:none;}
+  .hero-inner{position:relative;max-width:720px;margin:0 auto;}
+  .hero .session{display:inline-block;font-weight:700;letter-spacing:.26em;text-transform:uppercase;font-size:.72rem;color:var(--espresso-soft);border:1.5px solid var(--line);border-radius:999px;padding:6px 16px;margin-bottom:20px;}
+  .hero .names{font-weight:700;letter-spacing:.28em;text-transform:uppercase;font-size:.8rem;color:var(--espresso-soft);margin-bottom:14px;}
+  .hero h1{font-family:'Fraunces',serif;font-weight:800;font-size:clamp(3.2rem,11vw,6.2rem);line-height:.92;margin:0;letter-spacing:-.02em;color:var(--espresso);}
+  .hero h1 .amp{display:block;font-style:italic;font-weight:500;font-size:clamp(1.1rem,3.5vw,1.6rem);letter-spacing:.04em;color:var(--crust);margin:14px 0 6px;}
+  .hero .tag{font-style:italic;font-family:'Fraunces',serif;font-weight:400;font-size:1.15rem;color:var(--espresso-soft);margin-top:18px;}
+  .hero .meta{margin-top:26px;display:inline-flex;flex-wrap:wrap;gap:10px;justify-content:center;}
+  .chip{background:var(--buttermilk);border:1.5px solid var(--line);border-radius:999px;padding:8px 16px;font-size:.82rem;font-weight:600;color:var(--espresso);}
+  .chip b{color:var(--crust);}
+
+  .scallop{display:block;width:100%;height:22px;color:var(--buttermilk-deep);}
+
+  section{padding:52px 0;}
+  .band{background:var(--buttermilk-deep);}
+  .lede{font-size:1.12rem;color:var(--espresso-soft);max-width:56ch;}
+
+  /* TIMELINE */
+  .timeline{margin-top:8px;border-left:2px solid var(--line);}
+  .slot{position:relative;padding:14px 0 14px 30px;}
+  .slot::before{content:"";position:absolute;left:-7px;top:20px;width:12px;height:12px;border-radius:50%;background:var(--butter);border:2px solid var(--crust);}
+  .slot .time{font-family:'Fraunces',serif;font-weight:600;font-size:1.05rem;color:var(--crust);}
+  .slot .what{font-weight:600;}
+  .slot .note{color:var(--espresso-soft);font-size:.95rem;}
+
+  /* BAR */
+  .station{background:var(--buttermilk);border:1.5px solid var(--line);border-radius:16px;padding:26px 24px;border-top:6px solid var(--sage);margin-top:10px;}
+  .band .station{background:#fff;}
+  .station h3{font-family:'Fraunces',serif;font-weight:600;font-size:1.3rem;margin:0 0 4px;}
+  .station .sub{font-size:.82rem;letter-spacing:.12em;text-transform:uppercase;font-weight:700;margin-bottom:16px;color:var(--sage);}
+  .menu{list-style:none;margin:0;padding:0;columns:2;column-gap:34px;}
+  .menu li{padding:9px 0;border-bottom:1px dashed var(--line);break-inside:avoid;}
+  .menu .item{font-weight:600;display:block;}
+  .menu .desc{color:var(--espresso-soft);font-size:.86rem;}
+
+  /* RECIPE */
+  .recipe{display:grid;grid-template-columns:.85fr 1.15fr;gap:0;margin-top:10px;border:1.5px solid var(--line);border-radius:18px;overflow:hidden;background:var(--buttermilk);}
+  .recipe .ing{background:var(--buttermilk-deep);padding:26px 24px;}
+  .recipe .met{padding:26px 26px;}
+  .recipe h3{font-family:'Fraunces',serif;font-weight:600;font-size:1.1rem;margin:0 0 14px;}
+  .recipe .yield{font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;font-weight:700;color:var(--crust);margin-bottom:14px;}
+  .ilist{list-style:none;margin:0;padding:0;}
+  .ilist li{padding:7px 0;border-bottom:1px dashed var(--line);font-size:.95rem;display:flex;justify-content:space-between;gap:10px;}
+  .ilist li:last-child{border-bottom:none;}
+  .ilist .amt{font-weight:700;color:var(--espresso);white-space:nowrap;}
+  .ilist .opt{color:var(--sage);font-weight:600;font-size:.8rem;display:block;margin-top:8px;letter-spacing:.06em;text-transform:uppercase;}
+  ol.steps{margin:0;padding:0;counter-reset:step;list-style:none;}
+  ol.steps li{position:relative;padding:0 0 14px 40px;counter-increment:step;font-size:.96rem;}
+  ol.steps li::before{content:counter(step);position:absolute;left:0;top:-2px;width:26px;height:26px;background:var(--crust);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Fraunces',serif;font-weight:600;font-size:.9rem;}
+  ol.steps li:last-child{padding-bottom:0;}
+
+  /* PREP PHASES */
+  .phases{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:10px;}
+  .phase{background:var(--buttermilk);border:1.5px solid var(--line);border-radius:16px;padding:22px 20px;}
+  .band .phase{background:#fff;}
+  .phase .when{font-family:'Fraunces',serif;font-weight:600;font-size:1.1rem;margin:0 0 2px;}
+  .phase .tagline{font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;font-weight:700;color:var(--crust);margin-bottom:14px;}
+  .phase.ahead .tagline{color:var(--sage);}
+  .checklist label{display:flex;gap:10px;align-items:flex-start;margin-bottom:11px;cursor:pointer;font-size:.92rem;line-height:1.45;}
+  .checklist input{appearance:none;-webkit-appearance:none;flex:0 0 auto;width:18px;height:18px;border:2px solid var(--crust);border-radius:5px;margin-top:3px;cursor:pointer;position:relative;background:var(--buttermilk);transition:background .15s ease;}
+  .band .checklist input,.phase .checklist input{background:#fff;}
+  .checklist input:checked{background:var(--crust);}
+  .checklist input:checked::after{content:"✓";position:absolute;inset:0;color:#fff;font-size:12px;display:flex;align-items:center;justify-content:center;font-weight:800;}
+  .checklist label:has(input:checked) span{text-decoration:line-through;color:var(--espresso-soft);}
+
+  /* COLUMNS / GATHER */
+  .cols{display:grid;grid-template-columns:1fr 1fr;gap:30px;margin-top:8px;}
+  .card{background:var(--buttermilk);border:1.5px solid var(--line);border-radius:16px;padding:22px 22px 8px;}
+  .band .card{background:#fff;}
+  .card h3{font-family:'Fraunces',serif;font-weight:600;font-size:1.15rem;margin:0 0 12px;}
+
+  /* PAIRINGS */
+  .pairgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:8px;}
+  .pour{background:var(--buttermilk);border:1.5px solid var(--line);border-radius:14px;padding:18px 16px;text-align:center;}
+  .band .pour{background:#fff;}
+  .pour .emoji{font-size:1.6rem;}
+  .pour .name{font-family:'Fraunces',serif;font-weight:600;margin:6px 0 2px;}
+  .pour .desc{font-size:.84rem;color:var(--espresso-soft);}
+
+  /* TRADITION */
+  .tradition{background:var(--buttermilk);border:1.5px solid var(--line);border-radius:16px;padding:26px 24px;margin-top:8px;}
+  .band .tradition{background:#fff;}
+  .tradition h3{font-family:'Fraunces',serif;font-weight:600;font-size:1.2rem;margin:0 0 8px;}
+  .tradition .ideas{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 18px;}
+  .tradition .pill{background:var(--buttermilk-deep);border:1px solid var(--line);border-radius:999px;padding:6px 14px;font-size:.84rem;font-weight:600;color:var(--espresso-soft);}
+  .tradition input[type=text]{width:100%;background:#fff;border:1.5px solid var(--line);border-radius:10px;padding:12px 14px;color:var(--espresso);font-family:inherit;font-size:1rem;}
+
+  /* RULES */
+  .rules{margin-top:8px;display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .rule{display:flex;gap:14px;align-items:flex-start;background:var(--buttermilk);border:1.5px solid var(--line);border-radius:14px;padding:16px 18px;}
+  .band .rule{background:#fff;}
+  .rule .num{font-family:'Fraunces',serif;font-weight:800;font-size:1.5rem;color:var(--crust);line-height:1;}
+  .rule .txt{font-size:.95rem;}
+  .rule .txt b{display:block;margin-bottom:2px;}
+
+  footer{text-align:center;padding:56px 22px 70px;}
+  footer .seal{font-family:'Fraunces',serif;font-style:italic;font-weight:500;font-size:1.35rem;color:var(--crust);}
+  footer .small{color:var(--espresso-soft);font-size:.85rem;margin-top:10px;}
+
+  @media (max-width:680px){
+    .cols,.rules{grid-template-columns:1fr;}
+    .pairgrid,.phases{grid-template-columns:1fr;}
+    .menu{columns:1;}
+    .recipe{grid-template-columns:1fr;}
+    h2{font-size:1.7rem;}
+  }
+  .fade{opacity:0;transform:translateY(14px);animation:rise .7s ease forwards;}
+  @keyframes rise{to{opacity:1;transform:none;}}
+  @media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto;}.fade{opacity:1!important;transform:none!important;animation:none!important;}}
+  .loaded .fade{opacity:1;transform:none;}
+  @media print{.hero{padding-top:30px;}section{padding:22px 0;page-break-inside:avoid;}}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="light"></div>
+  <div class="hero-inner fade">
+    <div class="session">Session No. 01 · A monthly thing</div>
+    <div class="names">Rob &amp; Jo</div>
+    <h1>Butter<span class="amp">&amp;</span>Together</h1>
+    <div class="tag">A savory biscuit bar linner, baked at altitude and grazed slow.</div>
+    <div class="meta">
+      <span class="chip"><b>When</b> &nbsp;Tonight · 3:30 pm</span>
+      <span class="chip"><b>Where</b> &nbsp;Our kitchen</span>
+      <span class="chip"><b>Dress code</b> &nbsp;Aprons &amp; sock feet</span>
+    </div>
+  </div>
+</header>
+
+<svg class="scallop" viewBox="0 0 1200 22" preserveAspectRatio="none" fill="currentColor"><path d="M0 22 V11 C50 22 100 0 150 11 C200 22 250 0 300 11 C350 22 400 0 450 11 C500 22 550 0 600 11 C650 22 700 0 750 11 C800 22 850 0 900 11 C950 22 1000 0 1050 11 C1100 22 1150 0 1200 11 V22 Z"/></svg>
+
+<section class="band">
+  <div class="wrap fade">
+    <div class="eyebrow">The Idea</div>
+    <h2>One batch of biscuits, a counter full of savory.</h2>
+    <p class="lede">Keep it easy this time. We bake a single savory batch together, set out the toppings, and graze our way from late lunch into early dinner. No splitting, no scorekeeping. Just a warm kitchen, a good drink, and the start of a monthly habit.</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap fade">
+    <div class="eyebrow">The Flow</div>
+    <h2>How the afternoon unfolds</h2>
+    <div class="timeline">
+      <div class="slot"><div class="time">3:30</div><div class="what">Aprons on, pour a drink, music up</div><div class="note">Preheat the oven to 450°F so it's screaming hot for altitude.</div></div>
+      <div class="slot"><div class="time">3:45</div><div class="what">Make the dough together</div><div class="note">Divide and conquer: one cuts butter, one measures buttermilk. Fold in cheddar and chives if you want them through the whole batch.</div></div>
+      <div class="slot"><div class="time">4:10</div><div class="what">Pat, fold, and cut the biscuits</div><div class="note">Press the cutter straight down, no twisting, so they rise tall.</div></div>
+      <div class="slot"><div class="time">4:20</div><div class="what">Biscuits in &mdash; set the bar while they bake</div><div class="note">13 minutes on the timer. Lay out the toppings and warm the plates.</div></div>
+      <div class="slot"><div class="time">4:35</div><div class="what">Pull them, butter the tops</div><div class="note">Brush hot so they glisten. Let them rest five minutes.</div></div>
+      <div class="slot"><div class="time">4:45</div><div class="what">The bar opens &mdash; build &amp; graze</div><div class="note">Make little open-faced bites and take your time.</div></div>
+      <div class="slot"><div class="time">After</div><div class="what">Settle in</div><div class="note">Top off the drinks, pick something to watch, and call it a good one.</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="band">
+  <div class="wrap fade">
+    <div class="eyebrow">Get Ahead</div>
+    <h2>Preparation</h2>
+    <p class="lede" style="margin-bottom:24px;">Do the slow parts before you start so the actual date stays fun. Tap each item as you knock it out.</p>
+    <div class="phases">
+      <div class="phase ahead">
+        <div class="when">Earlier today</div>
+        <div class="tagline">Make ahead</div>
+        <div class="checklist">
+          <label><input type="checkbox"><span>Cook the sausage gravy, cool and refrigerate</span></label>
+          <label><input type="checkbox"><span>Cook the bacon, set on a tray to re-crisp later</span></label>
+          <label><input type="checkbox"><span>Whip the honey butter</span></label>
+          <label><input type="checkbox"><span>Grate the cheddar, chop the chives</span></label>
+          <label><input type="checkbox"><span>Soften cream cheese, spoon pimento cheese into a bowl</span></label>
+          <label><input type="checkbox"><span>Chill the beer and cider, prep paloma citrus</span></label>
+        </div>
+      </div>
+      <div class="phase">
+        <div class="when">30 min before</div>
+        <div class="tagline">Mise en place</div>
+        <div class="checklist">
+          <label><input type="checkbox"><span>Cube the butter, freeze 10 min so it's very cold</span></label>
+          <label><input type="checkbox"><span>Whisk the dry ingredients into a bowl</span></label>
+          <label><input type="checkbox"><span>Measure buttermilk, keep in the fridge till needed</span></label>
+          <label><input type="checkbox"><span>Line the baking sheet, set out the cutter</span></label>
+          <label><input type="checkbox"><span>Arrange toppings in crocks along the counter with spoons</span></label>
+        </div>
+      </div>
+      <div class="phase">
+        <div class="when">Right before</div>
+        <div class="tagline">Last touches</div>
+        <div class="checklist">
+          <label><input type="checkbox"><span>Warm the plates in a low oven</span></label>
+          <label><input type="checkbox"><span>Reheat the gravy, loosen with a splash of milk</span></label>
+          <label><input type="checkbox"><span>Re-crisp the bacon</span></label>
+          <label><input type="checkbox"><span>Scramble eggs soft, to order, while biscuits rest</span></label>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap fade">
+    <div class="eyebrow">The Bake</div>
+    <h2>High-altitude savory biscuits</h2>
+    <div class="recipe">
+      <div class="ing">
+        <div class="yield">Makes 8 · ~7,000 ft</div>
+        <h3>Ingredients</h3>
+        <ul class="ilist">
+          <li><span>All-purpose flour</span><span class="amt">2 cups</span></li>
+          <li><span>Sugar</span><span class="amt">1 tbsp</span></li>
+          <li><span>Baking powder</span><span class="amt">2½ tsp</span></li>
+          <li><span>Baking soda</span><span class="amt">¼ tsp</span></li>
+          <li><span>Salt</span><span class="amt">1 tsp</span></li>
+          <li><span>Cold unsalted butter, cubed</span><span class="amt">½ cup</span></li>
+          <li><span>Cold buttermilk</span><span class="amt">¾ cup + 2 tbsp</span></li>
+          <li><span>Melted butter, for brushing</span><span class="amt">1 tbsp</span></li>
+        </ul>
+        <span class="opt">Optional fold-in</span>
+        <ul class="ilist">
+          <li><span>Sharp cheddar, grated</span><span class="amt">½ cup</span></li>
+          <li><span>Chives, chopped</span><span class="amt">2 tbsp</span></li>
+        </ul>
+      </div>
+      <div class="met">
+        <h3>Method</h3>
+        <ol class="steps">
+          <li>Preheat oven to 450°F and line a sheet with parchment. The hot oven matters at altitude.</li>
+          <li>Whisk the flour, sugar, baking powder, baking soda, and salt.</li>
+          <li>Cut in the cold butter to coarse crumbs with pea-sized bits. Fold in cheddar and chives now if using.</li>
+          <li>Stir in the buttermilk just until shaggy. Don't overmix.</li>
+          <li>Pat into a rectangle, fold over itself 3 to 4 times, then pat to about 1 inch thick.</li>
+          <li>Cut straight down, no twisting, and place the biscuits close together.</li>
+          <li>Bake 12 to 15 minutes until tall and golden. Start checking at 12.</li>
+          <li>Brush the hot tops with melted butter and rest 5 minutes before serving.</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="band">
+  <div class="wrap fade">
+    <div class="eyebrow">The Bar</div>
+    <h2>Savory toppings, build your own bites</h2>
+    <div class="station">
+      <h3>Tonight's spread</h3>
+      <div class="sub">Set it all along the counter</div>
+      <ul class="menu">
+        <li><span class="item">Sausage gravy</span><span class="desc">warm, in a small crock</span></li>
+        <li><span class="item">Sharp cheddar + chives</span><span class="desc">fold into the batch or pile on top</span></li>
+        <li><span class="item">Pimento cheese</span><span class="desc">cool &amp; tangy</span></li>
+        <li><span class="item">Pepper jelly + cream cheese</span><span class="desc">sweet-heat classic</span></li>
+        <li><span class="item">Soft scrambled eggs</span><span class="desc">make to order</span></li>
+        <li><span class="item">Crispy bacon</span><span class="desc">crumble or whole</span></li>
+        <li><span class="item">Hot honey</span><span class="desc">drizzle the bold ones</span></li>
+        <li><span class="item">Honey butter</span><span class="desc">the gentle landing</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap fade">
+    <div class="eyebrow">Before We Start</div>
+    <h2>Gather list</h2>
+    <p class="lede" style="margin-bottom:22px;">Tap to cross things off as you shop. Pick the toppings you actually want.</p>
+    <div class="cols">
+      <div class="card">
+        <h3>For the biscuits</h3>
+        <div class="checklist">
+          <label><input type="checkbox"><span>All-purpose flour</span></label>
+          <label><input type="checkbox"><span>Baking powder</span></label>
+          <label><input type="checkbox"><span>Baking soda</span></label>
+          <label><input type="checkbox"><span>Sugar</span></label>
+          <label><input type="checkbox"><span>Salt</span></label>
+          <label><input type="checkbox"><span>Unsalted butter (keep cold)</span></label>
+          <label><input type="checkbox"><span>Buttermilk</span></label>
+          <label><input type="checkbox"><span>Cheddar + chives</span></label>
+        </div>
+      </div>
+      <div class="card">
+        <h3>For the bar</h3>
+        <div class="checklist">
+          <label><input type="checkbox"><span>Breakfast sausage (for gravy)</span></label>
+          <label><input type="checkbox"><span>Eggs</span></label>
+          <label><input type="checkbox"><span>Bacon</span></label>
+          <label><input type="checkbox"><span>Pimento cheese</span></label>
+          <label><input type="checkbox"><span>Pepper jelly + cream cheese</span></label>
+          <label><input type="checkbox"><span>Hot honey</span></label>
+          <label><input type="checkbox"><span>Honey or honey butter</span></label>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="band">
+  <div class="wrap fade">
+    <div class="eyebrow">The Pour</div>
+    <h2>What to drink with it</h2>
+    <p class="lede" style="margin-bottom:22px;">No bloody marys in sight. Three easy options that play well with sausage, cheddar, and honey.</p>
+    <div class="pairgrid">
+      <div class="pour"><div class="emoji">🍺</div><div class="name">Crisp &amp; clean</div><div class="desc">A cold pilsner or lager. Cuts the richness without competing with the food.</div></div>
+      <div class="pour"><div class="emoji">🍏</div><div class="name">Apple-y &amp; bright</div><div class="desc">A dry hard cider. Lovely against the salty bacon and sharp cheddar.</div></div>
+      <div class="pour"><div class="emoji">🍊</div><div class="name">A little fancy</div><div class="desc">A paloma: tequila, grapefruit, lime, soda. Refreshing and easygoing.</div></div>
+    </div>
+    <p style="margin-top:16px;color:var(--espresso-soft);font-size:.95rem;">No-proof and just as good: sparkling water with grapefruit and lime, or a non-alcoholic cider over ice.</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap fade">
+    <div class="eyebrow">Make It Stick</div>
+    <h2>Setting up the monthly thing</h2>
+    <div class="tradition">
+      <h3>Next month's theme</h3>
+      <p style="margin-bottom:0;color:var(--espresso-soft);">Tonight is the savory edition. Jot an idea while it's fresh so the next one is easy to pull off.</p>
+      <div class="ideas">
+        <span class="pill">Sweet edition</span>
+        <span class="pill">Breakfast for dinner</span>
+        <span class="pill">Brunch board</span>
+        <span class="pill">Soup &amp; biscuits</span>
+        <span class="pill">Holiday flavors</span>
+      </div>
+      <input type="text" placeholder="Idea for Session No. 02...">
+    </div>
+  </div>
+</section>
+
+<section class="band">
+  <div class="wrap fade">
+    <div class="eyebrow">House Rules</div>
+    <h2>The fine print, for fun</h2>
+    <div class="rules">
+      <div class="rule"><div class="num">1</div><div class="txt"><b>Phones in the basket</b>One photo of the spread, then they go away.</div></div>
+      <div class="rule"><div class="num">2</div><div class="txt"><b>Try every topping once</b>Even the combination that sounds weird.</div></div>
+      <div class="rule"><div class="num">3</div><div class="txt"><b>No twisting the cutter</b>Press straight down so they rise tall. We take this seriously.</div></div>
+      <div class="rule"><div class="num">4</div><div class="txt"><b>Best bite picks next month</b>Whoever builds the winning combo names Session No. 02.</div></div>
+    </div>
+  </div>
+</section>
+
+<footer class="fade">
+  <div class="seal">Better when we're buttered together.</div>
+  <div class="small">Butter &amp; Together · Session No. 01 · A savory biscuit bar linner for two</div>
+</footer>
+
+<script>document.body.classList.add('loaded');</script>
+</body>
+</html>
