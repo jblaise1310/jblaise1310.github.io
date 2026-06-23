@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Depression Screening Adoption — YTD 2026 Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --ink: #1a1a2e; --ink-soft: #4a4a6a; --ink-muted: #8888aa;
+    --bg: #f0eeeb; --bg-card: #ffffff;
+    --warn: #c0392b; --warn-light: #fde8ea;
+    --success: #16a34a; --success-light: #dcfce7;
+    --benchmark: #e8650a;
+    --border: #e4e2de;
+    --shadow-lg: 0 8px 32px rgba(26,26,46,0.12);
+  }
+  @media print {
+    body { background: white !important; padding: 0 !important; }
+    .no-print { display: none !important; }
+  }
+  body {
+    font-family: 'DM Sans', sans-serif; background: var(--bg);
+    color: var(--ink); min-height: 100vh; padding: 40px 24px 60px;
+    -webkit-font-smoothing: antialiased;
+  }
+  .page { max-width: 1100px; margin: 0 auto; }
+
+  /* Header */
+  .header {
+    background: var(--ink); border-radius: 16px;
+    padding: 40px 52px 36px; margin-bottom: 28px;
+    position: relative; overflow: hidden;
+  }
+  .header::after {
+    content: ''; position: absolute; bottom: -100px; right: -60px;
+    width: 380px; height: 380px; border-radius: 50%;
+    background: rgba(37,99,168,0.14);
+  }
+  .header-top {
+    display: flex; justify-content: space-between; align-items: flex-start;
+    margin-bottom: 28px; position: relative; z-index: 1;
+  }
+  .org-label {
+    font-size: 10px; font-weight: 600; letter-spacing: 0.2em;
+    text-transform: uppercase; color: rgba(255,255,255,0.38); margin-bottom: 6px;
+  }
+  .page-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 30px; font-weight: 700; color: #fff; line-height: 1.15;
+  }
+  .header-badges { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+  .badge {
+    font-size: 9.5px; font-weight: 600; letter-spacing: 0.14em;
+    text-transform: uppercase; padding: 5px 12px; border-radius: 20px;
+  }
+  .badge-ytd { background: rgba(232,101,10,0.5); color: rgba(255,255,255,0.9); }
+  .badge-period { background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.7); }
+  .kpi-strip {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px;
+    position: relative; z-index: 1;
+  }
+  .kpi {
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 10px; padding: 16px 18px;
+  }
+  .kpi-label {
+    font-size: 9.5px; font-weight: 600; letter-spacing: 0.15em;
+    text-transform: uppercase; color: rgba(255,255,255,0.42); margin-bottom: 8px;
+  }
+  .kpi-value {
+    font-family: 'Playfair Display', serif;
+    font-size: 30px; font-weight: 700; color: #fff; line-height: 1; margin-bottom: 4px;
+  }
+  .kpi-value.above { color: #4ade80; }
+  .kpi-value.below { color: #f87171; }
+  .kpi-sub { font-size: 11px; color: rgba(255,255,255,0.4); }
+  .kpi-delta {
+    display: inline-block; margin-top: 6px;
+    font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 5px;
+  }
+  .kpi-delta.above { background: rgba(74,222,128,0.15); color: #4ade80; }
+  .kpi-delta.below { background: rgba(248,113,113,0.15); color: #f87171; }
+
+  /* Spotlight */
+  .spotlight-section { margin-bottom: 28px; }
+  .spotlight-heading {
+    font-size: 10px; font-weight: 600; letter-spacing: 0.18em;
+    text-transform: uppercase; color: var(--ink-muted);
+    margin-bottom: 12px;
+  }
+  .spotlight-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px;
+  }
+  .spotlight-card {
+    background: var(--bg-card); border-radius: 12px;
+    border: 1px solid var(--border);
+    padding: 20px 22px; text-align: center;
+    position: relative; overflow: hidden;
+  }
+  .spotlight-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0;
+    height: 3px; background: #e8650a; border-radius: 12px 12px 0 0;
+  }
+  .spotlight-month {
+    font-size: 10px; font-weight: 600; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--ink-muted); margin-bottom: 10px;
+  }
+  .spotlight-medal { font-size: 26px; margin-bottom: 8px; }
+  .spotlight-name {
+    font-weight: 600; font-size: 15px; color: var(--ink); margin-bottom: 6px;
+  }
+  .spotlight-pct {
+    font-family: 'Playfair Display', serif;
+    font-size: 32px; font-weight: 700; color: var(--success); line-height: 1;
+    margin-bottom: 4px;
+  }
+  .spotlight-sub { font-size: 11px; color: var(--ink-muted); margin-bottom: 14px; }
+  .spotlight-link {
+    display: inline-block; font-size: 11px; font-weight: 500;
+    color: #2563a8; text-decoration: none;
+    padding: 4px 12px; border: 1px solid #2563a8; border-radius: 6px;
+    transition: all 0.15s;
+  }
+  .spotlight-link:hover { background: #2563a8; color: white; }
+
+  /* Context note */
+  .section-intro {
+    background: var(--bg-card); border-radius: 12px; border: 1px solid var(--border);
+    padding: 18px 24px; margin-bottom: 24px;
+    display: flex; align-items: flex-start; gap: 14px;
+  }
+  .intro-icon { font-size: 20px; flex-shrink: 0; margin-top: 1px; }
+  .intro-text { font-size: 13px; line-height: 1.6; color: var(--ink-soft); }
+  .intro-text strong { color: var(--ink); }
+
+  /* Group sections */
+  .group-section {
+    background: var(--bg-card); border-radius: 12px; border: 1px solid var(--border);
+    margin-bottom: 18px; overflow: hidden;
+  }
+  .group-header {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 16px 28px; border-bottom: 1px solid var(--border);
+    background: #faf9f7;
+  }
+  .group-title-block { display: flex; flex-direction: column; gap: 3px; }
+  .group-title { font-size: 14px; font-weight: 600; color: var(--ink); }
+  .group-note { font-size: 11.5px; color: var(--ink-muted); }
+  .group-stat { text-align: right; }
+  .group-stat-label {
+    font-size: 9.5px; font-weight: 600; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--ink-muted); display: block; margin-bottom: 3px;
+  }
+  .group-stat-value {
+    font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; display: block;
+  }
+  .group-stat-value.above { color: var(--success); }
+  .group-stat-value.below { color: var(--warn); }
+  .group-stat-sub { font-size: 11px; color: var(--ink-muted); }
+
+  .staff-table { width: 100%; border-collapse: collapse; }
+  .staff-table th {
+    font-size: 10px; font-weight: 600; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--ink-muted);
+    text-align: left; padding: 10px 18px;
+    border-bottom: 1px solid var(--border);
+  }
+  .staff-table th:not(:first-child):not(:last-child) { text-align: center; }
+  .staff-table td {
+    padding: 11px 18px; border-bottom: 1px solid var(--border);
+    font-size: 13px; color: var(--ink-soft);
+  }
+  .staff-table tr:last-child td { border-bottom: none; }
+  .staff-table td.name-cell { font-weight: 500; color: var(--ink); }
+  .staff-table td.name-cell a { color: var(--ink); text-decoration: none; }
+  .staff-table td.name-cell a:hover { color: #2563a8; text-decoration: underline; }
+  .staff-table td.num-cell { text-align: center; }
+  .staff-table td.pct-cell { text-align: center; font-weight: 600; font-size: 13.5px; }
+  .staff-table td.pct-cell.above { color: var(--success); }
+  .staff-table td.pct-cell.below { color: var(--warn); }
+  .staff-table td.bar-cell { text-align: left; padding-left: 12px; }
+  .staff-table td.link-cell { text-align: right; }
+
+  .mini-bar-wrap { display: inline-block; }
+  .mini-bar-track {
+    width: 120px; height: 10px; background: #f0eeed;
+    border-radius: 5px; position: relative; overflow: visible;
+  }
+  .mini-bar-fill { height: 100%; border-radius: 5px; }
+  .mini-bar-bench {
+    position: absolute; top: -3px; bottom: -3px; width: 2px;
+    background: var(--benchmark); border-radius: 1px;
+  }
+
+  .report-link {
+    display: inline-block; font-size: 11.5px; font-weight: 500;
+    color: #2563a8; text-decoration: none;
+    padding: 4px 12px; border: 1px solid #2563a8; border-radius: 6px;
+    white-space: nowrap; transition: all 0.15s;
+  }
+  .report-link:hover { background: #2563a8; color: white; }
+
+  .footer {
+    margin-top: 28px; padding: 18px 0 0;
+    border-top: 1px solid var(--border);
+    font-size: 11px; color: var(--ink-muted); line-height: 1.8;
+  }
+  .footer strong { color: var(--ink-soft); font-weight: 500; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="header">
+    <div class="header-top">
+      <div>
+        <div class="org-label">Primary Care Clinic</div>
+        <div class="page-title">Depression Screening<br>Adoption Dashboard</div>
+      </div>
+      <div class="header-badges">
+        <span class="badge badge-ytd">YTD 2026</span>
+        <span class="badge badge-period">January – May 2026</span>
+      </div>
+    </div>
+    <div class="kpi-strip">
+      <div class="kpi">
+        <div class="kpi-label">Clinic YTD Rate</div>
+        <div class="kpi-value above">68.5%</div>
+        <div class="kpi-sub">All active staff</div>
+        <div class="kpi-delta above">+2.2 pts vs benchmark</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">MA Group Rate</div>
+        <div class="kpi-value above">75.0%</div>
+        <div class="kpi-sub">4004 of 5337 eligible</div>
+        <div class="kpi-delta above">+8.7 pts vs benchmark</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Benchmark</div>
+        <div class="kpi-value">66.33%</div>
+        <div class="kpi-sub">Screening target</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Staff at Benchmark</div>
+        <div class="kpi-value">10<span style="font-size:16px;opacity:0.5"> / 16</span></div>
+        <div class="kpi-sub">Active staff members</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Top Performer Spotlight -->
+  <div class="spotlight-section">
+    <div class="spotlight-heading">Top MA Performer by Month</div>
+    <div class="spotlight-grid">
+      
+      <div class="spotlight-card">
+        <div class="spotlight-month">March 2026</div>
+        <div class="spotlight-medal">🏅</div>
+        <div class="spotlight-name">Dalton, Haley</div>
+        <div class="spotlight-pct">93%</div>
+        <div class="spotlight-sub">Top MA screening rate</div>
+        <a href="https://jblaise1310.github.io/depression-reports/ytd_Dalton_Haley.html" target="_blank" class="spotlight-link">View Report</a>
+      </div>
+      <div class="spotlight-card">
+        <div class="spotlight-month">April 2026</div>
+        <div class="spotlight-medal">🏅</div>
+        <div class="spotlight-name">Vance, Virginia</div>
+        <div class="spotlight-pct">96%</div>
+        <div class="spotlight-sub">Top MA screening rate</div>
+        <a href="https://jblaise1310.github.io/depression-reports/ytd_Vance_Virginia.html" target="_blank" class="spotlight-link">View Report</a>
+      </div>
+      <div class="spotlight-card">
+        <div class="spotlight-month">May 2026</div>
+        <div class="spotlight-medal">🏅</div>
+        <div class="spotlight-name">Dalton, Haley</div>
+        <div class="spotlight-pct">93%</div>
+        <div class="spotlight-sub">Top MA screening rate</div>
+        <a href="https://jblaise1310.github.io/depression-reports/ytd_Dalton_Haley.html" target="_blank" class="spotlight-link">View Report</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Context note -->
+  <div class="section-intro">
+    <div class="intro-icon">ℹ️</div>
+    <div class="intro-text">
+      <strong>Workflow context:</strong> Medical Assistants conduct the majority of patient intakes and carry primary responsibility for this screening workflow. RN and Specialty RN rates reflect different intake roles and should be interpreted accordingly. PRN staff have lower patient volumes by nature of their schedule. Click any staff name or <em>View Report</em> to open the individual YTD detail report.
+    </div>
+  </div>
+
+  
+    <div class="group-section">
+      <div class="group-header">
+        <div class="group-title-block">
+          <span class="group-title">Medical Assistants</span>
+          <span class="group-note">MAs conduct the majority of patient intakes and carry primary responsibility for this workflow.</span>
+        </div>
+        <div class="group-stat">
+          <span class="group-stat-label">Group Rate</span>
+          <span class="group-stat-value above">75.0%</span>
+          <span class="group-stat-sub">6 of 7 at benchmark</span>
+        </div>
+      </div>
+      <table class="staff-table">
+        <thead>
+          <tr>
+            <th>Staff Member</th>
+            <th>Screened</th>
+            <th>Eligible</th>
+            <th>Rate</th>
+            <th>vs. Benchmark</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="name-cell"><a href="https://jblaise1310.github.io/depression-reports/ytd_Albue_David.html" target="_blank">Albue, David</a></td>
+            <td class="num-cell">735</td>
+            <td class="num-cell">925</td>
+            <td class="pct-cell above">79.5%</td>
+            <td class="bar-cell"><div class="mini-bar-wrap">
+      <div class="mini-bar-track">
+        <div class="mini-bar-fill" style="width:95px;background:#16a34a"></div>
+        <div class="mini-bar-bench" style="left:79px"></div>
+      </div>
+    </div></td>
+            <td class="link-cell"><a href="https://jblaise1310.github.io/depression-reports/ytd_Albue_David.html" target="_blank" class="report-link">View Report</a></td>
+          </tr>
+          <tr>
+            <td class="name-cell"><a href="https://jblaise1310.github.io/depression-reports/ytd_Brostek_Hannah.html" target="_blank">Brostek, Hannah</a></td>
+            <td class="num-cell">563</td>
+            <td class="num-cell">703</td>
+            <td class="pct-cell above">80.1%</td>
+            <td class="bar-cell"><div class="mini-bar-wrap">
+      <div class="mini-bar-track">
+        <div class="mini-bar-fill" style="width:96px;background:#16a34a"></div>
+        <div class="mini-bar-bench" style="left:79px"></div>
+      </div>
+    </div></td>
+            <td class="link-cell"><a href="https://jblaise1310.github.io/depression-reports/ytd_Brostek_Hannah.html" target="_blank" class="report-link">View Report</a></td>
+          </tr>
+          <tr>
+            <td class="name-cell"><a href="https://jblaise1310.github.io/depression-reports/ytd_Caldwell_Charlene.html" target="_blank">Caldwell, Charlene</a></td>
+            <td class="num-cell">864</td>
+            <td class="num-cell">1126</td>
+            <td class="pct-cell above">76.7%</td>
+            <td class="bar-cell"><div class="mini-bar-wrap">
+      <div class="mini-bar-track">
+        <div class="mini-bar-fill" style="width:92px;background:#16a34a"></div>
+        <div class="mini-bar-bench" style="left:79px"></div>
+      </div>
+    </div></td>
+            <td class="link-cell"><a href="https://jblaise1310.github.io/depression-reports/ytd_Caldwell_Charlene.html" target="_blank" class="report-link">View Report</a></td>
+          </tr>
+          <tr>
+            <td class="name-cell"><a href="https://jblaise1310.github.io/depression-reports/ytd_Dalton_Haley.html" target="_blank">Dalton, Haley</a></td>
+            <td class="num-cell">848</td>
+            <td class="num-cell">929</td>
+            <td class="pct-cell above">91.3%</td>
+            <td class="bar-cell"><div class="mini-bar-wrap">
+      <div class="mini-bar-track">
+        <div class="mini-bar-fill" style="width:109px;background:#16a34a"></div>
+        <div class="mini-bar-bench" style="left:79px"></div>
+      </div>
+    </div></td>
+            <td class="link-cell"><a href="https://jblaise1310.github.io/depression-reports/ytd_Dalton_Haley.html" target="_blank" class="report-link">View Report</a></td>
+          </tr>
+          <tr>
+            <td class="name-cell"><a href="https://jblaise1310.github.io/depression-reports/ytd_Garcia_Pricilla.html" target="_blank">Garcia, Pricilla</a></td>
+            <td class="num-cell">13</td>
+            <td class="num-cell">535</td>
+            <td class="pct-cell below">2.4%</td>
+            <td class="bar-cell"><div class="mini-bar-wrap">
+      <div class="mini-bar-track">
+        <div class="mini-bar-fill" style="width:2px;background:#c0392b"></div>
+        <div class="mini-bar-bench" style="left:79px"></div>
+      </div>
+    </div></td>
+            <td class="link-cell"><a href="https://jblaise1310.github.io/depression-reports/ytd_Garcia_Pricilla.html" target="_blank" class="report-link">View Report</a></td>
+          </tr>
+          <tr>
+            <td class="name-cell"><a href="https://jblaise1310.github.io/depression-reports/ytd_Prestridge_Brandy.html" target="_blank">Prestridge, Brandy</a></td>
+            <td class="num-cell">576</td>
+            <td class="num-cell">671</td>
+            <td class="pct-cell above">85.8%</td>
+            <td class="bar-cell"><div class="mini-bar-wrap">
+      <div class="mini-bar-track">
+        <div class="mini-bar-fill" style="width:103px;background:#16a34a"></div>
+        <div class="mini-bar-bench" style="left:79px"></div>
+      </div>
+    </div></td>
+            <td class="link-cell"><a href="https://jblaise1310.github.io/depression-reports/ytd_Prestridge_Brandy.html" target="_blank" class="report-link">View Report</a></td>
+          </tr>
+          <tr>
+            <td class="name-cell"><a href="https://jblaise1310.github.io/depression-reports/ytd_Vance_Virginia.html" target="_blank">Vance, Virginia</a></td>
+            <td class="num-cell">405</td>
+            <td class="num-cell">448</td>
+            <td class="pct-cell above">90.4%</td>
+            <td class="bar-cell"><div class="mini-bar-wrap">
+      <div class="mini-bar-track">
+        <div class="mini-bar-fill" style="width:108px;background:#16a34a"></div>
+        <div class="mini-bar-bench" style="left:79px"></div>
+      </div>
+    </div></td>
+            <td class="link-cell"><a href="https://jblaise1310.github.io/depression-reports/ytd_Vance_Virginia.html" target="_blank" class="report-link">View Report</a></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="group-section">
+      <div class="group-header">
+        <div class="group-title-block">
+          <span class="group-title">PRN Medical Assistants</span>
+          <span class="group-note">PRN staff; lower patient volumes expected.</span>
+        </div>
+        <div class="group-stat">
+          <span class="group-stat-label">Group Rate</span>
+          <span class="group-stat-value above">78.4%</span>
+          <span class="group-stat-sub">1 of 3 at benchmark</span>
+        </div>
+      </div>
+      <table class="staff-table">
+        <thead>
+          <tr>
+            <th>Staff Member</th>
+            <th>Screened</th>
+            <th>Eligible</th>
+            <th>Rate</th>
+            <th>vs. Benchmark</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="name-cell"><a href="https://jblaise1310.github.io/depression-reports/ytd_Carr_Jennifer.html" target="_blank">Carr, Jennifer</a></td>
+            <td class="num-cell">217</td>
+            <td class="num-cell">386</td>
+            <td class="pct-cell below">56.2%</td>
+            <td class="bar-cell"><div class="mini-bar-wrap">
+      <div class="mini-bar-track">
+        <div class="mini-bar-fill" style="width:67px;background:#c0392b"></div>
+        <div class="mini-bar-bench" style="left:79px"></div>
+      </div>
+    </div></td>
+            <td class="link-cell"><a href="https://jblaise1310.github.io/depression-reports/ytd_Carr_Jennifer.html" target="_blank" class="report-link">View Report</a></td>
+          </tr>
+          <tr>
+            <td class="name-cell"><a href="https://jblaise1310.github.io/depression-reports/ytd_Oney_Remy.html" target="_blank">Oney, Remy</a></td>
+            <td class="num-cell">43</td>
+            <td class="num-cell">88</td>
+            <td class="pct-cell below">48.9%</td>
+            <td class="bar-cell"><div class="mini-bar-wrap">
+      <div class="mini-bar-track">
+        <div class="mini-bar-fill" style="width:58px;background:#c0392b"></div>
+        <div class="mini-bar-bench" style="left:79px"></div>
+      </div>
+    </div></td>
+            <td class="link-cell"><a href="https://jblaise1310.github.io/depression-reports/ytd_Oney_Remy.html" target="_blank" class="report-link">View Report</a></td>
+          </tr>
+          <tr>
+            <td class="name-cell"><a href="https://jblaise1310.github.io/depression-reports/ytd_Sanchez_Laura.html" target="_blank">Sanchez, Laura</a></td>
+            <td class="num-cell">662</td>
+            <td class="num-cell">702</td>
+            <td class="pct-cell above">94.3%</td>
+            <td class="bar-cell"><div class="mini-bar-wrap">
+      <div class="mini-bar-track">
+        <div class="mini-bar-fill" style="width:113px;background:#16a34a"></div>
+        <div class="mini-bar-bench" style="left:79px"></div>
+      </div>
+    </div></td>
+            <td class="link-cell"><a href="https://jblaise1310.github.io/depression-reports/ytd_Sanchez_Laura.html" target="_blank" class="report-link">View Report</a></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="group-section">
+      <div class="group-header">
+        <div class="group-title-block">
+          <span class="group-title">Registered Nurses</span>
+          <span class="group-note">RNs support screening but do not conduct the majority of intakes.</span>
+        </div>
+        <div class="group-stat">
+          <span class="group-stat-label">Group Rate</span>
+          <span class="group-stat-value below">42.9%</span>
+          <span class="group-stat-sub">2 of 4 at benchmark</span>
+        </div>
+      </div>
+      <table class="staff-table">
+        <thead>
+          <tr>
+            <th>Staff Member</th>
+            <th>Screened</th>
+            <th>Eligible</th>
+            <th>Rate</th>
+            <th>vs. Benchmark</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="name-cell"><a href="https://jblaise1310.github.io/depression-reports/ytd_Albach_Brianne.html" target="_blank">Albach, Brianne</a></td>
+            <td class="num-cell">15</td>
+            <td class="num-cell">52</td>
+            <td class="pct-cell below">28.8%</td>
+            <td class="bar-cell"><div class="mini-bar-wrap">
+      <div class="mini-bar-track">
+        <div class="mini-bar-fill" style="width:34px;background:#c0392b"></div>
+        <div class="mini-bar-bench" style="left:79px"></div>
+      </div>
+    </div></td>
+            <td class="link-cell"><a href="https://jblaise1310.github.io/depression-reports/ytd_Albach_Brianne.html" target="_blank" class="report-link">View Report</a></td>
+          </tr>
+          <tr>
+            <td class="name-cell"><a href="https://jblaise1310.github.io/depression-reports/ytd_Niederkorn_Megan.html" target="_blank">Niederkorn, Megan</a></td>
+            <td class="num-cell">5</td>
+            <td class="num-cell">13</td>
+            <td class="pct-cell below">38.5%</td>
+            <td class="bar-cell"><div class="mini-bar-wrap">
+      <div class="mini-bar-track">
+        <div class="mini-bar-fill" style="width:46px;background:#c0392b"></div>
+        <div class="mini-bar-bench" style="left:79px"></div>
+      </div>
+    </div></td>
+            <td class="link-cell"><a href="https://jblaise1310.github.io/depression-reports/ytd_Niederkorn_Megan.html" target="_blank" class="report-link">View Report</a></td>
+          </tr>
+          <tr>
+            <td class="name-cell"><a href="https://jblaise1310.github.io/depression-reports/ytd_ODell_Kinsey.html" target="_blank">O'Dell, Kinsey</a></td>
+            <td class="num-cell">11</td>
+            <td class="num-cell">15</td>
+            <td class="pct-cell above">73.3%</td>
+            <td class="bar-cell"><div class="mini-bar-wrap">
+      <div class="mini-bar-track">
+        <div class="mini-bar-fill" style="width:87px;background:#16a34a"></div>
+        <div class="mini-bar-bench" style="left:79px"></div>
+      </div>
+    </div></td>
+            <td class="link-cell"><a href="https://jblaise1310.github.io/depression-reports/ytd_ODell_Kinsey.html" target="_blank" class="report-link">View Report</a></td>
+          </tr>
+          <tr>
+            <td class="name-cell"><a href="https://jblaise1310.github.io/depression-reports/ytd_Watts_Tori.html" target="_blank">Watts, Tori</a></td>
+            <td class="num-cell">8</td>
+            <td class="num-cell">11</td>
+            <td class="pct-cell above">72.7%</td>
+            <td class="bar-cell"><div class="mini-bar-wrap">
+      <div class="mini-bar-track">
+        <div class="mini-bar-fill" style="width:87px;background:#16a34a"></div>
+        <div class="mini-bar-bench" style="left:79px"></div>
+      </div>
+    </div></td>
+            <td class="link-cell"><a href="https://jblaise1310.github.io/depression-reports/ytd_Watts_Tori.html" target="_blank" class="report-link">View Report</a></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="group-section">
+      <div class="group-header">
+        <div class="group-title-block">
+          <span class="group-title">Specialty RNs</span>
+          <span class="group-note">Specialty RN roles; intake responsibilities differ from primary care workflow.</span>
+        </div>
+        <div class="group-stat">
+          <span class="group-stat-label">Group Rate</span>
+          <span class="group-stat-value below">10.0%</span>
+          <span class="group-stat-sub">1 of 2 at benchmark</span>
+        </div>
+      </div>
+      <table class="staff-table">
+        <thead>
+          <tr>
+            <th>Staff Member</th>
+            <th>Screened</th>
+            <th>Eligible</th>
+            <th>Rate</th>
+            <th>vs. Benchmark</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="name-cell"><a href="https://jblaise1310.github.io/depression-reports/ytd_Shabro_Ariana.html" target="_blank">Shabro, Ariana</a></td>
+            <td class="num-cell">44</td>
+            <td class="num-cell">45</td>
+            <td class="pct-cell above">97.8%</td>
+            <td class="bar-cell"><div class="mini-bar-wrap">
+      <div class="mini-bar-track">
+        <div class="mini-bar-fill" style="width:117px;background:#16a34a"></div>
+        <div class="mini-bar-bench" style="left:79px"></div>
+      </div>
+    </div></td>
+            <td class="link-cell"><a href="https://jblaise1310.github.io/depression-reports/ytd_Shabro_Ariana.html" target="_blank" class="report-link">View Report</a></td>
+          </tr>
+          <tr>
+            <td class="name-cell"><a href="https://jblaise1310.github.io/depression-reports/ytd_Wattier_Leah.html" target="_blank">Wattier, Leah</a></td>
+            <td class="num-cell">0</td>
+            <td class="num-cell">394</td>
+            <td class="pct-cell below">0.0%</td>
+            <td class="bar-cell"><div class="mini-bar-wrap">
+      <div class="mini-bar-track">
+        <div class="mini-bar-fill" style="width:0px;background:#c0392b"></div>
+        <div class="mini-bar-bench" style="left:79px"></div>
+      </div>
+    </div></td>
+            <td class="link-cell"><a href="https://jblaise1310.github.io/depression-reports/ytd_Wattier_Leah.html" target="_blank" class="report-link">View Report</a></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  <div class="footer">
+    <strong>Benchmark:</strong> 66.33% &nbsp;·&nbsp;
+    <strong>Period:</strong> January – May 2026 (YTD) &nbsp;·&nbsp;
+    <strong>Source:</strong> CSS Depression Screening Workflow Adoption<br>
+    <strong>Resigned (excluded):</strong> Harding, C. &nbsp;· Grooms, L. &nbsp;· Devooght, M. &nbsp;· Swan, C. &nbsp;·&nbsp;
+    <strong>Remote / No intake role (excluded):</strong> Smith, M. &nbsp;·&nbsp;
+    <strong>PRN / No volume (excluded):</strong> Aucoin, G. &nbsp;· Hughes, D.
+  </div>
+
+</div>
+</body>
+</html>
