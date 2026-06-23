@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>YTD Depression Screening — Niederkorn, Megan</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --ink: #1a1a2e; --ink-soft: #4a4a6a; --ink-muted: #8888aa;
+    --bg: #f8f7f4; --bg-card: #ffffff;
+    --warn: #c0392b; --warn-light: #fde8ea;
+    --success: #16a34a; --success-light: #dcfce7;
+    --benchmark: #e8650a;
+    --border: #e4e2de;
+    --shadow-lg: 0 8px 32px rgba(26,26,46,0.12);
+  }
+  @media print {
+    body { background: white !important; padding: 0 !important; }
+    .page { box-shadow: none !important; margin: 0 !important; border-radius: 0 !important; max-width: 100% !important; }
+    .print-btn { display: none !important; }
+  }
+  body { font-family: 'DM Sans', sans-serif; background: #e8e6e3; color: var(--ink); min-height: 100vh; padding: 36px 20px; -webkit-font-smoothing: antialiased; }
+  .page { max-width: 760px; margin: 0 auto; background: var(--bg); border-radius: 16px; overflow: hidden; box-shadow: var(--shadow-lg); }
+  .header { background: var(--ink); padding: 38px 48px 34px; position: relative; overflow: hidden; }
+  .header::before { content: ''; position: absolute; top: -70px; right: -50px; width: 240px; height: 240px; border-radius: 50%; background: rgba(255,255,255,0.03); }
+  .header::after { content: ''; position: absolute; bottom: -90px; left: 35%; width: 320px; height: 320px; border-radius: 50%; background: rgba(37,99,168,0.16); }
+  .header-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 22px; position: relative; z-index: 1; }
+  .org-label { font-size: 10px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.38); }
+  .badges { display: flex; gap: 8px; }
+  .badge { background: rgba(37,99,168,0.45); color: rgba(255,255,255,0.8); font-size: 9.5px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; padding: 4px 11px; border-radius: 20px; }
+  .badge.ytd { background: rgba(232,101,10,0.5); }
+  .staff-name { font-family: 'Playfair Display', serif; font-size: 34px; font-weight: 700; color: #ffffff; line-height: 1.1; position: relative; z-index: 1; margin-bottom: 6px; }
+  .report-subtitle { font-size: 13px; color: rgba(255,255,255,0.5); position: relative; z-index: 1; }
+  .report-subtitle strong { color: rgba(255,255,255,0.75); font-weight: 500; }
+  .body { padding: 36px 48px 44px; }
+  .status-banner { display: flex; align-items: center; gap: 14px; padding: 14px 20px; border-radius: 10px; margin-bottom: 32px; border-left: 4px solid; }
+  .status-banner.below { background: var(--warn-light); border-color: var(--warn); }
+  .status-banner.above { background: var(--success-light); border-color: var(--success); }
+  .status-icon { font-size: 20px; flex-shrink: 0; }
+  .status-text { font-size: 13.5px; line-height: 1.5; color: var(--ink-soft); }
+  .status-text strong { color: var(--ink); }
+  .section-label { font-size: 10px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-muted); margin-bottom: 14px; }
+  .bar-card { background: var(--bg-card); border-radius: 12px; border: 1px solid var(--border); padding: 22px 24px 18px; margin-bottom: 28px; }
+  .summary-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 28px; }
+  .s-card { background: var(--bg-card); border-radius: 12px; padding: 18px; border: 1px solid var(--border); }
+  .s-card-label { font-size: 10px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-muted); margin-bottom: 8px; }
+  .s-card-value { font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 700; line-height: 1; margin-bottom: 4px; color: var(--ink); }
+  .s-card-value.above { color: var(--success); }
+  .s-card-value.below { color: var(--warn); }
+  .s-card-value.muted { color: var(--ink-muted); font-size: 20px; }
+  .s-card-sub { font-size: 11.5px; color: var(--ink-muted); }
+  .delta-chip { display: inline-block; margin-top: 8px; padding: 2px 8px; border-radius: 5px; font-size: 11px; font-weight: 500; }
+  .delta-chip.above { background: var(--success-light); color: var(--success); }
+  .delta-chip.below { background: var(--warn-light); color: var(--warn); }
+  .data-table-wrap { margin-bottom: 28px; }
+  .data-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .data-table th { font-size: 10px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-muted); text-align: left; padding: 8px 12px 10px; border-bottom: 1px solid var(--border); }
+  .data-table th:not(:first-child) { text-align: center; }
+  .data-table td { padding: 11px 12px; border-bottom: 1px solid var(--border); color: var(--ink-soft); }
+  .data-table tr:last-child td { border-bottom: none; }
+  .data-table td:not(:first-child) { text-align: center; }
+  .data-table td.above { color: var(--success); font-weight: 600; }
+  .data-table td.below { color: var(--warn); font-weight: 600; }
+  .data-table td.muted { color: var(--ink-muted); font-style: italic; }
+  .benchmark-row td { color: var(--benchmark) !important; font-weight: 500 !important; font-size: 12px !important; background: rgba(232,101,10,0.04); }
+  .footer { border-top: 1px solid var(--border); padding-top: 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
+  .footer-note { font-size: 11px; color: var(--ink-muted); line-height: 1.5; }
+  .footer-note strong { color: var(--ink-soft); font-weight: 500; }
+  .print-btn { background: var(--ink); color: white; border: none; cursor: pointer; font-family: 'DM Sans', sans-serif; font-size: 11.5px; font-weight: 500; padding: 8px 18px; border-radius: 8px; transition: opacity 0.15s; }
+  .print-btn:hover { opacity: 0.8; }
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="header">
+    <div class="header-meta">
+      <span class="org-label">PCC Quality Data</span>
+      <div class="badges">
+        <span class="badge ytd">YTD 2026</span>
+        <span class="badge">Individual Staff Report</span>
+      </div>
+    </div>
+    <div class="staff-name">Niederkorn, Megan</div>
+    <div class="report-subtitle">Depression Screening Workflow Adoption &nbsp;·&nbsp; <strong>January – May 2026</strong></div>
+  </div>
+  <div class="body">
+
+    <div class="status-banner below">
+      <div class="status-icon">⚠️</div>
+      <div class="status-text"><strong>Below benchmark YTD.</strong> The clinic benchmark for depression screening adoption is <strong>66.33%</strong>. YTD screening rate is <strong>38.5%</strong> across <strong>13</strong> eligible patients.</div>
+    </div>
+
+    <div class="section-label">YTD Screening Rate</div>
+    <div class="bar-card">
+      <svg viewBox="0 0 560 72" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block;">
+      <text x="0" y="14" font-family="DM Sans,sans-serif" font-size="11" fill="#8888aa" font-weight="600" letter-spacing="0.1em">YTD SCREENING RATE</text>
+      <rect x="0" y="22" width="480" height="22" rx="4" fill="#f0eeed"/>
+      <rect x="0" y="22" width="184" height="22" rx="4" fill="#c0392b" opacity="0.85"/>
+      <line x1="318" y1="18" x2="318" y2="48" stroke="#e8650a" stroke-width="2" stroke-dasharray="4,3"/>
+      <text x="318" y="62" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9.5" fill="#e8650a" font-weight="600">66.33% benchmark</text>
+      <text x="190" y="37" text-anchor="start" font-family="DM Sans,sans-serif" font-size="13" fill="#c0392b" font-weight="700">38.5%</text>
+      <text x="484" y="37" font-family="DM Sans,sans-serif" font-size="11" fill="#8888aa">100%</text>
+    </svg>
+    </div>
+
+    <div class="summary-cards">
+      <div class="s-card">
+        <div class="s-card-label">Patients Screened</div>
+        <div class="s-card-value">5</div>
+        <div class="s-card-sub">of 13 eligible</div>
+      </div>
+      <div class="s-card">
+        <div class="s-card-label">Screening Rate</div>
+        <div class="s-card-value below">38.5%</div>
+        <div class="delta-chip below">−27.9 pts vs benchmark</div>
+      </div>
+      <div class="s-card">
+        <div class="s-card-label">Clinic YTD Rate</div>
+        <div class="s-card-value">68.5%</div>
+        <div class="s-card-sub">Jan–May 2026</div>
+      </div>
+    </div>
+
+    <div class="data-table-wrap">
+      <div class="section-label">Full Metric Detail</div>
+      <table class="data-table">
+        <thead>
+          <tr><th>Metric</th><th>Numerator</th><th>Denominator</th><th>Rate</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Screening (All Ages)</td>
+            <td>5</td>
+            <td>13</td>
+            <td class="below">38.5%</td>
+          </tr>
+          <tr class="benchmark-row">
+            <td>Clinic Benchmark</td>
+            <td></td><td></td>
+            <td>66.33%</td>
+          </tr>
+          <tr>
+            <td>Communication (Score 5+)</td>
+            <td>0</td>
+            <td>2</td>
+            <td>0.0%</td>
+          </tr>
+          <tr>
+            <td>Qualifying Minors (Age 12–17)</td>
+            <td>1</td>
+            <td>1</td>
+            <td>100.0%</td>
+          </tr>
+          <tr>
+            <td>Minors Screened Using PHQ-A</td>
+            <td>1</td>
+            <td>1</td>
+            <td>100.0%</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="footer">
+      <div class="footer-note">
+        <strong>Benchmark:</strong> 66.33% &nbsp;·&nbsp;
+        <strong>Period:</strong> January – May 2026 (YTD) &nbsp;·&nbsp;
+        <strong>Source:</strong> CSS Depression Screening Workflow Adoption
+      </div>
+      <button class="print-btn" onclick="window.print()">Print / Save PDF</button>
+    </div>
+  </div>
+</div>
+</body>
+</html>
