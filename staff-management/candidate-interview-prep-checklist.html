@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Candidate Interview Prep Checklist</title>
+<style>
+  :root{
+    --forest:#1f3a2e;
+    --forest-mid:#34563f;
+    --gold:#b08d3f;
+    --gold-soft:#cdb277;
+    --paper:#faf8f2;
+    --ink:#33352f;
+    --ink-soft:#5d6058;
+    --rule:#d9d3c4;
+  }
+
+  *{box-sizing:border-box;}
+
+  body{
+    margin:0;
+    background:#e7e3d8;
+    color:var(--ink);
+    font-family:"Helvetica Neue",Arial,sans-serif;
+    font-size:14px;
+    line-height:1.45;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  .sheet{
+    background:var(--paper);
+    max-width:760px;
+    margin:28px auto;
+    padding:42px 48px 38px;
+    box-shadow:0 6px 28px rgba(31,58,46,0.14);
+  }
+
+  /* ---- Masthead ---- */
+  .eyebrow{
+    font-size:11px;
+    letter-spacing:0.22em;
+    text-transform:uppercase;
+    color:var(--gold);
+    font-weight:700;
+    margin:0 0 6px;
+  }
+  h1{
+    font-family:Georgia,"Times New Roman",serif;
+    font-weight:600;
+    font-size:30px;
+    line-height:1.05;
+    color:var(--forest);
+    margin:0 0 8px;
+    letter-spacing:-0.01em;
+  }
+  .standfirst{
+    color:var(--ink-soft);
+    font-size:12.5px;
+    margin:0;
+  }
+  .rule-gold{
+    height:3px;
+    background:var(--gold);
+    border:0;
+    margin:18px 0 22px;
+    width:100%;
+  }
+
+  /* ---- Candidate record card ---- */
+  .record{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:4px 32px;
+    border:1px solid var(--rule);
+    border-left:4px solid var(--forest);
+    background:#fffdf8;
+    padding:16px 20px 18px;
+    margin-bottom:26px;
+  }
+  .field{display:flex;align-items:flex-end;gap:8px;padding:6px 0;}
+  .field .label{
+    font-size:10.5px;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    color:var(--forest-mid);
+    font-weight:700;
+    white-space:nowrap;
+  }
+  .field .line{
+    flex:1;
+    border-bottom:1px solid var(--ink-soft);
+    min-height:18px;
+  }
+
+  /* ---- Sections ---- */
+  .section{
+    margin-bottom:18px;
+    break-inside:avoid;
+    page-break-inside:avoid;
+  }
+  .sec-head{
+    display:flex;
+    align-items:baseline;
+    gap:12px;
+    border-bottom:1.5px solid var(--forest);
+    padding-bottom:5px;
+    margin-bottom:9px;
+  }
+  .sec-num{
+    font-family:Georgia,serif;
+    font-size:13px;
+    font-weight:700;
+    color:var(--gold);
+    letter-spacing:0.04em;
+  }
+  .sec-title{
+    font-family:Georgia,serif;
+    font-size:16px;
+    font-weight:600;
+    color:var(--forest);
+    margin:0;
+  }
+  .sec-tag{
+    margin-left:auto;
+    font-size:10px;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    color:var(--gold);
+    font-weight:700;
+    border:1px solid var(--gold-soft);
+    border-radius:2px;
+    padding:1px 7px;
+  }
+
+  ul.tasks{list-style:none;margin:0;padding:0;}
+  ul.tasks li{
+    display:flex;
+    align-items:flex-start;
+    gap:11px;
+    padding:5px 0;
+  }
+  ul.tasks li + li{border-top:1px dotted var(--rule);}
+  .box{
+    flex:0 0 auto;
+    width:15px;
+    height:15px;
+    border:1.5px solid var(--forest-mid);
+    border-radius:2px;
+    margin-top:1px;
+  }
+  .task-text{flex:1;}
+  .task-text .sub{
+    display:block;
+    color:var(--ink-soft);
+    font-size:12px;
+    margin-top:1px;
+  }
+  strong{color:var(--forest);font-weight:700;}
+
+  /* ---- Notes ---- */
+  .notes{
+    margin-top:22px;
+    break-inside:avoid;
+    page-break-inside:avoid;
+  }
+  .notes .sec-head{border-bottom-color:var(--gold);}
+  .notes .sec-title{color:var(--forest);}
+  .note-lines{margin-top:10px;}
+  .note-lines .nl{border-bottom:1px solid var(--rule);height:26px;}
+
+  .footer{
+    margin-top:26px;
+    padding-top:12px;
+    border-top:1px solid var(--rule);
+    display:flex;
+    justify-content:space-between;
+    font-size:10.5px;
+    color:var(--ink-soft);
+    letter-spacing:0.04em;
+  }
+
+  /* ---- Print button (screen only) ---- */
+  .toolbar{
+    max-width:760px;
+    margin:0 auto;
+    text-align:right;
+    padding:0 8px;
+  }
+  .print-btn{
+    appearance:none;
+    border:0;
+    background:var(--forest);
+    color:#fffdf8;
+    font-size:12px;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    font-weight:700;
+    padding:10px 20px;
+    border-radius:3px;
+    cursor:pointer;
+    margin-top:18px;
+  }
+  .print-btn:hover{background:var(--forest-mid);}
+  .print-btn:focus-visible{outline:2px solid var(--gold);outline-offset:2px;}
+
+  @media print{
+    body{background:#fff;}
+    .sheet{box-shadow:none;margin:0;max-width:none;padding:0 8px;}
+    .toolbar{display:none;}
+    @page{margin:14mm;}
+  }
+</style>
+</head>
+<body>
+
+  <div class="toolbar">
+    <button class="print-btn" onclick="window.print()">Print this checklist</button>
+  </div>
+
+  <div class="sheet">
+
+    <p class="eyebrow">Primary Care Clinic</p>
+    <h1>Candidate Interview Prep Checklist</h1>
+    <p class="standfirst">One sheet per candidate. Keep it clipped to the interview packet as it moves.</p>
+    <hr class="rule-gold">
+
+    <div class="record">
+      <div class="field"><span class="label">Candidate</span><span class="line"></span></div>
+      <div class="field"><span class="label">Position</span><span class="line"></span></div>
+      <div class="field"><span class="label">Interview Date</span><span class="line"></span></div>
+      <div class="field"><span class="label">Time</span><span class="line"></span></div>
+      <div class="field"><span class="label">Completed By</span><span class="line"></span></div>
+    </div>
+
+    <div class="section">
+      <div class="sec-head">
+        <span class="sec-num">01</span>
+        <h2 class="sec-title">Outreach &amp; Scheduling</h2>
+      </div>
+      <ul class="tasks">
+        <li><span class="box"></span><span class="task-text">Contact candidate to schedule the interview</span></li>
+        <li><span class="box"></span><span class="task-text">Make up to 3 attempts, spaced no more than 3 days apart</span></li>
+        <li><span class="box"></span><span class="task-text">If no response after the 3rd attempt, set tracker status to <strong>Candidate - Withdrew</strong></span></li>
+        <li><span class="box"></span><span class="task-text">If withdrawn, shred the resume per retention policy</span></li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <div class="sec-head">
+        <span class="sec-num">02</span>
+        <h2 class="sec-title">Once Interview Is Confirmed</h2>
+      </div>
+      <ul class="tasks">
+        <li><span class="box"></span><span class="task-text">Send candidate confirmation email</span></li>
+        <li><span class="box"></span><span class="task-text">Schedule interview in Outlook<span class="sub">For MA or RN candidates, add Megan as Optional. Do not hold the date for her.</span></span></li>
+        <li><span class="box"></span><span class="task-text">Block 30 min of prep time, 3 to 4 days before when possible<span class="sub">If that is not possible, schedule prep directly before the interview.</span></span></li>
+        <li><span class="box"></span><span class="task-text">Prepare the interview packet</span></li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <div class="sec-head">
+        <span class="sec-num">03</span>
+        <h2 class="sec-title">Prep Meeting Day (with Vicki)</h2>
+      </div>
+      <ul class="tasks">
+        <li><span class="box"></span><span class="task-text">Leave the interview packet on Vicki's desk</span></li>
+        <li><span class="box"></span><span class="task-text">After the meeting, refile the packet in the appropriate folder</span></li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <div class="sec-head">
+        <span class="sec-num">04</span>
+        <h2 class="sec-title">Day Before Interview</h2>
+        <span class="sec-tag">Optional</span>
+      </div>
+      <ul class="tasks">
+        <li><span class="box"></span><span class="task-text">Send the candidate a reminder</span></li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <div class="sec-head">
+        <span class="sec-num">05</span>
+        <h2 class="sec-title">Day of Interview: Before</h2>
+      </div>
+      <ul class="tasks">
+        <li><span class="box"></span><span class="task-text">Inform front registration of the candidate's name and interview time</span></li>
+        <li><span class="box"></span><span class="task-text">Leave the interview packet on Vicki's desk</span></li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <div class="sec-head">
+        <span class="sec-num">06</span>
+        <h2 class="sec-title">Day of Interview: After</h2>
+      </div>
+      <ul class="tasks">
+        <li><span class="box"></span><span class="task-text">Scan the packet to the Blaise scan folder</span></li>
+        <li><span class="box"></span><span class="task-text">Refile the packet in the appropriate folder</span></li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <div class="sec-head">
+        <span class="sec-num">07</span>
+        <h2 class="sec-title">Close the Loop</h2>
+      </div>
+      <ul class="tasks">
+        <li><span class="box"></span><span class="task-text">Update tracker status with the outcome (interviewed / hired / not selected)</span></li>
+      </ul>
+    </div>
+
+    <div class="notes">
+      <div class="sec-head">
+        <span class="sec-num">&#9670;</span>
+        <h2 class="sec-title">Notes</h2>
+        <span class="sec-tag">Reschedules &amp; exceptions</span>
+      </div>
+      <div class="note-lines">
+        <div class="nl"></div>
+        <div class="nl"></div>
+        <div class="nl"></div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <span>Primary Care Clinic &middot; Candidate Interview Prep</span>
+      <span>Keep with packet until filed</span>
+    </div>
+
+  </div>
+
+</body>
+</html>
