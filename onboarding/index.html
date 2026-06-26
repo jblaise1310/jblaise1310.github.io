@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RHC MA Onboarding · Resource Hub</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,500&family=Mulish:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#243240; --soft-ink:#5a6b78; --paper:#fbf9f5; --line:#e4ded3; --card:#fffdf9;
+    --teal-bg:#e7f3ed; --teal-bd:#bfddcb; --teal-tx:#2f6b50;
+    --blue-bg:#e8f0f9; --blue-bd:#c3d6ec; --blue-tx:#2e5a8c;
+    --purp-bg:#eee9f6; --purp-bd:#d2c6e6; --purp-tx:#5a4a8c;
+    --coral-bg:#f8ebe9; --coral-bd:#e6c5bf; --coral-tx:#a8483c;
+    --grn-bg:#eef4e7; --grn-bd:#bcd3ad; --grn-tx:#4a7340;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    font-family:'Mulish',sans-serif;color:var(--ink);line-height:1.6;
+    background:
+      radial-gradient(1200px 600px at 85% -10%, #f4efe6 0%, transparent 60%),
+      radial-gradient(900px 500px at -10% 110%, #eef2ec 0%, transparent 55%),
+      var(--paper);
+    padding:40px 20px 70px;-webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:880px;margin:0 auto;}
+
+  /* masthead */
+  .masthead{background:var(--card);border:1px solid var(--line);border-radius:22px 22px 0 0;border-bottom:none;padding:44px 52px 34px;position:relative;overflow:hidden;}
+  .masthead::after{content:"";position:absolute;left:0;right:0;bottom:0;height:4px;background:linear-gradient(90deg,var(--teal-bd),var(--blue-bd),var(--purp-bd),var(--coral-bd),var(--grn-bd));}
+  .kicker{font-size:12.5px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--soft-ink);}
+  h1{font-family:'Fraunces',serif;font-weight:500;font-size:43px;line-height:1.04;letter-spacing:-.01em;margin:11px 0 9px;}
+  .masthead .sub{font-family:'Fraunces',serif;font-style:italic;font-size:18px;color:var(--soft-ink);max-width:82%;}
+
+  /* jump nav */
+  .jumpnav{display:flex;flex-wrap:wrap;gap:8px;background:var(--card);border:1px solid var(--line);border-top:none;border-bottom:none;padding:16px 52px;}
+  .jump{font-size:13px;font-weight:700;text-decoration:none;color:var(--soft-ink);padding:7px 14px;border-radius:22px;border:1px solid var(--line);display:inline-flex;align-items:center;gap:8px;background:var(--paper);transition:color .16s,border-color .16s,background .16s;}
+  .jump::before{content:"";width:9px;height:9px;border-radius:50%;background:var(--dot,#bbb);}
+  .jump:hover{color:var(--ink);border-color:var(--dot,#bbb);background:#fff;}
+  .jump:focus-visible{outline:2px solid var(--dot,#888);outline-offset:2px;}
+  .jump[data-c="teal"]{--dot:var(--teal-tx);}
+  .jump[data-c="blue"]{--dot:var(--blue-tx);}
+  .jump[data-c="purp"]{--dot:var(--purp-tx);}
+  .jump[data-c="coral"]{--dot:var(--coral-tx);}
+  .jump[data-c="grn"]{--dot:var(--grn-tx);}
+
+  /* sections shell */
+  .sections{background:var(--card);border:1px solid var(--line);border-top:none;border-radius:0 0 22px 22px;box-shadow:0 1px 2px rgba(60,50,30,.04),0 30px 60px -30px rgba(60,50,30,.18);padding:6px 52px 46px;}
+
+  .cat{padding:32px 0;border-bottom:1px solid var(--line);scroll-margin-top:20px;}
+  .cat:last-child{border-bottom:none;padding-bottom:8px;}
+  .cat-eyebrow{font-size:12px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin-bottom:7px;display:flex;align-items:center;gap:9px;}
+  .cat-eyebrow::before{content:"";width:22px;height:2px;background:var(--accent);border-radius:2px;}
+  .cat h2{font-family:'Fraunces',serif;font-weight:600;font-size:27px;letter-spacing:-.01em;margin-bottom:4px;}
+  .cat-dek{font-size:15px;color:var(--soft-ink);margin-bottom:18px;}
+
+  .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px;}
+  .card{display:flex;flex-direction:column;gap:6px;text-decoration:none;color:inherit;background:var(--paper);border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:13px;padding:15px 18px;transition:transform .16s,box-shadow .16s,border-color .16s,background .16s;}
+  .card:hover{transform:translateY(-2px);box-shadow:0 12px 26px -14px rgba(60,50,30,.30);background:#fff;}
+  .card:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
+  .card .ct{font-family:'Fraunces',serif;font-weight:600;font-size:16.5px;color:var(--ink);display:flex;align-items:center;gap:9px;}
+  .card .ct .nm{flex:0 1 auto;}
+  .card .arrow{margin-left:auto;color:var(--accent);font-size:16px;opacity:0;transform:translateX(-4px);transition:opacity .16s,transform .16s;}
+  .card:hover .arrow,.card:focus-visible .arrow{opacity:1;transform:translateX(0);}
+  .card .cd{font-size:13px;color:var(--soft-ink);line-height:1.5;}
+  .pill{font-size:9px;font-weight:700;letter-spacing:.11em;text-transform:uppercase;background:var(--accent);color:#fff;padding:2px 7px;border-radius:20px;line-height:1.5;flex:none;}
+
+  .cat[data-c="teal"]{--accent:var(--teal-tx);}
+  .cat[data-c="blue"]{--accent:var(--blue-tx);}
+  .cat[data-c="purp"]{--accent:var(--purp-tx);}
+  .cat[data-c="coral"]{--accent:var(--coral-tx);}
+  .cat[data-c="grn"]{--accent:var(--grn-tx);}
+
+  .footer-note{text-align:center;font-size:13px;color:var(--soft-ink);margin-top:26px;font-family:'Fraunces',serif;font-style:italic;}
+
+  @media(max-width:600px){
+    body{padding:22px 14px 50px;}
+    .masthead,.jumpnav,.sections{padding-left:26px;padding-right:26px;}
+    .masthead{padding-top:34px;}
+    h1{font-size:33px;}
+    .masthead .sub{max-width:100%;font-size:16.5px;}
+    .cards{grid-template-columns:1fr;}
+  }
+  @media(prefers-reduced-motion:reduce){*{transition:none !important;}.card:hover{transform:none;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="masthead">
+    <div class="kicker">RHC · Medical Assistant Onboarding</div>
+    <h1>Resource Hub</h1>
+    <p class="sub">Foundations, intakes, medications, and quality — your home base for everything MA.</p>
+  </header>
+
+  <nav class="jumpnav" aria-label="Jump to a section">
+    <a class="jump" data-c="teal"  href="#foundations">Foundations</a>
+    <a class="jump" data-c="blue"  href="#intakes">Intakes</a>
+    <a class="jump" data-c="purp"  href="#practice">Practice Intakes</a>
+    <a class="jump" data-c="coral" href="#medications">Medications</a>
+    <a class="jump" data-c="grn"   href="#quality">Quality</a>
+  </nav>
+
+  <main class="sections">
+
+    <!-- FOUNDATIONS -->
+    <section class="cat" data-c="teal" id="foundations">
+      <span class="cat-eyebrow">Foundations</span>
+      <h2>Foundations</h2>
+      <p class="cat-dek">Start here. Scope of practice, terminology, anatomy &amp; physiology, and the basics of vitals.</p>
+      <div class="cards">
+        <a class="card" href="/onboarding/RHC_MA_Foundations_Module.html">
+          <div class="ct"><span class="nm">Foundations Module</span><span class="arrow">&rarr;</span></div>
+          <div class="cd">Scope of practice, terminology, A&amp;P, medication classes, generic vs. brand.</div>
+        </a>
+        <a class="card" href="/onboarding/RHC_Pediatric_Vitals_Weight.html">
+          <div class="ct"><span class="nm">Pediatric Vitals &amp; Weight</span><span class="arrow">&rarr;</span></div>
+          <div class="cd">Age-specific vital signs and weight measurement for pediatric patients.</div>
+        </a>
+      </div>
+    </section>
+
+    <!-- INTAKES -->
+    <section class="cat" data-c="blue" id="intakes">
+      <span class="cat-eyebrow">Intakes</span>
+      <h2>Intakes</h2>
+      <p class="cat-dek">The step-by-step intake workflows in Cerner, by visit type.</p>
+      <div class="cards">
+        <a class="card" href="/intakes/comprehensive/">
+          <div class="ct"><span class="nm">Adult Comprehensive</span><span class="arrow">&rarr;</span></div>
+          <div class="cd">The full adult comprehensive intake workflow.</div>
+        </a>
+        <a class="card" href="/intakes/mawv/">
+          <div class="ct"><span class="nm">Medicare Annual Wellness</span><span class="arrow">&rarr;</span></div>
+          <div class="cd">Intake steps specific to the Medicare Annual Wellness Visit (MAWV).</div>
+        </a>
+        <a class="card" href="/intakes/pediatric/">
+          <div class="ct"><span class="nm">Pediatric</span><span class="arrow">&rarr;</span></div>
+          <div class="cd">Age-appropriate intake for pediatric visits.</div>
+        </a>
+      </div>
+    </section>
+
+    <!-- PRACTICE INTAKES -->
+    <section class="cat" data-c="purp" id="practice">
+      <span class="cat-eyebrow">Practice Intakes</span>
+      <h2>Practice Intakes</h2>
+      <p class="cat-dek">Realistic scenarios to work through before charting on a live patient.</p>
+      <div class="cards">
+        <a class="card" href="/intakes/comprehensive/practice-scenarios-adult.html">
+          <div class="ct"><span class="nm">Adult Practice Scenarios</span><span class="arrow">&rarr;</span></div>
+          <div class="cd">Practice the adult comprehensive intake end to end.</div>
+        </a>
+        <a class="card" href="/intakes/mawv/practice-scenarios-adult.html">
+          <div class="ct"><span class="nm">MAWV Practice Scenarios</span><span class="arrow">&rarr;</span></div>
+          <div class="cd">Practice Medicare Annual Wellness Visit intakes.</div>
+        </a>
+        <a class="card" href="/intakes/pediatric/practice-scenarios-adult.html">
+          <div class="ct"><span class="nm">Pediatric Practice Scenarios</span><span class="arrow">&rarr;</span></div>
+          <div class="cd">Practice pediatric intake scenarios.</div>
+        </a>
+      </div>
+    </section>
+
+    <!-- MEDICATIONS -->
+    <section class="cat" data-c="coral" id="medications">
+      <span class="cat-eyebrow">Medications</span>
+      <h2>Medications</h2>
+      <p class="cat-dek">Quick-reference tools for medications during rooming and reconciliation.</p>
+      <div class="cards">
+        <a class="card" href="/staff-resources/Bulletin-MedTool.html">
+          <div class="ct"><span class="nm">Medication Bulletin Tool</span><span class="arrow">&rarr;</span></div>
+          <div class="cd">Fast medication look-up and reference bulletin.</div>
+        </a>
+        <a class="card" href="/staff-resources/Clinic_Medication_Reference.html">
+          <div class="ct"><span class="nm">Clinic Medication Reference</span><span class="arrow">&rarr;</span></div>
+          <div class="cd">The clinic's standing medication reference list.</div>
+        </a>
+      </div>
+    </section>
+
+    <!-- QUALITY -->
+    <section class="cat" data-c="grn" id="quality">
+      <span class="cat-eyebrow">Quality</span>
+      <h2>Quality &amp; eCQMs</h2>
+      <p class="cat-dek">Electronic clinical quality measures — what they are and how the clinic is tracking.</p>
+      <div class="cards">
+        <a class="card" href="/ecqms/overview.html">
+          <div class="ct"><span class="nm">eCQM Overview</span><span class="arrow">&rarr;</span></div>
+          <div class="cd">What electronic clinical quality measures are and why they matter.</div>
+        </a>
+        <a class="card" href="/ecqms/dashboard.html">
+          <div class="ct"><span class="nm">eCQM Dashboard</span><span class="arrow">&rarr;</span></div>
+          <div class="cd">Track clinic performance against the quality measures.</div>
+        </a>
+      </div>
+    </section>
+
+  </main>
+
+  <p class="footer-note">RHC · Medical Assistant Onboarding</p>
+
+</div>
+</body>
+</html>
