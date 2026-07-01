@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>eCQM: URI Treatment</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,500&family=Mulish:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#243240; --soft-ink:#5a6b78; --paper:#fbf9f5; --line:#e4ded3; --card:#fffdf9;
+    --teal-bg:#e7f3ed; --teal-bd:#bfddcb; --teal-tx:#2f6b50;
+    --blue-bg:#e8f0f9; --blue-bd:#c3d6ec; --blue-tx:#2e5a8c;
+    --purp-bg:#eee9f6; --purp-bd:#d2c6e6; --purp-tx:#5a4a8c;
+    --coral-bg:#f8ebe9; --coral-bd:#e6c5bf; --coral-tx:#a8483c;
+    --grn-bg:#eef4e7; --grn-bd:#bcd3ad; --grn-tx:#4a7340;
+    --rosa-bg:#fbf3e7; --rosa-bd:#e7cfa6; --rosa-tx:#9a6b1f;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    font-family:'Mulish',sans-serif;color:var(--ink);line-height:1.62;
+    background:
+      radial-gradient(1200px 600px at 85% -10%, #f4efe6 0%, transparent 60%),
+      radial-gradient(900px 500px at -10% 110%, #eef2ec 0%, transparent 55%),
+      var(--paper);
+    padding:40px 20px 70px;-webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:880px;margin:0 auto;}
+
+  .masthead{background:var(--card);border:1px solid var(--line);border-radius:22px 22px 0 0;border-bottom:none;padding:42px 52px 30px;position:relative;overflow:hidden;}
+  .masthead::after{content:"";position:absolute;left:0;right:0;bottom:0;height:4px;background:linear-gradient(90deg,var(--teal-bd),var(--blue-bd),var(--purp-bd),var(--coral-bd),var(--grn-bd));}
+  .kicker{font-size:12.5px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--soft-ink);}
+  h1{font-family:'Fraunces',serif;font-weight:500;font-size:40px;line-height:1.06;letter-spacing:-.01em;margin:10px 0 6px;}
+  .masthead .sub{font-family:'Fraunces',serif;font-style:italic;font-size:17.5px;color:var(--soft-ink);max-width:78%;}
+  .mast-top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:18px;}
+  a.act{text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:7px;}
+
+  .tabnav{display:flex;flex-wrap:wrap;gap:4px;background:var(--card);border:1px solid var(--line);border-top:none;border-bottom:none;padding:14px 52px 0;}
+  .tab{font-family:'Mulish',sans-serif;font-size:13.5px;font-weight:700;border:1px solid transparent;border-bottom:none;background:transparent;cursor:pointer;padding:11px 15px;border-radius:11px 11px 0 0;color:var(--soft-ink);transition:background .18s,color .18s;letter-spacing:.01em;}
+  .tab:hover{color:var(--ink);background:#f3eee5;}
+  .tab[aria-selected="true"]{color:var(--ink);background:var(--paper);border-color:var(--line);}
+  .tab .num{display:inline-flex;width:19px;height:19px;border-radius:50%;align-items:center;justify-content:center;font-size:11px;margin-right:7px;background:#e6ddcd;color:#7a6a50;}
+  .tab[data-c="teal"][aria-selected="true"] .num{background:var(--teal-bd);color:var(--teal-tx);}
+  .tab[data-c="blue"][aria-selected="true"] .num{background:var(--blue-bd);color:var(--blue-tx);}
+  .tab[data-c="purp"][aria-selected="true"] .num{background:var(--purp-bd);color:var(--purp-tx);}
+  .tab[data-c="coral"][aria-selected="true"] .num{background:var(--coral-bd);color:var(--coral-tx);}
+  .tab[data-c="grn"][aria-selected="true"] .num{background:var(--grn-bd);color:var(--grn-tx);}
+
+  .panels{background:var(--card);border:1px solid var(--line);border-radius:0 0 22px 22px;box-shadow:0 1px 2px rgba(60,50,30,.04),0 30px 60px -30px rgba(60,50,30,.18);}
+  .panel{display:none;padding:40px 52px 48px;}
+  .panel.active{display:block;animation:fade .35s ease;}
+  @keyframes fade{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:none;}}
+
+  .eyebrow{font-size:12px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;margin-bottom:8px;}
+  .panel h2{font-family:'Fraunces',serif;font-weight:600;font-size:31px;letter-spacing:-.01em;margin-bottom:6px;}
+  .panel .dek{font-size:16.5px;color:var(--soft-ink);margin-bottom:26px;}
+  h3{font-family:'Fraunces',serif;font-weight:600;font-size:21px;margin:30px 0 12px;color:var(--ink);}
+  h4{font-size:15px;font-weight:700;letter-spacing:.04em;margin:20px 0 8px;color:var(--ink);}
+  p{font-size:15.5px;margin-bottom:14px;color:#374550;}
+  .panel ul{list-style:none;margin:0 0 16px;display:grid;gap:8px;}
+  .panel ul li{position:relative;padding-left:20px;font-size:15px;color:#374550;}
+  .panel ul li::before{content:"";position:absolute;left:2px;top:9px;width:6px;height:6px;border-radius:50%;background:var(--accent,#bbb);}
+  .term{font-family:'Fraunces',serif;font-style:italic;color:var(--ink);font-weight:500;}
+  strong{font-weight:700;color:var(--ink);}
+
+  #p-why{--accent:var(--teal-tx);} #p-why .eyebrow{color:var(--teal-tx);}
+  #p-measure{--accent:var(--blue-tx);} #p-measure .eyebrow{color:var(--blue-tx);}
+  #p-recognize{--accent:var(--purp-tx);} #p-recognize .eyebrow{color:var(--purp-tx);}
+  #p-roles{--accent:var(--coral-tx);} #p-roles .eyebrow{color:var(--coral-tx);}
+  #p-coding{--accent:var(--grn-tx);} #p-coding .eyebrow{color:var(--grn-tx);}
+
+  .chips{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:6px 0 18px;}
+  .chip{background:var(--paper);border:1px solid var(--line);border-radius:11px;padding:11px 14px;font-size:14px;}
+  .chip b{color:var(--ink);}
+  @media(max-width:600px){.chips{grid-template-columns:1fr;}}
+
+  .note{border-radius:13px;padding:15px 18px;font-size:14.5px;margin:8px 0 20px;border:1px solid;}
+  .note.teal{background:var(--teal-bg);border-color:var(--teal-bd);color:#2c4f3e;}
+  .note.blue{background:var(--blue-bg);border-color:var(--blue-bd);color:#274a6f;}
+  .note.grn{background:var(--grn-bg);border-color:var(--grn-bd);color:#3c5730;}
+  .note.purp{background:var(--purp-bg);border-color:var(--purp-bd);color:#473a6f;}
+  .note.coral{background:var(--coral-bg);border-color:var(--coral-bd);color:#7e342a;}
+  .note.rosa{background:var(--rosa-bg);border-color:var(--rosa-bd);color:#6b5526;}
+  .note .lbl{font-weight:700;}
+
+  /* stat cards */
+  .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:8px 0 20px;}
+  .stat{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:18px 16px 16px;text-align:center;}
+  .stat .big{font-family:'Fraunces',serif;font-weight:600;font-size:33px;line-height:1;letter-spacing:-.01em;color:var(--teal-tx);}
+  .stat .lbl3{font-size:12.8px;color:var(--soft-ink);margin-top:9px;line-height:1.42;}
+  .stat .src{font-size:10.5px;color:#a59c8d;margin-top:7px;letter-spacing:.02em;}
+  @media(max-width:600px){.stats{grid-template-columns:1fr;}}
+
+  /* equation */
+  .equation{display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;margin:14px 0 22px;}
+  .eq-box{background:var(--blue-bg);border:1.5px solid var(--blue-bd);border-radius:12px;padding:14px 20px;font-weight:700;font-size:15px;color:var(--blue-tx);text-align:center;}
+  .eq-box.eq-result{background:var(--teal-bg);border-color:var(--teal-bd);color:var(--teal-tx);}
+  .eq-box.eq-stop{background:var(--coral-bg);border-color:var(--coral-bd);color:var(--coral-tx);}
+  .eq-op{font-family:'Fraunces',serif;font-size:26px;color:var(--soft-ink);font-weight:600;}
+  @media(max-width:600px){.equation{gap:10px;}.eq-box{padding:11px 14px;font-size:13.5px;}.eq-op{font-size:22px;}}
+
+  /* large key statement */
+  .bigstatement{font-family:'Fraunces',serif;font-weight:500;font-size:25px;line-height:1.34;color:var(--ink);text-align:center;margin:18px 0 6px;padding:18px 16px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
+  @media(max-width:600px){.bigstatement{font-size:20px;padding:14px 10px;}}
+
+  /* role two-column */
+  .twocol{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:10px 0 20px;}
+  .twocol .col{border:1px solid var(--line);border-radius:14px;overflow:hidden;}
+  .twocol .col-head{padding:12px 16px;font-weight:700;font-size:14.5px;color:#fff;letter-spacing:.01em;}
+  .twocol .col.prov .col-head{background:var(--coral-tx);}
+  .twocol .col.css .col-head{background:var(--teal-tx);}
+  .twocol .col-body{padding:14px 18px;}
+  .twocol .col-body ul{margin:0;display:grid;gap:9px;}
+  .twocol .col-body ul li{position:relative;padding-left:18px;font-size:14px;color:#374550;line-height:1.5;}
+  .twocol .col.prov .col-body ul li::before{content:"";position:absolute;left:1px;top:8px;width:6px;height:6px;border-radius:50%;background:var(--coral-tx);}
+  .twocol .col.css .col-body ul li::before{content:"";position:absolute;left:1px;top:8px;width:6px;height:6px;border-radius:50%;background:var(--teal-tx);}
+  @media(max-width:600px){.twocol{grid-template-columns:1fr;}}
+
+  /* chart example snippet */
+  .example{border:1px solid var(--line);background:var(--paper);border-radius:10px;padding:13px 16px;margin:6px 0 18px;font-size:14px;color:#4a5560;line-height:1.6;}
+  .example b{color:var(--ink);}
+
+  /* measure description card */
+  .mcard{border:1px solid var(--blue-bd);background:var(--blue-bg);border-radius:14px;padding:18px 20px;margin:6px 0 20px;}
+  .mcard .mtag{font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--blue-tx);margin-bottom:8px;}
+  .mcard p{font-size:15px;color:#27384a;margin:0;}
+
+  /* score bands */
+  .bands{display:grid;gap:10px;margin:10px 0 18px;}
+  .band{display:grid;grid-template-columns:158px 1fr;border:1px solid var(--line);border-radius:12px;overflow:hidden;}
+  .band .bl{padding:14px 16px;font-weight:700;font-size:13.5px;display:flex;flex-direction:column;justify-content:center;line-height:1.3;}
+  .band .bl .scr{font-family:'Fraunces',serif;font-size:19px;font-weight:600;}
+  .band .bd{padding:14px 16px;font-size:14px;color:#374550;background:var(--card);}
+  .band.ok .bl{background:var(--grn-bg);color:var(--grn-tx);}
+  .band.mild .bl{background:var(--rosa-bg);color:var(--rosa-tx);}
+  .band.sev .bl{background:var(--coral-bg);color:var(--coral-tx);}
+  @media(max-width:600px){.band{grid-template-columns:1fr;}}
+
+  /* numbered flow steps */
+  .flow{list-style:none;counter-reset:f;display:grid;gap:10px;margin:8px 0 18px;}
+  .flow li{counter-increment:f;position:relative;padding-left:42px;font-size:15px;color:#374550;min-height:28px;padding-top:3px;}
+  .flow li::before{content:counter(f);position:absolute;left:0;top:0;width:27px;height:27px;border-radius:50%;background:var(--card);border:1.5px solid var(--accent,#bbb);color:var(--accent,#555);font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center;}
+  .flow li::after{display:none;}
+
+  /* reference table */
+  .reftable{border:1px solid var(--line);border-radius:12px;overflow:hidden;margin:8px 0 18px;}
+  .refrow{display:grid;grid-template-columns:210px 1fr;border-bottom:1px solid var(--line);}
+  .refrow:last-child{border-bottom:none;}
+  .refrow:nth-child(even){background:var(--paper);}
+  .rclass{padding:11px 16px;font-weight:700;font-size:13.5px;color:var(--accent,#374550);border-right:1px solid var(--line);}
+  .rmeds{padding:11px 16px;font-size:13.5px;color:#374550;}
+  .rmeds .g{color:var(--ink);font-weight:600;}
+  @media(max-width:600px){.refrow{grid-template-columns:1fr;}.rclass{border-right:none;border-bottom:1px solid var(--line);}}
+
+  /* Rosa apply */
+  .apply{margin:30px 0 8px;border:1.5px solid var(--rosa-bd);border-radius:16px;overflow:hidden;background:var(--rosa-bg);}
+  .apply-head{display:flex;align-items:center;gap:12px;padding:14px 20px;background:rgba(154,107,31,.10);border-bottom:1px solid var(--rosa-bd);}
+  .apply-head .pill{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;background:var(--rosa-tx);color:#fff;padding:4px 10px;border-radius:20px;}
+  .apply-head .who{font-family:'Fraunces',serif;font-weight:600;font-size:16px;color:var(--rosa-tx);}
+  .apply-body{padding:18px 22px;}
+  .apply-body p{font-size:15px;color:#5c4a28;}
+  .apply-body ul li{color:#5c4a28;}
+  .apply-body ul li::before{background:var(--rosa-tx);}
+  .chartline{font-family:'Fraunces',serif;font-style:italic;font-size:14.5px;color:#6b5526;background:#fff;border-left:3px solid var(--rosa-bd);border-radius:0 8px 8px 0;padding:12px 16px;margin-bottom:14px;}
+
+  /* Your Turn interactive */
+  .yt{margin-top:14px;background:#fff;border:1px dashed var(--rosa-bd);border-radius:10px;padding:15px 17px;}
+  .yt-q{font-size:14.5px;color:#5c4a28;margin-bottom:0;}
+  .yt-q b{color:var(--rosa-tx);}
+  .yt .fill{margin-top:11px;}
+  .yt .ck{font-size:12.5px;padding:9px 15px;margin-top:12px;background:var(--rosa-tx);border-color:var(--rosa-tx);color:#fff;}
+
+  .feedback{display:none;margin-top:14px;border-radius:10px;padding:14px 16px;background:var(--teal-bg);border:1px solid var(--teal-bd);}
+  .feedback.show{display:block;animation:fade .3s ease;}
+  .fb-label{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--teal-tx);margin-bottom:6px;}
+  .feedback p{font-size:14px;color:#2c4f3e;margin:0;}
+
+  /* tests */
+  .test{margin-top:40px;border:1px solid var(--line);border-radius:16px;background:var(--paper);overflow:hidden;}
+  .test-head{padding:22px 26px 18px;border-bottom:1px solid var(--line);background:var(--card);}
+  .test-head .eyebrow{margin-bottom:6px;}
+  .test-head h3{margin:0 0 4px;}
+  .test-head p{font-size:14px;color:var(--soft-ink);margin:0;}
+  .namebar{display:flex;gap:22px;flex-wrap:wrap;margin-top:18px;}
+  .namebar .field{flex:1;min-width:180px;}
+  .namebar .field span{display:block;font-size:11.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--soft-ink);margin-bottom:4px;}
+  .ti{width:100%;border:none;border-bottom:1.5px solid #b9b0a0;background:transparent;font-family:'Mulish',sans-serif;font-size:15px;color:var(--ink);padding:5px 2px;outline:none;}
+  .ti:focus{border-color:var(--accent,#2e5a8c);}
+  .test-body{padding:24px 26px 28px;}
+  ol.q{list-style:none;counter-reset:q;display:grid;gap:22px;}
+  ol.q > li{counter-increment:q;position:relative;padding-left:38px;font-size:15px;color:#2f3c47;}
+  ol.q > li::before{content:counter(q);position:absolute;left:0;top:-2px;width:26px;height:26px;border-radius:50%;background:var(--card);border:1.5px solid var(--accent,#bbb);color:var(--accent,#555);font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center;}
+  .q .ask{font-weight:600;color:var(--ink);}
+  .fill{min-height:52px;border:1px solid #cfc7b8;border-radius:9px;background:#fff;padding:9px 13px;margin-top:10px;font-size:14.5px;color:var(--ink);line-height:1.7;outline:none;}
+  .fill:focus{border-color:var(--accent,#2e5a8c);box-shadow:0 0 0 3px rgba(46,90,140,.10);}
+  .fill:empty:before{content:attr(data-ph);color:#b3aa99;}
+
+  .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px;justify-content:center;}
+  .testbtns{margin-top:20px;display:flex;gap:10px;flex-wrap:wrap;}
+  .act{font-family:'Mulish',sans-serif;font-size:13.5px;font-weight:700;cursor:pointer;border:1px solid var(--ink);background:var(--ink);color:#fff;border-radius:10px;padding:11px 18px;transition:opacity .15s;}
+  .act:hover{opacity:.85;}
+  .act.ghost{background:transparent;color:var(--ink);}
+
+  .footer-note{text-align:center;font-size:13px;color:var(--soft-ink);margin-top:26px;font-style:italic;font-family:'Fraunces',serif;}
+  .credit{text-align:center;font-size:13px;color:var(--soft-ink);margin-top:4px;}
+  .credit b{font-weight:600;color:var(--ink);font-style:normal;}
+
+  @media print{
+    body{background:#fff;padding:0;}
+    .wrap{max-width:none;}
+    .fill,.fill-inline,.ti{color:#000 !important;}
+    .fill:empty:before,.fill-inline:empty:before{content:"" !important;}
+    .ck{display:none !important;}
+    body:not(.printing-single) .tabnav,
+    body:not(.printing-single) .mast-top,
+    body:not(.printing-single) .actions,
+    body:not(.printing-single) .testbtns{display:none !important;}
+    body:not(.printing-single) .panel{display:block !important;page-break-before:always;}
+    body:not(.printing-single) .panel:first-of-type{page-break-before:avoid;}
+    body:not(.printing-single) .panels,
+    body:not(.printing-single) .masthead{box-shadow:none;border:none;}
+    .apply,.test,.note,ol.q > li{break-inside:avoid;}
+    body.printing-single .masthead,
+    body.printing-single .tabnav,
+    body.printing-single .actions,
+    body.printing-single .footer-note,
+    body.printing-single .credit,
+    body.printing-single .testbtns{display:none !important;}
+    body.printing-single .panels{box-shadow:none;border:none;}
+    body.printing-single .panel{display:none !important;}
+    body.printing-single .panel.active{display:block !important;padding:0;}
+    body.printing-single .panel.active > *:not(.print-target){display:none !important;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="masthead">
+    <div class="mast-top">
+      <a class="act ghost" href="https://jblaise1310.github.io/ecqms/overview.html">&larr; eCQM Overview</a>
+      <button class="act ghost" onclick="printFull()">Print full module</button>
+    </div>
+    <div class="kicker">RHC &nbsp;&middot;&nbsp; Staff Training &amp; Onboarding</div>
+    <h1>eCQM: URI Treatment</h1>
+    <div class="sub">Appropriate treatment for upper respiratory infection. A URI is viral, so the right answer is usually no antibiotics.</div>
+  </div>
+
+  <div class="tabnav" role="tablist" aria-label="Module sections">
+    <button class="tab" data-c="teal"  role="tab" aria-selected="true"  aria-controls="p-why"       id="t-why"><span class="num">1</span>Why It Matters</button>
+    <button class="tab" data-c="blue"  role="tab" aria-selected="false" aria-controls="p-measure"   id="t-measure"><span class="num">2</span>The Measure</button>
+    <button class="tab" data-c="purp"  role="tab" aria-selected="false" aria-controls="p-recognize" id="t-recognize"><span class="num">3</span>Recognizing the Visit</button>
+    <button class="tab" data-c="coral" role="tab" aria-selected="false" aria-controls="p-roles"     id="t-roles"><span class="num">4</span>Who Does What</button>
+    <button class="tab" data-c="grn"   role="tab" aria-selected="false" aria-controls="p-coding"    id="t-coding"><span class="num">5</span>Coding Lab Orders</button>
+  </div>
+
+  <div class="panels">
+
+    <!-- ===================== SECTION 1 ===================== -->
+    <section class="panel active" id="p-why" role="tabpanel" aria-labelledby="t-why">
+      <div class="eyebrow">Section 1</div>
+      <h2>Why It Matters</h2>
+      <p class="dek">A URI is the common cold. It is viral, and antibiotics do not touch it.</p>
+
+      <h3>Antibiotics do not cure a cold</h3>
+      <p>Most upper respiratory infections (URIs), the common cold, are caused by viruses. Antibiotics only work on bacteria, so they do nothing for a viral URI except expose the patient to side effects and help drive antibiotic resistance. The appropriate treatment is supportive care: rest, fluids, and symptom relief.</p>
+
+      <h3>The bigger picture</h3>
+      <div class="stats">
+        <div class="stat">
+          <div class="big">Viral</div>
+          <div class="lbl3">Most URIs, the common cold, are caused by viruses that antibiotics cannot treat</div>
+          <div class="src">CDC / AAFP</div>
+        </div>
+        <div class="stat">
+          <div class="big">1 in 3</div>
+          <div class="lbl3">outpatient antibiotic prescriptions are unnecessary, often for viral illnesses like colds</div>
+          <div class="src">CDC</div>
+        </div>
+        <div class="stat">
+          <div class="big">2.8M</div>
+          <div class="lbl3">antibiotic-resistant illnesses in the U.S. each year, with 35,000 deaths</div>
+          <div class="src">CDC</div>
+        </div>
+      </div>
+      <div class="note teal"><span class="lbl">That is the whole point of CMS-154.</span> When a patient has a URI, the appropriate treatment is no antibiotics. Holding the prescription is the right care, not a lesser one, and it protects the patient and everyone who needs antibiotics to work later.</div>
+
+      <h3>The provider decides; CSS support</h3>
+      <p>This measure turns on the <strong>provider's decision</strong> not to prescribe antibiotics for a viral URI. The provider also keeps the coding clean: when they order labs, they code to the patient's symptoms rather than to URI. <strong>Clinical support staff (CSS)</strong> support the visit by documenting the chief complaint accurately from what the patient reports.</p>
+
+      <div class="apply">
+        <div class="apply-head"><span class="pill">Apply It</span><span class="who">Greg Holloway, 45</span></div>
+        <div class="apply-body">
+          <div class="chartline">Walk-in with 4 days of cough, congestion, and a headache. He asks for "a Z-Pak, the one that worked last time."</div>
+          <p>The request is understandable. The right answer usually is not antibiotics.</p>
+          <div class="yt">
+            <p class="yt-q"><b>Your turn:</b> Why is the appropriate treatment for Greg's cold usually no antibiotics?</p>
+            <div class="fill" contenteditable="true" data-ph="Type your thoughts here…"></div>
+            <button class="act ck" onclick="toggleFb('fb-why')">Check your knowledge</button>
+            <div class="feedback" id="fb-why">
+              <div class="fb-label">A strong answer would include</div>
+              <p>Greg's symptoms point to a viral URI, and antibiotics do nothing for a virus. Prescribing one would not help his cold, would expose him to side effects, and would add to antibiotic resistance. The appropriate treatment is supportive care: rest, fluids, and symptom relief. That is exactly what the measure rewards.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="test" id="test-why">
+        <div class="test-head">
+          <div class="eyebrow">End-of-Section Test</div>
+          <h3>Section 1 &middot; Why It Matters</h3>
+          <p>Type your answers below, then <strong>print, sign, and submit to your manager.</strong> You can also print it blank to complete by hand.</p>
+          <div class="namebar"><div class="field"><span>Name</span><input class="ti" type="text"></div><div class="field"><span>Date</span><input class="ti" type="text"></div></div>
+        </div>
+        <div class="test-body">
+          <ol class="q">
+            <li><span class="ask">What causes most URIs, and why does that mean antibiotics will not help?</span><div class="fill" contenteditable="true" data-ph="Type your answer here…"></div></li>
+            <li><span class="ask">What is the appropriate treatment for a viral URI?</span><div class="fill" contenteditable="true" data-ph="Type your answer here…"></div></li>
+            <li><span class="ask">Name one harm of prescribing antibiotics for a cold.</span><div class="fill" contenteditable="true" data-ph="Type your answer here…"></div></li>
+            <li><span class="ask">Whose decision does this measure turn on, and how do CSS support it?</span><div class="fill" contenteditable="true" data-ph="Type your answer here…"></div></li>
+            <li><span class="ask">In your own words, what is CMS-154 trying to accomplish?</span><div class="fill" contenteditable="true" data-ph="Type your answer here…"></div></li>
+          </ol>
+          <div class="testbtns"><button class="act" onclick="printTest('test-why')">Print this test</button></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== SECTION 2 ===================== -->
+    <section class="panel" id="p-measure" role="tabpanel" aria-labelledby="t-measure">
+      <div class="eyebrow">Section 2</div>
+      <h2>The Measure</h2>
+      <p class="dek">CMS-154 rewards URI visits that do not end in an antibiotic.</p>
+
+      <div class="mcard">
+        <div class="mtag">Measure Description &middot; eCQM CMS-154</div>
+        <p>Percentage of episodes for patients <strong>3 months of age and older</strong> with a diagnosis of upper respiratory infection (URI) that <strong>did not result in an antibiotic dispensing event</strong>.</p>
+      </div>
+
+      <h3>What satisfies the measure</h3>
+      <p>The requirement is met when a provider enters a <strong>diagnosis of URI</strong> and <strong>does not prescribe antibiotics</strong>.</p>
+
+      <div class="bigstatement">If the diagnosis is a URI, the appropriate treatment is no antibiotics.</div>
+
+      <div class="equation">
+        <span class="eq-box">URI diagnosis</span>
+        <span class="eq-op">=</span>
+        <span class="eq-box eq-stop">No antibiotics</span>
+      </div>
+
+      <div class="note blue"><span class="lbl">Higher is better here.</span> The more URI episodes that go without antibiotics, the better the measure looks and the more patients get the right care. An antibiotic prescribed for a URI is what misses the measure.</div>
+
+      <h3>Who is counted</h3>
+      <ul>
+        <li>Patients <strong>3 months of age and older</strong>.</li>
+        <li>With an episode that includes a <strong>diagnosis of URI</strong>.</li>
+      </ul>
+
+      <div class="apply">
+        <div class="apply-head"><span class="pill">Apply It</span><span class="who">Greg Holloway, 45</span></div>
+        <div class="apply-body">
+          <div class="chartline">The provider examines Greg, diagnoses a viral URI, and plans supportive care.</div>
+          <p>The diagnosis is in. Now the measure is decided by one thing.</p>
+          <div class="yt">
+            <p class="yt-q"><b>Your turn:</b> For Greg's episode to meet CMS-154, what has to happen (and not happen)? What would cause it to miss?</p>
+            <div class="fill" contenteditable="true" data-ph="Type your thoughts here…"></div>
+            <button class="act ck" onclick="toggleFb('fb-measure')">Check your knowledge</button>
+            <div class="feedback" id="fb-measure">
+              <div class="fb-label">A strong answer would include</div>
+              <p>The episode meets the measure when the URI diagnosis is entered and no antibiotic is prescribed. URI equals no antibiotics. It would miss the measure if Greg walked out with an antibiotic for his cold, which would also mean he got a drug that cannot help him.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="test" id="test-measure">
+        <div class="test-head">
+          <div class="eyebrow">End-of-Section Test</div>
+          <h3>Section 2 &middot; The Measure</h3>
+          <p>Type your answers below, then <strong>print, sign, and submit to your manager.</strong> You can also print it blank to complete by hand.</p>
+          <div class="namebar"><div class="field"><span>Name</span><input class="ti" type="text"></div><div class="field"><span>Date</span><input class="ti" type="text"></div></div>
+        </div>
+        <div class="test-body">
+          <ol class="q">
+            <li><span class="ask">In one line, what satisfies CMS-154?</span><div class="fill" contenteditable="true" data-ph="Type your answer here…"></div></li>
+            <li><span class="ask">What is the minimum age for a patient to be counted in this measure?</span><div class="fill" contenteditable="true" data-ph="Type your answer here…"></div></li>
+            <li><span class="ask">Is a higher or a lower rate better for this measure? Why?</span><div class="fill" contenteditable="true" data-ph="Type your answer here…"></div></li>
+            <li><span class="ask">A provider diagnoses a URI and prescribes an antibiotic. Does the episode meet the measure? Explain.</span><div class="fill" contenteditable="true" data-ph="Type your answer here…"></div></li>
+            <li><span class="ask">Complete the equation: URI diagnosis = ?</span><div class="fill" contenteditable="true" data-ph="Type your answer here…"></div></li>
+          </ol>
+          <div class="testbtns"><button class="act" onclick="printTest('test-measure')">Print this test</button></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== SECTION 3 ===================== -->
+    <section class="panel" id="p-recognize" role="tabpanel" aria-labelledby="t-recognize">
+      <div class="eyebrow">Section 3</div>
+      <h2>Recognizing the Visit</h2>
+      <p class="dek">When the visit is a cold, the mindset is: no antibiotics.</p>
+
+      <h3>The reason for visit is your cue</h3>
+      <p>The <strong>reason for visit</strong> on the Ambulatory Organizer is an early cue that a cold visit may be coming. As you room the patient, you <strong>document the chief complaint</strong> from what they tell you, and that is where the URI picture shows up: cough, congestion, runny nose, sore throat, sneezing, or a low-grade fever.</p>
+      <div class="example"><b>Reason for Visit:</b> Walk in<br><b>Chief Complaint:</b> cough, congestion, headache, low-grade fever x 4 days</div>
+
+      <h3>Make the connection: a cold means no antibiotics</h3>
+      <p>When the picture is a viral URI, the appropriate path is supportive care, not antibiotics. Recognizing it early sets the visit up for the right treatment and the right conversation with the patient.</p>
+
+      <h3>The Quick Visit protocol can help</h3>
+      <p>The <strong>Quick Visits &gt; URI Protocol</strong> is a tool that can help structure the visit. The provider can use it to work through the URI visit in a consistent way.</p>
+      <div class="note purp"><span class="lbl">The Quick Visit is optional.</span> It is there to assist, not to gate the work, and no one is required to use it. What matters is that a URI is treated as the virus it is, with supportive care rather than antibiotics.</div>
+
+      <div class="apply">
+        <div class="apply-head"><span class="pill">Apply It</span><span class="who">Greg Holloway, 45</span></div>
+        <div class="apply-body">
+          <div class="chartline">Greg's Ambulatory Organizer shows: Reason for Visit, Walk in. Chief Complaint, cough, congestion, headache, low-grade fever for 4 days.</div>
+          <p>You are the CSS rooming him. What does that picture tell you?</p>
+          <div class="yt">
+            <p class="yt-q"><b>Your turn:</b> What do you recognize here, and what is the mindset going into the visit?</p>
+            <div class="fill" contenteditable="true" data-ph="Type your thoughts here…"></div>
+            <button class="act ck" onclick="toggleFb('fb-recognize')">Check your knowledge</button>
+            <div class="feedback" id="fb-recognize">
+              <div class="fb-label">A strong answer would include</div>
+              <p>The chief complaint is a classic viral URI picture, so this looks like a cold. The mindset is that the appropriate treatment is supportive care, not antibiotics. The provider can use the Quick Visits &gt; URI Protocol to help, but it is optional. Your job is to document the symptoms accurately so the visit starts from a clear picture.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="test" id="test-recognize">
+        <div class="test-head">
+          <div class="eyebrow">End-of-Section Test</div>
+          <h3>Section 3 &middot; Recognizing the Visit</h3>
+          <p>Type your answers below, then <strong>print, sign, and submit to your manager.</strong> You can also print it blank to complete by hand.</p>
+          <div class="namebar"><div class="field"><span>Name</span><input class="ti" type="text"></div><div class="field"><span>Date</span><input class="ti" type="text"></div></div>
+        </div>
+        <div class="test-body">
+          <ol class="q">
+            <li><span class="ask">The reason for visit is a cue. Where does the URI picture usually show up, and who documents it?</span><div class="fill" contenteditable="true" data-ph="Type your answer here…"></div></li>
+            <li><span class="ask">Name some chief complaints that point to a viral URI.</span><div class="fill" contenteditable="true" data-ph="Type your answer here…"></div></li>
+            <li><span class="ask">When the picture is a cold, what is the appropriate treatment mindset?</span><div class="fill" contenteditable="true" data-ph="Type your answer here…"></div></li>
+            <li><span class="ask">Is the Quick Visits URI Protocol required? What is it for?</span><div class="fill" contenteditable="true" data-ph="Type your answer here…"></div></li>
+            <li><span class="ask">In your own words, why does recognizing a URI visit early help the patient and the measure?</span><div class="fill" contenteditable="true" data-ph="Type your answer here…"></div></li>
+          </ol>
+          <div class="testbtns"><button class="act" onclick="printTest('test-recognize')">Print this test</button></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== SECTION 4 ===================== -->
+    <section class="panel" id="p-roles" role="tabpanel" aria-labelledby="t-roles">
+      <div class="eyebrow">Section 4</div>
+      <h2>Who Does What</h2>
+      <p class="dek">The measure turns on the provider's decision. CSS support with accurate documentation.</p>
+
+      <p>Here is who does what. Most of this workflow is the provider's, including the lab-order coding, since providers place the orders. CSS support by recognizing the visit and documenting it cleanly.</p>
+
+      <div class="twocol">
+        <div class="col prov">
+          <div class="col-head">Provider</div>
+          <div class="col-body">
+            <ul>
+              <li>Reviews the reason for visit for signs of a URI.</li>
+              <li>May use the Quick Visits &gt; URI Protocol to help.</li>
+              <li>Enters the URI diagnosis.</li>
+              <li>Does not prescribe antibiotics for a viral URI.</li>
+              <li>When ordering labs, codes them to the patient's symptoms, not to URI.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="col css">
+          <div class="col-head">CSS</div>
+          <div class="col-body">
+            <ul>
+              <li>Recognizes the cold visit and rooms the patient.</li>
+              <li>Documents the chief complaint from the patient's symptoms.</li>
+              <li>Performs any tests the provider orders.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="note coral"><span class="lbl">The coding rule (provider step).</span> When a lab is ordered during a URI visit, the order should <strong>not</strong> carry a URI diagnosis. It is coded to the patient's symptoms instead, with codes that begin with the symptom (for example, fever, cough, or headache). Since providers place lab orders here, this is the ordering provider's step.</div>
+
+      <div class="apply">
+        <div class="apply-head"><span class="pill">Apply It</span><span class="who">Greg Holloway, 45</span></div>
+        <div class="apply-body">
+          <div class="chartline">Greg's visit is open. You are the CSS; the provider will see him next.</div>
+          <p>Two roles, one episode. Be clear on which steps are yours.</p>
+          <div class="yt">
+            <p class="yt-q"><b>Your turn:</b> What does the provider do here, and what is your part as CSS?</p>
+            <div class="fill" contenteditable="true" data-ph="Type your thoughts here…"></div>
+            <button class="act ck" onclick="toggleFb('fb-roles')">Check your knowledge</button>
+            <div class="feedback" id="fb-roles">
+              <div class="fb-label">A strong answer would include</div>
+              <p>The provider reviews the visit, can use the Quick Visits &gt; URI Protocol, enters the URI diagnosis, does not prescribe antibiotics for the cold, and when ordering labs codes them to the symptoms rather than URI. As CSS, you recognize the cold visit, document Greg's symptoms accurately, and perform any tests the provider orders.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="test" id="test-roles">
+        <div class="test-head">
+          <div class="eyebrow">End-of-Section Test</div>
+          <h3>Section 4 &middot; Who Does What</h3>
+          <p>Type your answers below, then <strong>print, sign, and submit to your manager.</strong> You can also print it blank to complete by hand.</p>
+          <div class="namebar"><div class="field"><span>Name</span><input class="ti" type="text"></div><div class="field"><span>Date</span><input class="ti" type="text"></div></div>
+        </div>
+        <div class="test-body">
+          <ol class="q">
+            <li><span class="ask">What is the provider's key action that decides this measure?</span><div class="fill" contenteditable="true" data-ph="Type your answer here…"></div></li>
+            <li><span class="ask">When a lab is ordered during a URI visit, what diagnosis should NOT be attached, and who places that order?</span><div class="fill" contenteditable="true" data-ph="Type your answer here…"></div></li>
+            <li><span class="ask">What should the lab order be coded to instead?</span><div class="fill" contenteditable="true" data-ph="Type your answer here…"></div></li>
+            <li><span class="ask">Who enters the URI diagnosis?</span><div class="fill" contenteditable="true" data-ph="Type your answer here…"></div></li>
+            <li><span class="ask">In your own words, what do CSS contribute to a URI visit, and which parts belong to the provider?</span><div class="fill" contenteditable="true" data-ph="Type your answer here…"></div></li>
+          </ol>
+          <div class="testbtns"><button class="act" onclick="printTest('test-roles')">Print this test</button></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== SECTION 5 ===================== -->
+    <section class="panel" id="p-coding" role="tabpanel" aria-labelledby="t-coding">
+      <div class="eyebrow">Section 5</div>
+      <h2>Coding Lab Orders</h2>
+      <p class="dek">When a lab is ordered for a cold, it is coded to the symptom, not the URI. Since providers place lab orders here, this is their step.</p>
+
+      <h3>The rule</h3>
+      <p>When lab tests are ordered during a URI visit, the order should <strong>not</strong> carry a diagnosis of URI. It is coded to the patient's symptoms instead, with codes that begin with the symptom the lab is working up. At our clinic, providers place lab orders, so this is the ordering provider's responsibility.</p>
+      <div class="chips">
+        <div class="chip"><b>Fever</b></div>
+        <div class="chip"><b>Cough</b></div>
+        <div class="chip"><b>Headache</b></div>
+      </div>
+      <p>These are examples. Use whichever symptom matches the reason the test is being run.</p>
+
+      <h3>Why it matters</h3>
+      <p>Keeping the URI diagnosis off lab orders leaves it where it belongs, in the provider's assessment, and keeps the episode coding clean. That way the measure reflects real URI visits and how they were treated, not the diagnosis attached to a routine lab order.</p>
+
+      <div class="note grn"><span class="lbl">Two clean-coding habits, two roles.</span> When the provider orders a lab, they code it to the patient's symptoms, never to URI. CSS keep their own piece clean by documenting the chief complaint accurately from what the patient reports. Together that keeps the data honest, so the measure shows the care that actually happened.</div>
+
+      <div class="apply">
+        <div class="apply-head"><span class="pill">Apply It</span><span class="who">Greg Holloway, 45</span></div>
+        <div class="apply-body">
+          <div class="chartline">The provider decides to order a rapid flu and COVID test for Greg before settling on treatment.</div>
+          <p>A lab is going on the chart. The diagnosis attached to it matters.</p>
+          <div class="yt">
+            <p class="yt-q"><b>Your turn:</b> When the provider orders these labs, what diagnosis should be attached, and what should be avoided?</p>
+            <div class="fill" contenteditable="true" data-ph="Type your thoughts here…"></div>
+            <button class="act ck" onclick="toggleFb('fb-coding')">Check your knowledge</button>
+            <div class="feedback" id="fb-coding">
+              <div class="fb-label">A strong answer would include</div>
+              <p>The order should be coded to Greg's symptoms, with codes beginning with the symptom the test is working up (for example cough, fever, or headache), not a URI diagnosis. Since providers place lab orders here, this is the ordering provider's step. Keeping URI off the order leaves it in the provider's assessment and keeps the episode coding clean.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="test" id="test-coding">
+        <div class="test-head">
+          <div class="eyebrow">End-of-Section Test</div>
+          <h3>Section 5 &middot; Coding Lab Orders</h3>
+          <p>Type your answers below, then <strong>print, sign, and submit to your manager.</strong> You can also print it blank to complete by hand.</p>
+          <div class="namebar"><div class="field"><span>Name</span><input class="ti" type="text"></div><div class="field"><span>Date</span><input class="ti" type="text"></div></div>
+        </div>
+        <div class="test-body">
+          <ol class="q">
+            <li><span class="ask">When a lab is ordered during a URI visit, what diagnosis must NOT be associated with the order?</span><div class="fill" contenteditable="true" data-ph="Type your answer here…"></div></li>
+            <li><span class="ask">What should the lab order be coded to instead?</span><div class="fill" contenteditable="true" data-ph="Type your answer here…"></div></li>
+            <li><span class="ask">Give two example symptom codes that could be used.</span><div class="fill" contenteditable="true" data-ph="Type your answer here…"></div></li>
+            <li><span class="ask">Why does keeping URI off the lab order keep the measure accurate?</span><div class="fill" contenteditable="true" data-ph="Type your answer here…"></div></li>
+            <li><span class="ask">Who orders and codes labs at our clinic, and what do CSS keep clean instead?</span><div class="fill" contenteditable="true" data-ph="Type your answer here…"></div></li>
+          </ol>
+          <div class="testbtns"><button class="act" onclick="printTest('test-coding')">Print this test</button></div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <div class="actions">
+    <a class="act ghost" href="https://jblaise1310.github.io/ecqms/overview.html">&larr; eCQM Overview</a>
+    <button class="act ghost" onclick="printFull()">Print full module</button>
+  </div>
+  <div class="footer-note">RHC Staff Onboarding &middot; eCQM Appropriate Treatment for URI (CMS-154)</div>
+  <div class="credit">Developed by <b>Jo Blaise, RN-DNP</b> &middot; Clinic Manager &middot; Questions? Jo or Vicki, Quality Team</div>
+
+</div>
+
+<script>
+  const tabs = Array.from(document.querySelectorAll('.tab'));
+  const panels = Array.from(document.querySelectorAll('.panel'));
+  function select(tab){
+    tabs.forEach(t=>t.setAttribute('aria-selected', t===tab ? 'true':'false'));
+    panels.forEach(p=>p.classList.toggle('active', p.id===tab.getAttribute('aria-controls')));
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+  tabs.forEach((tab,i)=>{
+    tab.addEventListener('click',()=>select(tab));
+    tab.addEventListener('keydown',e=>{
+      if(e.key==='ArrowRight'||e.key==='ArrowLeft'){
+        e.preventDefault();
+        const dir=e.key==='ArrowRight'?1:-1;
+        const next=tabs[(i+dir+tabs.length)%tabs.length];
+        next.focus(); select(next);
+      }
+    });
+  });
+
+  function toggleFb(id){
+    const el=document.getElementById(id);
+    const open=el.classList.toggle('show');
+    const btn=el.previousElementSibling;
+    if(btn && btn.classList.contains('ck')) btn.textContent = open ? 'Hide feedback' : 'Check your knowledge';
+  }
+
+  function printFull(){
+    document.body.classList.remove('printing-single');
+    document.querySelectorAll('.test').forEach(t=>t.classList.remove('print-target'));
+    window.print();
+  }
+  function printTest(id){
+    document.querySelectorAll('.test').forEach(t=>t.classList.remove('print-target'));
+    document.getElementById(id).classList.add('print-target');
+    document.body.classList.add('printing-single');
+    window.print();
+  }
+  window.addEventListener('afterprint', ()=>{
+    document.body.classList.remove('printing-single');
+    document.querySelectorAll('.test').forEach(t=>t.classList.remove('print-target'));
+  });
+</script>
+</body>
+</html>
