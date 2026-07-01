@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CMS-153 Chlamydia Screening &middot; Reference</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,500&family=Mulish:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#243240; --soft-ink:#5a6b78; --paper:#fbf9f5; --line:#e4ded3; --card:#fffdf9;
+    --teal-bg:#e7f3ed; --teal-bd:#bfddcb; --teal-tx:#2f6b50;
+    --blue-bg:#e8f0f9; --blue-bd:#c3d6ec; --blue-tx:#2e5a8c;
+    --purp-bg:#eee9f6; --purp-bd:#d2c6e6; --purp-tx:#5a4a8c;
+    --coral-bg:#f8ebe9; --coral-bd:#e6c5bf; --coral-tx:#a8483c;
+    --grn-bg:#eef4e7; --grn-bd:#bcd3ad; --grn-tx:#4a7340;
+    --rosa-bg:#fbf3e7; --rosa-bd:#e7cfa6; --rosa-tx:#9a6b1f;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    font-family:'Mulish',sans-serif;color:var(--ink);line-height:1.62;
+    background:
+      radial-gradient(1200px 600px at 85% -10%, #f4efe6 0%, transparent 60%),
+      radial-gradient(900px 500px at -10% 110%, #eef2ec 0%, transparent 55%),
+      var(--paper);
+    padding:40px 20px 70px;-webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:880px;margin:0 auto;}
+
+  .masthead{background:var(--card);border:1px solid var(--line);border-radius:22px 22px 0 0;border-bottom:none;padding:42px 52px 30px;position:relative;overflow:hidden;}
+  .masthead::after{content:"";position:absolute;left:0;right:0;bottom:0;height:4px;background:linear-gradient(90deg,var(--teal-bd),var(--blue-bd),var(--purp-bd),var(--coral-bd),var(--grn-bd));}
+  .kicker{font-size:12.5px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--soft-ink);}
+  h1{font-family:'Fraunces',serif;font-weight:500;font-size:40px;line-height:1.06;letter-spacing:-.01em;margin:10px 0 6px;}
+  .masthead .sub{font-family:'Fraunces',serif;font-style:italic;font-size:17.5px;color:var(--soft-ink);max-width:78%;}
+  .mast-top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:18px;}
+  a.act{text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:7px;}
+
+  .tabnav{display:flex;flex-wrap:wrap;gap:4px;background:var(--card);border:1px solid var(--line);border-top:none;border-bottom:none;padding:14px 52px 0;}
+  .tab{font-family:'Mulish',sans-serif;font-size:13.5px;font-weight:700;border:1px solid transparent;border-bottom:none;background:transparent;cursor:pointer;padding:11px 15px;border-radius:11px 11px 0 0;color:var(--soft-ink);transition:background .18s,color .18s;letter-spacing:.01em;}
+  .tab:hover{color:var(--ink);background:#f3eee5;}
+  .tab[aria-selected="true"]{color:var(--ink);background:var(--paper);border-color:var(--line);}
+  .tab .num{display:inline-flex;width:19px;height:19px;border-radius:50%;align-items:center;justify-content:center;font-size:11px;margin-right:7px;background:#e6ddcd;color:#7a6a50;}
+  .tab[data-c="teal"][aria-selected="true"] .num{background:var(--teal-bd);color:var(--teal-tx);}
+  .tab[data-c="blue"][aria-selected="true"] .num{background:var(--blue-bd);color:var(--blue-tx);}
+  .tab[data-c="purp"][aria-selected="true"] .num{background:var(--purp-bd);color:var(--purp-tx);}
+  .tab[data-c="coral"][aria-selected="true"] .num{background:var(--coral-bd);color:var(--coral-tx);}
+  .tab[data-c="grn"][aria-selected="true"] .num{background:var(--grn-bd);color:var(--grn-tx);}
+
+  .panels{background:var(--card);border:1px solid var(--line);border-radius:0 0 22px 22px;box-shadow:0 1px 2px rgba(60,50,30,.04),0 30px 60px -30px rgba(60,50,30,.18);}
+  .panel{display:none;padding:40px 52px 48px;}
+  .panel.active{display:block;animation:fade .35s ease;}
+  @keyframes fade{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:none;}}
+
+  .eyebrow{font-size:12px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;margin-bottom:8px;}
+  .panel h2{font-family:'Fraunces',serif;font-weight:600;font-size:31px;letter-spacing:-.01em;margin-bottom:6px;}
+  .panel .dek{font-size:16.5px;color:var(--soft-ink);margin-bottom:26px;}
+  h3{font-family:'Fraunces',serif;font-weight:600;font-size:21px;margin:30px 0 12px;color:var(--ink);}
+  h4{font-size:15px;font-weight:700;letter-spacing:.04em;margin:20px 0 8px;color:var(--ink);}
+  p{font-size:15.5px;margin-bottom:14px;color:#374550;}
+  .panel ul{list-style:none;margin:0 0 16px;display:grid;gap:8px;}
+  .panel ul li{position:relative;padding-left:20px;font-size:15px;color:#374550;}
+  .panel ul li::before{content:"";position:absolute;left:2px;top:9px;width:6px;height:6px;border-radius:50%;background:var(--accent,#bbb);}
+  .term{font-family:'Fraunces',serif;font-style:italic;color:var(--ink);font-weight:500;}
+  strong{font-weight:700;color:var(--ink);}
+
+  #p-why{--accent:var(--teal-tx);} #p-why .eyebrow{color:var(--teal-tx);}
+  #p-measure{--accent:var(--blue-tx);} #p-measure .eyebrow{color:var(--blue-tx);}
+  #p-recognize{--accent:var(--purp-tx);} #p-recognize .eyebrow{color:var(--purp-tx);}
+  #p-roles{--accent:var(--coral-tx);} #p-roles .eyebrow{color:var(--coral-tx);}
+  #p-loop{--accent:var(--grn-tx);} #p-loop .eyebrow{color:var(--grn-tx);}
+
+  .chips{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:6px 0 18px;}
+  .chip{background:var(--paper);border:1px solid var(--line);border-radius:11px;padding:11px 14px;font-size:14px;}
+  .chip b{color:var(--ink);}
+  @media(max-width:600px){.chips{grid-template-columns:1fr;}}
+
+  .note{border-radius:13px;padding:15px 18px;font-size:14.5px;margin:8px 0 20px;border:1px solid;}
+  .note.teal{background:var(--teal-bg);border-color:var(--teal-bd);color:#2c4f3e;}
+  .note.blue{background:var(--blue-bg);border-color:var(--blue-bd);color:#274a6f;}
+  .note.grn{background:var(--grn-bg);border-color:var(--grn-bd);color:#3c5730;}
+  .note.purp{background:var(--purp-bg);border-color:var(--purp-bd);color:#473a6f;}
+  .note.coral{background:var(--coral-bg);border-color:var(--coral-bd);color:#7e342a;}
+  .note.rosa{background:var(--rosa-bg);border-color:var(--rosa-bd);color:#6b5526;}
+  .note .lbl{font-weight:700;}
+
+  /* stat cards */
+  .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:8px 0 20px;}
+  .stat{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:18px 16px 16px;text-align:center;}
+  .stat .big{font-family:'Fraunces',serif;font-weight:600;font-size:33px;line-height:1;letter-spacing:-.01em;color:var(--teal-tx);}
+  .stat .lbl3{font-size:12.8px;color:var(--soft-ink);margin-top:9px;line-height:1.42;}
+  .stat .src{font-size:10.5px;color:#a59c8d;margin-top:7px;letter-spacing:.02em;}
+  @media(max-width:600px){.stats{grid-template-columns:1fr;}}
+
+  /* equation */
+  .equation{display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;margin:14px 0 22px;}
+  .eq-box{background:var(--blue-bg);border:1.5px solid var(--blue-bd);border-radius:12px;padding:14px 20px;font-weight:700;font-size:15px;color:var(--blue-tx);text-align:center;}
+  .eq-box.eq-result{background:var(--teal-bg);border-color:var(--teal-bd);color:var(--teal-tx);}
+  .eq-op{font-family:'Fraunces',serif;font-size:26px;color:var(--soft-ink);font-weight:600;}
+  @media(max-width:600px){.equation{gap:10px;}.eq-box{padding:11px 14px;font-size:13.5px;}.eq-op{font-size:22px;}}
+
+  /* large key statement */
+  .bigstatement{font-family:'Fraunces',serif;font-weight:500;font-size:25px;line-height:1.34;color:var(--ink);text-align:center;margin:18px 0 6px;padding:18px 16px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
+  @media(max-width:600px){.bigstatement{font-size:20px;padding:14px 10px;}}
+
+  /* role two-column */
+  .twocol{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:10px 0 20px;}
+  .twocol .col{border:1px solid var(--line);border-radius:14px;overflow:hidden;}
+  .twocol .col-head{padding:12px 16px;font-weight:700;font-size:14.5px;color:#fff;letter-spacing:.01em;}
+  .twocol .col.prov .col-head{background:var(--coral-tx);}
+  .twocol .col.css .col-head{background:var(--teal-tx);}
+  .twocol .col-body{padding:14px 18px;}
+  .twocol .col-body ul{margin:0;display:grid;gap:9px;}
+  .twocol .col-body ul li{position:relative;padding-left:18px;font-size:14px;color:#374550;line-height:1.5;}
+  .twocol .col.prov .col-body ul li::before{content:"";position:absolute;left:1px;top:8px;width:6px;height:6px;border-radius:50%;background:var(--coral-tx);}
+  .twocol .col.css .col-body ul li::before{content:"";position:absolute;left:1px;top:8px;width:6px;height:6px;border-radius:50%;background:var(--teal-tx);}
+  @media(max-width:600px){.twocol{grid-template-columns:1fr;}}
+
+  /* chart example snippet */
+  .example{border:1px solid var(--line);background:var(--paper);border-radius:10px;padding:13px 16px;margin:6px 0 18px;font-size:14px;color:#4a5560;line-height:1.6;}
+  .example b{color:var(--ink);}
+  .lead{font-size:16px;color:var(--soft-ink);margin:2px 0 4px;}
+  .sec-label{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--soft-ink);margin:26px 0 12px;}
+  .pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;}
+  .opill{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.65);border:1px solid var(--line);border-radius:99px;padding:4px 14px;font-size:12.5px;font-weight:600;color:var(--soft-ink);}
+  .opill .dot{width:7px;height:7px;border-radius:50%;background:var(--teal-tx);flex-shrink:0;}
+  .refcards{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:4px 0 6px;}
+  .refcard{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px 20px;}
+  .refcard h4{font-family:'Fraunces',serif;font-size:13px;font-weight:600;letter-spacing:.04em;color:var(--soft-ink);text-transform:uppercase;margin-bottom:8px;}
+  .checklist{list-style:none;padding:0;margin:0;}
+  .checklist li{display:flex;gap:10px;align-items:flex-start;padding:7px 0;border-bottom:1px solid var(--line);font-size:14px;color:var(--ink);}
+  .checklist li:last-child{border-bottom:none;}
+  .checklist .ck{width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;flex-shrink:0;margin-top:2px;}
+  .refcard.blue .ck{background:var(--blue-bg);color:var(--blue-tx);}
+  .refcard.green .ck{background:var(--teal-bg);color:var(--teal-tx);}
+  .stratgrid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin:4px 0 6px;}
+  .stratcard{background:var(--card);border:1px solid var(--line);border-top:4px solid var(--line);border-radius:14px;padding:16px 16px 18px;}
+  .stratcard .snum{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px;}
+  .stratcard .stt{font-family:'Fraunces',serif;font-size:15px;font-weight:600;color:var(--ink);line-height:1.3;}
+  .stratcard.t{border-top-color:var(--teal-tx);} .stratcard.t .snum{color:var(--teal-tx);}
+  .stratcard.b{border-top-color:var(--blue-tx);} .stratcard.b .snum{color:var(--blue-tx);}
+  .stratcard.r{border-top-color:var(--rosa-tx);} .stratcard.r .snum{color:var(--rosa-tx);}
+  .reminder{background:var(--teal-bg);border:1.5px solid var(--teal-bd);border-radius:16px;padding:18px 22px;margin:4px 0 8px;}
+  .reminder h3{font-family:'Fraunces',serif;color:var(--teal-tx);margin:0 0 8px;font-size:19px;}
+  .reminder p{font-size:14.5px;color:var(--ink);margin:0 0 10px;}
+  .reminder .askq{font-family:'Fraunces',serif;font-size:20px;font-style:italic;color:var(--teal-tx);text-align:center;padding:12px 10px;border-top:1px solid var(--teal-bd);border-bottom:1px solid var(--teal-bd);margin:12px 0;}
+  .reminder .rnote{font-size:13.5px;color:var(--soft-ink);margin-bottom:0;}
+  .codepills{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 6px;}
+  .codepills span{font-weight:700;font-size:13px;letter-spacing:.02em;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:9px;padding:6px 13px;}
+  @media(max-width:640px){.refcards{grid-template-columns:1fr;}.stratgrid{grid-template-columns:1fr;}}
+
+  /* measure description card */
+  .mcard{border:1px solid var(--blue-bd);background:var(--blue-bg);border-radius:14px;padding:18px 20px;margin:6px 0 20px;}
+  .mcard .mtag{font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--blue-tx);margin-bottom:8px;}
+  .mcard p{font-size:15px;color:#27384a;margin:0;}
+
+  /* score bands */
+  .bands{display:grid;gap:10px;margin:10px 0 18px;}
+  .band{display:grid;grid-template-columns:158px 1fr;border:1px solid var(--line);border-radius:12px;overflow:hidden;}
+  .band .bl{padding:14px 16px;font-weight:700;font-size:13.5px;display:flex;flex-direction:column;justify-content:center;line-height:1.3;}
+  .band .bl .scr{font-family:'Fraunces',serif;font-size:19px;font-weight:600;}
+  .band .bd{padding:14px 16px;font-size:14px;color:#374550;background:var(--card);}
+  .band.ok .bl{background:var(--grn-bg);color:var(--grn-tx);}
+  .band.mild .bl{background:var(--rosa-bg);color:var(--rosa-tx);}
+  .band.sev .bl{background:var(--coral-bg);color:var(--coral-tx);}
+  @media(max-width:600px){.band{grid-template-columns:1fr;}}
+
+  /* numbered flow steps */
+  .flow{list-style:none;counter-reset:f;display:grid;gap:10px;margin:8px 0 18px;}
+  .flow li{counter-increment:f;position:relative;padding-left:42px;font-size:15px;color:#374550;min-height:28px;padding-top:3px;}
+  .flow li::before{content:counter(f);position:absolute;left:0;top:0;width:27px;height:27px;border-radius:50%;background:var(--card);border:1.5px solid var(--accent,#bbb);color:var(--accent,#555);font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center;}
+  .flow li::after{display:none;}
+
+  /* reference table */
+  .reftable{border:1px solid var(--line);border-radius:12px;overflow:hidden;margin:8px 0 18px;}
+  .refrow{display:grid;grid-template-columns:210px 1fr;border-bottom:1px solid var(--line);}
+  .refrow:last-child{border-bottom:none;}
+  .refrow:nth-child(even){background:var(--paper);}
+  .rclass{padding:11px 16px;font-weight:700;font-size:13.5px;color:var(--accent,#374550);border-right:1px solid var(--line);}
+  .rmeds{padding:11px 16px;font-size:13.5px;color:#374550;}
+  .rmeds .g{color:var(--ink);font-weight:600;}
+  @media(max-width:600px){.refrow{grid-template-columns:1fr;}.rclass{border-right:none;border-bottom:1px solid var(--line);}}
+
+  /* Rosa apply */
+  .apply{margin:30px 0 8px;border:1.5px solid var(--rosa-bd);border-radius:16px;overflow:hidden;background:var(--rosa-bg);}
+  .apply-head{display:flex;align-items:center;gap:12px;padding:14px 20px;background:rgba(154,107,31,.10);border-bottom:1px solid var(--rosa-bd);}
+  .apply-head .pill{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;background:var(--rosa-tx);color:#fff;padding:4px 10px;border-radius:20px;}
+  .apply-head .who{font-family:'Fraunces',serif;font-weight:600;font-size:16px;color:var(--rosa-tx);}
+  .apply-body{padding:18px 22px;}
+  .apply-body p{font-size:15px;color:#5c4a28;}
+  .apply-body ul li{color:#5c4a28;}
+  .apply-body ul li::before{background:var(--rosa-tx);}
+  .chartline{font-family:'Fraunces',serif;font-style:italic;font-size:14.5px;color:#6b5526;background:#fff;border-left:3px solid var(--rosa-bd);border-radius:0 8px 8px 0;padding:12px 16px;margin-bottom:14px;}
+
+  /* Your Turn interactive */
+  .yt{margin-top:14px;background:#fff;border:1px dashed var(--rosa-bd);border-radius:10px;padding:15px 17px;}
+  .yt-q{font-size:14.5px;color:#5c4a28;margin-bottom:0;}
+  .yt-q b{color:var(--rosa-tx);}
+  .yt .fill{margin-top:11px;}
+  .yt .ck{font-size:12.5px;padding:9px 15px;margin-top:12px;background:var(--rosa-tx);border-color:var(--rosa-tx);color:#fff;}
+
+  .feedback{display:none;margin-top:14px;border-radius:10px;padding:14px 16px;background:var(--teal-bg);border:1px solid var(--teal-bd);}
+  .feedback.show{display:block;animation:fade .3s ease;}
+  .fb-label{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--teal-tx);margin-bottom:6px;}
+  .feedback p{font-size:14px;color:#2c4f3e;margin:0;}
+
+  /* tests */
+  .test{margin-top:40px;border:1px solid var(--line);border-radius:16px;background:var(--paper);overflow:hidden;}
+  .test-head{padding:22px 26px 18px;border-bottom:1px solid var(--line);background:var(--card);}
+  .test-head .eyebrow{margin-bottom:6px;}
+  .test-head h3{margin:0 0 4px;}
+  .test-head p{font-size:14px;color:var(--soft-ink);margin:0;}
+  .namebar{display:flex;gap:22px;flex-wrap:wrap;margin-top:18px;}
+  .namebar .field{flex:1;min-width:180px;}
+  .namebar .field span{display:block;font-size:11.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--soft-ink);margin-bottom:4px;}
+  .ti{width:100%;border:none;border-bottom:1.5px solid #b9b0a0;background:transparent;font-family:'Mulish',sans-serif;font-size:15px;color:var(--ink);padding:5px 2px;outline:none;}
+  .ti:focus{border-color:var(--accent,#2e5a8c);}
+  .test-body{padding:24px 26px 28px;}
+  ol.q{list-style:none;counter-reset:q;display:grid;gap:22px;}
+  ol.q > li{counter-increment:q;position:relative;padding-left:38px;font-size:15px;color:#2f3c47;}
+  ol.q > li::before{content:counter(q);position:absolute;left:0;top:-2px;width:26px;height:26px;border-radius:50%;background:var(--card);border:1.5px solid var(--accent,#bbb);color:var(--accent,#555);font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center;}
+  .q .ask{font-weight:600;color:var(--ink);}
+  .fill{min-height:52px;border:1px solid #cfc7b8;border-radius:9px;background:#fff;padding:9px 13px;margin-top:10px;font-size:14.5px;color:var(--ink);line-height:1.7;outline:none;}
+  .fill:focus{border-color:var(--accent,#2e5a8c);box-shadow:0 0 0 3px rgba(46,90,140,.10);}
+  .fill:empty:before{content:attr(data-ph);color:#b3aa99;}
+
+  .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px;justify-content:center;}
+  .testbtns{margin-top:20px;display:flex;gap:10px;flex-wrap:wrap;}
+  .act{font-family:'Mulish',sans-serif;font-size:13.5px;font-weight:700;cursor:pointer;border:1px solid var(--ink);background:var(--ink);color:#fff;border-radius:10px;padding:11px 18px;transition:opacity .15s;}
+  .act:hover{opacity:.85;}
+  .act.ghost{background:transparent;color:var(--ink);}
+
+  .footer-note{text-align:center;font-size:13px;color:var(--soft-ink);margin-top:26px;font-style:italic;font-family:'Fraunces',serif;}
+  .credit{text-align:center;font-size:13px;color:var(--soft-ink);margin-top:4px;}
+  .credit b{font-weight:600;color:var(--ink);font-style:normal;}
+
+  @media print{
+    body{background:#fff;padding:0;}
+    .wrap{max-width:none;}
+    .fill,.fill-inline,.ti{color:#000 !important;}
+    .fill:empty:before,.fill-inline:empty:before{content:"" !important;}
+    .ck{display:none !important;}
+    body:not(.printing-single) .tabnav,
+    body:not(.printing-single) .mast-top,
+    body:not(.printing-single) .actions,
+    body:not(.printing-single) .testbtns{display:none !important;}
+    body:not(.printing-single) .panel{display:block !important;page-break-before:always;}
+    body:not(.printing-single) .panel:first-of-type{page-break-before:avoid;}
+    body:not(.printing-single) .panels,
+    body:not(.printing-single) .masthead{box-shadow:none;border:none;}
+    .apply,.test,.note,ol.q > li{break-inside:avoid;}
+    body.printing-single .masthead,
+    body.printing-single .tabnav,
+    body.printing-single .actions,
+    body.printing-single .footer-note,
+    body.printing-single .credit,
+    body.printing-single .testbtns{display:none !important;}
+    body.printing-single .panels{box-shadow:none;border:none;}
+    body.printing-single .panel{display:none !important;}
+    body.printing-single .panel.active{display:block !important;padding:0;}
+    body.printing-single .panel.active > *:not(.print-target){display:none !important;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="masthead">
+    <div class="mast-top">
+      <a class="act ghost" href="https://jblaise1310.github.io/ecqms/overview.html">&larr; eCQM Overview</a>
+      <button class="act ghost" onclick="printFull()">Print</button>
+    </div>
+    <div class="kicker">RHC &nbsp;&middot;&nbsp; Quality Measure Reference</div>
+    <h1>Chlamydia Screening (CMS-153)</h1>
+    <div class="sub">A provider-driven measure. Here is what it covers, and the one thing CSS can do to help.</div>
+    <div class="pills">
+      <span class="opill"><span class="dot"></span>Sexually active women, ages 16 to 24</span>
+      <span class="opill"><span class="dot"></span>6 quality points</span>
+      <span class="opill"><span class="dot"></span>2026 benchmark: 59.14%</span>
+    </div>
+  </div>
+
+  <p class="lead">CMS-153 tracks whether sexually active women ages 16 to 24 had a chlamydia screening test during the year. The screening decision and workflow belong to the <strong>provider</strong>. This sheet is so CSS know what we are asking for, and how a simple reminder can help capture it.</p>
+
+  <div class="sec-label">Measure Overview</div>
+  <div class="refcards">
+    <div class="refcard blue">
+      <h4>A patient qualifies when all are true</h4>
+      <ul class="checklist">
+        <li><span class="ck">&#10003;</span>Female patient, ages 16 to 24 at the end of the measurement period.</li>
+        <li><span class="ck">&#10003;</span>At least one qualifying encounter during the year.</li>
+        <li><span class="ck">&#10003;</span>Evidence of sexual activity documented in the chart.</li>
+        <li><span class="ck">&#10003;</span>A chlamydia screening test completed during the year.</li>
+      </ul>
+    </div>
+    <div class="refcard green">
+      <h4>Evidence of sexual activity includes</h4>
+      <ul class="checklist">
+        <li><span class="ck">&#10003;</span>Active or ordered contraceptive medication or device (for example, an IUD).</li>
+        <li><span class="ck">&#10003;</span>An STI-related diagnosis (chlamydia, gonorrhea, PID, and similar).</li>
+        <li><span class="ck">&#10003;</span>A pregnancy test ordered or resulted.</li>
+        <li><span class="ck">&#10003;</span>A documented sexual history in the assessment.</li>
+        <li><span class="ck">&#10003;</span>A related lab test or procedure identifying sexual activity.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="note blue"><span class="lbl">Any qualifying visit counts.</span> Screening credit can be captured at any qualifying visit, not only gynecology or well-woman appointments.</div>
+
+  <div class="sec-label">How Providers Capture It</div>
+  <div class="stratgrid">
+    <div class="stratcard t"><div class="snum">Strategy 1</div><div class="stt">Well-woman, annual, or nurse visits</div></div>
+    <div class="stratcard b"><div class="snum">Strategy 2</div><div class="stt">Contraceptive and prescription visits</div></div>
+    <div class="stratcard r"><div class="snum">Strategy 3</div><div class="stt">STI and reproductive health encounters</div></div>
+  </div>
+
+  <div class="note rosa"><span class="lbl">A billing note.</span> Patients enter the denominator by billing an E&amp;M code. A nurse visit alone will not qualify a patient unless one of these codes is billed. The screening itself can still be done on a nurse visit, as long as the patient has at least one visit that results in a qualifying E&amp;M code.</div>
+  <div class="codepills">
+    <span>99202&ndash;05</span>
+    <span>99212&ndash;15</span>
+    <span>99395&ndash;97</span>
+    <span>99385&ndash;87</span>
+    <span>99381&ndash;84</span>
+    <span>99391&ndash;94</span>
+  </div>
+
+  <div class="sec-label">Where CSS Come In</div>
+  <div class="reminder">
+    <h3>A helpful reminder, at patient prep</h3>
+    <p>The screening decision is the provider's. But CSS reviewing charts ahead of the visit are best placed to catch a screening that would otherwise be missed. Identify eligible patients during <strong>patient prep</strong>, before the visit: a woman aged 16 to 24 with evidence of sexual activity (for example, contraception, a pregnancy test, or a documented sexual history). Flag it for the provider so they can decide whether to screen during the visit.</p>
+    <div class="askq">&ldquo;Would you like to screen her for chlamydia today?&rdquo;</div>
+    <p class="rnote">Catch it at prep, not at rooming. Once the patient is being roomed, it is usually too late to set the screening up smoothly. And it is a reminder, not a decision: the provider always chooses whether to screen.</p>
+  </div>
+
+  <div class="actions">
+    <a class="act ghost" href="https://jblaise1310.github.io/ecqms/overview.html">&larr; eCQM Overview</a>
+    <button class="act ghost" onclick="printFull()">Print</button>
+  </div>
+  <div class="footer-note">RHC Staff Reference &middot; eCQM Chlamydia Screening in Women (CMS-153)</div>
+  <div class="credit">Developed by <b>Jo Blaise, RN-DNP</b> &middot; Clinic Manager &middot; Questions? Jo or Vicki, Quality Team</div>
+
+</div>
+
+<script>
+  const tabs = Array.from(document.querySelectorAll('.tab'));
+  const panels = Array.from(document.querySelectorAll('.panel'));
+  function select(tab){
+    tabs.forEach(t=>t.setAttribute('aria-selected', t===tab ? 'true':'false'));
+    panels.forEach(p=>p.classList.toggle('active', p.id===tab.getAttribute('aria-controls')));
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+  tabs.forEach((tab,i)=>{
+    tab.addEventListener('click',()=>select(tab));
+    tab.addEventListener('keydown',e=>{
+      if(e.key==='ArrowRight'||e.key==='ArrowLeft'){
+        e.preventDefault();
+        const dir=e.key==='ArrowRight'?1:-1;
+        const next=tabs[(i+dir+tabs.length)%tabs.length];
+        next.focus(); select(next);
+      }
+    });
+  });
+
+  function toggleFb(id){
+    const el=document.getElementById(id);
+    const open=el.classList.toggle('show');
+    const btn=el.previousElementSibling;
+    if(btn && btn.classList.contains('ck')) btn.textContent = open ? 'Hide feedback' : 'Check your knowledge';
+  }
+
+  function printFull(){
+    document.body.classList.remove('printing-single');
+    document.querySelectorAll('.test').forEach(t=>t.classList.remove('print-target'));
+    window.print();
+  }
+  function printTest(id){
+    document.querySelectorAll('.test').forEach(t=>t.classList.remove('print-target'));
+    document.getElementById(id).classList.add('print-target');
+    document.body.classList.add('printing-single');
+    window.print();
+  }
+  window.addEventListener('afterprint', ()=>{
+    document.body.classList.remove('printing-single');
+    document.querySelectorAll('.test').forEach(t=>t.classList.remove('print-target'));
+  });
+</script>
+</body>
+</html>
