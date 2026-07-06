@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rooming &amp; Patient Preparation &middot; RHC MA Onboarding</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Mulish:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#FAF5EC;
+    --paper-2:#F4ECDD;
+    --card:#FFFDF8;
+    --ink:#33302B;
+    --ink-soft:#6B645A;
+    --line:#E4DBC9;
+    --teal:#2F8F86;
+    --blue:#3F6FA8;
+    --purple:#7A5C9E;
+    --coral:#D6694F;
+    --amber:#C68A29;
+    --green:#4C8C57;
+    --teal-bg:#E3F0EE;
+    --blue-bg:#E5ECF5;
+    --purple-bg:#EDE6F3;
+    --coral-bg:#F8E7E1;
+    --amber-bg:#F6ECD7;
+    --green-bg:#E6F0E7;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Mulish',sans-serif;
+    line-height:1.6;
+    font-size:16px;
+  }
+  h1,h2,h3,h4{font-family:'Fraunces',serif;font-weight:600;margin:0 0 .4em;}
+  .wrap{max-width:960px;margin:0 auto;padding:40px 28px 70px;}
+
+  header.sheet{
+    background:linear-gradient(135deg,#2F8F86 0%,#3F6FA8 100%);
+    color:#fff;
+    border-radius:18px;
+    padding:34px 36px;
+    position:relative;
+    overflow:hidden;
+    margin-bottom:26px;
+  }
+  header.sheet:after{
+    content:"";position:absolute;right:-40px;top:-40px;
+    width:200px;height:200px;border-radius:50%;
+    background:rgba(255,255,255,.08);
+  }
+  .eyebrow{
+    font-family:'Mulish';font-weight:700;letter-spacing:.14em;
+    text-transform:uppercase;font-size:12px;opacity:.9;margin:0 0 8px;
+  }
+  header.sheet h1{font-size:32px;margin-bottom:8px;position:relative;}
+  header.sheet p{margin:0;opacity:.92;max-width:620px;position:relative;font-size:15px;}
+  .underline{width:64px;height:4px;background:rgba(255,255,255,.65);border-radius:3px;margin-top:14px;}
+
+  /* ---- Tabs ---- */
+  .tabbar{
+    display:flex;flex-wrap:wrap;gap:8px;
+    margin-bottom:22px;
+    border-bottom:2px solid var(--line);
+    padding-bottom:0;
+  }
+  .tab{
+    font-family:'Mulish';font-weight:700;font-size:13.5px;
+    color:var(--ink-soft);background:transparent;border:none;
+    padding:12px 16px;cursor:pointer;border-radius:10px 10px 0 0;
+    position:relative;top:2px;
+  }
+  .tab[aria-selected="true"]{
+    color:var(--teal);background:var(--card);
+    border:2px solid var(--line);border-bottom:2px solid var(--card);
+  }
+  .panel{display:none;}
+  .panel.active{display:block;animation:fade .25s ease;}
+  @keyframes fade{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:translateY(0);}}
+
+  .card{
+    background:var(--card);border:1px solid var(--line);
+    border-radius:16px;padding:26px 28px;margin-bottom:18px;
+  }
+  .panel-title{display:flex;align-items:center;gap:10px;margin-bottom:6px;}
+  .panel-title h2{font-size:22px;margin:0;}
+  .chip{
+    display:inline-block;font-size:11px;font-weight:700;letter-spacing:.06em;
+    text-transform:uppercase;padding:3px 10px;border-radius:999px;
+  }
+  .chip.important{background:var(--coral-bg);color:var(--coral);}
+
+  .callout{
+    border-radius:14px;padding:18px 20px;margin:16px 0;
+    border:1px solid var(--line);
+  }
+  .callout.teal{background:var(--teal-bg);border-color:#CFE6E2;}
+  .callout.blue{background:var(--blue-bg);border-color:#D3DEEE;}
+  .callout.amber{background:var(--amber-bg);border-color:#EBDBAF;}
+  .callout.coral{background:var(--coral-bg);border-color:#EFCBBC;}
+  .callout.green{background:var(--green-bg);border-color:#CFE3D1;}
+  .callout h3{font-size:15px;margin-bottom:6px;}
+  .callout p, .callout ul, .callout ol{margin:6px 0 0;font-size:14.5px;}
+  .callout ul, .callout ol{padding-left:20px;}
+  .callout li{margin-bottom:5px;}
+
+  .very-important{
+    background:linear-gradient(135deg,#F8E7E1 0%,#F6ECD7 100%);
+    border:2px solid var(--coral);
+    border-radius:14px;padding:20px 22px;margin:16px 0;
+  }
+  .very-important h3{color:var(--coral);font-size:16px;margin-bottom:8px;}
+  .very-important p{margin:0;font-size:15px;}
+
+  table.ref{width:100%;border-collapse:collapse;margin:14px 0;font-size:14px;}
+  table.ref th{
+    background:var(--paper-2);text-align:left;padding:9px 12px;
+    font-family:'Mulish';font-weight:700;font-size:12.5px;
+    text-transform:uppercase;letter-spacing:.04em;color:var(--ink-soft);
+    border-bottom:2px solid var(--line);
+  }
+  table.ref td{padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top;}
+  table.ref tr:last-child td{border-bottom:none;}
+  table.ref td.qty{white-space:nowrap;font-weight:600;color:var(--teal);}
+
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+  @media (max-width:720px){.grid2{grid-template-columns:1fr;}}
+
+  .patient-card{
+    background:var(--amber-bg);border:1px solid #EBDBAF;
+    border-radius:14px;padding:18px 20px;margin:16px 0;
+    display:flex;gap:16px;align-items:flex-start;
+  }
+  .patient-avatar{
+    width:46px;height:46px;border-radius:50%;background:var(--amber);
+    color:#fff;font-family:'Fraunces';font-weight:600;font-size:19px;
+    display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  }
+  .patient-card h3{font-size:15px;margin-bottom:4px;}
+  .patient-card p{margin:0;font-size:14px;color:var(--ink-soft);}
+
+  /* Your Turn boxes */
+  .yourturn{
+    border:2px dashed #C9BBA0;border-radius:14px;padding:18px 20px;
+    background:var(--paper-2);margin:16px 0;
+  }
+  .yourturn .tag{
+    font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--purple);margin-bottom:8px;display:block;
+  }
+  .yourturn .ask{font-size:14.5px;font-weight:600;display:block;margin-bottom:8px;}
+  .fill{
+    min-height:54px;background:#fff;border:1px solid var(--line);
+    border-radius:8px;padding:10px 12px;font-size:14px;margin-bottom:10px;
+  }
+  .fill:empty:before{content:attr(data-ph);color:#B5AC9C;}
+  .reveal-btn{
+    background:var(--purple);color:#fff;border:none;border-radius:8px;
+    padding:8px 14px;font-family:'Mulish';font-weight:700;font-size:13px;
+    cursor:pointer;
+  }
+  .model-answer{
+    display:none;margin-top:12px;padding:12px 14px;background:var(--purple-bg);
+    border-radius:8px;font-size:14px;border-left:3px solid var(--purple);
+  }
+  .model-answer.show{display:block;}
+
+  .checklist{list-style:none;padding:0;margin:14px 0;}
+  .checklist li{
+    padding:9px 0 9px 30px;position:relative;font-size:14.5px;
+    border-bottom:1px solid var(--line);
+  }
+  .checklist li:last-child{border-bottom:none;}
+  .checklist li:before{
+    content:"";position:absolute;left:0;top:11px;width:16px;height:16px;
+    border:2px solid var(--teal);border-radius:4px;
+  }
+
+  .idea-list h4{font-size:14px;color:var(--blue);margin:14px 0 6px;}
+  .idea-list p{margin:0;font-size:14px;color:var(--ink-soft);}
+
+  .scenario{
+    border:1px solid var(--line);border-radius:14px;padding:20px 22px;
+    margin-bottom:18px;background:var(--card);
+  }
+  .scenario .num{
+    display:inline-flex;width:26px;height:26px;border-radius:50%;
+    background:var(--teal);color:#fff;align-items:center;justify-content:center;
+    font-family:'Fraunces';font-weight:600;font-size:13px;margin-right:8px;
+  }
+  .scenario h3{display:inline;font-size:16px;}
+  .scenario .setup{margin:12px 0;font-size:14.5px;}
+  .scenario .fin{
+    font-family:monospace;background:var(--paper-2);padding:2px 8px;
+    border-radius:5px;font-size:13px;
+  }
+
+  .footer-note{text-align:center;font-size:12.5px;color:var(--ink-soft);margin-top:30px;}
+  .credit{text-align:center;font-size:12px;color:var(--ink-soft);margin-top:4px;}
+  .actions{text-align:center;margin-top:20px;}
+  .act{
+    background:var(--teal);color:#fff;border:none;border-radius:9px;
+    padding:10px 20px;font-family:'Mulish';font-weight:700;font-size:13.5px;
+    cursor:pointer;margin:0 6px;
+  }
+  .act.ghost{background:transparent;color:var(--teal);border:2px solid var(--teal);}
+
+  @media print{
+    .tabbar, .actions, .reveal-btn{display:none;}
+    .panel{display:block !important;}
+    .card{break-inside:avoid;}
+    body.printing-single .panel{display:none !important;}
+    body.printing-single .panel.print-target{display:block !important;}
+  }
+  .tab-print{text-align:right;margin-bottom:14px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="sheet">
+    <div class="eyebrow">RHC Patient Rooming Guidelines</div>
+    <h1>Rooming &amp; Patient Preparation</h1>
+    <p>How to set the stage for a great visit: reading the reason for visit, making patients comfortable, documenting in real time, and keeping rooms ready for the next patient.</p>
+    <div class="underline"></div>
+  </header>
+
+  <div class="tabbar" role="tablist">
+    <button class="tab" aria-selected="true" aria-controls="p1" role="tab">1. Setting the Stage</button>
+    <button class="tab" aria-selected="false" aria-controls="p2" role="tab">2. Reason for Visit</button>
+    <button class="tab" aria-selected="false" aria-controls="p3" role="tab">3. Room Turnover &amp; Pace</button>
+    <button class="tab" aria-selected="false" aria-controls="p4" role="tab">4. Daily Minimum Inventory</button>
+    <button class="tab" aria-selected="false" aria-controls="p5" role="tab">5. Procedure Supplies</button>
+    <button class="tab" aria-selected="false" aria-controls="p6" role="tab">6. Practice with Rosa</button>
+  </div>
+
+  <!-- ===================== TAB 1 ===================== -->
+  <div class="panel active" id="p1">
+    <div class="card">
+      <div class="panel-title"><h2>Setting the Stage</h2></div>
+      <p style="color:var(--ink-soft);font-size:14.5px;">The first two minutes in the room set the tone for the whole visit. A patient who feels rushed, confused, or exposed carries that discomfort right into their conversation with the provider.</p>
+
+      <div class="callout teal">
+        <h3>Before the Patient Walks In</h3>
+        <ul>
+          <li>Exam table positioned appropriately for the visit type (upright for a conversation-heavy visit, flat and accessible for a procedure)</li>
+          <li>Equipment relevant to the reason for visit already in the room, not something you have to leave to retrieve mid-visit</li>
+          <li>Gown, drape, or exam shorts available and within reach if the visit may require them</li>
+          <li>Room temperature reasonable, surfaces clear of the prior patient's supplies or paperwork</li>
+          <li>Wall-mounted hand sanitizer checked and refilled if low, so it lasts the full day, and tissues visible and accessible to the patient</li>
+        </ul>
+      </div>
+
+      <div class="callout blue">
+        <h3>Greeting and Introduction</h3>
+        <ul>
+          <li>Introduce yourself by name and role: "Hi, I'm Cindy, your MA."</li>
+          <li>Confirm identity per RHC policy: full name and date of birth, stated by the patient rather than confirmed passively ("What is your date of birth?" not "Is your birthday the 4th?")</li>
+          <li>Tell the patient what to expect next in plain language: "I'm going to get your vitals and ask a few questions, then your provider will be in shortly."</li>
+          <li>Avoid medical jargon. Say what you're doing and why, briefly.</li>
+        </ul>
+      </div>
+
+      <div class="callout amber">
+        <h3>Reading the Patient</h3>
+        <table class="ref">
+          <tr><th>What you notice</th><th>How to adjust</th></tr>
+          <tr><td>Anxious or tense</td><td>Slow your pace, narrate each step before you do it, keep your tone calm and unhurried</td></tr>
+          <tr><td>In visible pain</td><td>Minimize unnecessary movement or waiting, let them choose a comfortable position where possible</td></tr>
+          <tr><td>Hard of hearing</td><td>Face the patient when speaking, speak clearly rather than louder, confirm they understood</td></tr>
+          <tr><td>Cold</td><td>Offer a blanket before they have to ask</td></tr>
+          <tr><td>Embarrassed or modest</td><td>Explain draping in advance, step out or turn away during gowning if appropriate</td></tr>
+          <tr><td>Accompanied by family</td><td>Acknowledge the companion, confirm with the patient who they want present for questions</td></tr>
+          <tr><td>Pediatric patient with caregiver</td><td>Speak to the child at their level when appropriate, get history from the caregiver, keep tone light</td></tr>
+        </table>
+      </div>
+
+      <div class="callout green">
+        <h3>Privacy and Dignity</h3>
+        <ul>
+          <li>Knock and pause before entering, even if the door is ajar</li>
+          <li>Drape appropriately and explain why before any exposure is needed</li>
+          <li>Keep personal belongings visible and secure, not shoved aside</li>
+          <li>Never discuss a patient's information in the hallway or within earshot of others</li>
+        </ul>
+      </div>
+
+      <div class="yourturn">
+        <span class="tag">Your Turn</span>
+        <span class="ask">A patient seems nervous and keeps apologizing for "wasting your time." How would you respond while rooming them?</span>
+        <div class="fill" contenteditable="true" data-ph="Type your answer here…"></div>
+        <button class="reveal-btn" onclick="this.nextElementSibling.classList.toggle('show')">Check your knowledge</button>
+        <div class="model-answer">Reassure them briefly and genuinely: "You're not wasting anyone's time, this is exactly what we're here for." Keep your pace calm rather than rushed, since rushing can reinforce the feeling that they're a burden. Continue rooming normally, narrating each step so they know what's coming.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== TAB 2 ===================== -->
+  <div class="panel" id="p2">
+    <div class="card">
+      <div class="panel-title"><h2>Reason for Visit as Your Roadmap</h2></div>
+      <div class="callout blue">
+        <h3>The Framing That Matters</h3>
+        <p>The reason for visit tells you what to <b>prepare</b>, not what to <b>diagnose</b>. Reading "ear pain" means having the otoscope ready and pediatric or adult specula on hand. It does not mean deciding the patient has an ear infection. That distinction stays with the provider. Your job is preparation, not conclusions.</p>
+      </div>
+
+      <div class="callout teal">
+        <h3>Matching Visit Type to Rooming Needs</h3>
+        <table class="ref">
+          <tr><th>Visit Type</th><th>What It Usually Means for Rooming</th></tr>
+          <tr><td>Same-day sick visit</td><td>Focused history on the presenting complaint, equipment specific to the symptom (otoscope, pulse ox, etc.), quicker pace</td></tr>
+          <tr><td>Wellness / annual exam</td><td>Fuller intake, screening tools relevant to age, more time for history review</td></tr>
+          <tr><td>Follow-up</td><td>Review of the prior plan, focused vitals, medication history questions</td></tr>
+          <tr><td>Procedure visit</td><td>Procedure-specific supplies gathered in advance (see Room Turnover tab), consent readiness if applicable</td></tr>
+        </table>
+      </div>
+
+      <div class="callout amber">
+        <h3>Cross-Referencing Screening Triggers</h3>
+        <p>Reason for visit and patient age together can cue what should be ready before the provider walks in:</p>
+        <ul>
+          <li>Wellness visit, age 65+: STEADI Fall Risk Assessment every visit; Advance Directive review if this is the annual exam</li>
+          <li>Visit involving controlled substances: Opioid Risk Tool</li>
+          <li>Every visit, regardless of reason: C-SSRS, PHQ-2, and full PHQ-9 are administered universally as part of our Zero Suicide initiative</li>
+        </ul>
+      </div>
+
+      <div class="callout green">
+        <h3>Physical Prep by Visit Type</h3>
+        <p style="margin-bottom:8px;">Reason for visit should also tell you what to physically prep on the patient before the provider walks in, not just what equipment to gather. A few common examples:</p>
+        <ul>
+          <li>Diabetic check: shoes and socks off before the provider enters, so the foot exam isn't held up</li>
+          <li>Ear complaint: patient seated with easy access to the affected ear</li>
+          <li>Sore throat: adequate lighting positioned for a throat exam</li>
+        </ul>
+        <p style="margin-top:8px;">A simple habit: ask yourself "what will the provider need to see or access first," and prep that before they come in, not after.</p>
+      </div>
+
+      <div class="callout coral">
+        <h3>When the Reason for Visit Is Vague</h3>
+        <p>"Here for a checkup" or "not feeling well" doesn't give you much to go on. Room generally rather than guessing at a specific complaint: standard vitals equipment ready, general exam setup, and let the history-taking portion of intake surface the real reason. Avoid steering the patient toward a specific complaint just to make rooming easier.</p>
+      </div>
+
+      <div class="yourturn">
+        <span class="tag">Your Turn</span>
+        <span class="ask">The schedule shows a 68-year-old patient coming in for their annual wellness visit. What should you have ready in the room before they arrive?</span>
+        <div class="fill" contenteditable="true" data-ph="Type your answer here…"></div>
+        <button class="reveal-btn" onclick="this.nextElementSibling.classList.toggle('show')">Check your knowledge</button>
+        <div class="model-answer">Standard wellness visit setup, plus STEADI materials since the patient is 65+, and Advance Directive review materials since this is their annual exam. Also consider whether this is a First AWV, Subsequent AWV, or IPPE, since that changes which components apply.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== TAB 3 ===================== -->
+  <!-- ===================== TAB 3 ===================== -->
+  <div class="panel" id="p3">
+    <div class="card">
+      <div class="panel-title"><h2>Room Turnover &amp; Keeping Pace</h2></div>
+      <p style="color:var(--ink-soft);font-size:14.5px;">A slow room turnover, and documentation that falls behind, both create the same ripple effect on the schedule. The room needs to be ready before the next patient arrives, and the prior patient's chart needs to be closed out before you move on.</p>
+
+      <div class="very-important">
+        <h3>Very Important: Chart in Real Time</h3>
+        <p>The provider cannot finish their note until your intake documentation is complete. If the intake is not fully charted and completed, the provider is blocked, and that backs up their entire schedule, not just one patient. Chart while still in the room or immediately after, rather than saving it for later.</p>
+      </div>
+
+      <div class="callout green">
+        <h3>Best Practice: Take the Laptop Into the Room</h3>
+        <p>Bring your laptop or workstation on wheels into the room and chart in real time while you're with the patient. If a patient seems put off by you typing during the visit, a brief explanation goes a long way:</p>
+        <p style="margin-top:8px;font-style:italic;">"My apologies about the computer. I hear you, I'm making sure I'm capturing your details accurately for your provider."</p>
+      </div>
+
+      <div class="callout blue">
+        <h3>Between Every Patient</h3>
+        <ul class="checklist">
+          <li>Clean and disinfect all touched surfaces (exam table, equipment, chair arms), allowing appropriate contact time for the disinfectant to work</li>
+          <li>Remove and dispose of used supplies, linens, and paperwork from the prior patient</li>
+          <li>Replace table paper and any single-use barriers</li>
+          <li>Reset equipment to a neutral position (table height, exam light)</li>
+          <li>Do a quick visual scan: nothing left behind, room looks ready for a new patient</li>
+        </ul>
+      </div>
+
+      <div class="callout amber">
+        <h3>End of Day</h3>
+        <ul class="checklist">
+          <li>Restock any supplies used throughout the day back to par level, for every room, so each room is fully stocked for the next morning</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== TAB 4 ===================== -->
+  <div class="panel" id="p4">
+    <div class="card">
+      <div class="panel-title"><h2>Daily Minimum Exam Room Inventory</h2></div>
+      <div class="tab-print"><button class="act ghost" onclick="printSingle('p4')">Print this tab</button></div>
+      <p style="color:var(--ink-soft);font-size:14.5px;">Check and restock to these levels at the start of the day, and again as needed between patients. This includes checking wall-mounted hand sanitizer dispensers each morning and refilling as needed so the room is stocked for the full day.</p>
+      <table class="ref">
+        <tr><th>Item</th><th>Daily Minimum</th></tr>
+        <tr><td>Alcohol Pads</td><td class="qty">15</td></tr>
+        <tr><td>Aquaphor</td><td class="qty">10</td></tr>
+        <tr><td>Bacitracin with Zinc</td><td class="qty">10</td></tr>
+        <tr><td>Band-Aid (med, large, dots)</td><td class="qty">15 each</td></tr>
+        <tr><td>Chloraprep 3.0 (Large)</td><td class="qty">2</td></tr>
+        <tr><td>Chux &ndash; Under Pad</td><td class="qty">10</td></tr>
+        <tr><td>Coban</td><td class="qty">2</td></tr>
+        <tr><td>Cotton Tip Applicators</td><td class="qty">10</td></tr>
+        <tr><td>Disinfectant Wipes</td><td class="qty">1</td></tr>
+        <tr><td>Emesis Basin</td><td class="qty">2</td></tr>
+        <tr><td>Exam Gloves (S, M, L, XL)</td><td class="qty">1 box each</td></tr>
+        <tr><td>Exam Shorts M/L</td><td class="qty">2</td></tr>
+        <tr><td>Exam Shorts S/M</td><td class="qty">2</td></tr>
+        <tr><td>Gauze 2x2 (sterile)</td><td class="qty">3</td></tr>
+        <tr><td>Gauze 4x4 (Boat)</td><td class="qty">2</td></tr>
+        <tr><td>Gown &ndash; Adult</td><td class="qty">5</td></tr>
+        <tr><td>Lap Drape</td><td class="qty">10</td></tr>
+        <tr><td>Lubricating Jelly &ndash; packets</td><td class="qty">5</td></tr>
+        <tr><td>Maxi Pads</td><td class="qty">2 (both sizes, each)</td></tr>
+        <tr><td>Measuring Tape</td><td class="qty">5</td></tr>
+        <tr><td>Monofilament Foot Sensors</td><td class="qty">5</td></tr>
+        <tr><td>Otoscope Specula &ndash; Adult</td><td class="qty">Full</td></tr>
+        <tr><td>Otoscope Specula &ndash; Pediatric</td><td class="qty">Full</td></tr>
+        <tr><td>Pap Kits</td><td class="qty">2</td></tr>
+        <tr><td>Pillow Case</td><td class="qty">15</td></tr>
+        <tr><td>Saline 10ml (Flush Syringe)</td><td class="qty">4</td></tr>
+        <tr><td>Speculum &ndash; S/M/L</td><td class="qty">2 each</td></tr>
+        <tr><td>Tape &ndash; Paper 2"</td><td class="qty">1</td></tr>
+        <tr><td>Tape &ndash; Silk/Cloth 1"</td><td class="qty">1</td></tr>
+        <tr><td>Texas Catheter (14, "Whips")</td><td class="qty">4</td></tr>
+        <tr><td>Tongue Depressor</td><td class="qty">10</td></tr>
+        <tr><td>Wash Basin</td><td class="qty">1</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- ===================== TAB 6 ===================== -->
+  <div class="panel" id="p5">
+    <div class="card">
+      <div class="panel-title"><h2>Gathering for Specific Patients: Ambulatory Procedure Supplies</h2></div>
+      <div class="tab-print"><button class="act ghost" onclick="printSingle('p5')">Print this tab</button></div>
+      <p style="color:var(--ink-soft);font-size:14.5px;">Beyond the daily minimum stock, some visits call for pulling extra supplies in advance based on the reason for visit. Confirm with your provider or Christina which of these RHC actually stocks or performs. This list is a starting point and will grow as more categories are added.</p>
+
+      <div class="callout amber idea-list">
+        <h4>Minor Procedures</h4>
+        <p>Suture removal kit or staple remover, suture kit and material, skin adhesive (e.g., Dermabond), Steri-strips, punch or shave biopsy supplies, silver nitrate sticks</p>
+
+        <h4>Point-of-Care Testing</h4>
+        <p>Rapid strep, rapid flu/COVID, urine dipsticks and collection cups, urine pregnancy tests, glucose test strips</p>
+
+        <h4>Ear, Nose, and Throat</h4>
+        <p>Ear curette or irrigation supplies (if ear lavage is done in-house)</p>
+
+        <h4>Respiratory</h4>
+        <p>Nebulizer masks and tubing, peak flow mouthpieces, EKG electrodes (if EKGs are roomed by MAs)</p>
+
+        <h4>Specimen and Safety</h4>
+        <p>Wound culture swabs, specimen labels, biohazard bags, sharps container check</p>
+
+        <h4>Women's Health / Pap Smear</h4>
+        <p>Appropriately sized speculum, pap kit, facility-approved lubricant, adequate light source, specimen container or slide with labels, gloves, chaperone per RHC policy</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== TAB 7 ===================== -->
+  <div class="panel" id="p6">
+    <div class="card">
+      <div class="panel-title"><h2>Practice Scenarios with Rosa</h2></div>
+
+      <div class="patient-card">
+        <div class="patient-avatar">R</div>
+        <div>
+          <h3>Meet Rosa</h3>
+          <p>Rosa is our returning teaching patient from the Foundations Module. Same patient, same penicillin allergy on her chart. Use what you already know about her as you work through these scenarios.</p>
+        </div>
+      </div>
+
+      <div class="scenario">
+        <span class="num">1</span><h3>Diabetic Exam</h3>
+        <p class="setup">Rosa is on the schedule this morning: <b>Reason for Visit: Diabetic follow-up exam</b>. <span class="fin">FIN# 20260703-01</span></p>
+        <div class="yourturn" style="margin-top:6px;">
+          <span class="ask">What should you have ready in the room before Rosa arrives, and what should you review before rooming her?</span>
+          <div class="fill" contenteditable="true" data-ph="Type your answer here…"></div>
+          <button class="reveal-btn" onclick="this.nextElementSibling.classList.toggle('show')">Check your knowledge</button>
+          <div class="model-answer">Have the patient remove their shoes and socks before the provider comes in, so the foot exam isn't held up waiting on that. Monofilament foot sensors ready for the neurological foot check, and any point-of-care glucose testing supplies if that is part of the visit. Ask about current diabetes medications as part of medication history, and confirm her penicillin allergy is still accurately reflected. This is a focused follow-up, not a full wellness intake, so keep rooming efficient and chart in real time as you go.</div>
+        </div>
+      </div>
+
+      <div class="scenario">
+        <span class="num">2</span><h3>Sore Throat</h3>
+        <p class="setup">Rosa calls in and is worked in same-day: <b>Reason for Visit: Sore throat, 3 days</b>. <span class="fin">FIN# 20260703-02</span></p>
+        <div class="yourturn" style="margin-top:6px;">
+          <span class="ask">What equipment should be in the room, and how would you room Rosa for this visit?</span>
+          <div class="fill" contenteditable="true" data-ph="Type your answer here…"></div>
+          <button class="reveal-btn" onclick="this.nextElementSibling.classList.toggle('show')">Check your knowledge</button>
+          <div class="model-answer">Tongue depressor and light source ready, plus rapid strep testing supplies if that is part of RHC's point-of-care workflow. Focused rooming: reason for visit, focused vitals including temperature, and a brief history of the sore throat, rather than a full wellness intake. Remember that the reason for visit tells you what to prepare for, not what to conclude.</div>
+        </div>
+      </div>
+
+      <div class="scenario">
+        <span class="num">3</span><h3>Ear Pain</h3>
+        <p class="setup">Rosa calls in and is worked in same-day: <b>Reason for Visit: Ear pain, left side, 2 days</b>. <span class="fin">FIN# 20260703-03</span></p>
+        <div class="yourturn" style="margin-top:6px;">
+          <span class="ask">What equipment should be in the room, and how would you room Rosa differently than for a wellness visit?</span>
+          <div class="fill" contenteditable="true" data-ph="Type your answer here…"></div>
+          <button class="reveal-btn" onclick="this.nextElementSibling.classList.toggle('show')">Check your knowledge</button>
+          <div class="model-answer">Otoscope with adult specula ready. Focused rooming: reason for visit, focused vitals, and a brief history of the ear pain, rather than a full wellness intake. Remember that the reason for visit tells you what to prepare for, not what to conclude. Document as you go so the provider isn't waiting on your note before they can be seen.</div>
+        </div>
+      </div>
+
+      <div class="scenario">
+        <span class="num">4</span><h3>Vague Reason for Visit</h3>
+        <p class="setup">Rosa's chart shows: <b>Reason for Visit: Follow-up</b>, with no further detail. <span class="fin">FIN# 20260703-04</span></p>
+        <div class="yourturn" style="margin-top:6px;">
+          <span class="ask">How do you room Rosa when the reason for visit doesn't tell you much? What do you avoid doing?</span>
+          <div class="fill" contenteditable="true" data-ph="Type your answer here…"></div>
+          <button class="reveal-btn" onclick="this.nextElementSibling.classList.toggle('show')">Check your knowledge</button>
+          <div class="model-answer">Room generally with standard follow-up setup rather than guessing at a specific complaint. Let the history-taking portion of intake surface what the follow-up is actually about. Avoid leading Rosa toward a particular complaint just to make rooming more predictable. Once you learn more during history-taking, document it accurately and completely before moving to the next patient.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="actions">
+    <button class="act ghost" onclick="printFull()">Print full module</button>
+  </div>
+  <div class="footer-note">RHC Patient Rooming Guidelines &middot; Rooming &amp; Patient Preparation Module</div>
+  <div class="credit">Developed by <b>Jo Blaise, RN-DNP</b> &middot; Clinic Manager</div>
+
+</div>
+
+<script>
+  const tabs = Array.from(document.querySelectorAll('.tab'));
+  const panels = Array.from(document.querySelectorAll('.panel'));
+  function select(tab){
+    tabs.forEach(t=>t.setAttribute('aria-selected', t===tab ? 'true':'false'));
+    panels.forEach(p=>p.classList.toggle('active', p.id===tab.getAttribute('aria-controls')));
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+  tabs.forEach((tab,i)=>{
+    tab.addEventListener('click',()=>select(tab));
+    tab.addEventListener('keydown',e=>{
+      if(e.key==='ArrowRight'||e.key==='ArrowLeft'){
+        e.preventDefault();
+        const dir = e.key==='ArrowRight'?1:-1;
+        const next = tabs[(i+dir+tabs.length)%tabs.length];
+        next.focus(); select(next);
+      }
+    });
+  });
+  function printFull(){
+    document.body.classList.remove('printing-single');
+    panels.forEach(p=>p.classList.remove('print-target'));
+    window.print();
+  }
+  function printSingle(id){
+    panels.forEach(p=>p.classList.remove('print-target'));
+    document.getElementById(id).classList.add('print-target');
+    document.body.classList.add('printing-single');
+    window.print();
+  }
+  window.addEventListener('afterprint', ()=>{
+    document.body.classList.remove('printing-single');
+    panels.forEach(p=>p.classList.remove('print-target'));
+  });
+</script>
+</body>
+</html>
