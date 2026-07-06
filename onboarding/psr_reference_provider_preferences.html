@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Provider Preferences | RHC PSR</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Mulish:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #FBF6EE;
+    --paper-raised: #FFFFFF;
+    --ink: #2E2A24;
+    --ink-soft: #6B6459;
+    --line: #E3D9C6;
+    --amber: #C97A2E;
+    --amber-tint: #FBEEDD;
+    --coral: #C2604A;
+    --coral-tint: #F9E9E3;
+    --teal: #3D7A72;
+    --teal-tint: #E4F0EC;
+    --blue: #3E6B8C;
+    --blue-tint: #E6EEF3;
+    --purple: #6E5A87;
+    --purple-tint: #EDE7F2;
+    --green: #5C7A3D;
+    --green-tint: #EBF0E2;
+    --radius: 14px;
+    --shadow: 0 1px 2px rgba(46,42,36,0.04), 0 8px 24px -8px rgba(46,42,36,0.10);
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--paper); color: var(--ink); font-family: 'Mulish', sans-serif; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+  .wrap { max-width: 980px; margin: 0 auto; padding: 40px 24px 80px; }
+
+  header.top { padding: 8px 0 28px; border-bottom: 1px solid var(--line); margin-bottom: 32px; }
+  .eyebrow { font-size: 13px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--purple); }
+  h1 { font-family: 'Fraunces', serif; font-optical-sizing: auto; font-weight: 600; font-size: clamp(28px, 4vw, 40px); margin: 8px 0 12px; }
+  .lede { font-size: 16px; color: var(--ink-soft); max-width: 660px; }
+
+  .tabs { display: flex; gap: 5px; border-bottom: 2px solid var(--line); flex-wrap: wrap; }
+  .tab {
+    appearance: none; background: transparent; border: none; font-family: 'Mulish', sans-serif;
+    font-weight: 700; font-size: 14px; color: var(--ink-soft); padding: 12px 16px 14px; cursor: pointer;
+    border-radius: 8px 8px 0 0; display: flex; align-items: center; gap: 7px; position: relative; top: 2px;
+  }
+  .tab svg { width: 17px; height: 17px; flex: none; }
+  .tab:hover { background: var(--purple-tint); color: var(--ink); }
+  .tab:focus-visible { outline: 2px solid var(--purple); outline-offset: 2px; }
+  .tab[aria-selected="true"] { color: var(--ink); background: var(--paper-raised); border: 2px solid var(--line); border-bottom: 2px solid var(--paper-raised); }
+
+  .panels { background: var(--paper-raised); border: 2px solid var(--line); border-top: none; border-radius: 0 0 var(--radius) var(--radius); padding: 32px; box-shadow: var(--shadow); }
+  .panel { display: none; }
+  .panel.active { display: block; animation: fade .25s ease; }
+  @keyframes fade { from { opacity: 0; transform: translateY(2px); } to { opacity: 1; transform: none; } }
+
+  .panel h2 { font-family: 'Fraunces', serif; font-weight: 600; font-size: 24px; margin: 0 0 6px; }
+  .panel .subhead { color: var(--ink-soft); font-size: 15px; margin: 0 0 22px; max-width: 660px; }
+
+  .callout { border-left: 4px solid var(--coral); background: var(--coral-tint); border-radius: 0 10px 10px 0; padding: 14px 18px; margin: 18px 0; font-size: 14.5px; }
+  .callout strong { color: var(--coral); }
+  .callout.flag { border-left-color: var(--amber); background: var(--amber-tint); }
+  .callout.flag strong { color: var(--amber); }
+
+  table.ref { width: 100%; border-collapse: collapse; margin: 12px 0 22px; font-size: 14px; }
+  table.ref th, table.ref td { text-align: left; padding: 9px 10px; border-bottom: 1px solid var(--line); }
+  table.ref th { font-weight: 800; font-size: 11.5px; text-transform: uppercase; letter-spacing: 0.03em; color: var(--ink-soft); }
+  table.ref tr:last-child td { border-bottom: none; }
+
+  .search-bar { margin-bottom: 16px; }
+  .search-bar input {
+    width: 100%; padding: 12px 14px; border: 2px solid var(--line); border-radius: 10px;
+    font-family: 'Mulish', sans-serif; font-size: 15px; background: var(--paper);
+  }
+  .search-bar input:focus-visible { outline: 2px solid var(--purple); }
+
+  table.provider-quick { width: 100%; border-collapse: collapse; margin-bottom: 4px; font-size: 14px; }
+  table.provider-quick th { text-align: left; padding: 10px 10px; font-size: 11.5px; text-transform: uppercase; letter-spacing: 0.03em; color: var(--ink-soft); border-bottom: 2px solid var(--line); }
+  table.provider-quick td { padding: 12px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  .prov-row { cursor: pointer; }
+  .prov-row:hover { background: var(--purple-tint); }
+  .prov-row .pname { font-weight: 800; font-family: 'Fraunces', serif; font-size: 15px; display: flex; align-items: center; gap: 8px; }
+  .prov-row .chev { font-size: 12px; color: var(--purple); transition: transform 0.2s; }
+  .prov-row.open .chev { transform: rotate(90deg); }
+
+  .detail-row { display: none; }
+  .detail-row.open { display: table-row; }
+  .detail-row td { padding: 0; border-bottom: 1px solid var(--line); }
+  .detail-inner { padding: 18px 20px 22px; background: var(--paper); }
+  .detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  @media (max-width: 700px) { .detail-grid { grid-template-columns: 1fr; } }
+  .detail-group h4 { margin: 0 0 8px; font-size: 12px; text-transform: uppercase; letter-spacing: 0.04em; color: var(--purple); font-weight: 800; }
+  .detail-group dl { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 4px 10px; font-size: 13.5px; }
+  .detail-group dt { color: var(--ink-soft); }
+  .detail-group dd { margin: 0; font-weight: 600; }
+
+  .yes { color: var(--green); font-weight: 800; }
+  .no { color: var(--coral); font-weight: 800; }
+
+  footer.foot { margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--line); font-size: 13px; color: var(--ink-soft); text-align: center; }
+
+  @media (max-width: 640px) {
+    .panels { padding: 20px; }
+    table.ref, table.provider-quick { font-size: 12.5px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="top">
+    <div class="eyebrow">RHC · PSR Reference Tool</div>
+    <h1>Provider Preferences</h1>
+    <p class="lede">What each provider does and doesn't schedule, daily limits, and specialty referral rules. Check this anytime you're scheduling.</p>
+  </header>
+
+  <div class="tabs" role="tablist" aria-label="Provider Preferences sections">
+    <button class="tab" role="tab" id="tab-primary" aria-selected="true" aria-controls="panel-primary" tabindex="0">
+      <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="3.5" stroke="currentColor" stroke-width="2"/><path d="M5 20C5 16.5 8 14 12 14C16 14 19 16.5 19 20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      Primary Care Providers
+    </button>
+    <button class="tab" role="tab" id="tab-specialty" aria-selected="false" aria-controls="panel-specialty" tabindex="-1">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M12 3L4 7V12C4 17 7.5 20 12 21C16.5 20 20 17 20 12V7L12 3Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
+      Specialty Referrals
+    </button>
+  </div>
+
+  <div class="panels">
+
+    <!-- PRIMARY CARE -->
+    <section class="panel active" id="panel-primary" role="tabpanel" aria-labelledby="tab-primary">
+      <h2>Primary Care Providers</h2>
+      <p class="subhead">Quick scan below, click any provider's name to see their full profile.</p>
+
+      <div class="callout"><strong>Any variation from these preferences</strong> must be approved by the provider or team, and noted in a bubble note on the appointment with your initials.</div>
+
+      <div class="callout flag"><strong>Confirm before publishing:</strong> the source spreadsheet had a column labeled "Established Patient TIME" that is separate from the Established Patient time already shown for each provider. The meaning of this second field wasn't clear from the sheet alone, confirm what it refers to before this goes live.</div>
+
+      <div class="search-bar">
+        <input type="text" id="providerSearch" placeholder="Search providers or procedures (e.g. 'Nexplanon', 'McIntyre')..." oninput="filterProviders()">
+      </div>
+
+      <table class="provider-quick" id="providerTable">
+        <thead>
+          <tr><th>Provider</th><th>Pediatrics</th><th>New Patient Limit</th><th>Established Patient</th><th>Schedule</th><th>Days</th></tr>
+        </thead>
+        <tbody id="providerBody"></tbody>
+      </table>
+    </section>
+
+    <!-- SPECIALTY -->
+    <section class="panel" id="panel-specialty" role="tabpanel" aria-labelledby="tab-specialty">
+      <h2>Specialty Referrals</h2>
+      <p class="subhead">Referral-based specialists. Check referral requirements before scheduling.</p>
+
+      <table class="ref">
+        <tr><th>Provider</th><th>Peds</th><th>Referral Req.</th><th>New Patient</th><th>Established</th><th>Notes</th></tr>
+        <tr>
+          <td><strong>Bentley</strong></td><td class="no">No</td><td class="yes">Yes</td><td>See template (60 min)</td><td>Unlimited (30 min)</td>
+          <td>EMG available, requires approval, Wednesday only (60 min). Please request records for all patients.</td>
+        </tr>
+        <tr>
+          <td><strong>Webb</strong></td><td class="yes">Yes</td><td class="no">No</td><td>Unlimited (30 min)</td><td>Unlimited (30 min)</td>
+          <td>Joint injections must be prior-authed. Refer all requests to Ortho RN at ext. 3919.</td>
+        </tr>
+        <tr>
+          <td><strong>Steed</strong></td><td class="yes">Yes</td><td>&mdash;</td><td>Unlimited (30 min)</td><td>Unlimited (30 min)</td>
+          <td>Treats spine/back, elbow, hand flexor tendon, bunion deformity/correction, foot reconstruction, chronic foot wounds. Joint injections must be prior-authed, refer to Ortho RN at ext. 3919.</td>
+        </tr>
+        <tr>
+          <td><strong>Gross</strong></td><td class="no">No</td><td class="yes">Yes</td><td>Unlimited (30 min)</td><td>Unlimited (30 min)</td>
+          <td>Does not treat: colonoscopies/diagnostics.</td>
+        </tr>
+        <tr>
+          <td><strong>Holcomb</strong></td><td class="no">No</td><td>New patients only</td><td>4 per day (40 min)</td><td>Up to 15 total (20 min)</td>
+          <td>All new patients need PFT + chest x-ray OR sleep study first (depending on condition). Existing patients need records requested and received before their visit, current office notes plus appropriate studies from within the last year.</td>
+        </tr>
+      </table>
+    </section>
+
+  </div>
+
+  <div style="text-align:center; margin-top:36px;">
+    <a href="psr_onboarding_home.html" style="display:inline-flex; align-items:center; gap:6px; font-family:'Mulish',sans-serif; font-weight:700; font-size:14px; color:var(--purple); background:var(--purple-tint); padding:10px 18px; border-radius:10px; text-decoration:none;">← Back to Onboarding Home</a>
+  </div>
+
+  <footer class="foot">RHC · PSR Reference Tool · Provider Preferences</footer>
+</div>
+
+<script>
+  const tabs = document.querySelectorAll('.tab');
+  const panels = document.querySelectorAll('.panel');
+
+  function activate(tab) {
+    tabs.forEach(t => { t.setAttribute('aria-selected', 'false'); t.tabIndex = -1; });
+    panels.forEach(p => p.classList.remove('active'));
+    tab.setAttribute('aria-selected', 'true');
+    tab.tabIndex = 0;
+    document.getElementById(tab.getAttribute('aria-controls')).classList.add('active');
+    tab.focus();
+  }
+  tabs.forEach((tab, i) => {
+    tab.addEventListener('click', () => activate(tab));
+    tab.addEventListener('keydown', (e) => {
+      let idx = i;
+      if (e.key === 'ArrowRight') idx = (i + 1) % tabs.length;
+      else if (e.key === 'ArrowLeft') idx = (i - 1 + tabs.length) % tabs.length;
+      else if (e.key === 'Home') idx = 0;
+      else if (e.key === 'End') idx = tabs.length - 1;
+      else return;
+      e.preventDefault();
+      activate(tabs[idx]);
+    });
+  });
+
+  // ---- Provider data (from Provider Preference Update, 04.02.26) ----
+  const providers = [
+    {
+      name: "Brown", pediatrics: "Yes", newPatient: "N/A", newPatientTime: "30",
+      annual: "N/A", annualTime: "N/A", established: "N/A", establishedTime: null,
+      wellChild: "N/A", wellChildTime: "N/A", procedure: "N/A", procedureTime: "N/A",
+      bcConsult: "No", papSmear: "No", newborn: "No**", maOnly: "N/A", sameDay: "N/A",
+      iudInsert: "No", iudRemove: "No**", nexplanon: "No", jointInj: "Yes", toenail: "No",
+      emb: "No", proc60: "60", triggerPt: "Yes", skinBiopsy: "Yes", wc: "Yes",
+      estTime2: "30", mat: "Yes", matTime: "N/A", schedule: "Part Time", days: "W/TH/F"
+    },
+    {
+      name: "Hintzman", pediatrics: "Yes", newPatient: "4 per day (unless walk-in)", newPatientTime: "30",
+      annual: "4 per day (unless walk-in)", annualTime: "30", established: "Unlimited", establishedTime: "30",
+      wellChild: "2", wellChildTime: "30", procedure: "Unlimited", procedureTime: "60",
+      bcConsult: "Yes", papSmear: "Yes", newborn: "No", maOnly: "2 per day", sameDay: "1 per day",
+      iudInsert: "Yes", iudRemove: "Yes", nexplanon: "Yes", jointInj: "No", toenail: "No",
+      emb: "No", proc60: "60", triggerPt: "No", skinBiopsy: "Yes", wc: "Yes",
+      estTime2: "30", mat: "Yes", matTime: "30", schedule: "Full Time", days: "T/W/TH/F"
+    },
+    {
+      name: "Johnson", pediatrics: "Yes", newPatient: "4 per day (unless walk-in)", newPatientTime: "30",
+      annual: "4 per day (unless walk-in)", annualTime: "30", established: "Unlimited", establishedTime: "30",
+      wellChild: "2", wellChildTime: "30", procedure: "Unlimited", procedureTime: "60",
+      bcConsult: "Yes", papSmear: "Yes", newborn: "Yes", maOnly: "1 per day", sameDay: "1 per day",
+      iudInsert: "Yes", iudRemove: "Yes", nexplanon: "Yes", jointInj: "Yes", toenail: "Yes",
+      emb: "Yes", proc60: "60", triggerPt: "Yes", skinBiopsy: "Yes", wc: "Yes",
+      estTime2: "30", mat: "Yes", matTime: "30", schedule: "Part Time", days: "W/TH/F"
+    },
+    {
+      name: "Liverett", pediatrics: "Yes", newPatient: "N/A", newPatientTime: "30",
+      annual: "N/A", annualTime: "N/A", established: "N/A", establishedTime: "N",
+      wellChild: "N/A", wellChildTime: "N/A", procedure: "N/A", procedureTime: "N/A",
+      bcConsult: "No", papSmear: "Yes", newborn: "Yes", maOnly: "N/A", sameDay: "N/A",
+      iudInsert: "No", iudRemove: "&mdash;", nexplanon: "No", jointInj: "No", toenail: "No",
+      emb: "No", proc60: "60", triggerPt: "Yes", skinBiopsy: "Yes", wc: "Yes",
+      estTime2: "30", mat: "No", matTime: "N/A", schedule: "Part Time", days: "N/A"
+    },
+    {
+      name: "Mashburn", pediatrics: "Yes", newPatient: "2 per day (unless walk-in). No NP on Fridays", newPatientTime: "30",
+      annual: "4 per day (unless walk-in)", annualTime: "30", established: "Unlimited", establishedTime: "30",
+      wellChild: "2", wellChildTime: "30", procedure: "Unlimited", procedureTime: "60",
+      bcConsult: "Yes", papSmear: "Yes", newborn: "Yes", maOnly: "2 per day", sameDay: "1 per day",
+      iudInsert: "No", iudRemove: "Yes", nexplanon: "Removal only", jointInj: "Yes", toenail: "No",
+      emb: "No", proc60: "60", triggerPt: "Yes", skinBiopsy: "Yes", wc: "Yes",
+      estTime2: "30", mat: "Yes", matTime: "30", schedule: "Part Time", days: "W, TH, F"
+    },
+    {
+      name: "McIntyre", pediatrics: "Yes", newPatient: "4 per day (unless walk-in)", newPatientTime: "30",
+      annual: "4 per day (unless walk-in)", annualTime: "30", established: "Unlimited", establishedTime: "30",
+      wellChild: "2", wellChildTime: "30", procedure: "Unlimited", procedureTime: "60",
+      bcConsult: "Yes", papSmear: "Yes", newborn: "Yes", maOnly: "1 per day", sameDay: "1 per day",
+      iudInsert: "Yes", iudRemove: "Yes", nexplanon: "Yes", jointInj: "Yes", toenail: "Yes",
+      emb: "Yes", proc60: "60", triggerPt: "Yes", skinBiopsy: "Yes", wc: "Yes",
+      estTime2: "30", mat: "Yes", matTime: "30", schedule: "Full Time", days: "M, T, W, TH"
+    },
+    {
+      name: "Nobles", pediatrics: "Yes", newPatient: "2 per day (unless walk-in)", newPatientTime: "30",
+      annual: "4 per day (unless walk-in)", annualTime: "30", established: "Unlimited", establishedTime: "30",
+      wellChild: "2", wellChildTime: "30", procedure: "Unlimited", procedureTime: "60",
+      bcConsult: "Yes", papSmear: "Yes", newborn: "Yes", maOnly: "1 per day", sameDay: "1 per day",
+      iudInsert: "No", iudRemove: "Yes", nexplanon: "Yes", jointInj: "Yes", toenail: "No",
+      emb: "No", proc60: "60", triggerPt: "Yes", skinBiopsy: "Yes", wc: "Yes",
+      estTime2: "30", mat: "No", matTime: "N/A", schedule: "Part Time", days: "M, T"
+    },
+    {
+      name: "Stopher-Mitchell", pediatrics: "Yes", newPatient: "1 per week / template", newPatientTime: "30",
+      annual: "4 per day (unless walk-in)", annualTime: "30", established: "Unlimited", establishedTime: "30",
+      wellChild: "2", wellChildTime: "30", procedure: "Unlimited", procedureTime: "60",
+      bcConsult: "Yes", papSmear: "Yes", newborn: "Yes", maOnly: "2 per day", sameDay: "1 per day",
+      iudInsert: "Yes", iudRemove: "Yes", nexplanon: "Yes", jointInj: "Yes", toenail: "Yes",
+      emb: "Yes", proc60: "60", triggerPt: "Yes", skinBiopsy: "Yes", wc: "Yes",
+      estTime2: "30", mat: "No", matTime: "N/A", schedule: "Full Time", days: "M, T, W, TH"
+    },
+    {
+      name: "Zappone", pediatrics: "Yes", newPatient: "2 per day (unless walk-in)", newPatientTime: "30",
+      annual: "4 per day (unless walk-in)", annualTime: "30", established: "Unlimited", establishedTime: "30",
+      wellChild: "2", wellChildTime: "30", procedure: "Unlimited", procedureTime: "60",
+      bcConsult: "No", papSmear: "Yes**", newborn: "No", maOnly: "1 per day", sameDay: "1 per day",
+      iudInsert: "No", iudRemove: "No", nexplanon: "No", jointInj: "No", toenail: "Yes",
+      emb: "No", proc60: "60", triggerPt: "No", skinBiopsy: "Yes", wc: "Yes",
+      estTime2: "30", mat: "No", matTime: "N/A", schedule: "Part Time", days: "M, W"
+    }
+  ];
+
+  function ynClass(v) {
+    if (!v) return "";
+    const s = String(v).toLowerCase();
+    if (s.startsWith("yes")) return "yes";
+    if (s.startsWith("no")) return "no";
+    return "";
+  }
+
+  function renderProviders(list) {
+    const body = document.getElementById('providerBody');
+    body.innerHTML = "";
+    list.forEach((p) => {
+      const row = document.createElement('tr');
+      row.className = 'prov-row';
+      row.innerHTML = `
+        <td class="pname"><span class="chev">▶</span> ${p.name}</td>
+        <td class="${ynClass(p.pediatrics)}">${p.pediatrics}</td>
+        <td>${p.newPatient} (${p.newPatientTime} min)</td>
+        <td>${p.established} (${p.establishedTime || 'N/A'} min)</td>
+        <td>${p.schedule}</td>
+        <td>${p.days}</td>
+      `;
+      const detail = document.createElement('tr');
+      detail.className = 'detail-row';
+      detail.innerHTML = `<td colspan="6"><div class="detail-inner">
+        <div class="detail-grid">
+          <div class="detail-group">
+            <h4>Visit Types &amp; Time</h4>
+            <dl>
+              <dt>New to Clinic/Provider</dt><dd>${p.newPatient} (${p.newPatientTime} min)</dd>
+              <dt>Annual/MAWV/IPPE</dt><dd>${p.annual} (${p.annualTime} min)</dd>
+              <dt>Established Patient</dt><dd>${p.established} (${p.establishedTime || 'N/A'} min)</dd>
+              <dt>Well Child Check</dt><dd>${p.wellChild} (${p.wellChildTime} min)</dd>
+              <dt>Procedure slot</dt><dd>${p.procedure} (${p.procedureTime} min)</dd>
+              <dt>Established Patient (2nd field)</dt><dd>${p.estTime2} min &mdash; confirm meaning</dd>
+            </dl>
+          </div>
+          <div class="detail-group">
+            <h4>Care Offered</h4>
+            <dl>
+              <dt>BC Consult</dt><dd class="${ynClass(p.bcConsult)}">${p.bcConsult}</dd>
+              <dt>Well Woman/PAPS</dt><dd class="${ynClass(p.papSmear)}">${p.papSmear}</dd>
+              <dt>Newborn Screenings</dt><dd class="${ynClass(p.newborn)}">${p.newborn}</dd>
+              <dt>MA Only visits</dt><dd>${p.maOnly}</dd>
+              <dt>Same Day</dt><dd>${p.sameDay}</dd>
+              <dt>MAT</dt><dd class="${ynClass(p.mat)}">${p.mat} ${p.matTime !== 'N/A' ? '('+p.matTime+' min)' : ''}</dd>
+            </dl>
+          </div>
+          <div class="detail-group">
+            <h4>Procedures</h4>
+            <dl>
+              <dt>IUD Insert</dt><dd class="${ynClass(p.iudInsert)}">${p.iudInsert}</dd>
+              <dt>IUD Removal</dt><dd class="${ynClass(p.iudRemove)}">${p.iudRemove}</dd>
+              <dt>Nexplanon</dt><dd class="${ynClass(p.nexplanon)}">${p.nexplanon}</dd>
+              <dt>Joint Injections</dt><dd class="${ynClass(p.jointInj)}">${p.jointInj}</dd>
+              <dt>Toenail Removal</dt><dd class="${ynClass(p.toenail)}">${p.toenail}</dd>
+              <dt>EMB</dt><dd class="${ynClass(p.emb)}">${p.emb}</dd>
+            </dl>
+          </div>
+          <div class="detail-group">
+            <h4>More Procedures</h4>
+            <dl>
+              <dt>Trigger Point Inj.</dt><dd class="${ynClass(p.triggerPt)}">${p.triggerPt}</dd>
+              <dt>Skin Biopsy</dt><dd class="${ynClass(p.skinBiopsy)}">${p.skinBiopsy}</dd>
+              <dt>WC (Work Comp)</dt><dd class="${ynClass(p.wc)}">${p.wc}</dd>
+              <dt>Standard procedure block</dt><dd>${p.proc60} min</dd>
+              <dt>Schedule</dt><dd>${p.schedule}</dd>
+              <dt>Days</dt><dd>${p.days}</dd>
+            </dl>
+          </div>
+        </div>
+      </div></td>`;
+
+      row.addEventListener('click', () => {
+        row.classList.toggle('open');
+        detail.classList.toggle('open');
+      });
+      body.appendChild(row);
+      body.appendChild(detail);
+    });
+  }
+
+  function filterProviders() {
+    const q = document.getElementById('providerSearch').value.toLowerCase();
+    if (!q) { renderProviders(providers); return; }
+    const filtered = providers.filter(p => JSON.stringify(p).toLowerCase().includes(q));
+    renderProviders(filtered);
+  }
+
+  renderProviders(providers);
+</script>
+</body>
+</html>

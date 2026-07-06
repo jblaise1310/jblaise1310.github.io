@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Scheduling Reference | RHC PSR</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Mulish:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #FBF6EE;
+    --paper-raised: #FFFFFF;
+    --ink: #2E2A24;
+    --ink-soft: #6B6459;
+    --line: #E3D9C6;
+    --amber: #C97A2E;
+    --amber-tint: #FBEEDD;
+    --coral: #C2604A;
+    --coral-tint: #F9E9E3;
+    --teal: #3D7A72;
+    --teal-tint: #E4F0EC;
+    --blue: #3E6B8C;
+    --blue-tint: #E6EEF3;
+    --purple: #6E5A87;
+    --purple-tint: #EDE7F2;
+    --green: #5C7A3D;
+    --green-tint: #EBF0E2;
+    --radius: 14px;
+    --shadow: 0 1px 2px rgba(46,42,36,0.04), 0 8px 24px -8px rgba(46,42,36,0.10);
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--paper); color: var(--ink); font-family: 'Mulish', sans-serif; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+  .wrap { max-width: 980px; margin: 0 auto; padding: 40px 24px 80px; }
+
+  header.top { padding: 8px 0 28px; border-bottom: 1px solid var(--line); margin-bottom: 32px; }
+  .eyebrow { font-size: 13px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--blue); }
+  h1 { font-family: 'Fraunces', serif; font-optical-sizing: auto; font-weight: 600; font-size: clamp(28px, 4vw, 40px); margin: 8px 0 12px; }
+  .lede { font-size: 16px; color: var(--ink-soft); max-width: 660px; }
+
+  .tabs { display: flex; gap: 5px; border-bottom: 2px solid var(--line); flex-wrap: wrap; }
+  .tab {
+    appearance: none; background: transparent; border: none; font-family: 'Mulish', sans-serif;
+    font-weight: 700; font-size: 14px; color: var(--ink-soft); padding: 12px 16px 14px; cursor: pointer;
+    border-radius: 8px 8px 0 0; display: flex; align-items: center; gap: 7px; position: relative; top: 2px;
+  }
+  .tab svg { width: 17px; height: 17px; flex: none; }
+  .tab:hover { background: var(--blue-tint); color: var(--ink); }
+  .tab:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
+  .tab[aria-selected="true"] { color: var(--ink); background: var(--paper-raised); border: 2px solid var(--line); border-bottom: 2px solid var(--paper-raised); }
+
+  .panels { background: var(--paper-raised); border: 2px solid var(--line); border-top: none; border-radius: 0 0 var(--radius) var(--radius); padding: 32px; box-shadow: var(--shadow); }
+  .panel { display: none; }
+  .panel.active { display: block; animation: fade .25s ease; }
+  @keyframes fade { from { opacity: 0; transform: translateY(2px); } to { opacity: 1; transform: none; } }
+
+  .panel h2 { font-family: 'Fraunces', serif; font-weight: 600; font-size: 24px; margin: 0 0 6px; }
+  .panel .subhead { color: var(--ink-soft); font-size: 15px; margin: 0 0 22px; max-width: 660px; }
+  .panel h3 { font-family: 'Fraunces', serif; font-weight: 500; font-size: 16.5px; margin: 26px 0 10px; }
+  .panel h3:first-of-type { margin-top: 0; }
+
+  ul.check { list-style: none; margin: 0 0 8px; padding: 0; display: grid; gap: 8px; }
+  ul.check li { display: flex; gap: 10px; align-items: flex-start; font-size: 15px; padding: 10px 12px; border-radius: 10px; background: var(--teal-tint); }
+  ul.check li svg { flex: none; width: 17px; height: 17px; margin-top: 2px; color: var(--teal); }
+  ul.plain { margin: 0 0 8px; padding-left: 20px; }
+  ul.plain li { margin-bottom: 6px; font-size: 15px; }
+
+  .callout { border-left: 4px solid var(--coral); background: var(--coral-tint); border-radius: 0 10px 10px 0; padding: 14px 18px; margin: 18px 0; font-size: 14.5px; }
+  .callout strong { color: var(--coral); }
+  .callout.route { border-left-color: var(--blue); background: var(--blue-tint); }
+  .callout.route strong { color: var(--blue); }
+  .callout.warn { border-left-color: var(--purple); background: var(--purple-tint); }
+  .callout.warn strong { color: var(--purple); }
+  .callout.flag { border-left-color: var(--amber); background: var(--amber-tint); }
+  .callout.flag strong { color: var(--amber); }
+
+  table.ref { width: 100%; border-collapse: collapse; margin: 12px 0 22px; font-size: 14px; }
+  table.ref th, table.ref td { text-align: left; padding: 9px 10px; border-bottom: 1px solid var(--line); }
+  table.ref th { font-weight: 800; font-size: 11.5px; text-transform: uppercase; letter-spacing: 0.03em; color: var(--ink-soft); }
+  table.ref tr:last-child td { border-bottom: none; }
+
+  .rule-block { border: 1px solid var(--line); border-radius: 12px; padding: 16px 18px; margin-bottom: 14px; background: #FDFBF7; }
+  .rule-block .rule-cat { font-size: 11.5px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; color: var(--blue); margin-bottom: 8px; }
+  .rule-item { margin-bottom: 10px; }
+  .rule-item:last-child { margin-bottom: 0; }
+  .rule-item .rname { font-weight: 700; font-size: 14.5px; }
+  .rule-item .rdesc { font-size: 14.5px; color: var(--ink-soft); }
+  .rule-item .rex { font-size: 12.5px; color: var(--teal); margin-top: 2px; font-style: italic; }
+  .badge-no { display: inline-block; background: var(--coral-tint); color: var(--coral); font-weight: 800; font-size: 11px; padding: 2px 8px; border-radius: 6px; text-transform: uppercase; }
+
+  /* Provider table */
+  .search-bar { margin-bottom: 16px; }
+  .search-bar input {
+    width: 100%; padding: 12px 14px; border: 2px solid var(--line); border-radius: 10px;
+    font-family: 'Mulish', sans-serif; font-size: 15px; background: var(--paper);
+  }
+  .search-bar input:focus-visible { outline: 2px solid var(--blue); }
+
+  table.provider-quick { width: 100%; border-collapse: collapse; margin-bottom: 4px; font-size: 14px; }
+  table.provider-quick th { text-align: left; padding: 10px 10px; font-size: 11.5px; text-transform: uppercase; letter-spacing: 0.03em; color: var(--ink-soft); border-bottom: 2px solid var(--line); }
+  table.provider-quick td { padding: 12px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  .prov-row { cursor: pointer; }
+  .prov-row:hover { background: var(--blue-tint); }
+  .prov-row .pname { font-weight: 800; font-family: 'Fraunces', serif; font-size: 15px; display: flex; align-items: center; gap: 8px; }
+  .prov-row .chev { font-size: 12px; color: var(--blue); transition: transform 0.2s; }
+  .prov-row.open .chev { transform: rotate(90deg); }
+
+  .detail-row { display: none; }
+  .detail-row.open { display: table-row; }
+  .detail-row td { padding: 0; border-bottom: 1px solid var(--line); }
+  .detail-inner { padding: 18px 20px 22px; background: var(--paper); }
+  .detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  @media (max-width: 700px) { .detail-grid { grid-template-columns: 1fr; } }
+  .detail-group { }
+  .detail-group h4 { margin: 0 0 8px; font-size: 12px; text-transform: uppercase; letter-spacing: 0.04em; color: var(--blue); font-weight: 800; }
+  .detail-group dl { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 4px 10px; font-size: 13.5px; }
+  .detail-group dt { color: var(--ink-soft); }
+  .detail-group dd { margin: 0; font-weight: 600; }
+
+  .yes { color: var(--green); font-weight: 800; }
+  .no { color: var(--coral); font-weight: 800; }
+
+  .legend-note { font-size: 13px; color: var(--ink-soft); background: var(--purple-tint); border-radius: 10px; padding: 12px 16px; margin-bottom: 18px; }
+
+  footer.foot { margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--line); font-size: 13px; color: var(--ink-soft); text-align: center; }
+
+  @media (max-width: 640px) {
+    .panels { padding: 20px; }
+    table.ref, table.provider-quick { font-size: 12.5px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="top">
+    <div class="eyebrow">RHC · PSR Reference Tool</div>
+    <h1>Scheduling Reference</h1>
+    <p class="lede">Encounter types and clinic-wide scheduling rules. For what a specific provider does or doesn't schedule, see the Provider Preferences tool.</p>
+  </header>
+
+  <div class="tabs" role="tablist" aria-label="Reference sections">
+    <button class="tab" role="tab" id="tab-encounter" aria-selected="true" aria-controls="panel-encounter" tabindex="0">
+      <svg viewBox="0 0 24 24" fill="none"><rect x="4" y="5" width="16" height="15" rx="2" stroke="currentColor" stroke-width="2"/><path d="M4 10H20" stroke="currentColor" stroke-width="2"/></svg>
+      Encounter Types
+    </button>
+    <button class="tab" role="tab" id="tab-rules" aria-selected="false" aria-controls="panel-rules" tabindex="-1">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M9 3H15L20 8V21H4V8L9 3Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M9 3V8H4" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
+      Scheduling Rules
+    </button>
+  </div>
+
+  <div class="panels">
+
+    <!-- ENCOUNTER TYPES -->
+    <section class="panel active" id="panel-encounter" role="tabpanel" aria-labelledby="tab-encounter">
+      <h2>Encounter Types</h2>
+      <p class="subhead">What each appointment type means, and which ones aren't scheduled through the appointment book at all.</p>
+
+      <h3>Types you should not use when scheduling</h3>
+      <ul class="check">
+        <li><svg viewBox="0 0 24 24" fill="none"><path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"/></svg> <strong>Block</strong></li>
+        <li><svg viewBox="0 0 24 24" fill="none"><path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"/></svg> <strong>Integrated BH Visits</strong></li>
+        <li><svg viewBox="0 0 24 24" fill="none"><path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"/></svg> <strong>Saturday Walk In</strong></li>
+        <li><svg viewBox="0 0 24 24" fill="none"><path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"/></svg> <strong>Week Day Walk In</strong></li>
+      </ul>
+      <div class="callout warn"><strong>Walk-ins aren't scheduled.</strong> Walk-in patients are handled through triage and Lead RN coordination, not through the appointment book.</div>
+
+      <h3>Default appointment durations</h3>
+      <table class="ref">
+        <tr><th>Appointment Type</th><th>Default Time</th></tr>
+        <tr><td>Annual</td><td>30 min</td></tr>
+        <tr><td>Existing Patient</td><td>30 min</td></tr>
+        <tr><td>MAWV</td><td>30 min</td></tr>
+        <tr><td>IPPE</td><td>45 min</td></tr>
+        <tr><td>New Patient to Specialist</td><td>30 min</td></tr>
+        <tr><td>New Patient to Clinic</td><td>30 min</td></tr>
+        <tr><td>New Patient to Provider</td><td>30 min</td></tr>
+        <tr><td>Nurse Visit</td><td>15 min</td></tr>
+        <tr><td>OB Follow Up</td><td>15 min</td></tr>
+        <tr><td>OB Intake</td><td>60 min</td></tr>
+        <tr><td>Phone Visit</td><td>30 min</td></tr>
+        <tr><td>Telehealth</td><td>30 min</td></tr>
+      </table>
+
+      <div class="callout"><strong>Some procedures need a manual time override.</strong> See the Scheduling Rules tab, several procedures require 60 minutes instead of the 30-minute default.</div>
+    </section>
+
+    <!-- SCHEDULING RULES -->
+    <section class="panel" id="panel-rules" role="tabpanel" aria-labelledby="tab-rules">
+      <h2>Scheduling Rules</h2>
+      <p class="subhead">Clinic-wide rules that apply regardless of which provider you're scheduling for.</p>
+
+      <div class="rule-block">
+        <div class="rule-cat">Reason for Visit</div>
+        <div class="rule-item">
+          <div class="rname">Follow up</div>
+          <div class="rdesc">State the actual condition or symptom needing follow-up. If the patient has an acute issue, refer to Triage or the Team Nurse instead of scheduling.</div>
+          <div class="rex">e.g. "FU/Sore Throat," "F/U-Weight Loss Medication"</div>
+        </div>
+        <div class="rule-item">
+          <div class="rname">General Follow Up <span class="badge-no">Do not use</span></div>
+          <div class="rdesc">Never a valid reason for visit on its own. We need the actual reason.</div>
+        </div>
+        <div class="rule-item">
+          <div class="rname">Med Refill <span class="badge-no">Do not use</span></div>
+          <div class="rdesc">Do not schedule as "Med Refill." Check whether the patient is due for an annual exam and schedule Annual if so. Transfer to the Team Nurse to address the immediate refill need.</div>
+        </div>
+      </div>
+
+      <div class="rule-block">
+        <div class="rule-cat">Procedures requiring a 60-minute override</div>
+        <div class="rule-item">
+          <div class="rdesc">All of the following require overriding the 30-minute default and scheduling for <strong>60 minutes</strong>:</div>
+          <ul class="plain" style="margin-top:8px;">
+            <li>Toenail removal</li>
+            <li>IUD removal</li>
+            <li>IUD insertion</li>
+            <li>IUD removal/reinsertion</li>
+            <li>Nexplanon removal</li>
+            <li>Nexplanon insertion</li>
+            <li>Nexplanon removal/reinsertion</li>
+            <li>Joint Injections</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="rule-block">
+        <div class="rule-cat">Existing patients, 30-minute PCP visit</div>
+        <div class="rule-item">
+          <div class="rdesc">Schedule as an existing patient visit with the PCP for <strong>30 minutes</strong>:</div>
+          <ul class="plain" style="margin-top:8px;">
+            <li>Trigger Point Injections</li>
+            <li>Skin biopsy/shave/excision</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="rule-block">
+        <div class="rule-cat">New Patients</div>
+        <div class="rule-item"><div class="rdesc">Schedule per template only.</div></div>
+      </div>
+
+      <div class="rule-block">
+        <div class="rule-cat">Annuals</div>
+        <div class="rule-item"><div class="rdesc">Split the allowed number evenly across AM and PM.</div></div>
+        <div class="rule-item"><div class="rdesc">If the provider is on walk-in coverage for half the day, the allowed number of annuals is <strong>half</strong> the normal amount.</div></div>
+      </div>
+
+      <div class="rule-block">
+        <div class="rule-cat">Well Child Check</div>
+        <div class="rule-item"><div class="rdesc">A pediatric patient does not need an established-patient visit before a well child check.</div></div>
+        <div class="rule-item"><div class="rdesc">Well child checks are scheduled as their own appointment type, <strong>not</strong> as an Annual.</div></div>
+        <div class="callout flag" style="margin:8px 0 0;"><strong>Confirm before publishing:</strong> the source spreadsheet left the specific appointment type name blank for well child checks. Fill in the exact type name here before this goes live.</div>
+      </div>
+
+      <div class="rule-block">
+        <div class="rule-cat">Other</div>
+        <div class="rule-item"><div class="rdesc">The last appointment slot of the day, <strong>4:30 PM</strong>, cannot be an annual, new patient, or well child check. Only schedule existing follow-up or problem-based visits in that slot.</div></div>
+        <div class="rule-item"><div class="rdesc">Dr. McIntyre has a dedicated new-patient slot at 4:30 PM.</div></div>
+        <div class="rule-item"><div class="rname">Sutures</div><div class="rdesc">Typically not scheduled.</div></div>
+      </div>
+    </section>
+
+
+  </div>
+
+  <div style="text-align:center; margin-top:36px;">
+    <a href="psr_onboarding_home.html" style="display:inline-flex; align-items:center; gap:6px; font-family:'Mulish',sans-serif; font-weight:700; font-size:14px; color:var(--blue); background:var(--blue-tint); padding:10px 18px; border-radius:10px; text-decoration:none;">← Back to Onboarding Home</a>
+  </div>
+
+  <footer class="foot">RHC · PSR Reference Tool · Scheduling Reference</footer>
+</div>
+
+<script>
+  const tabs = document.querySelectorAll('.tab');
+  const panels = document.querySelectorAll('.panel');
+
+  function activate(tab) {
+    tabs.forEach(t => { t.setAttribute('aria-selected', 'false'); t.tabIndex = -1; });
+    panels.forEach(p => p.classList.remove('active'));
+    tab.setAttribute('aria-selected', 'true');
+    tab.tabIndex = 0;
+    document.getElementById(tab.getAttribute('aria-controls')).classList.add('active');
+    tab.focus();
+  }
+  tabs.forEach((tab, i) => {
+    tab.addEventListener('click', () => activate(tab));
+    tab.addEventListener('keydown', (e) => {
+      let idx = i;
+      if (e.key === 'ArrowRight') idx = (i + 1) % tabs.length;
+      else if (e.key === 'ArrowLeft') idx = (i - 1 + tabs.length) % tabs.length;
+      else if (e.key === 'Home') idx = 0;
+      else if (e.key === 'End') idx = tabs.length - 1;
+      else return;
+      e.preventDefault();
+      activate(tabs[idx]);
+    });
+  });
+
+</script>
+</body>
+</html>
