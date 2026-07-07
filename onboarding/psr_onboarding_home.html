@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PSR Onboarding &amp; Training | RHC</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Mulish:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #FBF6EE;
+    --paper-raised: #FFFFFF;
+    --ink: #2E2A24;
+    --ink-soft: #6B6459;
+    --line: #E3D9C6;
+    --amber: #C97A2E;
+    --amber-tint: #FBEEDD;
+    --coral: #C2604A;
+    --coral-tint: #F9E9E3;
+    --teal: #3D7A72;
+    --teal-tint: #E4F0EC;
+    --blue: #3E6B8C;
+    --blue-tint: #E6EEF3;
+    --purple: #6E5A87;
+    --purple-tint: #EDE7F2;
+    --green: #5C7A3D;
+    --green-tint: #EBF0E2;
+    --radius: 14px;
+    --shadow: 0 1px 2px rgba(46,42,36,0.04), 0 8px 24px -8px rgba(46,42,36,0.10);
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--paper); color: var(--ink); font-family: 'Mulish', sans-serif; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+  .wrap { max-width: 880px; margin: 0 auto; padding: 48px 24px 90px; }
+
+  header.top { text-align: center; padding: 8px 0 36px; margin-bottom: 8px; }
+  .eyebrow { font-size: 13px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--coral); }
+  h1 { font-family: 'Fraunces', serif; font-optical-sizing: auto; font-weight: 600; font-size: clamp(32px, 5vw, 46px); margin: 10px 0 14px; }
+  .lede { font-size: 17px; color: var(--ink-soft); max-width: 560px; margin: 0 auto; }
+
+  .thesis {
+    display: flex; gap: 20px; align-items: flex-start; text-align: left;
+    background: var(--paper-raised); border: 1px solid var(--line); border-radius: var(--radius);
+    box-shadow: var(--shadow); padding: 24px 26px; margin: 32px 0 44px;
+  }
+  .thesis svg { flex: none; width: 48px; height: 48px; margin-top: 2px; }
+  .thesis p { margin: 0; font-family: 'Fraunces', serif; font-weight: 500; font-size: 19px; line-height: 1.45; }
+  .thesis span.hl { color: var(--coral); }
+
+  .section-label {
+    font-family: 'Mulish', sans-serif; font-weight: 800; font-size: 13px;
+    letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-soft);
+    margin: 40px 0 16px; display: flex; align-items: center; gap: 12px;
+  }
+  .section-label::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+  .section-label:first-of-type { margin-top: 0; }
+
+  .module-grid { display: grid; gap: 12px; }
+
+  .mod-card {
+    display: flex; align-items: center; gap: 16px; padding: 18px 20px;
+    background: var(--paper-raised); border: 2px solid var(--line); border-radius: 12px;
+    text-decoration: none; color: var(--ink); transition: border-color 0.15s, transform 0.1s;
+  }
+  .mod-card:hover { border-color: var(--coral); transform: translateY(-1px); }
+  .mod-card.disabled { opacity: 0.55; cursor: default; }
+  .mod-card.disabled:hover { border-color: var(--line); transform: none; }
+
+  .mod-num {
+    flex: none; width: 40px; height: 40px; border-radius: 10px; background: var(--amber-tint);
+    color: var(--amber); font-family: 'Fraunces', serif; font-weight: 700; font-size: 17px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .mod-card.disabled .mod-num { background: var(--line); color: var(--ink-soft); }
+
+  .mod-text { flex: 1; }
+  .mod-text h3 { margin: 0 0 3px; font-family: 'Fraunces', serif; font-size: 17px; font-weight: 600; }
+  .mod-text p { margin: 0; font-size: 13.5px; color: var(--ink-soft); }
+
+  .mod-status {
+    flex: none; font-size: 11.5px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.04em;
+    padding: 4px 10px; border-radius: 999px;
+  }
+  .status-ready { background: var(--green-tint); color: var(--green); }
+  .status-soon { background: var(--line); color: var(--ink-soft); }
+
+  .arrow { flex: none; font-size: 20px; color: var(--coral); }
+  .mod-card.disabled .arrow { color: var(--ink-soft); }
+
+  /* Reference tools use blue/purple identity to distinguish from numbered modules */
+  .ref-card .mod-num { background: var(--blue-tint); color: var(--blue); }
+  .ref-card:hover { border-color: var(--blue); }
+  .ref-card .arrow { color: var(--blue); }
+
+  footer.foot { margin-top: 48px; padding-top: 20px; border-top: 1px solid var(--line); font-size: 13px; color: var(--ink-soft); text-align: center; }
+
+  @media (max-width: 560px) {
+    .mod-card { flex-wrap: wrap; }
+    .mod-status { order: 3; margin-left: 56px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="top">
+    <div class="eyebrow">Rural Health Clinic · Pagosa Springs Medical Center</div>
+    <h1>PSR Onboarding &amp; Training</h1>
+    <p class="lede">Everything a new Patient Service Representative needs, from the first day at the desk to independent, confident patient care.</p>
+  </header>
+
+  <div class="thesis">
+    <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M8 14C8 11.7909 9.79086 10 12 10H36C38.2091 10 40 11.7909 40 14V28C40 30.2091 38.2091 32 36 32H20L12 38V32H12C9.79086 32 8 30.2091 8 28V14Z" stroke="#C2604A" stroke-width="2.5" stroke-linejoin="round"/>
+      <path d="M16 19H32M16 23H26" stroke="#C2604A" stroke-width="2.5" stroke-linecap="round"/>
+    </svg>
+    <p>You are often the <span class="hl">first and last voice</span> a patient hears from this clinic. These modules build the skills, systems, and judgment that role deserves.</p>
+  </div>
+
+  <div class="section-label">Modules</div>
+  <div class="module-grid">
+
+    <a class="mod-card" href="psr_module1_desk_readiness.html">
+      <div class="mod-num">1</div>
+      <div class="mod-text"><h3>Desk Readiness</h3><p>Cleanliness, professional appearance, opening &amp; closing duties</p></div>
+      <div class="mod-status status-ready">Ready</div>
+      <span class="arrow">→</span>
+    </a>
+
+    <a class="mod-card" href="psr_module2_patient_communication.html">
+      <div class="mod-num">2</div>
+      <div class="mod-text"><h3>Patient Communication</h3><p>Phone presence, de-escalation, reschedules, money talk, escalation, recovery</p></div>
+      <div class="mod-status status-ready">Ready</div>
+      <span class="arrow">→</span>
+    </a>
+
+    <a class="mod-card" href="psr_module3_scheduling.html">
+      <div class="mod-num">3</div>
+      <div class="mod-text"><h3>Scheduling</h3><p>Video walkthrough of building an appointment in Cerner</p></div>
+      <div class="mod-status status-ready">Ready</div>
+      <span class="arrow">→</span>
+    </a>
+
+    <a class="mod-card" href="psr_module4_daily_scheduling_tasks.html">
+      <div class="mod-num">4</div>
+      <div class="mod-text"><h3>Daily Scheduling Tasks</h3><p>No-show monitoring, daily audits, reading the staffing post</p></div>
+      <div class="mod-status status-ready">Ready</div>
+      <span class="arrow">→</span>
+    </a>
+
+    <a class="mod-card" href="psr_module5_registration_checkin.html">
+      <div class="mod-num">5</div>
+      <div class="mod-text"><h3>Patient Registration &amp; Check-In</h3><p>Welcoming patients, waiting room monitoring, exit scheduling, check-in verification</p></div>
+      <div class="mod-status status-ready">Ready</div>
+      <span class="arrow">→</span>
+    </a>
+
+    <a class="mod-card" href="psr_module6_message_center_artera.html">
+      <div class="mod-num">6</div>
+      <div class="mod-text"><h3>Message Center &amp; Artera Management</h3><p>Cerner Message Center inbox and Artera patient messaging</p></div>
+      <div class="mod-status status-ready">Ready</div>
+      <span class="arrow">→</span>
+    </a>
+
+    <div class="mod-card disabled">
+      <div class="mod-num">7</div>
+      <div class="mod-text"><h3>Records &amp; Document Management</h3><p>Scanning, AWV paperwork, referral pools, patient forms library</p></div>
+      <div class="mod-status status-soon">Coming Soon</div>
+      <span class="arrow">→</span>
+    </div>
+
+    <div class="mod-card disabled">
+      <div class="mod-num">8</div>
+      <div class="mod-text"><h3>Authorizations &amp; Special Populations</h3><p>Veteran patients, behavioral health scheduling, financial assistance, EMTALA</p></div>
+      <div class="mod-status status-soon">Coming Soon</div>
+      <span class="arrow">→</span>
+    </div>
+
+    <div class="mod-card disabled">
+      <div class="mod-num">9</div>
+      <div class="mod-text"><h3>Financial Transactions &amp; Cash Handling</h3><p>Collecting and posting payments, securing cash</p></div>
+      <div class="mod-status status-soon">Coming Soon</div>
+      <span class="arrow">→</span>
+    </div>
+
+    <div class="mod-card disabled">
+      <div class="mod-num">10</div>
+      <div class="mod-text"><h3>Advanced Support &amp; Precepting</h3><p>Supporting staff, training new PSRs, outreach, inventory</p></div>
+      <div class="mod-status status-soon">Coming Soon</div>
+      <span class="arrow">→</span>
+    </div>
+
+  </div>
+
+  <div class="section-label">Reference Tools</div>
+  <div class="module-grid">
+
+    <a class="mod-card ref-card" href="psr_reference_scheduling.html">
+      <div class="mod-num">📋</div>
+      <div class="mod-text"><h3>Scheduling Reference</h3><p>Encounter types and clinic-wide scheduling rules</p></div>
+      <span class="arrow">→</span>
+    </a>
+
+    <a class="mod-card ref-card" href="psr_reference_provider_preferences.html">
+      <div class="mod-num">👤</div>
+      <div class="mod-text"><h3>Provider Preferences</h3><p>What each provider does and doesn't schedule, plus specialty referrals</p></div>
+      <span class="arrow">→</span>
+    </a>
+
+  </div>
+
+  <footer class="foot">RHC · PSR Onboarding Training Program</footer>
+</div>
+</body>
+</html>
