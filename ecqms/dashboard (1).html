@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>eCQM Dashboard – Primary Care Clinic</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #F4F7FB; color: #1E2D3D; font-size: 14px; line-height: 1.5; }
+.page { max-width: 1280px; margin: 0 auto; padding: 2rem 1.5rem 3rem; }
+.page-title { font-size: 26px; font-weight: 600; color: #1E2D3D; margin-bottom: 4px; }
+.page-sub { font-size: 14px; color: #64748B; margin-bottom: 1.25rem; }
+.tier-banner { background: #fff8ed; border: 1px solid #e8c96a; border-left: 4px solid #B8860B; border-radius: 8px; padding: 10px 16px; margin-bottom: 1.5rem; font-size: 13px; color: #5C4000; }
+.tier-banner strong { color: #1E2D3D; }
+.section-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: #94A3B8; margin-bottom: 10px; }
+.dashboard-table { width: 100%; border-collapse: collapse; font-size: 13px; background: #fff; border: 1px solid #E2E8F0; border-radius: 10px; overflow: hidden; margin-bottom: 2rem; }
+.dashboard-table th { background: #1B6CA8; color: #fff; font-weight: 600; font-size: 12px; padding: 10px 12px; text-align: left; }
+.dashboard-table th.center { text-align: center; }
+.dashboard-table td { padding: 10px 12px; border-bottom: 1px solid #E2E8F0; color: #1E2D3D; vertical-align: middle; }
+.dashboard-table tr:last-child td { border-bottom: none; }
+.dashboard-table tr:nth-child(even) td { background: #F8FAFC; }
+.dashboard-table td.center { text-align: center; }
+.row-met td { background: #EAF5EE !important; }
+.row-met td:first-child { border-left: 4px solid #2D8A4E; padding-left: 8px; }
+.pts-badge { display: inline-block; padding: 2px 9px; border-radius: 99px; font-size: 11px; font-weight: 600; background: #1B6CA8; color: #fff; }
+.pts-badge-sm { font-size: 10px; padding: 2px 6px; }
+.val-green  { color: #2D8A4E; font-weight: 600; }
+.val-red    { color: #C0392B; font-weight: 600; }
+.val-amber  { color: #B8860B; font-weight: 600; }
+.val-muted  { color: #64748B; }
+.trend-up   { color: #2D8A4E; font-weight: 600; }
+.trend-down { color: #C0392B; font-weight: 600; }
+.trend-warn { color: #B8860B; font-weight: 600; }
+.priority-badge { font-size: 11px; background: #fcebeb; color: #A32D2D; padding: 2px 7px; border-radius: 4px; margin-left: 5px; font-weight: 500; }
+.suppl-badge { font-size: 11px; background: #fff3cd; color: #856404; padding: 2px 7px; border-radius: 4px; margin-left: 5px; font-weight: 500; }
+.divider { border: none; border-top: 1px solid #E2E8F0; margin: 0.5rem 0 1.75rem; }
+.legend-note { font-size: 11px; color: #94A3B8; margin-top: 0.5rem; line-height: 1.8; }
+.win-banner { background: #EAF5EE; border: 1px solid #B7DDC3; border-left: 4px solid #2D8A4E; border-radius: 8px; padding: 10px 16px; margin: -0.75rem 0 1.75rem; font-size: 13px; color: #1E2D3D; }
+.win-banner strong { color: #1E633B; }
+.win-banner .win-tag { display: inline-block; font-size: 11px; font-weight: 700; color: #fff; background: #2D8A4E; padding: 2px 8px; border-radius: 99px; margin-right: 8px; letter-spacing: 0.02em; }
+.progress-wrap { background: #fff; border: 1px solid #E2E8F0; border-radius: 10px; padding: 18px 34px 32px; margin-bottom: 1.75rem; }
+.progress-header { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 14px; flex-wrap: wrap; gap: 6px; }
+.progress-title { font-size: 13px; font-weight: 600; color: #1E2D3D; }
+.progress-title span { font-weight: 400; color: #64748B; font-size: 12px; margin-left: 4px; }
+.progress-value { font-size: 13px; color: #1B6CA8; font-weight: 600; }
+.progress-value span { color: #94A3B8; font-weight: 500; }
+.progress-track { position: relative; height: 16px; background: #EEF2F6; border-radius: 99px; margin: 0 20px; }
+.progress-fill { position: absolute; top: 0; left: 0; height: 100%; border-radius: 99px; background: linear-gradient(90deg, #2D8A4E, #58B573); transition: width 0.3s ease; }
+.progress-marker { position: absolute; top: -5px; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; }
+.progress-marker .tick { width: 2px; height: 26px; background: #1E2D3D; opacity: 0.35; border-radius: 1px; }
+.progress-marker .tick-label { font-size: 10.5px; color: #64748B; margin-top: 4px; white-space: nowrap; font-weight: 500; }
+.progress-marker.marker-goal .tick { background: #1B6CA8; opacity: 0.7; }
+.progress-marker.marker-goal .tick-label { color: #1B6CA8; font-weight: 700; }
+.progress-marker.marker-current { top: -8px; }
+.progress-marker.marker-current .tick { height: 32px; background: #2D8A4E; opacity: 1; width: 3px; }
+.progress-marker.marker-current .tick-label { color: #2D8A4E; font-weight: 700; }
+</style>
+</head>
+<body>
+<div class="page">
+  <h1 class="page-title">eCQM Dashboard &nbsp;&mdash;&nbsp; Primary Care Clinic</h1>
+  <p class="page-sub">Jan &ndash; June 2026 &nbsp;|&nbsp; Focus Measures &middot; Supplemental Measures &middot; Non-Focus Measures</p>
+
+  <div class="tier-banner">
+    <strong>Tier 3 Target: 32 points required</strong> &nbsp;&mdash;&nbsp;
+    36 points available across focus measures &nbsp;&middot;&nbsp;
+    Currently earning: <strong>24 pts</strong> (4 measures at benchmark) &nbsp;&middot;&nbsp;
+    Still needed: <strong>8 pts</strong> &nbsp;&middot;&nbsp;
+    CMS-165 (BP) and CMS-122 (A1c) are the highest-opportunity measures at 12 + 6 pts
+  </div>
+
+  <div class="progress-wrap">
+    <div class="progress-header">
+      <div class="progress-title">Path to Tier 3 <span>&mdash; points earned across the 8 focus &amp; supplemental measures</span></div>
+      <div class="progress-value">24 <span>/ 32 pts &nbsp;&middot;&nbsp; 8 pts to go</span></div>
+    </div>
+    <div class="progress-track">
+      <div class="progress-fill" style="width:75%"></div>
+      <div class="progress-marker marker-current" style="left:75%">
+        <div class="tick"></div>
+        <div class="tick-label">24 pts &middot; today</div>
+      </div>
+      <div class="progress-marker" style="left:62.5%">
+        <div class="tick"></div>
+        <div class="tick-label">Tier 1 &middot; 20</div>
+      </div>
+      <div class="progress-marker" style="left:87.5%">
+        <div class="tick"></div>
+        <div class="tick-label">Tier 2 &middot; 28</div>
+      </div>
+      <div class="progress-marker marker-goal" style="left:100%">
+        <div class="tick"></div>
+        <div class="tick-label">Tier 3 &middot; 32</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── FOCUS MEASURES ─────────────────────────────────────────────────── -->
+  <p class="section-label">Focus measures &mdash; 36 points available</p>
+  <table class="dashboard-table">
+    <thead>
+      <tr>
+        <th style="width:76px">CMS ID</th>
+        <th>Measure</th>
+        <th class="center" style="width:60px">Points</th>
+        <th class="center" style="width:104px">2026 Benchmark</th>
+        <th class="center" style="width:76px">Jan</th>
+        <th class="center" style="width:76px">Feb</th>
+        <th class="center" style="width:76px">Mar</th>
+        <th class="center" style="width:76px">Apr</th>
+        <th class="center" style="width:76px">May</th>
+        <th class="center" style="width:76px">Jun</th>
+        <th class="center" style="width:120px">Trend</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="row-met">
+        <td><span style="font-weight:600;color:#1B6CA8">CMS-2</span></td>
+        <td>Depression Screening &amp; Follow-Up Plan</td>
+        <td class="center"><span class="pts-badge">12 pts</span></td>
+        <td class="center val-muted">69.90%</td>
+        <td class="center val-green">83.38%</td>
+        <td class="center val-green">83.80%</td>
+        <td class="center val-green">86.11%</td>
+        <td class="center val-green">87.71%</td>
+        <td class="center val-green">88.05%</td>
+        <td class="center val-green">88.79%</td>
+        <td class="center trend-up">&#9650; Above benchmark</td>
+      </tr>
+      <tr>
+        <td><span style="font-weight:600;color:#1B6CA8">CMS-122</span></td>
+        <td>Diabetes: A1c Poor Control &gt;9% <span style="font-size:11px;color:#64748B">(inverse)</span></td>
+        <td class="center"><span class="pts-badge">6 pts</span></td>
+        <td class="center val-muted">&#8804;21.50%</td>
+        <td class="center val-red">61.01%</td>
+        <td class="center val-amber">48.12%</td>
+        <td class="center val-amber">39.73%</td>
+        <td class="center val-amber">30.91%</td>
+        <td class="center val-amber">26.33%</td>
+        <td class="center val-amber">24.41%</td>
+        <td class="center trend-warn">&#9660; Improving</td>
+      </tr>
+      <tr class="row-met">
+        <td><span style="font-weight:600;color:#1B6CA8">CMS-146</span></td>
+        <td>Appropriate Testing for Pharyngitis</td>
+        <td class="center"><span class="pts-badge">4 pts</span></td>
+        <td class="center val-muted">95.52%</td>
+        <td class="center val-green">100%</td>
+        <td class="center val-green">100%</td>
+        <td class="center val-green">100%</td>
+        <td class="center val-green">100%</td>
+        <td class="center val-green">100%</td>
+        <td class="center val-green">100%</td>
+        <td class="center trend-up">&#9650; Above benchmark</td>
+      </tr>
+      <tr class="row-met">
+        <td><span style="font-weight:600;color:#1B6CA8">CMS-154</span></td>
+        <td>Appropriate Treatment for URI</td>
+        <td class="center"><span class="pts-badge">4 pts</span></td>
+        <td class="center val-muted">94.15%</td>
+        <td class="center val-green">100%</td>
+        <td class="center val-green">100%</td>
+        <td class="center val-green">98.52%</td>
+        <td class="center val-green">97.59%</td>
+        <td class="center val-green">96.84%</td>
+        <td class="center val-green">96.96%</td>
+        <td class="center trend-up">&#9650; Above benchmark</td>
+      </tr>
+      <tr class="row-met">
+        <td><span style="font-weight:600;color:#1B6CA8">CMS-155a</span></td>
+        <td>Weight Assessment &amp; BMI Ages 3&ndash;17</td>
+        <td class="center"><span class="pts-badge">4 pts</span></td>
+        <td class="center val-muted">71.14%</td>
+        <td class="center val-green">93.44%</td>
+        <td class="center val-green">95.31%</td>
+        <td class="center val-green">93.33%</td>
+        <td class="center val-green">90.67%</td>
+        <td class="center val-green">92.25%</td>
+        <td class="center val-green">91.91%</td>
+        <td class="center trend-up">&#9650; Above benchmark</td>
+      </tr>
+      <tr>
+        <td><span style="font-weight:600;color:#444444">CMS-165</span></td>
+        <td>Controlling High Blood Pressure <span class="priority-badge">High priority</span></td>
+        <td class="center"><span class="pts-badge" style="background:#444444">12 pts</span></td>
+        <td class="center val-muted">75.71%</td>
+        <td class="center val-red">50.87%</td>
+        <td class="center val-red">55.71%</td>
+        <td class="center val-red">58.76%</td>
+        <td class="center val-red">63.71%</td>
+        <td class="center val-red">63.68%</td>
+        <td class="center val-red">63.48%</td>
+        <td class="center trend-warn">&#9650; Improving</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <hr class="divider">
+
+  <!-- ── SUPPLEMENTAL MEASURES ──────────────────────────────────────────── -->
+  <p class="section-label">Supplemental measures &mdash; provider-driven workflows</p>
+  <table class="dashboard-table">
+    <thead>
+      <tr>
+        <th style="width:76px">CMS ID</th>
+        <th>Measure</th>
+        <th class="center" style="width:60px">Points</th>
+        <th class="center" style="width:104px">2026 Benchmark</th>
+        <th class="center" style="width:76px">Jan</th>
+        <th class="center" style="width:76px">Feb</th>
+        <th class="center" style="width:76px">Mar</th>
+        <th class="center" style="width:76px">Apr</th>
+        <th class="center" style="width:76px">May</th>
+        <th class="center" style="width:76px">Jun</th>
+        <th class="center" style="width:120px">Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span style="font-weight:600;color:#1B6CA8">CMS-951</span></td>
+        <td>Kidney Health Evaluation <span class="suppl-badge">Coaching phase</span></td>
+        <td class="center"><span class="pts-badge">4 pts</span></td>
+        <td class="center val-muted">54.15%</td>
+        <td class="center val-red">6.25%</td>
+        <td class="center val-red">11.85%</td>
+        <td class="center val-red">19.68%</td>
+        <td class="center val-red">27.55%</td>
+        <td class="center val-red">31.19%</td>
+        <td class="center val-red">34.55%</td>
+        <td class="center trend-warn">&#9650; Improving</td>
+      </tr>
+      <tr>
+        <td><span style="font-weight:600;color:#1B6CA8">CMS-153</span></td>
+        <td>Chlamydia Screening (ages 16&ndash;24) <span class="suppl-badge">Coaching phase</span></td>
+        <td class="center"><span class="pts-badge">6 pts</span></td>
+        <td class="center val-muted">59.14%</td>
+        <td class="center val-red">10.00%</td>
+        <td class="center val-red">5.55%</td>
+        <td class="center val-red">9.52%</td>
+        <td class="center val-red">7.69%</td>
+        <td class="center val-red">7.40%</td>
+        <td class="center val-red">16.12%</td>
+        <td class="center trend-warn">&#9650; Improving</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="win-banner">
+    <span class="win-tag">Biggest jump</span>
+    <strong>CMS-153 Chlamydia Screening more than doubled in June</strong> &nbsp;&mdash;&nbsp;
+    7.40% &#8594; 16.12%, the largest single-month gain of any measure this year. Still below the 59.14% benchmark, but the coaching-phase workflow is clearly landing.
+  </div>
+
+  <hr class="divider">
+
+  <!-- ── NON-FOCUS MEASURES ─────────────────────────────────────────────── -->
+  <p class="section-label">Non-focus measures &mdash; monitoring only</p>
+  <table class="dashboard-table">
+    <thead>
+      <tr>
+        <th style="width:76px">CMS ID</th>
+        <th>Measure</th>
+        <th class="center" style="width:104px">2026 Benchmark</th>
+        <th class="center" style="width:76px">Jan</th>
+        <th class="center" style="width:76px">Feb</th>
+        <th class="center" style="width:76px">Mar</th>
+        <th class="center" style="width:76px">Apr</th>
+        <th class="center" style="width:76px">May</th>
+        <th class="center" style="width:76px">Jun</th>
+        <th class="center" style="width:120px">Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="row-met">
+        <td><span style="font-weight:600;color:#1B6CA8">CMS-139</span></td>
+        <td>Screening for Future Fall Risk <span style="font-size:11px;color:#64748B">(N/A pts)</span></td>
+        <td class="center val-muted">63.00%</td>
+        <td class="center val-red">62.32%</td>
+        <td class="center val-green">67.59%</td>
+        <td class="center val-green">73.23%</td>
+        <td class="center val-green">76.40%</td>
+        <td class="center val-green">78.28%</td>
+        <td class="center val-green">81.78%</td>
+        <td class="center trend-up">&#9650; Above benchmark</td>
+      </tr>
+      <tr>
+        <td><span style="font-weight:600;color:#1B6CA8">CMS-124</span></td>
+        <td>Cervical Cancer Screening <span class="pts-badge pts-badge-sm">6 pts</span></td>
+        <td class="center val-muted">69.19%</td>
+        <td class="center val-red">23.80%</td>
+        <td class="center val-red">23.59%</td>
+        <td class="center val-red">22.40%</td>
+        <td class="center val-red">22.77%</td>
+        <td class="center val-red">23.05%</td>
+        <td class="center val-red">23.61%</td>
+        <td class="center trend-down">&#9660; Below</td>
+      </tr>
+      <tr>
+        <td><span style="font-weight:600;color:#1B6CA8">CMS-125</span></td>
+        <td>Breast Cancer Screening <span class="pts-badge pts-badge-sm">6 pts</span></td>
+        <td class="center val-muted">85.58%</td>
+        <td class="center val-red">57.08%</td>
+        <td class="center val-red">56.93%</td>
+        <td class="center val-red">58.01%</td>
+        <td class="center val-red">59.26%</td>
+        <td class="center val-red">59.32%</td>
+        <td class="center val-red">59.65%</td>
+        <td class="center trend-down">&#9660; Below</td>
+      </tr>
+      <tr>
+        <td><span style="font-weight:600;color:#1B6CA8">CMS-130</span></td>
+        <td>Colorectal Cancer Screening <span class="pts-badge pts-badge-sm">6 pts</span></td>
+        <td class="center val-muted">83.54%</td>
+        <td class="center val-red">52.98%</td>
+        <td class="center val-red">52.32%</td>
+        <td class="center val-red">52.22%</td>
+        <td class="center val-red">53.09%</td>
+        <td class="center val-red">52.80%</td>
+        <td class="center val-red">53.24%</td>
+        <td class="center trend-down">&#9660; Below</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p class="legend-note">
+    Green row = At or above 2026 benchmark &nbsp;|&nbsp;
+    Green value = At/above benchmark &nbsp;|&nbsp;
+    Red value = Below benchmark &nbsp;|&nbsp;
+    Amber = Inverse measure improving toward target<br>
+    CMS-122 (inverse measure): lower % = better glycemic control &mdash; target is &le;21.50%<br>
+    CMS-165: improving trend &mdash; +12.61 pp Jan&ndash;June &nbsp;|&nbsp;
+    Cancer screening rates (CMS-124, 125, 130) accumulate throughout the year &mdash; early-year rates are typically low
+  </p>
+
+  <hr class="divider">
+
+  <div style="max-width:820px; margin: 0 auto 0.5rem; padding: 2.5rem 3rem; background: #F0F4F8; border-radius:12px; border:1px solid #E2E8F0; text-align:center;">
+    <p style="font-family: Georgia, 'Times New Roman', serif; font-size:28px; font-weight:700; font-style:italic; color:#1E2D3D; margin-bottom:1.75rem;">28 points of momentum</p>
+    <p style="font-family: Georgia, 'Times New Roman', serif; font-size:15px; color:#2D3F55; line-height:1.9; font-style:italic; margin-bottom:1.5rem;">In January, one in sixteen patients with diabetes or hypertension had their kidney labs completed. By June, more than one in three did.</p>
+    <p style="font-family: Georgia, 'Times New Roman', serif; font-size:15px; color:#2D3F55; line-height:1.9; font-style:italic; margin-bottom:1.5rem;">No new system. No new staff. Just providers who were asked to do something, and did it.</p>
+    <p style="font-family: Georgia, 'Times New Roman', serif; font-size:15px; color:#2D3F55; line-height:1.9; font-style:italic; margin-bottom:1.5rem;">Kidney health is one of the quietest complications in primary care &mdash; it progresses without symptoms until it doesn&rsquo;t. Every uACR ordered, every eGFR checked, is a patient who gets to know before they have to find out the hard way.</p>
+    <p style="font-family: Georgia, 'Times New Roman', serif; font-size:15px; color:#2D3F55; line-height:1.9; font-style:italic; margin-bottom:1.75rem;">At the current rate of improvement, this measure reaches benchmark by <strong style="font-style:normal; color:#1B6CA8;">November 2026</strong>.</p>
+    <p style="font-family: Georgia, 'Times New Roman', serif; font-size:15px; color:#2D3F55; line-height:1.9; font-style:italic; margin-bottom:2rem;">That is a real number. That is this team.</p>
+    <p style="font-family: Georgia, 'Times New Roman', serif; font-size:17px; font-weight:700; font-style:normal; color:#1E2D3D; margin-bottom:1.5rem;">Keep going.</p>
+    <p style="font-size:12px; color:#94A3B8; letter-spacing:0.04em;">PCC Quality Team &nbsp;&middot;&nbsp; Quality Transformation Meeting &nbsp;&middot;&nbsp; July 2026</p>
+  </div>
+</div>
+</body>
+</html>
