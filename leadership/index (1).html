@@ -1,0 +1,984 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>RHC FTE Budget Dashboard — FY2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:        #F7F9FC;
+  --surface:   #FFFFFF;
+  --surface2:  #EEF2F7;
+  --border:    #DDE3ED;
+  --blue-900:  #0F2744;
+  --blue-700:  #1A3A5C;
+  --blue-500:  #2D6FA8;
+  --blue-300:  #6FA8D6;
+  --blue-100:  #E0EDF9;
+  --gray-700:  #374151;
+  --gray-500:  #6B7280;
+  --gray-300:  #D1D9E6;
+  --gray-100:  #F1F4F9;
+  --green:     #1A7A4A;
+  --green-l:   #E6F4ED;
+  --amber:     #B45309;
+  --amber-l:   #FEF3C7;
+  --red:       #B91C1C;
+  --red-l:     #FEE2E2;
+  --slate:     #64748B;
+  --slate-l:   #F0F4F8;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Sora', sans-serif;
+  background: var(--bg);
+  color: var(--gray-700);
+  min-height: 100vh;
+  font-size: 14px;
+}
+
+/* ── Top bar ── */
+.topbar {
+  background: var(--blue-900);
+  padding: 0 28px;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  border-bottom: 2px solid var(--blue-500);
+}
+.topbar-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+  letter-spacing: 0.02em;
+}
+.topbar-meta {
+  font-size: 11px;
+  color: var(--blue-300);
+  font-family: 'DM Mono', monospace;
+}
+
+/* ── Layout ── */
+.layout {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  min-height: calc(100vh - 52px);
+}
+
+/* ── Sidebar ── */
+.sidebar {
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  padding: 24px 0;
+  position: sticky;
+  top: 52px;
+  height: calc(100vh - 52px);
+  overflow-y: auto;
+}
+.sidebar-label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--gray-500);
+  padding: 0 20px 8px;
+  margin-top: 8px;
+}
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 20px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--gray-700);
+  cursor: pointer;
+  transition: all 0.15s;
+  border-left: 3px solid transparent;
+}
+.nav-item:hover { background: var(--gray-100); color: var(--blue-700); }
+.nav-item.active {
+  background: var(--blue-100);
+  color: var(--blue-700);
+  border-left-color: var(--blue-500);
+  font-weight: 600;
+}
+.nav-icon { font-size: 15px; }
+.nav-badge {
+  margin-left: auto;
+  background: var(--blue-900);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 7px;
+  border-radius: 10px;
+  font-family: 'DM Mono', monospace;
+}
+.nav-badge.amber { background: var(--amber); }
+.nav-badge.red   { background: var(--red); }
+
+/* ── Main ── */
+.main { padding: 28px 32px; overflow-y: auto; }
+.page { display: none; }
+.page.active { display: block; }
+.page-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--blue-900);
+  margin-bottom: 4px;
+}
+.page-sub {
+  font-size: 12px;
+  color: var(--gray-500);
+  margin-bottom: 24px;
+  font-family: 'DM Mono', monospace;
+}
+.report-sheet { max-width: 1100px; }
+.report-head { display:flex; justify-content:space-between; align-items:flex-start; gap:20px; border-bottom:2px solid var(--blue-900); padding-bottom:14px; margin-bottom:18px; }
+.report-title { font-size:24px; font-weight:800; color:var(--blue-900); letter-spacing:-0.01em; }
+.report-sub { font-size:12px; color:var(--gray-500); margin-top:2px; }
+.print-btn { background:var(--blue-700,#1d4ed8); color:#fff; border:none; border-radius:6px; padding:9px 16px; font-size:13px; font-weight:600; cursor:pointer; margin-bottom:18px; }
+.print-btn:hover { opacity:0.9; }
+.report-foot { font-size:11px; color:var(--gray-500); margin-top:18px; font-style:italic; }
+@media print {
+  @page { margin: 0.5in; }
+  .topbar, .sidebar, .print-hide { display:none !important; }
+  .layout { grid-template-columns:1fr !important; display:block !important; }
+  .main { padding:0 !important; overflow:visible !important; }
+  .page { display:none !important; }
+  #page-staffing-report { display:block !important; }
+  .report-title { font-size:20px; }
+  #team-breakdown-report { grid-template-columns:repeat(2,1fr) !important; gap:10px !important; }
+  body { background:#fff !important; }
+}
+
+/* ── KPI cards ── */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 14px;
+  margin-bottom: 28px;
+}
+.kpi-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px 18px;
+  position: relative;
+  overflow: hidden;
+}
+.kpi-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+}
+.kpi-card.blue::before   { background: var(--blue-500); }
+.kpi-card.green::before  { background: var(--green); }
+.kpi-card.amber::before  { background: var(--amber); }
+.kpi-card.red::before    { background: var(--red); }
+.kpi-card.slate::before  { background: var(--slate); }
+.kpi-label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--gray-500);
+  margin-bottom: 8px;
+}
+.kpi-value {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--blue-900);
+  font-family: 'DM Mono', monospace;
+  line-height: 1;
+}
+.kpi-value.small { font-size: 20px; }
+.kpi-sub {
+  font-size: 11px;
+  color: var(--gray-500);
+  margin-top: 4px;
+}
+
+/* ── Table ── */
+.table-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 24px;
+}
+.table-toolbar {
+  padding: 14px 18px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-bottom: 1px solid var(--border);
+  background: var(--gray-100);
+  flex-wrap: wrap;
+}
+.table-toolbar-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--blue-900);
+  margin-right: 8px;
+}
+.search-box {
+  padding: 6px 12px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 12px;
+  font-family: 'Sora', sans-serif;
+  background: white;
+  color: var(--gray-700);
+  outline: none;
+  width: 200px;
+}
+.search-box:focus { border-color: var(--blue-300); }
+select.filter-sel {
+  padding: 6px 10px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 12px;
+  font-family: 'Sora', sans-serif;
+  background: white;
+  color: var(--gray-700);
+  outline: none;
+  cursor: pointer;
+}
+.count-badge {
+  margin-left: auto;
+  font-size: 11px;
+  color: var(--gray-500);
+  font-family: 'DM Mono', monospace;
+}
+table.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12.5px;
+}
+table.data-table thead th {
+  padding: 9px 12px;
+  text-align: left;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--gray-500);
+  background: var(--gray-100);
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+  cursor: pointer;
+  user-select: none;
+}
+table.data-table thead th:hover { color: var(--blue-700); }
+table.data-table thead th.sort-asc::after  { content: ' ↑'; color: var(--blue-500); }
+table.data-table thead th.sort-desc::after { content: ' ↓'; color: var(--blue-500); }
+table.data-table tbody tr {
+  border-bottom: 1px solid var(--border);
+  transition: background 0.1s;
+}
+table.data-table tbody tr:last-child { border-bottom: none; }
+table.data-table tbody tr:hover { background: var(--blue-100); }
+table.data-table td {
+  padding: 9px 12px;
+  vertical-align: middle;
+}
+.mono { font-family: 'DM Mono', monospace; }
+
+/* ── Badges ── */
+.badge {
+  display: inline-block;
+  padding: 2px 9px;
+  border-radius: 12px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+.badge-active  { background: var(--green-l);  color: var(--green); }
+.badge-leave   { background: var(--amber-l);  color: var(--amber); }
+.badge-inactive{ background: var(--red-l);    color: var(--red);   }
+.badge-vacant  { background: var(--blue-100); color: var(--blue-700); }
+.badge-open    { background: var(--slate-l);  color: var(--slate); }
+.badge-yes     { background: var(--green-l);  color: var(--green); }
+.badge-no      { background: var(--gray-100); color: var(--gray-500); }
+.badge-action  { background: var(--amber-l);  color: var(--amber); }
+
+/* ── Action items ── */
+.action-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 14px;
+  margin-bottom: 24px;
+}
+.action-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px 18px;
+  border-left: 4px solid var(--amber);
+}
+.action-card.open { border-left-color: var(--blue-500); }
+.action-pos  { font-size: 13px; font-weight: 600; color: var(--blue-900); margin-bottom: 3px; }
+.action-name { font-size: 12px; color: var(--gray-500); margin-bottom: 8px; }
+.action-meta { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.action-note { font-size: 11px; color: var(--amber); margin-top: 6px; font-style: italic; }
+
+/* ── Progress bar ── */
+.prog-wrap { background: var(--gray-300); border-radius: 4px; height: 6px; overflow: hidden; }
+.prog-bar  { height: 100%; border-radius: 4px; background: var(--blue-500); transition: width 0.6s ease; }
+
+/* ── Divider ── */
+.section-hdr {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--gray-500);
+  padding: 4px 0 10px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 16px;
+}
+
+@media(max-width:768px){
+  .layout{grid-template-columns:1fr}
+  .sidebar{display:none}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <span class="topbar-title">RHC · FTE Budget Dashboard · FY2026</span>
+  <span class="topbar-meta">Approved 02/28/2026 &nbsp;|&nbsp; Last updated June 2026</span>
+</div>
+
+<div class="layout">
+  <nav class="sidebar">
+    <div class="sidebar-label">Navigation</div>
+    <div class="nav-item active" onclick="showPage('dashboard',this)">
+      <span class="nav-icon">◈</span> Dashboard
+    </div>
+    <div class="nav-item" onclick="showPage('reconciliation',this)">
+      <span class="nav-icon">⊞</span> Full Reconciliation
+    </div>
+    <div class="nav-item" onclick="showPage('actions',this)">
+      <span class="nav-icon">◉</span> Action Items
+      <span class="nav-badge amber">16</span>
+    </div>
+    <div class="nav-item" onclick="showPage('inactive',this)">
+      <span class="nav-icon">○</span> Inactive Positions
+      <span class="nav-badge red">12</span>
+    </div>
+    <div class="nav-item" onclick="showPage('vacancies',this)">
+      <span class="nav-icon">◎</span> Team Vacancies
+      <span class="nav-badge amber">6</span>
+    </div>
+    <div class="nav-item" onclick="showPage('staffing-report',this)">
+      <span class="nav-icon">🖨</span> Staffing Report
+    </div>
+
+    <div class="sidebar-label" style="margin-top:16px">Key Numbers</div>
+    <div style="padding:0 20px">
+      <div style="font-size:11px;color:var(--gray-500);margin-bottom:6px">FTE Fill Rate</div>
+      <div class="prog-wrap"><div class="prog-bar" style="width:72%"></div></div>
+      <div style="font-size:11px;color:var(--blue-700);font-weight:600;margin-top:4px;font-family:'DM Mono'">72% filled</div>
+      <div style="margin-top:14px;font-size:11px;color:var(--gray-500);margin-bottom:6px">Budget Utilization</div>
+      <div class="prog-wrap"><div class="prog-bar" style="width:78%;background:var(--green)"></div></div>
+      <div style="font-size:11px;color:var(--green);font-weight:600;margin-top:4px;font-family:'DM Mono'">~78% allocated</div>
+    </div>
+  </nav>
+
+  <main class="main">
+
+    <!-- ── DASHBOARD ── -->
+    <div id="page-dashboard" class="page active">
+      <div class="page-title">Budget Overview</div>
+      <div class="page-sub">FY2026 Approved · CSS Department · RHC · Dept 7910</div>
+
+      <div class="kpi-grid">
+        <div class="kpi-card blue">
+          <div class="kpi-label">Total Positions</div>
+          <div class="kpi-value">51</div>
+          <div class="kpi-sub">44 approved + current adds</div>
+        </div>
+        <div class="kpi-card green">
+          <div class="kpi-label">Active / On Leave</div>
+          <div class="kpi-value">33</div>
+          <div class="kpi-sub">positions filled</div>
+        </div>
+        <div class="kpi-card red">
+          <div class="kpi-label">Inactive</div>
+          <div class="kpi-value">11</div>
+          <div class="kpi-sub">departed staff</div>
+        </div>
+        <div class="kpi-card amber">
+          <div class="kpi-label">Vacant / Open</div>
+          <div class="kpi-value">7</div>
+          <div class="kpi-sub">positions to fill</div>
+        </div>
+        <div class="kpi-card blue">
+          <div class="kpi-label">Total FTE</div>
+          <div class="kpi-value small">32.59</div>
+          <div class="kpi-sub">budgeted FTE count</div>
+        </div>
+        <div class="kpi-card slate">
+          <div class="kpi-label">Total Budget</div>
+          <div class="kpi-value small">$1.97M</div>
+          <div class="kpi-sub">approved FY2026</div>
+        </div>
+      </div>
+
+      <div class="section-hdr">Staffing Breakdown by Role</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-bottom:28px" id="role-breakdown"></div>
+
+      <div class="section-hdr">Staffing Breakdown by Team</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;margin-bottom:28px" id="team-breakdown"></div>
+
+      <div class="section-hdr">Onboarding / New Hires</div>
+      <div style="font-size:12px;color:var(--gray-500);margin:-6px 0 10px">Signed but still with HR or in training — not yet in their assigned seat.</div>
+      <div style="background:var(--surface);border:1px solid var(--border);border-left:3px solid #7c3aed;border-radius:8px;padding:6px 16px 10px;margin-bottom:28px;max-width:520px" id="onboarding-box"></div>
+
+      <div class="section-hdr">Budget Alerts</div>
+      <div style="display:flex;flex-direction:column;gap:10px" id="alert-list"></div>
+    </div>
+
+    <!-- ── RECONCILIATION ── -->
+    <div id="page-reconciliation" class="page">
+      <div class="page-title">Full Reconciliation</div>
+      <div class="page-sub">All budget positions mapped to current staff reality</div>
+
+      <div class="table-card">
+        <div class="table-toolbar">
+          <span class="table-toolbar-title">Budget Lines</span>
+          <input class="search-box" id="recon-search" placeholder="Search name, role..." oninput="filterRecon()">
+          <select class="filter-sel" id="recon-status" onchange="filterRecon()">
+            <option value="">All statuses</option>
+            <option>Active</option>
+            <option>On Leave</option>
+            <option>Inactive</option>
+            <option>Vacant</option>
+            <option>Open</option>
+          </select>
+          <select class="filter-sel" id="recon-team" onchange="filterRecon()">
+            <option value="">All teams</option>
+            <option>Green</option><option>Red</option><option>Blue</option>
+            <option>Specialty</option><option>Ortho</option><option>Behavioral Health</option>
+            <option>Gen Surgery/Pain</option><option>Clinic</option><option>Referrals</option>
+            <option>PRN</option><option>PRN/Float</option><option>As Assigned</option><option>Care Management</option><option>TBD</option><option>Unknown</option>
+          </select>
+          <select class="filter-sel" id="recon-filled" onchange="filterRecon()">
+            <option value="">Filled?</option>
+            <option value="Yes">Filled</option>
+            <option value="No">Unfilled</option>
+          </select>
+          <span class="count-badge" id="recon-count"></span>
+        </div>
+        <div style="overflow-x:auto">
+          <table class="data-table" id="recon-table">
+            <thead>
+              <tr>
+                <th onclick="sortRecon(0)">Budget Name</th>
+                <th onclick="sortRecon(1)">Current Staff</th>
+                <th onclick="sortRecon(2)">Role</th>
+                <th onclick="sortRecon(9)">Team</th>
+                <th onclick="sortRecon(3)">Status</th>
+                <th>FT/PT/PRN</th>
+                <th onclick="sortRecon(4)" style="text-align:right">FTE</th>
+                <th onclick="sortRecon(5)" style="text-align:right">Wage/hr</th>
+                <th style="text-align:right">Reg Hrs</th>
+                <th style="text-align:right">OT Hrs</th>
+                <th style="text-align:right">PTO Hrs</th>
+                <th style="text-align:right">Sick Hrs</th>
+                <th style="text-align:right">Total Hrs</th>
+                <th style="text-align:right">Reg $</th>
+                <th style="text-align:right">OT $</th>
+                <th style="text-align:right">PTO $</th>
+                <th style="text-align:right">Sick $</th>
+                <th onclick="sortRecon(6)" style="text-align:right">Total $</th>
+                <th onclick="sortRecon(7)">Filled?</th>
+                <th>Assigned Provider</th>
+                <th>Notes</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="recon-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── ACTIONS ── -->
+    <div id="page-actions" class="page">
+      <div class="page-title">Action Items</div>
+      <div class="page-sub">Positions requiring hire, replacement, or follow-up</div>
+      <div class="action-grid" id="action-grid"></div>
+    </div>
+
+    <!-- ── VACANCIES ── -->
+    <div id="page-vacancies" class="page">
+      <div class="page-title">Team Vacancies</div>
+      <div class="page-sub">Open positions by team — use this to plan placement of new hires</div>
+      <div id="vacancy-grid"></div>
+    </div>
+
+    <!-- ── INACTIVE ── -->
+    <div id="page-inactive" class="page">
+      <div class="page-title">Inactive Positions</div>
+      <div class="page-sub">Departed staff — budget dollars available for reallocation or replacement hire</div>
+      <div class="table-card">
+        <div style="overflow-x:auto">
+          <table class="data-table" id="inactive-table">
+            <thead>
+              <tr>
+                <th>Budget Name</th>
+                <th>Role</th>
+                <th>Team</th>
+                <th style="text-align:right">FTE</th>
+                <th style="text-align:right">Budgeted $</th>
+                <th>Notes</th>
+              </tr>
+            </thead>
+            <tbody id="inactive-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div id="page-staffing-report" class="page">
+      <div class="report-sheet">
+        <div class="report-head">
+          <div>
+            <div class="report-title">Weekly Staffing Report</div>
+            <div class="report-sub">RHC · Clinical Support Staff — Team Breakdown</div>
+            <div class="report-sub" id="report-date"></div>
+          </div>
+          <div style="text-align:right">
+            <div class="report-sub">Prepared for</div>
+            <div style="font-weight:700;color:var(--blue-900)">Vicki Goeckner, Director</div>
+            <div class="report-sub">Leadership Meeting</div>
+          </div>
+        </div>
+        <button class="print-btn print-hide" onclick="window.print()">🖨 Print / Save as PDF</button>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px" id="team-breakdown-report"></div>
+        <div class="report-foot print-hide">Generated from the live FTE Budget Dashboard · figures reflect current staffing.</div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+const DATA = [
+  {bname:"Alexa Dalton",        cname:"Haley Dalton",       role:"MA",            team:"Blue",            status:"Active",   empcode:"",  supervisor:"Vicki Goeckner", empstatus:"FT",  dept:"RHC", deptnum:"7910", wage:22.1553, hrs_reg:1912, hrs_ot:32,  hrs_pto:120, hrs_sick:48,  hrs_night:0, hrs_oncall:0, hrs_total:2112, fte:1.015, dollars_reg:42361, dollars_ot:1063,  dollars_pto:2659,  dollars_sick:1063,  dollars_night:0, dollars_oncall:0, total:47146,  filled:"Yes", repl:"No",  action:"",                                    notes:"Name discrepancy — confirmed same person", provider:"Stopher-Mitchell"},
+  {bname:"Open Position",       cname:"Bren Berryhill",     role:"Admin Support", team:"Clinic",          status:"Active",   empcode:"",  supervisor:"Vicki Goeckner", empstatus:"FT",  dept:"RHC", deptnum:"7910", wage:34.2475, hrs_reg:1912, hrs_ot:0,   hrs_pto:120, hrs_sick:48,  hrs_night:0, hrs_oncall:0, hrs_total:2080, fte:1.000, dollars_reg:65481, dollars_ot:0,     dollars_pto:4110,  dollars_sick:1644,  dollars_night:0, dollars_oncall:0, total:71235,  filled:"Yes", repl:"No",  action:"",                                    notes:"Hired 6/4/2026 — position closed"},
+  {bname:"Bri Albach",          cname:"Brianne Albach",     role:"RN",            team:"Red",             status:"Active",   empcode:"",  supervisor:"Vicki Goeckner", empstatus:"FT",  dept:"RHC", deptnum:"7940", wage:32.9188, hrs_reg:1832, hrs_ot:0,   hrs_pto:200, hrs_sick:48,  hrs_night:0, hrs_oncall:0, hrs_total:2080, fte:1.000, dollars_reg:60307, dollars_ot:0,     dollars_pto:6584,  dollars_sick:1580,  dollars_night:0, dollars_oncall:0, total:68471,  filled:"Yes", repl:"No",  action:"Plan maternity coverage (Sept 2026)", notes:"Going on maternity leave early September 2026 — Red Team RN coverage gap to plan"},
+  {bname:"Cathy Canty",         cname:"Tori Watts",         role:"RN: Ortho Coordinator", team:"Ortho",   status:"Inactive", empcode:"",  supervisor:"Vicki Goeckner", empstatus:"FT",  dept:"RHC", deptnum:"7910", wage:48.0083, hrs_reg:2032, hrs_ot:32,  hrs_pto:0,   hrs_sick:48,  hrs_night:0, hrs_oncall:0, hrs_total:2112, fte:1.015, dollars_reg:97553, dollars_ot:2304,  dollars_pto:0,     dollars_sick:2304,  dollars_night:0, dollars_oncall:0, total:102162, filled:"Yes", repl:"No",  action:"",                                    notes:"Original Ortho Coordinator. Succeeded by Lisa Grooms (resigned), then Tori Watts (returning 7/14/2026)"},
+  {bname:"Charlene Caldwell",   cname:"Charlene Caldwell",  role:"MA",            team:"Red",             status:"Active",   empcode:"",  supervisor:"Vicki Goeckner", empstatus:"FT",  dept:"RHC", deptnum:"7910", wage:22.5467, hrs_reg:1812, hrs_ot:82,  hrs_pto:170, hrs_sick:48,  hrs_night:0, hrs_oncall:60, hrs_total:2172, fte:1.044, dollars_reg:40855, dollars_ot:2773,  dollars_pto:3833,  dollars_sick:1082,  dollars_night:0, dollars_oncall:300, total:48843, filled:"Yes", repl:"No",  action:"",                                    notes:"", provider:"McIntyre"},
+  {bname:"Ashly Grosso",        cname:"",                   role:"PSR",           team:"Unknown",         status:"Inactive", empcode:"",  supervisor:"Vicki Goeckner", empstatus:"FT",  dept:"RHC", deptnum:"7910", wage:16.48,   hrs_reg:1912, hrs_ot:32,  hrs_pto:120, hrs_sick:48,  hrs_night:0, hrs_oncall:0, hrs_total:2112, fte:1.015, dollars_reg:31510, dollars_ot:791,   dollars_pto:1978,  dollars_sick:791,   dollars_night:0, dollars_oncall:0, total:35069,  filled:"No",  repl:"Yes", action:"Identify replacement — confirm team",  notes:"Confirmed inactive"},
+  {bname:"Courtney Swan",       cname:"Brandy Prestridge",  role:"MA",            team:"Specialty",       status:"Inactive", empcode:"",  supervisor:"Vicki Goeckner", empstatus:"FT",  dept:"RHC", deptnum:"7910", wage:20.1777, hrs_reg:1912, hrs_ot:62,  hrs_pto:120, hrs_sick:48,  hrs_night:0, hrs_oncall:0, hrs_total:2142, fte:1.030, dollars_reg:38580, dollars_ot:1877,  dollars_pto:2421,  dollars_sick:969,   dollars_night:0, dollars_oncall:0, total:43846,  filled:"Yes", repl:"No",  action:"",                                    notes:"Separated 5/28/2026 — replaced by Brandy Prestridge", provider:""},
+  {bname:"David Albue",         cname:"David Albue",        role:"MA",            team:"Green",           status:"Active",   empcode:"",  supervisor:"Vicki Goeckner", empstatus:"FT",  dept:"RHC", deptnum:"7910", wage:22.3304, hrs_reg:1912, hrs_ot:42,  hrs_pto:120, hrs_sick:48,  hrs_night:0, hrs_oncall:0, hrs_total:2122, fte:1.020, dollars_reg:42696, dollars_ot:1407,  dollars_pto:2680,  dollars_sick:1072,  dollars_night:0, dollars_oncall:0, total:47854,  filled:"Yes", repl:"No",  action:"",                                    notes:"MA for Barber and Zappone.", provider:"Barber, Zappone"},
+  {bname:"Deb Calavan",         cname:"Deb Calavan",        role:"Referral Spec", team:"Referrals",       status:"Active",   empcode:"",  supervisor:"Vicki Goeckner", empstatus:"FT",  dept:"RHC", deptnum:"7910", wage:24.1638, hrs_reg:850,  hrs_ot:0,   hrs_pto:160, hrs_sick:28,  hrs_night:0, hrs_oncall:0, hrs_total:1038, fte:0.499, dollars_reg:20539, dollars_ot:0,     dollars_pto:3866,  dollars_sick:685,   dollars_night:0, dollars_oncall:0, total:25090,  filled:"Yes", repl:"No",  action:"",                                    notes:"0.5 FTE"},
+  {bname:"Edna Harding",        cname:"Cate Harding",       role:"RN",            team:"Green",           status:"Inactive", empcode:"",  supervisor:"Vicki Goeckner", empstatus:"PRN", dept:"RHC", deptnum:"7910", wage:35.2672, hrs_reg:1006, hrs_ot:0,   hrs_pto:0,   hrs_sick:34,  hrs_night:0, hrs_oncall:0, hrs_total:1040, fte:0.500, dollars_reg:35479, dollars_ot:0,     dollars_pto:0,     dollars_sick:1199,  dollars_night:0, dollars_oncall:0, total:36678,  filled:"No",  repl:"Yes", action:"",                                    notes:"Inactive 6/10/2026 — Green Team RN position now vacant."},
+  {bname:"Elvina Hamby",        cname:"",                   role:"MA",            team:"Blue",            status:"Inactive", empcode:"",  supervisor:"Vicki Goeckner", empstatus:"FT",  dept:"RHC", deptnum:"7910", wage:23.9887, hrs_reg:2032, hrs_ot:82,  hrs_pto:0,   hrs_sick:48,  hrs_night:0, hrs_oncall:0, hrs_total:2162, fte:1.039, dollars_reg:48745, dollars_ot:2951,  dollars_pto:0,     dollars_sick:1151,  dollars_night:0, dollars_oncall:0, total:52847,  filled:"No",  repl:"Yes", action:"Identify replacement — Blue Team MA",  notes:"Confirmed inactive", provider:""},
+  {bname:"Emily Morris",        cname:"",                   role:"RN PRN",        team:"PRN",             status:"Inactive", empcode:"",  supervisor:"Vicki Goeckner", empstatus:"PRN", dept:"RHC", deptnum:"7910", wage:43.7235, hrs_reg:435,  hrs_ot:0,   hrs_pto:0,   hrs_sick:15,  hrs_night:0, hrs_oncall:0, hrs_total:450,  fte:0.216, dollars_reg:19020, dollars_ot:0,     dollars_pto:0,     dollars_sick:656,   dollars_night:0, dollars_oncall:0, total:19676,  filled:"No",  repl:"No",  action:"Evaluate PRN RN slot",                notes:"PRN RN slot — evaluate if still needed"},
+  {bname:"Grant Aucoin/Seasonal",cname:"",                  role:"MA PRN",        team:"PRN/Seasonal",    status:"Inactive", empcode:"",  supervisor:"Vicki Goeckner", empstatus:"PRN", dept:"RHC", deptnum:"7910", wage:19.36,   hrs_reg:290,  hrs_ot:0,   hrs_pto:0,   hrs_sick:10,  hrs_night:0, hrs_oncall:0, hrs_total:300,  fte:0.144, dollars_reg:5614,  dollars_ot:0,     dollars_pto:0,     dollars_sick:194,   dollars_night:0, dollars_oncall:0, total:5808,   filled:"No",  repl:"No",  action:"Evaluate seasonal slot",              notes:"Seasonal — confirmed inactive", provider:""},
+  {bname:"Hanna Brostek",       cname:"Hannah Brostek",     role:"MA",            team:"Red",             status:"Active",   empcode:"",  supervisor:"Vicki Goeckner", empstatus:"FT",  dept:"RHC", deptnum:"7910", wage:20.8575, hrs_reg:1912, hrs_ot:60,  hrs_pto:120, hrs_sick:48,  hrs_night:0, hrs_oncall:0, hrs_total:2140, fte:1.029, dollars_reg:39880, dollars_ot:1877,  dollars_pto:2503,  dollars_sick:1001,  dollars_night:0, dollars_oncall:0, total:45261,  filled:"Yes", repl:"No",  action:"",                                    notes:"MA since 11/6/2025 (previously listed as Admin Asst in budget).", provider:"Johnson, Nobles"},
+  {bname:"Jennifer Carr",       cname:"Jennifer Carr",      role:"MA PRN",        team:"PRN",             status:"Active",   empcode:"",  supervisor:"Vicki Goeckner", empstatus:"PRN", dept:"RHC", deptnum:"7910", wage:21.939,  hrs_reg:1512, hrs_ot:0,   hrs_pto:0,   hrs_sick:48,  hrs_night:0, hrs_oncall:0, hrs_total:1560, fte:0.750, dollars_reg:33172, dollars_ot:0,     dollars_pto:0,     dollars_sick:1053,  dollars_night:0, dollars_oncall:0, total:34225,  filled:"Yes", repl:"No",  action:"",                                    notes:"PRN", provider:""},
+  {bname:"Jo Blaise",           cname:"Jo Blaise",          role:"Manager",       team:"Clinic",          status:"Active",   empcode:"",  supervisor:"Vicki Goeckner", empstatus:"FT",  dept:"RHC", deptnum:"7910", wage:54.0235, hrs_reg:1832, hrs_ot:0,   hrs_pto:200, hrs_sick:48,  hrs_night:0, hrs_oncall:0, hrs_total:2080, fte:1.000, dollars_reg:98971, dollars_ot:0,     dollars_pto:10805, dollars_sick:2593,  dollars_night:0, dollars_oncall:0, total:112369, filled:"Yes", repl:"No",  action:"",                                    notes:""},
+  {bname:"Nicole Flinn",        cname:"Brandy Prestridge",  role:"MA",            team:"Specialty",       status:"Active",   empcode:"",  supervisor:"Vicki Goeckner", empstatus:"FT",  dept:"RHC", deptnum:"7910", wage:25.4513, hrs_reg:1912, hrs_ot:32,  hrs_pto:120, hrs_sick:48,  hrs_night:0, hrs_oncall:0, hrs_total:2112, fte:1.015, dollars_reg:48663, dollars_ot:1222,  dollars_pto:3054,  dollars_sick:1222,  dollars_night:0, dollars_oncall:0, total:54160,  filled:"Yes", repl:"No",  action:"",                                    notes:"MA for Dr. Holcomb (Pulmonary). Took over former Specialty MA line.", provider:"Holcomb (Pulmonologist)"},
+  {bname:"Katy Carey",          cname:"",                   role:"Unknown",       team:"Unknown",         status:"Inactive", empcode:"",  supervisor:"Vicki Goeckner", empstatus:"FT",  dept:"RHC", deptnum:"7910", wage:22.5467, hrs_reg:1512, hrs_ot:0,   hrs_pto:0,   hrs_sick:48,  hrs_night:0, hrs_oncall:0, hrs_total:1560, fte:0.750, dollars_reg:34091, dollars_ot:0,     dollars_pto:0,     dollars_sick:1082,  dollars_night:0, dollars_oncall:0, total:35173,  filled:"No",  repl:"Yes", action:"Identify replacement — confirm team", notes:"Confirmed inactive"},
+  {bname:"Kinsey O'Dell",       cname:"Kinsey O'Dell",      role:"RN",            team:"Blue",            status:"Active",   empcode:"",  supervisor:"Vicki Goeckner", empstatus:"FT",  dept:"RHC", deptnum:"7910", wage:41.3442, hrs_reg:2032, hrs_ot:52,  hrs_pto:0,   hrs_sick:48,  hrs_night:0, hrs_oncall:0, hrs_total:2132, fte:1.025, dollars_reg:84011, dollars_ot:3225,  dollars_pto:0,     dollars_sick:1985,  dollars_night:0, dollars_oncall:0, total:89221,  filled:"Yes", repl:"No",  action:"",                                    notes:""},
+  {bname:"Latia Albue",         cname:"Latia Albue",        role:"MA",            team:"Blue",            status:"Active",   empcode:"",  supervisor:"Vicki Goeckner", empstatus:"FT",  dept:"RHC", deptnum:"7910", wage:19.8378, hrs_reg:1912, hrs_ot:32,  hrs_pto:120, hrs_sick:48,  hrs_night:0, hrs_oncall:0, hrs_total:2112, fte:1.015, dollars_reg:37930, dollars_ot:952,   dollars_pto:2381,  dollars_sick:952,   dollars_night:0, dollars_oncall:0, total:42215,  filled:"Yes", repl:"No",  action:"",                                    notes:"MA for Mashburn (Blue) — onboarding, starts July 2026.", provider:"Mashburn"},
+  {bname:"Discharge 1: Walk-in",cname:"Dakoda Morris",      role:"PSR",           team:"Clinic",          status:"Active",   empcode:"",  supervisor:"Vicki Goeckner", empstatus:"FT",  dept:"RHC", deptnum:"7910", wage:19.8378, hrs_reg:1912, hrs_ot:32,  hrs_pto:120, hrs_sick:48,  hrs_night:0, hrs_oncall:0, hrs_total:2112, fte:1.015, dollars_reg:37930, dollars_ot:952,   dollars_pto:2381,  dollars_sick:952,   dollars_night:0, dollars_oncall:0, total:42215,  filled:"Yes", repl:"No",  action:"",                                    notes:"Discharge 1: Walk-in — Dakoda Morris replaced Latia Albue (Latia → MA 6/1/2026)"},
+  {bname:"Laura Sanchez",       cname:"Laura Sanchez",      role:"MA PRN",        team:"PRN",             status:"Active",   empcode:"",  supervisor:"Vicki Goeckner", empstatus:"PRN", dept:"RHC", deptnum:"7910", wage:21.9081, hrs_reg:1005, hrs_ot:0,   hrs_pto:0,   hrs_sick:35,  hrs_night:0, hrs_oncall:0, hrs_total:1040, fte:0.500, dollars_reg:22018, dollars_ot:0,     dollars_pto:0,     dollars_sick:767,   dollars_night:0, dollars_oncall:0, total:22784,  filled:"Yes", repl:"No",  action:"",                                    notes:"PRN", provider:""},
+  {bname:"Leah Wattier",        cname:"Leah Wattier",       role:"RN",            team:"Gen Surgery/Pain",status:"Active",   empcode:"",  supervisor:"Vicki Goeckner", empstatus:"FT",  dept:"RHC", deptnum:"7910", wage:42.0446, hrs_reg:1912, hrs_ot:32,  hrs_pto:120, hrs_sick:48,  hrs_night:0, hrs_oncall:0, hrs_total:2112, fte:1.015, dollars_reg:80389, dollars_ot:2018,  dollars_pto:5045,  dollars_sick:2018,  dollars_night:0, dollars_oncall:0, total:89471,  filled:"Yes", repl:"No",  action:"",                                    notes:""},
+  {bname:"Madi Devooght",       cname:"",                   role:"MA PRN",        team:"PRN",             status:"Inactive", empcode:"",  supervisor:"Vicki Goeckner", empstatus:"PRN", dept:"RHC", deptnum:"7910", wage:22.1553, hrs_reg:696,  hrs_ot:0,   hrs_pto:0,   hrs_sick:23,  hrs_night:0, hrs_oncall:0, hrs_total:719,  fte:0.346, dollars_reg:15420, dollars_ot:0,     dollars_pto:0,     dollars_sick:510,   dollars_night:0, dollars_oncall:0, total:15930,  filled:"No",  repl:"No",  action:"Evaluate PRN slot need",              notes:"Inactive 3/31/2026", provider:""},
+  {bname:"Madilyn Smith",       cname:"Madilyn Smith",      role:"RN",            team:"Clinic/Triage",   status:"Active",   empcode:"",  supervisor:"Vicki Goeckner", empstatus:"FT",  dept:"RHC", deptnum:"7910", wage:35.6071, hrs_reg:1912, hrs_ot:32,  hrs_pto:120, hrs_sick:48,  hrs_night:0, hrs_oncall:0, hrs_total:2112, fte:1.015, dollars_reg:68081, dollars_ot:1709,  dollars_pto:4273,  dollars_sick:1709,  dollars_night:0, dollars_oncall:0, total:75772,  filled:"Yes", repl:"No",  action:"",                                    notes:"As Assigned — remote"},
+  {bname:"McKenna Sutton",      cname:"McKenna Sutton",     role:"RN Care Mgr",   team:"Care Management", status:"Active",   empcode:"",  supervisor:"Vicki Goeckner", empstatus:"FT",  dept:"RHC", deptnum:"7910", wage:39.7683, hrs_reg:1912, hrs_ot:32,  hrs_pto:120, hrs_sick:48,  hrs_night:0, hrs_oncall:0, hrs_total:2112, fte:1.015, dollars_reg:76037, dollars_ot:1909,  dollars_pto:4772,  dollars_sick:1909,  dollars_night:0, dollars_oncall:0, total:84627,  filled:"Yes", repl:"No",  action:"",                                    notes:""},
+  {bname:"Megan Niederkorn",    cname:"Megan Niederkorn",   role:"Lead RN",       team:"Clinic/Triage",   status:"Active",   empcode:"",  supervisor:"Vicki Goeckner", empstatus:"FT",  dept:"RHC", deptnum:"7910", wage:42.333,  hrs_reg:1912, hrs_ot:82,  hrs_pto:120, hrs_sick:48,  hrs_night:0, hrs_oncall:0, hrs_total:2162, fte:1.039, dollars_reg:80941, dollars_ot:5207,  dollars_pto:5080,  dollars_sick:2032,  dollars_night:0, dollars_oncall:0, total:93260,  filled:"Yes", repl:"No",  action:"",                                    notes:"Returned from personal leave — Lead RN."},
+  {bname:"Meghan Waugh",        cname:"Meghan Waugh",       role:"RN PRN",        team:"PRN",             status:"Active",   empcode:"",  supervisor:"Vicki Goeckner", empstatus:"PRN", dept:"RHC", deptnum:"7910", wage:44.1664, hrs_reg:232,  hrs_ot:0,   hrs_pto:0,   hrs_sick:8,   hrs_night:0, hrs_oncall:0, hrs_total:240,  fte:0.115, dollars_reg:10247, dollars_ot:0,     dollars_pto:0,     dollars_sick:353,   dollars_night:0, dollars_oncall:0, total:10600,  filled:"Yes", repl:"No",  action:"",                                    notes:"PRN"},
+  {bname:"Nusi Hughes",         cname:"Nusi Hughes",        role:"RN PRN",        team:"PRN",             status:"Active",   empcode:"",  supervisor:"Vicki Goeckner", empstatus:"PRN", dept:"RHC", deptnum:"7910", wage:56.0423, hrs_reg:232,  hrs_ot:0,   hrs_pto:0,   hrs_sick:8,   hrs_night:0, hrs_oncall:0, hrs_total:240,  fte:0.115, dollars_reg:13002, dollars_ot:0,     dollars_pto:0,     dollars_sick:448,   dollars_night:0, dollars_oncall:0, total:13450,  filled:"Yes", repl:"No",  action:"",                                    notes:"PRN float"},
+  {bname:"Paula Quintana",      cname:"Paula Quintana",     role:"PSR",           team:"Green/Ortho",     status:"Active",   empcode:"",  supervisor:"Vicki Goeckner", empstatus:"FT",  dept:"RHC", deptnum:"7910", wage:22.9278, hrs_reg:1912, hrs_ot:0,   hrs_pto:120, hrs_sick:48,  hrs_night:0, hrs_oncall:0, hrs_total:2080, fte:1.000, dollars_reg:43838, dollars_ot:0,     dollars_pto:2751,  dollars_sick:1101,  dollars_night:0, dollars_oncall:0, total:47690,  filled:"Yes", repl:"No",  action:"",                                    notes:""},
+  {bname:"Peyton Rasmussen",    cname:"Hannah Brostek",     role:"MA",            team:"Red",             status:"Inactive", empcode:"",  supervisor:"Vicki Goeckner", empstatus:"FT",  dept:"RHC", deptnum:"7910", wage:21.9596, hrs_reg:2032, hrs_ot:82,  hrs_pto:0,   hrs_sick:48,  hrs_night:0, hrs_oncall:0, hrs_total:2162, fte:1.039, dollars_reg:44622, dollars_ot:2701,  dollars_pto:0,     dollars_sick:1054,  dollars_night:0, dollars_oncall:0, total:48377,  filled:"Yes", repl:"No",  action:"",                                    notes:"Red Team — replaced by Hannah Brostek", provider:""},
+  {bname:"Pricilla Quevedo",    cname:"Pricilla Garcia",    role:"MA",            team:"Ortho",           status:"Active",   empcode:"",  supervisor:"Vicki Goeckner", empstatus:"FT",  dept:"RHC", deptnum:"7910", wage:21.0841, hrs_reg:1912, hrs_ot:32,  hrs_pto:120, hrs_sick:48,  hrs_night:0, hrs_oncall:0, hrs_total:2112, fte:1.015, dollars_reg:40313, dollars_ot:1012,  dollars_pto:2530,  dollars_sick:1012,  dollars_night:0, dollars_oncall:0, total:44867,  filled:"Yes", repl:"No",  action:"",                                    notes:"Name change — married. MA for Webb and Steed (both Ortho providers).", provider:"Webb / Steed"},
+  {bname:"Remy Oney",           cname:"Remy Oney",          role:"MA PRN",        team:"PRN",             status:"Active",   empcode:"",  supervisor:"Vicki Goeckner", empstatus:"PRN", dept:"RHC", deptnum:"7910", wage:22.00,   hrs_reg:240,  hrs_ot:0,   hrs_pto:0,   hrs_sick:8,   hrs_night:0, hrs_oncall:0, hrs_total:248,  fte:0.119, dollars_reg:5280,  dollars_ot:0,     dollars_pto:0,     dollars_sick:176,   dollars_night:0, dollars_oncall:0, total:5456,   filled:"Yes", repl:"No",  action:"",                                    notes:"PRN", provider:""},
+  {bname:"Sara Marino",         cname:"Sara Marino",        role:"PSR",           team:"Red",             status:"Active",   empcode:"",  supervisor:"Vicki Goeckner", empstatus:"FT",  dept:"RHC", deptnum:"7910", wage:22.3922, hrs_reg:1912, hrs_ot:32,  hrs_pto:120, hrs_sick:48,  hrs_night:0, hrs_oncall:0, hrs_total:2112, fte:1.015, dollars_reg:42814, dollars_ot:1075,  dollars_pto:2687,  dollars_sick:1075,  dollars_night:0, dollars_oncall:0, total:47651,  filled:"Yes", repl:"No",  action:"",                                    notes:""},
+  {bname:"Tamra Lavengood",     cname:"Vicki Goeckner",     role:"Director",      team:"Clinic",          status:"Active",   empcode:"",  supervisor:"Vicki Goeckner", empstatus:"FT",  dept:"RHC", deptnum:"7910", wage:69.525,  hrs_reg:0,    hrs_ot:0,   hrs_pto:0,   hrs_sick:0,   hrs_night:0, hrs_oncall:0, hrs_total:0,    fte:0.000, dollars_reg:0,     dollars_ot:0,     dollars_pto:0,     dollars_sick:0,     dollars_night:0, dollars_oncall:0, total:0,      filled:"Yes", repl:"No",  action:"",                                    notes:"Vicki Goeckner — Clinic Director (succeeded Tamra Lavengood). $0 in CSS budget; director comp tracked separately."},
+  {bname:"Tori Watts",          cname:"Tori Watts",         role:"RN",            team:"Ortho",           status:"On Leave", empcode:"",  supervisor:"Vicki Goeckner", empstatus:"FT",  dept:"RHC", deptnum:"7910", wage:34.2475, hrs_reg:1960, hrs_ot:82,  hrs_pto:120, hrs_sick:48,  hrs_night:0, hrs_oncall:0, hrs_total:2210, fte:1.063, dollars_reg:67125, dollars_ot:4212,  dollars_pto:4110,  dollars_sick:1644,  dollars_night:0, dollars_oncall:0, total:77091,  filled:"Yes", repl:"No",  action:"Confirm 7/14 return & Ortho handback", notes:"Returning from maternity leave 7/14/2026 — Ortho Coordinator"},
+  {bname:"Vickie Perales",      cname:"Vickie Perales",     role:"Referral Spec", team:"Referrals",       status:"Active",   empcode:"",  supervisor:"Vicki Goeckner", empstatus:"FT",  dept:"RHC", deptnum:"7910", wage:22.5467, hrs_reg:1912, hrs_ot:260, hrs_pto:120, hrs_sick:48,  hrs_night:0, hrs_oncall:0, hrs_total:2340, fte:1.125, dollars_reg:43109, dollars_ot:8793,  dollars_pto:2706,  dollars_sick:1082,  dollars_night:0, dollars_oncall:0, total:55690,  filled:"Yes", repl:"No",  action:"",                                    notes:"High OT budgeted"},
+  {bname:"Virginia Vance",      cname:"Virginia Vance",     role:"LPN",           team:"Blue",            status:"On Leave", empcode:"",  supervisor:"Vicki Goeckner", empstatus:"FT",  dept:"RHC", deptnum:"7910", wage:28.9327, hrs_reg:1790, hrs_ot:32,  hrs_pto:220, hrs_sick:48,  hrs_night:0, hrs_oncall:0, hrs_total:2090, fte:1.005, dollars_reg:51790, dollars_ot:1389,  dollars_pto:6365,  dollars_sick:1389,  dollars_night:0, dollars_oncall:0, total:60932,  filled:"Yes", repl:"No",  action:"LPN coverage — out on medical leave", notes:"Out — medical leave (LOA). LPN position held.", provider:"Hintzman"},
+  {bname:"Yeun Fiedler",        cname:"",                   role:"Comm Adv",      team:"N/A",             status:"Inactive", empcode:"",  supervisor:"Vicki Goeckner", empstatus:"FT",  dept:"RHC", deptnum:"7910", wage:25.2144, hrs_reg:0,    hrs_ot:0,   hrs_pto:0,   hrs_sick:0,   hrs_night:0, hrs_oncall:0, hrs_total:0,    fte:0.000, dollars_reg:0,     dollars_ot:0,     dollars_pto:0,     dollars_sick:0,     dollars_night:0, dollars_oncall:0, total:0,      filled:"No",  repl:"No",  action:"Remove from next budget — position eliminated", notes:"Community Advocate — no replacement. Funding eliminated."},
+  {bname:"New FTE: Referral",   cname:"",                   role:"Referral Spec", team:"Referrals",       status:"Vacant",     empcode:"",  supervisor:"Vicki Goeckner", empstatus:"FT",  dept:"RHC", deptnum:"7910", wage:21.00,   hrs_reg:1006, hrs_ot:0,   hrs_pto:0,   hrs_sick:34,  hrs_night:0, hrs_oncall:0, hrs_total:1040, fte:0.500, dollars_reg:21126, dollars_ot:0,     dollars_pto:0,     dollars_sick:714,   dollars_night:0, dollars_oncall:0, total:21840,  filled:"No",  repl:"Yes", action:"Active hire",                         notes:"Approved new FTE"},
+  {bname:"New FTE: PRN MA x4",  cname:"",                   role:"MA PRN",        team:"TBD",             status:"Open",     empcode:"",  supervisor:"Vicki Goeckner", empstatus:"PRN", dept:"RHC", deptnum:"7910", wage:19.00,   hrs_reg:232,  hrs_ot:0,   hrs_pto:0,   hrs_sick:8,   hrs_night:0, hrs_oncall:0, hrs_total:240,  fte:0.462, dollars_reg:4408,  dollars_ot:0,     dollars_pto:0,     dollars_sick:152,   dollars_night:0, dollars_oncall:0, total:4560,   filled:"No",  repl:"Yes", action:"Active hire x4",                      notes:"4 PRN MA slots approved", provider:""},
+  {bname:"New FTE: PRN RN x4",  cname:"",                   role:"RN PRN",        team:"TBD",             status:"Open",     empcode:"",  supervisor:"Vicki Goeckner", empstatus:"PRN", dept:"RHC", deptnum:"7910", wage:35.00,   hrs_reg:232,  hrs_ot:0,   hrs_pto:0,   hrs_sick:8,   hrs_night:0, hrs_oncall:0, hrs_total:240,  fte:0.462, dollars_reg:8120,  dollars_ot:0,     dollars_pto:0,     dollars_sick:280,   dollars_night:0, dollars_oncall:0, total:8400,   filled:"No",  repl:"Yes", action:"Active hire x4",                      notes:"4 PRN RN slots approved"},
+  {bname:"Green Team RN",       cname:"Tyler McCain",       role:"RN",            team:"Green",           status:"Active",   empcode:"",  supervisor:"Vicki Goeckner", empstatus:"FT",  dept:"RHC", deptnum:"7910", wage:35.00,   hrs_reg:1912, hrs_ot:0,   hrs_pto:120, hrs_sick:48,  hrs_night:0, hrs_oncall:0, hrs_total:2080, fte:1.000, dollars_reg:66920, dollars_ot:0,     dollars_pto:4200,  dollars_sick:1680,  dollars_night:0, dollars_oncall:0, total:72800,  filled:"Yes", repl:"No",  action:"",                                    notes:"Green Team RN (Clinic) — offer extended to Tyler McCain, pending acceptance/start. Wage EST — confirm with Vicki."},
+  {bname:"Neurology MA",        cname:"",                   role:"MA",            team:"Specialty",       status:"Vacant",   empcode:"",  supervisor:"Vicki Goeckner", empstatus:"FT",  dept:"RHC", deptnum:"7910", wage:25.52,   hrs_reg:1954, hrs_ot:0,   hrs_pto:120, hrs_sick:48,  hrs_night:0, hrs_oncall:0, hrs_total:2122, fte:1.020, dollars_reg:49866, dollars_ot:0,     dollars_pto:3062,  dollars_sick:1225,  dollars_night:0, dollars_oncall:0, total:54153,  filled:"No",  repl:"Yes", action:"Active hire — Neurology MA",           notes:"Neurology MA vacancy — supports Dr. Montano (new neurologist, succeeded retired Dr. Bentley). Carries the former Specialty MA budget line, ~$54,160.", provider:"Montano (Neurologist)"},
+  {bname:"Ariana Shabro",       cname:"Ariana Shabro",      role:"RN",            team:"Specialty",       status:"Active",   empcode:"",  supervisor:"Vicki Goeckner", empstatus:"FT",  dept:"RHC", deptnum:"7910", wage:34.00,   hrs_reg:1912, hrs_ot:0,   hrs_pto:120, hrs_sick:48,  hrs_night:0, hrs_oncall:0, hrs_total:2080, fte:1.000, dollars_reg:65008, dollars_ot:0,     dollars_pto:4080,  dollars_sick:1632,  dollars_night:0, dollars_oncall:0, total:70720,  filled:"Yes", repl:"No",  action:"",                                    notes:"Specialty RN. Wage EST — confirm with Vicki."},
+  {bname:"APRN (Specialty)",    cname:"",                   role:"APRN",          team:"Specialty",       status:"Vacant",   empcode:"",  supervisor:"Vicki Goeckner", empstatus:"FT",  dept:"RHC", deptnum:"7910", wage:0,       hrs_reg:0,    hrs_ot:0,   hrs_pto:0,   hrs_sick:0,   hrs_night:0, hrs_oncall:0, hrs_total:0,    fte:1.000, dollars_reg:0,     dollars_ot:0,     dollars_pto:0,     dollars_sick:0,     dollars_night:0, dollars_oncall:0, total:0,      filled:"No",  repl:"Yes", action:"Active hire — APRN",                  notes:"APRN vacancy — Specialty. Budget TBD, confirm with Vicki."},
+  {bname:"New FTE: MAWV RN",    cname:"",                   role:"RN",            team:"TBD",             status:"Vacant",   empcode:"",  supervisor:"Vicki Goeckner", empstatus:"FT",  dept:"RHC", deptnum:"7910", wage:38.00,   hrs_reg:1912, hrs_ot:0,   hrs_pto:120, hrs_sick:48,  hrs_night:0, hrs_oncall:0, hrs_total:2080, fte:1.000, dollars_reg:72656, dollars_ot:0,     dollars_pto:4560,  dollars_sick:1824,  dollars_night:0, dollars_oncall:0, total:79040,  filled:"No",  repl:"Yes", action:"Active hire — RN position",           notes:"Never filled — MAWV RN slot still open", provider:"Green Team"},
+  {bname:"Blue Team PSR",       cname:"Veronica Shockley",  role:"PSR",           team:"Blue",            status:"Active",   empcode:"",  supervisor:"Vicki Goeckner", empstatus:"FT",  dept:"RHC", deptnum:"7910", wage:18.36,   hrs_reg:1912, hrs_ot:0,   hrs_pto:120, hrs_sick:48,  hrs_night:0, hrs_oncall:0, hrs_total:2080, fte:1.000, dollars_reg:35104, dollars_ot:0,     dollars_pto:2203,  dollars_sick:881,   dollars_night:0, dollars_oncall:0, total:38188,  filled:"Yes", repl:"No",  action:"",                                    notes:"Blue Team PSR — assigned (signed offer @ $18.36/hr; finalizing HR screening)."},
+  {bname:"Discharge 1: Clinic Facing",cname:"Ashley Tilley", role:"PSR",           team:"Clinic",          status:"Active",   empcode:"",  supervisor:"Vicki Goeckner", empstatus:"FT",  dept:"RHC", deptnum:"7910", wage:19.75,   hrs_reg:1912, hrs_ot:0,   hrs_pto:120, hrs_sick:48,  hrs_night:0, hrs_oncall:0, hrs_total:2080, fte:1.000, dollars_reg:37762, dollars_ot:0,     dollars_pto:2370,  dollars_sick:948,   dollars_night:0, dollars_oncall:0, total:41080,  filled:"Yes", repl:"No",  action:"",                                    notes:"Signed offer @ $19.75/hr — Discharge 1: Clinic Facing PSR. Start date 7/27/2026."},
+  {bname:"Discharge 2: Walk-in",cname:"Sarah Rader",        role:"PSR",           team:"Clinic",          status:"On Leave", empcode:"",  supervisor:"Vicki Goeckner", empstatus:"FT",  dept:"RHC", deptnum:"7910", wage:19.00,   hrs_reg:1912, hrs_ot:0,   hrs_pto:120, hrs_sick:48,  hrs_night:0, hrs_oncall:0, hrs_total:2080, fte:1.000, dollars_reg:36328, dollars_ot:0,     dollars_pto:2280,  dollars_sick:912,   dollars_night:0, dollars_oncall:0, total:39520,  filled:"Yes", repl:"No",  action:"",                                    notes:"Discharge 2: Walk-in. Out on FMLA — no return date. Wage EST — confirm with Vicki."},
+  {bname:"Travel RN (Authorized) x2",cname:"",            role:"Travel RN",     team:"TBD",             status:"Open",     empcode:"",  supervisor:"Vicki Goeckner", empstatus:"Contract", dept:"RHC", deptnum:"7910", wage:0,       hrs_reg:0,    hrs_ot:0,   hrs_pto:0,   hrs_sick:0,   hrs_night:0, hrs_oncall:0, hrs_total:0,    fte:1.000, dollars_reg:0,     dollars_ot:0,     dollars_pto:0,     dollars_sick:0,     dollars_night:0, dollars_oncall:0, total:0,      filled:"No",  repl:"Yes", action:"2 travel RN reqs placed — agency hire", notes:"2 reqs placed. Agency/contract labor — bridge coverage for RN gaps (Niederkorn LOA, Vance LOA, Albach Sept maternity leave). Bill rate per contract — tracked outside approved comp budget."},
+];
+
+function fmt$(n){ return '$'+n.toLocaleString(); }
+function fmtW(n){ return '$'+n.toFixed(2); }
+
+function statusBadge(s){
+  const map={Active:'badge-active','On Leave':'badge-leave',Inactive:'badge-inactive',Vacant:'badge-vacant',Open:'badge-open'};
+  return `<span class="badge ${map[s]||'badge-no'}">${s}</span>`;
+}
+function filledBadge(f){
+  return f==='Yes'?'<span class="badge badge-yes">Filled</span>':'<span class="badge badge-no">Unfilled</span>';
+}
+
+// ── DASHBOARD ──────────────────────────────────────────────────────────────
+function buildDashboard(){
+  // Role breakdown
+  const roles={};
+  DATA.forEach(d=>{ if(!roles[d.role]) roles[d.role]={total:0,active:0,$:0,live:0}; roles[d.role].total++; if(d.status==='Active'||d.status==='On Leave') roles[d.role].active++; if(d.status!=='Inactive') roles[d.role].live++; roles[d.role].$+=d.total; });
+  const rb=document.getElementById('role-breakdown');
+  rb.innerHTML=Object.entries(roles).filter(([role,v])=>v.live>0).sort((a,b)=>a[0].localeCompare(b[0])).map(([role,v])=>`
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px 16px">
+      <div style="font-size:11px;font-weight:600;color:var(--gray-500);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:8px">${role}</div>
+      <div style="font-size:20px;font-weight:700;color:var(--blue-900);font-family:'DM Mono'">${v.active}/${v.total}</div>
+      <div style="font-size:11px;color:var(--gray-500);margin:3px 0 8px">filled · ${fmt$(Math.round(v.$))} budgeted</div>
+      <div class="prog-wrap"><div class="prog-bar" style="width:${Math.round(v.active/v.total*100)}%"></div></div>
+    </div>`).join('');
+
+  // Team breakdown — Provider (Assigned MA), Team RN, Team PSR, Other Staff, Vacancies
+  const tb=document.getElementById('team-breakdown');
+  const TB_EXCLUDE=['Manager','Director','Admin Support'];
+  const TEAM_LABEL={'Clinic':'Clinic PSRs','TBD':'Posted Positions'};
+  const SPLIT={'Green/Ortho':['Green','Ortho'],'Green/Blue':['Green','Blue']};
+  const teamsOf=t=>SPLIT[t]||[t];
+  // Onboarding / new hires still with HR or in training
+  const ONBOARDING=[
+    {name:'Amoria Netzahualt', role:'MA',  tag:'onboarding', note:'→ Renfrew (Green) · Nov \u201926'},
+    {name:'Latia Albue',       role:'MA',  tag:'onboarding', note:'→ Mashburn · July \u201926'},
+    {name:'Ashley Tilley',     role:'PSR', tag:'onboarding', note:'Start date 7/27/26'},
+    {name:'Veronica Shockley', role:'PSR', tag:'New Hire',   note:''},
+  ];
+  const ONB={}; ONBOARDING.forEach(o=>ONB[o.name]=o.tag);
+  const OFFERED=new Set(['Tyler McCain']);   // offer extended, not yet accepted (kept out of the onboarding box)
+  const onbTag=cn=> ONB[cn] ? ` <span style="color:#7c3aed;font-size:10px">(${ONB[cn]})</span>` : (OFFERED.has(cn) ? ` <span style="color:#7c3aed;font-size:10px">(offered)</span>` : '');
+  const purple=t=>`<span style="color:#7c3aed;font-size:10px">${t}</span>`;
+  // Providers not captured via an MA record (RN-supported, offered/incoming MA, or no-FTE)
+  const SUPP_PROVIDERS=[
+    {team:'Gen Surgery/Pain', provider:'Dr. Gazenko (Gen Surgeon)', support:'Leah (RN)'},
+    {team:'Gen Surgery/Pain', provider:'Brian Smith (CRNA)',        support:'Leah (RN)'},
+    {team:'Gen Surgery/Pain', provider:'Yody Aucoin (CRNA)',        support:'Leah (RN)'},
+    {team:'Green',            provider:'Renfrew (new MD)',          support:'Amoria '+purple('(onboarding)')},
+    {team:'Green',            provider:'Brown, Liverett',           support:'James '+purple('(MA, PT — offered)')},
+    {team:'Behavioral Health',provider:'Jake Abbas (LPC)',          support:'N/A — no MA FTE'},
+    {team:'Behavioral Health',provider:'Courtney (BH)',             support:'N/A — no MA FTE'},
+    {team:'Specialty',        provider:'Johnson (PRN PA)',           support:'APRN coverage'},
+  ];
+  // Provider schedules (by provider label)
+  const SCHED={'Stopher-Mitchell':'M–Th','Mashburn':'Tue–Fri','Hintzman':'Tue–Fri','McIntyre':'M–Th','Johnson, Nobles':'M–Fri','Renfrew (new MD)':'Tue–Fri','Barber, Zappone':'M–Th','Brown, Liverett':'M–F','Dr. Gazenko (Gen Surgeon)':'M/T/Th/F','Webb / Steed':'Webb T/Th · Steed M/W/F','Holcomb (Pulmonologist)':'Tue–Fri','Montano (Neurologist)':'4 days','Jake Abbas (LPC)':'M–F','Courtney (BH)':'M–W'};
+  // Coverage notes (by provider label OR staff name)
+  const NOTE={'McIntyre':'Maternity leave soon — seeking traveler #2','Johnson, Nobles':'No coverage Friday','Webb / Steed':'No coverage Friday (Steed)','Renfrew (new MD)':'Posted; also seeking a traveler','Remy Oney':'Mondays only; leaving for school soon','Jennifer Carr':'Limited availability','Laura Sanchez':'2–3 days/wk (Ortho or Rachel/Bob)','Nusi Hughes':'Limited availability','Meghan Waugh':'1–2 days per pay period'};
+  const TEAM_NOTE={'Gen Surgery/Pain':'Overhire PSR (shared / no FTE).','Behavioral Health':'Shared PSR; no MA or RN FTE.','Specialty':'Johnson (PRN PA) is processing pulmonary referrals to cover the vacant APRN position.'};
+  const tg={};
+  const T=t=>{ if(!tg[t]) tg[t]={prov:[],rn:[],psr:[],other:[],vac:[]}; return tg[t]; };
+  const NAME_OVR={'Sara Marino':'Marino'};              // last name to avoid confusion w/ Sarah Rader
+  const ROLE_LABEL={'Madilyn Smith':'RN-Remote'};       // per-person role label override
+  const disp=cn=> cn ? (NAME_OVR[cn] || cn.split(' ')[0]) : (cn||'—');
+  DATA.forEach(d=>{
+    if(d.status==='Inactive') return;
+    const isVac=(d.status==='Vacant'||d.status==='Open');
+    const isMAL=(d.role==='MA'||d.role==='LPN');
+    teamsOf(d.team).forEach(tm=>{
+      const g=T(tm);
+      if(isMAL) g.prov.push({label:d.provider||'MA (unassigned)', who:isVac?purple('MA — Vacant'):disp(d.cname), st:d.status, cn:d.cname});
+      else if(isVac) g.vac.push(d);
+      else if(TB_EXCLUDE.includes(d.role)) {}
+      else if(d.role==='RN'||d.role==='Lead RN') g.rn.push({label:ROLE_LABEL[d.cname]||d.role, who:disp(d.cname), st:d.status, cn:d.cname});
+      else if(d.role==='PSR') g.psr.push({label:(d.bname && d.bname!==d.cname)?d.bname:'PSR', who:disp(d.cname), st:d.status, cn:d.cname});
+      else g.other.push({label:d.role, who:disp(d.cname), st:d.status, cn:d.cname});
+    });
+  });
+  SUPP_PROVIDERS.forEach(p=>T(p.team).prov.push({label:p.provider, who:p.support, st:'Active', cn:''}));
+  Object.values(tg).forEach(g=>g.other.sort((a,b)=>a.label.localeCompare(b.label)||a.who.localeCompare(b.who)));
+  const leaveTag=s=> s==='On Leave' ? ` <span style="color:#b45309;font-size:10px">(on leave)</span>` : '';
+  const sub=t=>`<div style="font-size:10px;font-weight:700;color:var(--gray-500);text-transform:uppercase;letter-spacing:0.06em;margin:11px 0 3px">${t}</div>`;
+  const row=(l,r)=>`<div style="display:flex;justify-content:space-between;gap:10px;font-size:12.5px;padding:2px 0"><span style="color:var(--gray-500)">${l}</span><span style="font-weight:600;text-align:right;color:var(--blue-900)">${r}</span></div>`;
+  const noteLine=t=>t?`<div style="font-size:10.5px;color:#b45309;font-style:italic;padding:0 0 2px 2px">⚑ ${t}</div>`:'';
+  const schedTag=l=>SCHED[l]?` <span style="color:var(--gray-500);font-weight:400;font-size:10.5px">· ${SCHED[l]}</span>`:'';
+  const provRow=r=>row(r.label+schedTag(r.label), r.who+leaveTag(r.st)+onbTag(r.cn))+noteLine(NOTE[r.label]||NOTE[r.cn]);
+  const staffRow=r=>row(r.label, r.who+leaveTag(r.st)+onbTag(r.cn))+noteLine(NOTE[r.cn]);
+  const vacLbl=r=>r.role+(r.provider?` (for ${r.provider})`:'');
+  const teamHTML=Object.keys(tg).sort((a,b)=>a.localeCompare(b)).map(team=>{
+    const g=tg[team];
+    let h=`<div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px 16px;break-inside:avoid">`;
+    h+=`<div style="font-size:13px;font-weight:700;color:var(--blue-900);text-transform:uppercase;letter-spacing:0.06em;border-bottom:1px solid var(--border);padding-bottom:8px">${TEAM_LABEL[team]||team}</div>`;
+    if(g.prov.length){ h+=sub('Provider · Assigned MA'); g.prov.forEach(r=>h+=provRow(r)); }
+    if(g.rn.length){ h+=sub('Team RN'); g.rn.forEach(r=>h+=staffRow(r)); }
+    if(g.psr.length){ h+=sub('Team PSR'); g.psr.forEach(r=>h+=staffRow(r)); }
+    if(g.other.length){ h+=sub('Other Staff'); g.other.forEach(r=>h+=staffRow(r)); }
+    if(g.vac.length){ h+=sub('Vacancies'); g.vac.forEach(r=>h+=row(vacLbl(r),`<span style="color:#b45309">${r.status}</span>`)); }
+    if(TEAM_NOTE[team]) h+=`<div style="margin-top:8px">`+noteLine(TEAM_NOTE[team])+`</div>`;
+    return h+`</div>`;
+  }).join('');
+  tb.innerHTML=teamHTML;
+  const tbr=document.getElementById('team-breakdown-report'); if(tbr) tbr.innerHTML=teamHTML;
+  const rd=document.getElementById('report-date'); if(rd) rd.textContent=new Date().toLocaleDateString('en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+  // Onboarding / New Hires box
+  const ob=document.getElementById('onboarding-box');
+  if(ob) ob.innerHTML=ONBOARDING.map(o=>`<div style="display:flex;justify-content:space-between;gap:10px;font-size:12.5px;padding:4px 0;border-bottom:1px solid var(--border)"><span style="font-weight:600;color:var(--blue-900)">${o.name} <span style="color:#7c3aed;font-weight:500">· ${o.role}</span></span><span style="color:var(--gray-500)">${o.note||'in HR / training'}</span></div>`).join('');
+
+  // Alerts
+  const alerts=[
+    {type:'red',  icon:'⚠', msg:`8 confirmed inactive positions — identify replacements to maintain budgeted staffing levels`},
+    {type:'amber',icon:'⊙', msg:`8 open / vacant FTE slots approved — active hiring needed for PRN MAs (x4), PRN RNs (x4), and Referral Specialist`},
+    {type:'blue', icon:'ⓘ', msg:`Tori Watts returning from maternity leave 7/14/2026 — Ortho Coordinator coverage resuming`},
+    {type:'amber',icon:'⊙', msg:`Virginia (Ruth) Vance (LPN) out on medical leave — position held; cover via float / travel RN`},
+    {type:'amber',icon:'⊙', msg:`Sarah Rader (PSR, Discharge 2: Walk-in) out on FMLA — no return date yet; position held, desk needs interim coverage`},
+    {type:'amber',icon:'⊙', msg:`Brianne Albach (Red Team RN) going on maternity leave early September 2026 — plan coverage handoff before she goes out`},
+    {type:'blue', icon:'ⓘ', msg:`2 travel RN reqs placed — bridge coverage for Vance (medical leave) and upcoming Albach maternity leave.`},
+    {type:'amber',icon:'⊙', msg:`Dr. McIntyre offboarding September 2026 — Dr. Norwood confirmed for the Red Team physician position (onboards September 2026).`},
+    {type:'amber',icon:'⊙', msg:`Dr. Erin Renfrew (physician) onboarding November 2026 — Green Team; Amoria Netzahualt is her MA (floating until Renfrew arrives).`},
+  ];
+  const colors={red:'var(--red-l)',amber:'var(--amber-l)',blue:'var(--blue-100)'};
+  const fgc   ={red:'var(--red)',  amber:'var(--amber)',  blue:'var(--blue-700)'};
+  document.getElementById('alert-list').innerHTML=alerts.map(a=>`
+    <div style="display:flex;align-items:flex-start;gap:12px;background:${colors[a.type]};border-radius:8px;padding:12px 16px;font-size:12.5px;color:${fgc[a.type]}">
+      <span style="font-size:16px;flex-shrink:0">${a.icon}</span>
+      <span>${a.msg}</span>
+    </div>`).join('');
+}
+
+// ── RECONCILIATION ────────────────────────────────────────────────────────
+let sortCol=-1, sortDir=1;
+function renderRecon(data){
+  const body=document.getElementById('recon-body');
+  body.innerHTML=data.map(d=>`
+    <tr>
+      <td style="font-weight:600;color:var(--blue-900);white-space:nowrap">${d.bname}</td>
+      <td style="color:var(--gray-700);white-space:nowrap">${d.cname||'<span style="color:var(--gray-400);font-style:italic">—</span>'}</td>
+      <td><span style="background:var(--gray-100);padding:2px 8px;border-radius:10px;font-size:11px;white-space:nowrap">${d.role}</span></td>
+      <td><span style="background:var(--blue-100);color:var(--blue-700);padding:2px 8px;border-radius:10px;font-size:11px;white-space:nowrap">${d.team||'—'}</span></td>
+      <td>${statusBadge(d.status)}</td>
+      <td style="text-align:center;font-size:11px"><span style="background:var(--gray-100);padding:2px 7px;border-radius:10px">${d.empstatus||'—'}</span></td>
+      <td class="mono" style="text-align:right">${d.fte.toFixed(2)}</td>
+      <td class="mono" style="text-align:right">${fmtW(d.wage)}</td>
+      <td class="mono" style="text-align:right;color:var(--gray-500)">${d.hrs_reg.toLocaleString()}</td>
+      <td class="mono" style="text-align:right;color:${d.hrs_ot>0?'var(--amber)':'var(--gray-500)'}">${d.hrs_ot>0?d.hrs_ot:'—'}</td>
+      <td class="mono" style="text-align:right;color:var(--gray-500)">${d.hrs_pto>0?d.hrs_pto:'—'}</td>
+      <td class="mono" style="text-align:right;color:var(--gray-500)">${d.hrs_sick>0?d.hrs_sick:'—'}</td>
+      <td class="mono" style="text-align:right;font-weight:600">${d.hrs_total.toLocaleString()}</td>
+      <td class="mono" style="text-align:right;color:var(--gray-500)">${fmt$(d.dollars_reg)}</td>
+      <td class="mono" style="text-align:right;color:${d.dollars_ot>0?'var(--amber)':'var(--gray-500)'}">${d.dollars_ot>0?fmt$(d.dollars_ot):'—'}</td>
+      <td class="mono" style="text-align:right;color:var(--gray-500)">${d.dollars_pto>0?fmt$(d.dollars_pto):'—'}</td>
+      <td class="mono" style="text-align:right;color:var(--gray-500)">${d.dollars_sick>0?fmt$(d.dollars_sick):'—'}</td>
+      <td class="mono" style="text-align:right;font-weight:700;color:var(--blue-900)">${d.total>0?fmt$(d.total):'—'}</td>
+      <td>${filledBadge(d.filled)}</td>
+      <td style="font-size:11px;color:var(--blue-700);white-space:nowrap">${(d.role&&(d.role.includes('MA')||d.role.includes('LPN')))?(d.provider||'<span style="color:var(--gray-400);font-style:italic">—</span>'):'<span style="color:var(--gray-300)">—</span>'}</td>
+      <td style="font-size:11px;color:var(--gray-500);max-width:180px">${d.notes}</td>
+      <td style="font-size:11px;white-space:nowrap">${d.action?`<span class="badge badge-action">${d.action}</span>`:''}</td>
+    </tr>`).join('');
+  document.getElementById('recon-count').textContent=data.length+' positions';
+}
+function filterRecon(){
+  const q=(document.getElementById('recon-search').value||'').toLowerCase();
+  const st=document.getElementById('recon-status').value;
+  const fi=document.getElementById('recon-filled').value;
+  const ft=document.getElementById('recon-team').value;
+  let d=DATA.filter(r=>{
+    if(st&&r.status!==st)return false;
+    if(fi&&r.filled!==fi)return false;
+    if(ft&&r.team!==ft)return false;
+    if(q&&!r.bname.toLowerCase().includes(q)&&!r.cname.toLowerCase().includes(q)&&!r.role.toLowerCase().includes(q))return false;
+    return true;
+  });
+  if(sortCol>=0) sortData(d);
+  renderRecon(d);
+}
+function sortRecon(col){
+  if(sortCol===col) sortDir*=-1; else {sortCol=col;sortDir=1;}
+  document.querySelectorAll('#recon-table th').forEach((th,i)=>{th.classList.toggle('sort-asc',i===col&&sortDir===1);th.classList.toggle('sort-desc',i===col&&sortDir===-1);});
+  filterRecon();
+}
+function sortData(d){
+  const keys=['bname','cname','role','status','fte','wage','total','filled','repl','team'];
+  d.sort((a,b)=>{
+    const av=a[keys[sortCol]]||0, bv=b[keys[sortCol]]||0;
+    return typeof av==='number'?(av-bv)*sortDir:String(av).localeCompare(String(bv))*sortDir;
+  });
+}
+
+// ── ACTIONS ───────────────────────────────────────────────────────────────
+function buildActions(){
+  const actions=DATA.filter(d=>d.action);
+  document.getElementById('action-grid').innerHTML=actions.map(d=>`
+    <div class="action-card ${d.status==='Open'?'open':''}">
+      <div class="action-pos">${d.bname}</div>
+      <div class="action-name">${d.cname?'Currently: '+d.cname:'No current staff'}${d.role?' · '+d.role:''}${d.team?' · '+d.team:''}</div>
+      <div class="action-meta">
+        ${statusBadge(d.status)}
+        <span class="mono" style="font-size:11px;color:var(--gray-500)">${d.total>0?fmt$(d.total)+' budgeted':'$0 budgeted'}</span>
+        <span class="mono" style="font-size:11px;color:var(--gray-500)">${d.fte.toFixed(2)} FTE</span>
+      </div>
+      <div class="action-note">${d.action}</div>
+    </div>`).join('');
+}
+
+// ── INACTIVE ──────────────────────────────────────────────────────────────
+function buildInactive(){
+  const inactive=DATA.filter(d=>d.status==='Inactive');
+  const totalLost=inactive.reduce((s,d)=>s+d.total,0);
+  document.getElementById('inactive-body').innerHTML=inactive.map((d,i)=>`
+    <tr>
+      <td style="font-weight:600;color:var(--blue-900)">${d.bname}</td>
+      <td><span style="background:var(--gray-100);padding:2px 8px;border-radius:10px;font-size:11px">${d.role}</span></td>
+      <td><span style="background:var(--blue-100);color:var(--blue-700);padding:2px 8px;border-radius:10px;font-size:11px">${d.team||'—'}</span></td>
+      <td class="mono" style="text-align:right">${d.fte.toFixed(2)}</td>
+      <td class="mono" style="text-align:right;font-weight:600;color:var(--red)">${d.total>0?fmt$(d.total):'—'}</td>
+      <td style="font-size:11px;color:var(--gray-500)">${d.notes}</td>
+    </tr>`).join('')+`
+    <tr style="background:var(--gray-100)">
+      <td colspan="3" style="font-weight:700;color:var(--blue-900);padding:10px 12px">Total Inactive Budget Exposure</td>
+      <td class="mono" style="text-align:right;font-weight:700;color:var(--red)">${fmt$(totalLost)}</td>
+      <td></td>
+    </tr>`;
+}
+
+// ── VACANCIES ────────────────────────────────────────────────────────────
+function buildVacancies(){
+  // Define current open/vacant slots with team context
+  const vacancies = [
+    {team:'TBD',           role:'Travel RN x2',  fte:1.00, budget:0,      priority:'High',   source:'2 travel RN reqs placed',     notes:'2 reqs placed. Bridge coverage for RN gaps — Niederkorn (personal LOA), Vance (medical LOA), and Albach (maternity, Sept 2026). Agency/contract labor; bill rate per contract, tracked outside approved comp budget.'},
+    {team:'Green',         role:'Provider onboarding', fte:1.00, budget:0, priority:'Medium', source:'Dr. Erin Renfrew — onboarding Nov 2026', notes:'Onboarding November 2026 to Green Team (confirmed). Renfrew\'s MA is Amoria (onboarding, floats until Nov).'},
+    {team:'Green',         role:'RN',            fte:1.00, budget:0,      priority:'High',   source:'Green Team RN vacancy',       notes:'Green Team RN open — budget TBD, confirm with Vicki. Approved MAWV RN FTE could be assigned here.'},
+    {team:'Specialty',     role:'MA (Neurology)',fte:1.02, budget:54160,  priority:'Medium', source:'Neurology MA — open requisition', notes:'Supports Dr. Montano (new neurologist, succeeded retired Dr. Bentley). Brandy Prestridge is the MA for Pulmonary (Holcomb) — that slot is filled, not vacant.'},
+    {team:'TBD',           role:'RN',            fte:1.00, budget:79040,  priority:'High',   source:'New FTE: MAWV RN — never filled', notes:'Approved new RN FTE — team assignment TBD. Strong candidate for Triage or Green Team coverage.'},
+    {team:'TBD',           role:'Referral Spec', fte:0.50, budget:21840,  priority:'Medium', source:'New FTE: Referral Specialist',  notes:'0.5 FTE approved — assign to Referrals team once hired'},
+    {team:'TBD',           role:'MA PRN',        fte:0.46, budget:18240,  priority:'Medium', source:'New FTE: PRN MA x4',            notes:'4 PRN MA slots approved — float coverage across all teams'},
+    {team:'TBD',           role:'RN PRN',        fte:0.46, budget:33600,  priority:'Medium', source:'New FTE: PRN RN x4',            notes:'4 PRN RN slots approved — float/triage coverage'},
+    {team:'Unknown',       role:'PSR',           fte:1.02, budget:35069,  priority:'Low',    source:'Ashly Grosso departure',        notes:'Team unknown — confirm with Vicki before posting'},
+    {team:'Unknown',       role:'Unknown',       fte:0.75, budget:35173,  priority:'Low',    source:'Katy Carey departure',          notes:'Role and team unknown — confirm with Vicki'},
+  ];
+
+  const TEAM_COLORS_V = {
+    'Blue':'#1D6FBA','Green':'#1A7A4A','Red':'#C0392B','Specialty':'#6B4FA0',
+    'Ortho':'#C9980A','Behavioral Health':'#2E8B8B','Gen Surgery/Pain':'#6B7280',
+    'Clinic':'#1A3A5C','Referrals':'#4A4A6A','TBD':'#64748B','Unknown':'#9CA3AF',
+  };
+  const TEAM_TINTS_V = {
+    'Blue':'#E8F2FB','Green':'#E8F6EE','Red':'#FDECEA','Specialty':'#F0EBF8',
+    'Ortho':'#FDF5DC','Behavioral Health':'#E6F4F4','Gen Surgery/Pain':'#F3F5F8',
+    'Clinic':'#E8EDF5','Referrals':'#EEEEF4','TBD':'#F0F4F8','Unknown':'#F9FAFB',
+  };
+  const PRIORITY_STYLE = {
+    'High':  {bg:'#FEE2E2',fg:'#B91C1C'},
+    'Medium':{bg:'#FEF3C7',fg:'#B45309'},
+    'Low':   {bg:'#F0F4F8',fg:'#64748B'},
+  };
+
+  // Group by team
+  const byTeam = {};
+  vacancies.forEach(v=>{
+    if(!byTeam[v.team]) byTeam[v.team] = [];
+    byTeam[v.team].push(v);
+  });
+
+  const teamOrder = ['Blue','Red','Green','Specialty','Ortho','Clinic','Gen Surgery/Pain','Behavioral Health','Referrals','TBD','Unknown'];
+
+  let html = '';
+
+  // Summary bar
+  const highCount = vacancies.filter(v=>v.priority==='High').length;
+  const totalBudget = vacancies.reduce((s,v)=>s+v.budget,0);
+  html += `<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;margin-bottom:24px">
+    <div class="kpi-card red">
+      <div class="kpi-label">Total Open Slots</div>
+      <div class="kpi-value">${vacancies.length}</div>
+      <div class="kpi-sub">across all teams</div>
+    </div>
+    <div class="kpi-card amber">
+      <div class="kpi-label">High Priority</div>
+      <div class="kpi-value">${highCount}</div>
+      <div class="kpi-sub">immediate hire needed</div>
+    </div>
+    <div class="kpi-card blue">
+      <div class="kpi-label">Budget Available</div>
+      <div class="kpi-value small">$${Math.round(totalBudget/1000)}K</div>
+      <div class="kpi-sub">for open positions</div>
+    </div>
+    <div class="kpi-card slate">
+      <div class="kpi-label">Teams Affected</div>
+      <div class="kpi-value">${Object.keys(byTeam).length}</div>
+      <div class="kpi-sub">teams with openings</div>
+    </div>
+  </div>`;
+
+  // Team blocks
+  html += '<div style="display:flex;flex-direction:column;gap:16px">';
+  teamOrder.forEach(team=>{
+    if(!byTeam[team]) return;
+    const slots = byTeam[team];
+    const tc = TEAM_COLORS_V[team]||'#64748B';
+    const tint = TEAM_TINTS_V[team]||'#F9FAFB';
+
+    html += `<div class="table-card">
+      <div style="background:${tc};padding:10px 16px;display:flex;align-items:center;justify-content:space-between">
+        <div style="font-weight:700;font-size:13px;color:white">${team} Team</div>
+        <div style="font-size:11px;color:rgba(255,255,255,0.75)">${slots.length} open slot${slots.length!==1?'s':''}</div>
+      </div>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Role Needed</th>
+            <th style="text-align:center">Priority</th>
+            <th style="text-align:right">FTE</th>
+            <th style="text-align:right">Budget</th>
+            <th>Source</th>
+            <th>Placement Notes</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${slots.map(v=>{
+            const ps = PRIORITY_STYLE[v.priority];
+            return `<tr>
+              <td style="font-weight:600;color:var(--blue-900)">${v.role}</td>
+              <td style="text-align:center"><span class="badge" style="background:${ps.bg};color:${ps.fg}">${v.priority}</span></td>
+              <td class="mono" style="text-align:right">${v.fte.toFixed(2)}</td>
+              <td class="mono" style="text-align:right;font-weight:600">$${v.budget.toLocaleString()}</td>
+              <td style="font-size:11px;color:var(--gray-500)">${v.source}</td>
+              <td style="font-size:11px;color:var(--gray-700)">${v.notes}</td>
+            </tr>`;
+          }).join('')}
+        </tbody>
+      </table>
+    </div>`;
+  });
+  html += '</div>';
+
+  document.getElementById('vacancy-grid').innerHTML = html;
+}
+
+// ── NAV ───────────────────────────────────────────────────────────────────
+function showPage(id, el){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  el.classList.add('active');
+}
+
+// ── INIT ──────────────────────────────────────────────────────────────────
+buildDashboard();
+renderRecon(DATA);
+buildActions();
+buildInactive();
+buildVacancies();
+</script>
+</body>
+</html>
