@@ -1,0 +1,957 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Clinic Queue Dashboard — Jan–Apr 2026</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f0f2f5;
+    --surface: #ffffff;
+    --surface2: #e8eaed;
+    --border: #d0d5dd;
+    --text: #1a2030;
+    --muted: #6b7280;
+    --answered: #16a34a;
+    --missed: #dc2626;
+    --voicemail: #b45309;
+    --accent: #2563eb;
+    --answered-dim: rgba(22,163,74,0.12);
+    --missed-dim: rgba(220,38,38,0.12);
+    --voicemail-dim: rgba(180,83,9,0.12);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    padding: 0 0 60px;
+  }
+
+  /* HEADER */
+  .header {
+    background: linear-gradient(135deg, #ffffff 0%, #e8edf5 60%);
+    border-bottom: 1px solid var(--border);
+    padding: 32px 48px 28px;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 300px; height: 300px;
+    background: radial-gradient(circle, rgba(88,166,255,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .header-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  .header h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 2rem;
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+  }
+  .header h1 em {
+    color: var(--accent);
+    font-style: italic;
+  }
+  .header-sub {
+    font-size: 0.8rem;
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-top: 6px;
+  }
+  .header-stats {
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+  .header-stat {
+    text-align: right;
+  }
+  .header-stat .val {
+    font-family: 'DM Mono', monospace;
+    font-size: 1.5rem;
+    font-weight: 500;
+    color: var(--accent);
+    line-height: 1;
+  }
+  .header-stat .lbl {
+    font-size: 0.7rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-top: 3px;
+  }
+
+  /* NAV TABS */
+  .nav-wrapper {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 0 48px;
+    display: flex;
+    gap: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .nav-wrapper::-webkit-scrollbar { display: none; }
+  .tab-btn {
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    color: var(--muted);
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    padding: 14px 18px;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .tab-btn:hover { color: var(--text); }
+  .tab-btn.active {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+  }
+
+  /* MAIN */
+  .main { padding: 36px 48px 0; }
+
+  /* YTD SUMMARY ROW */
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    margin-bottom: 14px;
+  }
+
+  .ytd-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 12px;
+    margin-bottom: 40px;
+  }
+  .ytd-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px 18px;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+  .ytd-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--accent);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.2s;
+  }
+  .ytd-card:hover, .ytd-card.selected {
+    border-color: var(--accent);
+    background: var(--surface2);
+  }
+  .ytd-card:hover::before, .ytd-card.selected::before { transform: scaleX(1); }
+
+  .ytd-card .unit-name {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 10px;
+  }
+  .ytd-card .rate {
+    font-family: 'DM Mono', monospace;
+    font-size: 1.7rem;
+    font-weight: 500;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .ytd-card .rate.high { color: var(--answered); }
+  .ytd-card .rate.med { color: var(--voicemail); }
+  .ytd-card .rate.low { color: var(--missed); }
+  .ytd-card .rate-label { font-size: 0.7rem; color: var(--muted); margin-bottom: 10px; }
+
+  .ytd-mini-bar {
+    height: 5px;
+    border-radius: 3px;
+    background: var(--border);
+    overflow: hidden;
+    display: flex;
+    gap: 1px;
+    margin-bottom: 10px;
+  }
+  .ytd-mini-bar span { height: 100%; border-radius: 2px; }
+
+  .ytd-nums {
+    display: flex;
+    gap: 10px;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+  }
+  .ytd-nums .n { display: flex; align-items: center; gap: 4px; }
+  .ytd-nums .dot { width: 6px; height: 6px; border-radius: 50%; }
+
+  /* UNIT DETAIL PANEL */
+  .unit-panel { display: none; animation: fadeIn 0.25s ease; }
+  .unit-panel.active { display: block; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+  .panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .panel-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.5rem;
+    font-weight: 400;
+  }
+  .panel-badges {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .badge {
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    font-weight: 500;
+    border: 1px solid;
+  }
+  .badge.green { color: var(--answered); border-color: var(--answered); background: var(--answered-dim); }
+  .badge.red { color: var(--missed); border-color: var(--missed); background: var(--missed-dim); }
+  .badge.yellow { color: var(--voicemail); border-color: var(--voicemail); background: var(--voicemail-dim); }
+  .badge.blue { color: var(--accent); border-color: var(--accent); background: rgba(88,166,255,0.12); }
+
+  /* CHARTS ROW */
+  .charts-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+  @media (max-width: 800px) { .charts-row { grid-template-columns: 1fr; } }
+
+  .chart-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px 20px 16px;
+  }
+  .chart-card h3 {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 16px;
+  }
+  .chart-wrap { position: relative; height: 220px; }
+
+  .charts-row-3 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+  @media (max-width: 900px) { .charts-row-3 { grid-template-columns: 1fr; } }
+
+  /* MONTHLY TABLE */
+  .table-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 40px;
+  }
+  .table-card h3 {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border);
+  }
+  table { width: 100%; border-collapse: collapse; }
+  th {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 10px 20px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+  }
+  th:not(:first-child) { text-align: right; }
+  td {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.8rem;
+    padding: 10px 20px;
+    border-bottom: 1px solid rgba(48,54,61,0.5);
+  }
+  td:not(:first-child) { text-align: right; }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: var(--surface2); }
+  .td-rate { font-weight: 500; }
+  .td-rate.high { color: var(--answered); }
+  .td-rate.med { color: var(--voicemail); }
+  .td-rate.low { color: var(--missed); }
+
+  /* ANALYSIS */
+  .analysis-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 40px;
+  }
+  @media (max-width: 800px) { .analysis-grid { grid-template-columns: 1fr; } }
+
+  .insight-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px;
+  }
+  .insight-card .ic-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    margin-bottom: 10px;
+  }
+  .insight-card .ic-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1rem;
+    margin-bottom: 10px;
+    line-height: 1.3;
+  }
+  .insight-card .ic-body {
+    font-size: 0.82rem;
+    color: var(--muted);
+    line-height: 1.65;
+  }
+  .insight-card .ic-body strong { color: var(--text); }
+  .insight-card.warn { border-color: rgba(248,81,73,0.35); }
+  .insight-card.warn .ic-title { color: var(--missed); }
+  .insight-card.good { border-color: rgba(63,185,80,0.35); }
+  .insight-card.good .ic-title { color: var(--answered); }
+  .insight-card.note { border-color: rgba(210,153,34,0.35); }
+  .insight-card.note .ic-title { color: var(--voicemail); }
+  .insight-card.info { border-color: rgba(88,166,255,0.35); }
+  .insight-card.info .ic-title { color: var(--accent); }
+
+  .divider { border: none; border-top: 1px solid var(--border); margin: 36px 0; }
+
+  /* OVERVIEW panel */
+  .overview-panel { display: none; }
+  .overview-panel.active { display: block; }
+
+  .all-units-chart-wrap { position: relative; height: 300px; margin-bottom: 32px; }
+
+  /* scrollbar */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+  .new-badge { background: var(--accent); color: #fff; font-family:'DM Mono',monospace; font-size:0.58rem; padding:2px 6px; border-radius:10px; margin-left:6px; vertical-align:middle; letter-spacing:0.05em; }
+  .qbar-row { display:flex; align-items:center; gap:12px; padding:10px 20px; border-bottom:1px solid rgba(48,54,61,0.35); font-family:'DM Mono',monospace; font-size:0.78rem; }
+  .qbar-row:last-child { border-bottom:none; }
+  .qbar-label { width:140px; flex-shrink:0; color:var(--text); }
+  .qbar-track { flex:1; height:8px; background:var(--surface2); border-radius:4px; overflow:hidden; }
+  .qbar-fill { height:100%; background:var(--voicemail); border-radius:4px; }
+  .qbar-val { width:150px; text-align:right; color:var(--muted); flex-shrink:0; }
+  .source-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:40px; }
+  @media (max-width:800px){ .source-grid{grid-template-columns:1fr;} }
+  .stat-mini-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-bottom:16px; }
+  @media (max-width:800px){ .stat-mini-grid{grid-template-columns:1fr;} }
+  .stat-mini { background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:16px 18px; }
+  .stat-mini .sm-label{font-family:'DM Mono',monospace;font-size:0.68rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:8px;}
+  .stat-mini .sm-val{font-family:'DM Mono',monospace;font-size:1.4rem;font-weight:500;}
+  .stat-mini .sm-sub{font-size:0.75rem;color:var(--muted);margin-top:4px;}
+  .burst-row td { font-size: 0.76rem; }
+  .burst-tag { display:inline-block; padding:1px 7px; border-radius:10px; font-size:0.68rem; margin-right:4px; }
+  .burst-tag.vm { background:var(--voicemail-dim); color:var(--voicemail); }
+  .burst-tag.na { background:var(--missed-dim); color:var(--missed); }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-top">
+    <div>
+      <h1>Clinic Queue <em>Analytics</em></h1>
+      <div class="header-sub">January &ndash; June 2026 &nbsp;&middot;&nbsp; 9 Units &nbsp;&middot;&nbsp; Call Volume, Outcomes &amp; Call Patterns</div>
+    </div>
+    <div class="header-stats" id="headerStats"></div>
+  </div>
+</div>
+
+<div class="nav-wrapper">
+  <button class="tab-btn active" data-tab="overview" onclick="showTab('overview')">Overview</button>
+  <button class="tab-btn" data-tab="BH" onclick="showTab('BH')">BH</button>
+  <button class="tab-btn" data-tab="General Surgery" onclick="showTab('General Surgery')">General Surgery</button>
+  <button class="tab-btn" data-tab="Green Team" onclick="showTab('Green Team')">Green Team</button>
+  <button class="tab-btn" data-tab="Ortho" onclick="showTab('Ortho')">Ortho</button>
+  <button class="tab-btn" data-tab="Red Team" onclick="showTab('Red Team')">Red Team</button>
+  <button class="tab-btn" data-tab="Specialty" onclick="showTab('Specialty')">Specialty</button>
+  <button class="tab-btn" data-tab="Blue Team" onclick="showTab('Blue Team')">Blue Team</button>
+  <button class="tab-btn" data-tab="Clinic Triage" onclick="showTab('Clinic Triage')">Clinic Triage</button>
+  <button class="tab-btn" data-tab="Pain Management" onclick="showTab('Pain Management')">Pain Management<span class="new-badge">NEW</span></button>
+</div>
+
+<div class="main" id="mainContent"></div>
+
+<script>
+const DATA = {"BH": {"monthly": [{"month": 1, "monthName": "Jan", "answered": 379, "noAnswer": 14, "voicemail": 13, "total": 406, "answerRate": 93.3}, {"month": 2, "monthName": "Feb", "answered": 312, "noAnswer": 15, "voicemail": 3, "total": 330, "answerRate": 94.5}, {"month": 3, "monthName": "Mar", "answered": 347, "noAnswer": 13, "voicemail": 4, "total": 364, "answerRate": 95.3}, {"month": 4, "monthName": "Apr", "answered": 322, "noAnswer": 5, "voicemail": 9, "total": 336, "answerRate": 95.8}, {"month": 5, "monthName": "May", "answered": 318, "noAnswer": 9, "voicemail": 4, "total": 331, "answerRate": 96.1}, {"month": 6, "monthName": "Jun", "answered": 339, "noAnswer": 12, "voicemail": 6, "total": 357, "answerRate": 95.0}], "ytd": {"answered": 2017, "noAnswer": 68, "voicemail": 39, "total": 2124, "answerRate": 95.0}, "isNew": false}, "General Surgery": {"monthly": [{"month": 1, "monthName": "Jan", "answered": 15, "noAnswer": 3, "voicemail": 27, "total": 45, "answerRate": 33.3}, {"month": 2, "monthName": "Feb", "answered": 9, "noAnswer": 3, "voicemail": 17, "total": 29, "answerRate": 31.0}, {"month": 3, "monthName": "Mar", "answered": 17, "noAnswer": 2, "voicemail": 20, "total": 39, "answerRate": 43.6}, {"month": 4, "monthName": "Apr", "answered": 15, "noAnswer": 0, "voicemail": 16, "total": 31, "answerRate": 48.4}, {"month": 5, "monthName": "May", "answered": 3, "noAnswer": 1, "voicemail": 21, "total": 25, "answerRate": 12.0}, {"month": 6, "monthName": "Jun", "answered": 13, "noAnswer": 0, "voicemail": 24, "total": 37, "answerRate": 35.1}], "ytd": {"answered": 72, "noAnswer": 9, "voicemail": 125, "total": 206, "answerRate": 35.0}, "isNew": false}, "Green Team": {"monthly": [{"month": 1, "monthName": "Jan", "answered": 63, "noAnswer": 18, "voicemail": 157, "total": 238, "answerRate": 26.5}, {"month": 2, "monthName": "Feb", "answered": 53, "noAnswer": 15, "voicemail": 138, "total": 206, "answerRate": 25.7}, {"month": 3, "monthName": "Mar", "answered": 25, "noAnswer": 4, "voicemail": 106, "total": 135, "answerRate": 18.5}, {"month": 4, "monthName": "Apr", "answered": 40, "noAnswer": 15, "voicemail": 102, "total": 157, "answerRate": 25.5}, {"month": 5, "monthName": "May", "answered": 31, "noAnswer": 6, "voicemail": 103, "total": 140, "answerRate": 22.1}, {"month": 6, "monthName": "Jun", "answered": 29, "noAnswer": 12, "voicemail": 90, "total": 131, "answerRate": 22.1}], "ytd": {"answered": 241, "noAnswer": 70, "voicemail": 696, "total": 1007, "answerRate": 23.9}, "isNew": false}, "Ortho": {"monthly": [{"month": 1, "monthName": "Jan", "answered": 17, "noAnswer": 4, "voicemail": 95, "total": 116, "answerRate": 14.7}, {"month": 2, "monthName": "Feb", "answered": 22, "noAnswer": 10, "voicemail": 57, "total": 89, "answerRate": 24.7}, {"month": 3, "monthName": "Mar", "answered": 29, "noAnswer": 7, "voicemail": 52, "total": 88, "answerRate": 33.0}, {"month": 4, "monthName": "Apr", "answered": 12, "noAnswer": 8, "voicemail": 59, "total": 79, "answerRate": 15.2}, {"month": 5, "monthName": "May", "answered": 17, "noAnswer": 0, "voicemail": 78, "total": 95, "answerRate": 17.9}, {"month": 6, "monthName": "Jun", "answered": 16, "noAnswer": 1, "voicemail": 83, "total": 100, "answerRate": 16.0}], "ytd": {"answered": 113, "noAnswer": 30, "voicemail": 424, "total": 567, "answerRate": 19.9}, "isNew": false}, "Red Team": {"monthly": [{"month": 1, "monthName": "Jan", "answered": 40, "noAnswer": 4, "voicemail": 97, "total": 141, "answerRate": 28.4}, {"month": 2, "monthName": "Feb", "answered": 81, "noAnswer": 18, "voicemail": 117, "total": 216, "answerRate": 37.5}, {"month": 3, "monthName": "Mar", "answered": 68, "noAnswer": 9, "voicemail": 200, "total": 277, "answerRate": 24.5}, {"month": 4, "monthName": "Apr", "answered": 87, "noAnswer": 9, "voicemail": 181, "total": 277, "answerRate": 31.4}, {"month": 5, "monthName": "May", "answered": 71, "noAnswer": 3, "voicemail": 182, "total": 256, "answerRate": 27.7}, {"month": 6, "monthName": "Jun", "answered": 57, "noAnswer": 3, "voicemail": 197, "total": 257, "answerRate": 22.2}], "ytd": {"answered": 404, "noAnswer": 46, "voicemail": 974, "total": 1424, "answerRate": 28.4}, "isNew": false}, "Specialty": {"monthly": [{"month": 1, "monthName": "Jan", "answered": 27, "noAnswer": 11, "voicemail": 127, "total": 165, "answerRate": 16.4}, {"month": 2, "monthName": "Feb", "answered": 22, "noAnswer": 11, "voicemail": 113, "total": 146, "answerRate": 15.1}, {"month": 3, "monthName": "Mar", "answered": 20, "noAnswer": 14, "voicemail": 140, "total": 174, "answerRate": 11.5}, {"month": 4, "monthName": "Apr", "answered": 18, "noAnswer": 15, "voicemail": 122, "total": 155, "answerRate": 11.6}, {"month": 5, "monthName": "May", "answered": 31, "noAnswer": 3, "voicemail": 126, "total": 160, "answerRate": 19.4}, {"month": 6, "monthName": "Jun", "answered": 36, "noAnswer": 2, "voicemail": 136, "total": 174, "answerRate": 20.7}], "ytd": {"answered": 154, "noAnswer": 56, "voicemail": 764, "total": 974, "answerRate": 15.8}, "isNew": false}, "Blue Team": {"monthly": [{"month": 1, "monthName": "Jan", "answered": 409, "noAnswer": 70, "voicemail": 263, "total": 742, "answerRate": 55.1}, {"month": 2, "monthName": "Feb", "answered": 802, "noAnswer": 152, "voicemail": 195, "total": 1149, "answerRate": 69.8}, {"month": 3, "monthName": "Mar", "answered": 801, "noAnswer": 183, "voicemail": 150, "total": 1134, "answerRate": 70.6}, {"month": 4, "monthName": "Apr", "answered": 821, "noAnswer": 199, "voicemail": 129, "total": 1149, "answerRate": 71.5}, {"month": 5, "monthName": "May", "answered": 811, "noAnswer": 31, "voicemail": 152, "total": 994, "answerRate": 81.6}, {"month": 6, "monthName": "Jun", "answered": 904, "noAnswer": 23, "voicemail": 175, "total": 1102, "answerRate": 82.0}], "ytd": {"answered": 4548, "noAnswer": 658, "voicemail": 1064, "total": 6270, "answerRate": 72.5}, "isNew": false}, "Clinic Triage": {"monthly": [{"month": 1, "monthName": "Jan", "answered": 113, "noAnswer": 33, "voicemail": 129, "total": 275, "answerRate": 41.1}, {"month": 2, "monthName": "Feb", "answered": 110, "noAnswer": 33, "voicemail": 138, "total": 281, "answerRate": 39.1}, {"month": 3, "monthName": "Mar", "answered": 146, "noAnswer": 35, "voicemail": 81, "total": 262, "answerRate": 55.7}, {"month": 4, "monthName": "Apr", "answered": 123, "noAnswer": 23, "voicemail": 104, "total": 250, "answerRate": 49.2}, {"month": 5, "monthName": "May", "answered": 100, "noAnswer": 16, "voicemail": 98, "total": 214, "answerRate": 46.7}, {"month": 6, "monthName": "Jun", "answered": 106, "noAnswer": 19, "voicemail": 96, "total": 221, "answerRate": 48.0}], "ytd": {"answered": 698, "noAnswer": 159, "voicemail": 646, "total": 1503, "answerRate": 46.4}, "isNew": false}, "Pain Management": {"monthly": [{"month": 5, "monthName": "May", "answered": 8, "noAnswer": 0, "voicemail": 27, "total": 35, "answerRate": 22.9}, {"month": 6, "monthName": "Jun", "answered": 11, "noAnswer": 2, "voicemail": 18, "total": 31, "answerRate": 35.5}], "ytd": {"answered": 19, "noAnswer": 2, "voicemail": 45, "total": 66, "answerRate": 28.8}, "isNew": true}};
+const VM_QUALITY = {"BH": {"totalVoicemails": 10, "shortVoicemails": 1, "shortPct": 10.0}, "Blue Team": {"totalVoicemails": 327, "shortVoicemails": 13, "shortPct": 4.0}, "Clinic Triage": {"totalVoicemails": 194, "shortVoicemails": 4, "shortPct": 2.1}, "General Surgery": {"totalVoicemails": 45, "shortVoicemails": 4, "shortPct": 8.9}, "Green Team": {"totalVoicemails": 193, "shortVoicemails": 14, "shortPct": 7.3}, "Ortho": {"totalVoicemails": 161, "shortVoicemails": 2, "shortPct": 1.2}, "Pain Management": {"totalVoicemails": 45, "shortVoicemails": 2, "shortPct": 4.4}, "Red Team": {"totalVoicemails": 379, "shortVoicemails": 9, "shortPct": 2.4}, "Specialty": {"totalVoicemails": 262, "shortVoicemails": 5, "shortPct": 1.9}};
+const SOURCE_BREAKDOWN = {"BH": {"internalCalls": 674, "externalCalls": 14, "topInternal": [{"ext": "3831", "count": 41}, {"ext": "3908", "count": 39}, {"ext": "3997", "count": 29}, {"ext": "3931", "count": 27}, {"ext": "3986", "count": 25}, {"ext": "3849", "count": 23}, {"ext": "3935", "count": 23}, {"ext": "3886", "count": 21}], "topExternal": [{"number": "9709464789", "count": 2}, {"number": "9705071112", "count": 2}, {"number": "5757593291", "count": 2}, {"number": "9705080036", "count": 1}, {"number": "5753775881", "count": 1}, {"number": "3039952888", "count": 1}, {"number": "7207713331", "count": 1}, {"number": "9707314330", "count": 1}]}, "Blue Team": {"internalCalls": 1032, "externalCalls": 1064, "topInternal": [{"ext": "8408", "count": 348}, {"ext": "3970", "count": 328}, {"ext": "3865", "count": 32}, {"ext": "3864", "count": 21}, {"ext": "3986", "count": 18}, {"ext": "3849", "count": 18}, {"ext": "3831", "count": 13}, {"ext": "3866", "count": 13}], "topExternal": [{"number": "9707313700", "count": 87}, {"number": "5757593291", "count": 19}, {"number": "Unknown/Blocked", "count": 18}, {"number": "5052651711", "count": 17}, {"number": "9707319017", "count": 7}, {"number": "9702642104", "count": 7}, {"number": "9709468281", "count": 7}, {"number": "5054696741", "count": 7}]}, "Clinic Triage": {"internalCalls": 70, "externalCalls": 365, "topInternal": [{"ext": "3853", "count": 19}, {"ext": "3852", "count": 14}, {"ext": "3781", "count": 7}, {"ext": "3970", "count": 6}, {"ext": "3788", "count": 4}, {"ext": "3783", "count": 4}, {"ext": "3764", "count": 3}, {"ext": "3775", "count": 2}], "topExternal": [{"number": "9703821750", "count": 8}, {"number": "7192982722", "count": 5}, {"number": "9707319017", "count": 5}, {"number": "5757593291", "count": 5}, {"number": "9707316006", "count": 5}, {"number": "2082969401", "count": 5}, {"number": "5054129293", "count": 4}, {"number": "9705854065", "count": 4}]}, "General Surgery": {"internalCalls": 10, "externalCalls": 52, "topInternal": [{"ext": "3970", "count": 2}, {"ext": "3868", "count": 2}, {"ext": "3929", "count": 1}, {"ext": "3781", "count": 1}, {"ext": "3974", "count": 1}, {"ext": "3908", "count": 1}, {"ext": "3873", "count": 1}, {"ext": "3939", "count": 1}], "topExternal": [{"number": "9705854141", "count": 7}, {"number": "5757593291", "count": 3}, {"number": "9703095035", "count": 2}, {"number": "9707314330", "count": 2}, {"number": "9014878889", "count": 2}, {"number": "9703980002", "count": 2}, {"number": "9704222689", "count": 2}, {"number": "5055775491", "count": 2}]}, "Green Team": {"internalCalls": 70, "externalCalls": 201, "topInternal": [{"ext": "3855", "count": 26}, {"ext": "3802", "count": 5}, {"ext": "3931", "count": 4}, {"ext": "3831", "count": 3}, {"ext": "3852", "count": 3}, {"ext": "3970", "count": 3}, {"ext": "3781", "count": 3}, {"ext": "3947", "count": 3}], "topExternal": [{"number": "9707316006", "count": 10}, {"number": "9705070847", "count": 7}, {"number": "5052494578", "count": 6}, {"number": "9707319017", "count": 5}, {"number": "5054129293", "count": 5}, {"number": "5614007724", "count": 5}, {"number": "9703175553", "count": 4}, {"number": "9405973891", "count": 4}]}, "Ortho": {"internalCalls": 10, "externalCalls": 185, "topInternal": [{"ext": "4003", "count": 3}, {"ext": "3873", "count": 2}, {"ext": "3939", "count": 2}, {"ext": "3970", "count": 2}, {"ext": "3863", "count": 1}], "topExternal": [{"number": "7199378707", "count": 6}, {"number": "5757593291", "count": 5}, {"number": "6194051965", "count": 4}, {"number": "8189037949", "count": 4}, {"number": "5754192092", "count": 4}, {"number": "9709465143", "count": 4}, {"number": "7022800447", "count": 3}, {"number": "2693133684", "count": 3}]}, "Pain Management": {"internalCalls": 14, "externalCalls": 52, "topInternal": [{"ext": "3849", "count": 3}, {"ext": "3951", "count": 2}, {"ext": "3949", "count": 1}, {"ext": "3908", "count": 1}, {"ext": "3916", "count": 1}, {"ext": "3994", "count": 1}, {"ext": "3799", "count": 1}, {"ext": "3873", "count": 1}], "topExternal": [{"number": "5054706581", "count": 6}, {"number": "9703179975", "count": 5}, {"number": "9705854918", "count": 4}, {"number": "9709468450", "count": 3}, {"number": "7604456164", "count": 3}, {"number": "5754190681", "count": 2}, {"number": "3039015290", "count": 2}, {"number": "2133089446", "count": 2}]}, "Red Team": {"internalCalls": 50, "externalCalls": 463, "topInternal": [{"ext": "3970", "count": 9}, {"ext": "3781", "count": 6}, {"ext": "3802", "count": 3}, {"ext": "3935", "count": 3}, {"ext": "3855", "count": 2}, {"ext": "6012", "count": 2}, {"ext": "3908", "count": 2}, {"ext": "3916", "count": 2}], "topExternal": [{"number": "9707319017", "count": 22}, {"number": "8287133335", "count": 15}, {"number": "9707316006", "count": 9}, {"number": "9709465325", "count": 8}, {"number": "9702647855", "count": 7}, {"number": "9707598167", "count": 6}, {"number": "9707491028", "count": 5}, {"number": "9705080036", "count": 5}]}, "Specialty": {"internalCalls": 27, "externalCalls": 307, "topInternal": [{"ext": "3970", "count": 8}, {"ext": "3873", "count": 4}, {"ext": "3813", "count": 4}, {"ext": "3983", "count": 2}, {"ext": "4003", "count": 2}, {"ext": "3831", "count": 1}, {"ext": "3887", "count": 1}, {"ext": "3868", "count": 1}], "topExternal": [{"number": "3042991952", "count": 14}, {"number": "4808613250", "count": 8}, {"number": "9705704030", "count": 6}, {"number": "9186059826", "count": 6}, {"number": "6618051421", "count": 5}, {"number": "9709031931", "count": 4}, {"number": "9707319017", "count": 4}, {"number": "2105770542", "count": 4}]}};
+const DURATION_STATS = {"BH": {"avgSec": 130.1, "medianSec": 82, "maxSec": 1755, "count": 657}, "Blue Team": {"avgSec": 289.7, "medianSec": 205, "maxSec": 2119, "count": 1715}, "Clinic Triage": {"avgSec": 171.0, "medianSec": 110.5, "maxSec": 1058, "count": 206}, "General Surgery": {"avgSec": 97.1, "medianSec": 87.0, "maxSec": 216, "count": 16}, "Green Team": {"avgSec": 92.7, "medianSec": 66.0, "maxSec": 504, "count": 60}, "Ortho": {"avgSec": 109.1, "medianSec": 103, "maxSec": 318, "count": 33}, "Pain Management": {"avgSec": 137.1, "medianSec": 78, "maxSec": 527, "count": 19}, "Red Team": {"avgSec": 119.6, "medianSec": 86.0, "maxSec": 629, "count": 128}, "Specialty": {"avgSec": 152.4, "medianSec": 107, "maxSec": 973, "count": 67}};
+const DURATION_DISTRIBUTION = {"0-1m": 837, "1-2m": 554, "2-3m": 340, "3-5m": 414, "5-10m": 498, "10m+": 258};
+const BURSTS = [{"team": "Green Team", "source": "3855", "count": 9, "start": "2026-06-26T16:39:00", "end": "2026-06-26T16:45:00", "avgDuration": 8.4, "outcomes": {"Voicemail": 3, "No Answer": 6}}, {"team": "Blue Team", "source": "3855", "count": 5, "start": "2026-05-01T10:55:00", "end": "2026-05-01T11:23:00", "avgDuration": 3.2, "outcomes": {"Voicemail": 4, "No Answer": 1}}, {"team": "Clinic Triage", "source": "2082969401", "count": 4, "start": "2026-06-23T15:58:00", "end": "2026-06-23T16:27:00", "avgDuration": 35.8, "outcomes": {"No Answer": 2, "Voicemail": 2}}, {"team": "BH", "source": "3831", "count": 3, "start": "2026-06-10T10:41:00", "end": "2026-06-10T10:41:00", "avgDuration": 0.3, "outcomes": {"No Answer": 3}}, {"team": "Clinic Triage", "source": "9703821750", "count": 3, "start": "2026-05-07T09:47:00", "end": "2026-05-07T10:03:00", "avgDuration": 17, "outcomes": {"Voicemail": 2, "No Answer": 1}}];
+const UNITS = ["BH","General Surgery","Green Team","Ortho","Red Team","Specialty","Blue Team","Clinic Triage","Pain Management"];
+const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun'];
+const chartInstances = {};
+
+function rateClass(r) {
+  if (r >= 80) return 'high';
+  if (r >= 40) return 'med';
+  return 'low';
+}
+
+function fmtSec(s) {
+  s = Math.round(s);
+  const m = Math.floor(s/60), sec = s%60;
+  return `${m}:${sec.toString().padStart(2,'0')}`;
+}
+
+function fmtDT(iso) {
+  const d = new Date(iso);
+  return d.toLocaleString('en-US', {month:'short', day:'numeric', hour:'numeric', minute:'2-digit'});
+}
+
+function totalYTD() {
+  let a=0,n=0,v=0,t=0;
+  UNITS.forEach(u => { a+=DATA[u].ytd.answered; n+=DATA[u].ytd.noAnswer; v+=DATA[u].ytd.voicemail; t+=DATA[u].ytd.total; });
+  return { answered:a, noAnswer:n, voicemail:v, total:t, answerRate: t ? Math.round(a/t*1000)/10 : 0 };
+}
+
+// Header stats
+(function() {
+  const tot = totalYTD();
+  const el = document.getElementById('headerStats');
+  el.innerHTML = `
+    <div class="header-stat"><div class="val">${tot.total.toLocaleString()}</div><div class="lbl">Total Calls (6 mo)</div></div>
+    <div class="header-stat"><div class="val" style="color:var(--answered)">${tot.answerRate}%</div><div class="lbl">Avg Answer Rate</div></div>
+    <div class="header-stat"><div class="val" style="color:var(--missed)">${tot.noAnswer.toLocaleString()}</div><div class="lbl">No Answer (6 mo)</div></div>
+  `;
+})();
+
+function destroyChart(id) {
+  if (chartInstances[id]) { chartInstances[id].destroy(); delete chartInstances[id]; }
+}
+
+function makeChart(id, config) {
+  destroyChart(id);
+  const ctx = document.getElementById(id);
+  if (ctx) chartInstances[id] = new Chart(ctx, config);
+}
+
+const gridColor = 'rgba(208,213,221,0.7)';
+const tickColor = '#6b7280';
+const baseChartOpts = {
+  responsive: true,
+  maintainAspectRatio: false,
+  plugins: { legend: { display: false }, tooltip: { backgroundColor: '#1a2030', borderColor: '#d0d5dd', borderWidth: 1, titleColor: '#f9fafb', bodyColor: '#9ca3af', padding: 10 } },
+  scales: {
+    x: { grid: { color: gridColor }, ticks: { color: tickColor, font: { family: 'DM Mono', size: 11 } } },
+    y: { grid: { color: gridColor }, ticks: { color: tickColor, font: { family: 'DM Mono', size: 11 } } }
+  }
+};
+
+function buildOverview() {
+  const el = document.getElementById('mainContent');
+  const tot = totalYTD();
+
+  // YTD cards
+  let ytdCards = '';
+  UNITS.forEach(u => {
+    const d = DATA[u].ytd;
+    const rc = rateClass(d.answerRate);
+    const aW = Math.round(d.answered/d.total*100);
+    const nW = Math.round(d.noAnswer/d.total*100);
+    const vW = 100-aW-nW;
+    const newTag = DATA[u].isNew ? '<span class="new-badge">NEW</span>' : '';
+    ytdCards += `
+      <div class="ytd-card" onclick="showTab('${u.replace(/'/g,"\\'")}')">
+        <div class="unit-name">${u}${newTag}</div>
+        <div class="rate ${rc}">${d.answerRate}%</div>
+        <div class="rate-label">Answer Rate</div>
+        <div class="ytd-mini-bar">
+          <span style="width:${aW}%;background:var(--answered)"></span>
+          <span style="width:${nW}%;background:var(--missed)"></span>
+          <span style="width:${vW}%;background:var(--voicemail)"></span>
+        </div>
+        <div class="ytd-nums">
+          <span class="n"><span class="dot" style="background:var(--answered)"></span>${d.answered.toLocaleString()}</span>
+          <span class="n"><span class="dot" style="background:var(--missed)"></span>${d.noAnswer}</span>
+          <span class="n"><span class="dot" style="background:var(--voicemail)"></span>${d.voicemail}</span>
+        </div>
+      </div>`;
+  });
+
+  // Voicemail quality bars (sorted worst first)
+  const vmSorted = UNITS.filter(u => VM_QUALITY[u].totalVoicemails > 0)
+    .slice().sort((a,b) => VM_QUALITY[b].shortPct - VM_QUALITY[a].shortPct);
+  let qbarRows = '';
+  vmSorted.forEach(u => {
+    const q = VM_QUALITY[u];
+    qbarRows += `
+      <div class="qbar-row">
+        <div class="qbar-label">${u}</div>
+        <div class="qbar-track"><div class="qbar-fill" style="width:${Math.min(q.shortPct*4,100)}%"></div></div>
+        <div class="qbar-val">${q.shortVoicemails} / ${q.totalVoicemails} &nbsp;(${q.shortPct}%)</div>
+      </div>`;
+  });
+
+  // Burst alerts table (top repeat-caller clusters, cross-team)
+  let burstRows = '';
+  BURSTS.slice(0, 12).forEach(b => {
+    const outcomeTags = Object.entries(b.outcomes).map(([k,v]) => {
+      const cls = k === 'Voicemail' ? 'vm' : (k === 'No Answer' ? 'na' : '');
+      return `<span class="burst-tag ${cls}">${v} ${k}</span>`;
+    }).join('');
+    burstRows += `<tr class="burst-row">
+      <td>${b.team}</td>
+      <td>${b.source}</td>
+      <td>${b.count}</td>
+      <td>${fmtDT(b.start)} &ndash; ${fmtDT(b.end)}</td>
+      <td>${fmtSec(b.avgDuration)}</td>
+      <td>${outcomeTags}</td>
+    </tr>`;
+  });
+
+  el.innerHTML = `
+    <div class="overview-panel active" id="panel-overview">
+      <div class="section-label">YTD Summary (Jan&ndash;Jun) &mdash; Click a unit to drill down</div>
+      <div class="ytd-grid">${ytdCards}</div>
+
+      <div class="section-label">Answer Rate by Unit &mdash; Monthly Trend</div>
+      <div class="chart-card" style="margin-bottom:32px">
+        <h3>Answer Rate % &mdash; All Units (Jan&ndash;Jun)</h3>
+        <div style="position:relative;height:280px"><canvas id="overviewLine"></canvas></div>
+      </div>
+
+      <div class="section-label">Total Call Volume &mdash; All Units, 6 Months</div>
+      <div class="charts-row" style="margin-bottom:32px">
+        <div class="chart-card">
+          <h3>Call Volume by Unit (Jan&ndash;Jun)</h3>
+          <div class="chart-wrap"><canvas id="overviewBar"></canvas></div>
+        </div>
+        <div class="chart-card">
+          <h3>Outcome Distribution &mdash; All Units Combined</h3>
+          <div class="chart-wrap"><canvas id="overviewDoughnut"></canvas></div>
+        </div>
+      </div>
+
+      <div class="section-label">Call Patterns &mdash; New From May/June Detail Data</div>
+      <div class="charts-row" style="margin-bottom:16px">
+        <div class="chart-card">
+          <h3>Answered Call Duration &mdash; Distribution (May&ndash;Jun, all units)</h3>
+          <div class="chart-wrap"><canvas id="overviewDuration"></canvas></div>
+        </div>
+        <div class="chart-card">
+          <h3>Voicemail Quality &mdash; % Under 10 Sec (likely no message left)</h3>
+          <div style="max-height:260px;overflow-y:auto">${qbarRows}</div>
+        </div>
+      </div>
+
+      <div class="table-card">
+        <h3>Repeat-Caller Bursts &mdash; Same Number, 3+ Calls Within 30 Min (May&ndash;Jun)</h3>
+        <table>
+          <thead><tr><th>Unit</th><th>Source</th><th>Calls</th><th>Window</th><th>Avg Duration</th><th>Outcomes</th></tr></thead>
+          <tbody>${burstRows}</tbody>
+        </table>
+      </div>
+
+      <div class="section-label">Analysis &amp; Insights</div>
+      <div class="analysis-grid">
+        <div class="insight-card good">
+          <div class="ic-label">Top Performer</div>
+          <div class="ic-title">BH holds a 95% answer rate through June</div>
+          <div class="ic-body">BH answered <strong>2,017 of 2,124 calls</strong> across six months &mdash; the highest answer rate of any unit and the only one consistently above 90%. May peaked at <strong>96.1%</strong> before a slight dip to 95.0% in June. Very low voicemail usage (39 total) points to strong live staffing.</div>
+        </div>
+        <div class="insight-card good">
+          <div class="ic-label">Turnaround</div>
+          <div class="ic-title">Blue Team's answer rate climbed to 82% by June</div>
+          <div class="ic-body">Blue Team handles more volume than any other unit (<strong>6,270 calls</strong>, 44% of all clinic calls) and its answer rate kept improving &mdash; from 55.1% in January to <strong>81.6% in May and 82.0% in June</strong>, even as call duration data shows an average talk time of 4:50, the longest of any unit, consistent with more complex calls being resolved live rather than pushed to voicemail.</div>
+        </div>
+        <div class="insight-card warn">
+          <div class="ic-label">Critical Concern</div>
+          <div class="ic-title">Specialty and Ortho remain the weakest live-answer units</div>
+          <div class="ic-body">Specialty (15.8% YTD) and Ortho (19.9% YTD) still route the large majority of calls to voicemail. Specialty did improve in May&ndash;June (19.4% &rarr; 20.7%) after bottoming out at 11.5&ndash;11.6% in Mar&ndash;Apr, but Ortho slipped back down to 16.0% in June after a 33.0% high in March &mdash; a pattern worth a staffing review.</div>
+        </div>
+        <div class="insight-card note">
+          <div class="ic-label">Voicemail Quality</div>
+          <div class="ic-title">IT's Blue Team observation generalizes across units</div>
+          <div class="ic-body">IT flagged a Blue Team extension calling repeatedly with ~4-second voicemails. The full May&ndash;June data confirms that pattern (Blue Team ext. 3855, 5 calls in 28 minutes, avg 3.2s) and shows it recurring elsewhere &mdash; see the burst table above. Overall, <strong>54 of 1,616 voicemails (3.3%)</strong> clinic-wide are under 10 seconds, meaning the call reached voicemail but almost certainly no message was left, so a callback list built purely from "left a voicemail" counts would overstate real follow-up needs.</div>
+        </div>
+        <div class="insight-card info">
+          <div class="ic-label">New Queue</div>
+          <div class="ic-title">Pain Management is now being tracked separately</div>
+          <div class="ic-body">This is the first report period with Pain Management broken out as its own queue. It ran a <strong>28.8% answer rate</strong> on 66 calls in May&ndash;June, with the majority (45 of 66) going to voicemail &mdash; a starting baseline to compare future months against.</div>
+        </div>
+        <div class="insight-card note">
+          <div class="ic-label">Known Data Gap</div>
+          <div class="ic-title">IT could not identify which staff member answered each call</div>
+          <div class="ic-body">Because Queue-level reporting shows the queue number as the answering party, none of the outcome or duration figures above can currently be attributed to an individual. This affects any future analysis of individual staff performance &mdash; worth flagging as a system limitation rather than a coverage gap.</div>
+        </div>
+      </div>
+    </div>`;
+
+  setTimeout(() => {
+    const unitColors = ['#3fb950','#58a6ff','#d29922','#f85149','#a371f7','#39d353','#79c0ff','#ffa657','#ff7eb6'];
+    makeChart('overviewLine', {
+      type: 'line',
+      data: {
+        labels: MONTHS,
+        datasets: UNITS.map((u,i) => ({
+          label: u,
+          data: DATA[u].monthly.map(m => m.answerRate),
+          borderColor: unitColors[i],
+          backgroundColor: 'transparent',
+          borderWidth: 2,
+          pointRadius: 4,
+          pointHoverRadius: 6,
+          tension: 0.35,
+          spanGaps: true
+        }))
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: {
+          legend: { display: true, position: 'bottom', labels: { color: '#6b7280', font: { family: 'DM Mono', size: 10 }, boxWidth: 12, padding: 16 } },
+          tooltip: { backgroundColor: '#1a2030', borderColor: '#d0d5dd', borderWidth: 1, titleColor: '#f9fafb', bodyColor: '#9ca3af', padding: 10,
+            callbacks: { label: ctx => ` ${ctx.dataset.label}: ${ctx.parsed.y}%` }
+          }
+        },
+        scales: {
+          x: { grid: { color: gridColor }, ticks: { color: tickColor, font: { family: 'DM Mono', size: 11 } } },
+          y: { grid: { color: gridColor }, ticks: { color: tickColor, font: { family: 'DM Mono', size: 11 }, callback: v => v+'%' }, min: 0, max: 100 }
+        }
+      }
+    });
+
+    makeChart('overviewBar', {
+      type: 'bar',
+      data: {
+        labels: UNITS,
+        datasets: [
+          { label: 'Answered', data: UNITS.map(u => DATA[u].ytd.answered), backgroundColor: 'rgba(63,185,80,0.75)', borderRadius: 4 },
+          { label: 'No Answer', data: UNITS.map(u => DATA[u].ytd.noAnswer), backgroundColor: 'rgba(248,81,73,0.75)', borderRadius: 4 },
+          { label: 'Voicemail', data: UNITS.map(u => DATA[u].ytd.voicemail), backgroundColor: 'rgba(210,153,34,0.75)', borderRadius: 4 }
+        ]
+      },
+      options: {
+        ...baseChartOpts,
+        plugins: { ...baseChartOpts.plugins, legend: { display: true, position: 'bottom', labels: { color: '#6b7280', font: { family: 'DM Mono', size: 10 }, boxWidth: 12, padding: 12 } } },
+        scales: { ...baseChartOpts.scales, x: { ...baseChartOpts.scales.x, stacked: true, ticks: { color: tickColor, font: { family: 'DM Mono', size: 9 } } }, y: { ...baseChartOpts.scales.y, stacked: true } }
+      }
+    });
+
+    const tot = totalYTD();
+    makeChart('overviewDoughnut', {
+      type: 'doughnut',
+      data: {
+        labels: ['Answered','No Answer','Voicemail'],
+        datasets: [{ data: [tot.answered, tot.noAnswer, tot.voicemail], backgroundColor: ['rgba(63,185,80,0.85)','rgba(248,81,73,0.85)','rgba(210,153,34,0.85)'], borderColor: '#ffffff', borderWidth: 3, hoverOffset: 6 }]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false, cutout: '65%',
+        plugins: {
+          legend: { display: true, position: 'bottom', labels: { color: '#6b7280', font: { family: 'DM Mono', size: 10 }, boxWidth: 12, padding: 14 } },
+          tooltip: { backgroundColor: '#1a2030', borderColor: '#d0d5dd', borderWidth: 1, titleColor: '#f9fafb', bodyColor: '#9ca3af', padding: 10,
+            callbacks: { label: ctx => ` ${ctx.label}: ${ctx.parsed.toLocaleString()} (${Math.round(ctx.parsed/tot.total*1000)/10}%)` }
+          }
+        }
+      }
+    });
+
+    const durLabels = Object.keys(DURATION_DISTRIBUTION);
+    makeChart('overviewDuration', {
+      type: 'bar',
+      data: {
+        labels: durLabels,
+        datasets: [{ label: 'Answered Calls', data: durLabels.map(k => DURATION_DISTRIBUTION[k]), backgroundColor: 'rgba(88,166,255,0.7)', borderRadius: 4 }]
+      },
+      options: { ...baseChartOpts }
+    });
+  }, 50);
+}
+
+function buildUnitPanel(unit) {
+  const d = DATA[unit];
+  const ytd = d.ytd;
+  const rc = rateClass(ytd.answerRate);
+  const months = d.monthly;
+  const monthLabels = months.map(m => m.monthName);
+  const vmq = VM_QUALITY[unit] || {totalVoicemails:0, shortVoicemails:0, shortPct:0};
+  const dur = DURATION_STATS[unit] || {avgSec:0, medianSec:0, maxSec:0, count:0};
+  const src = SOURCE_BREAKDOWN[unit] || {internalCalls:0, externalCalls:0, topInternal:[], topExternal:[]};
+  const unitBursts = BURSTS.filter(b => b.team === unit);
+
+  const first = months[0].answerRate;
+  const last = months[months.length-1].answerRate;
+  const trend = last - first;
+  const trendStr = trend > 0 ? `↑ +${trend.toFixed(1)}% since ${months[0].monthName}` : trend < 0 ? `↓ ${trend.toFixed(1)}% since ${months[0].monthName}` : '→ Flat';
+  const trendColor = trend > 0 ? 'var(--answered)' : trend < 0 ? 'var(--missed)' : 'var(--muted)';
+
+  let tableRows = '';
+  months.forEach(m => {
+    const rc2 = rateClass(m.answerRate);
+    tableRows += `<tr>
+      <td>${m.monthName}</td>
+      <td>${m.total.toLocaleString()}</td>
+      <td style="color:var(--answered)">${m.answered.toLocaleString()}</td>
+      <td style="color:var(--missed)">${m.noAnswer}</td>
+      <td style="color:var(--voicemail)">${m.voicemail}</td>
+      <td class="td-rate ${rc2}">${m.answerRate}%</td>
+    </tr>`;
+  });
+  tableRows += `<tr style="background:rgba(48,54,61,0.3)">
+    <td style="font-weight:600">Total</td>
+    <td style="font-weight:600">${ytd.total.toLocaleString()}</td>
+    <td style="color:var(--answered);font-weight:600">${ytd.answered.toLocaleString()}</td>
+    <td style="color:var(--missed);font-weight:600">${ytd.noAnswer}</td>
+    <td style="color:var(--voicemail);font-weight:600">${ytd.voicemail}</td>
+    <td class="td-rate ${rc}" style="font-weight:600">${ytd.answerRate}%</td>
+  </tr>`;
+
+  let internalRows = src.topInternal.map(x => `<tr><td>Ext. ${x.ext}</td><td>${x.count}</td></tr>`).join('');
+  if (!internalRows) internalRows = '<tr><td colspan="2" style="color:var(--muted)">No internal calls logged</td></tr>';
+  let externalRows = src.topExternal.map(x => `<tr><td>${x.number}</td><td>${x.count}</td></tr>`).join('');
+  if (!externalRows) externalRows = '<tr><td colspan="2" style="color:var(--muted)">No external calls logged</td></tr>';
+
+  let burstAlert = '';
+  if (unitBursts.length) {
+    const rows = unitBursts.map(b => {
+      const outcomeTags = Object.entries(b.outcomes).map(([k,v]) => {
+        const cls = k === 'Voicemail' ? 'vm' : (k === 'No Answer' ? 'na' : '');
+        return `<span class="burst-tag ${cls}">${v} ${k}</span>`;
+      }).join('');
+      return `<tr class="burst-row"><td>${b.source}</td><td>${b.count}</td><td>${fmtDT(b.start)} &ndash; ${fmtDT(b.end)}</td><td>${fmtSec(b.avgDuration)}</td><td>${outcomeTags}</td></tr>`;
+    }).join('');
+    burstAlert = `
+      <div class="table-card">
+        <h3>Repeat-Caller Bursts &mdash; This Unit (May&ndash;Jun)</h3>
+        <table>
+          <thead><tr><th>Source</th><th>Calls</th><th>Window</th><th>Avg Duration</th><th>Outcomes</th></tr></thead>
+          <tbody>${rows}</tbody>
+        </table>
+      </div>`;
+  }
+
+  const newBadge = d.isNew ? '<span class="badge blue">Newly tracked this period</span>' : '';
+
+  const panelId = 'panel-' + unit.replace(/\s+/g,'_');
+  const el = document.getElementById('mainContent');
+  el.innerHTML = `
+    <div class="unit-panel active" id="${panelId}">
+      <div class="panel-header">
+        <div class="panel-title">${unit}</div>
+        <div class="panel-badges">
+          ${newBadge}
+          <span class="badge blue">${ytd.total.toLocaleString()} calls${d.isNew ? ' (May-Jun)' : ' (Jan-Jun)'}</span>
+          <span class="badge ${rc === 'high' ? 'green' : rc === 'med' ? 'yellow' : 'red'}">${ytd.answerRate}% answer rate</span>
+          <span style="font-family:'DM Mono',monospace;font-size:0.75rem;color:${trendColor};align-self:center;">${trendStr}</span>
+        </div>
+      </div>
+
+      <div class="charts-row">
+        <div class="chart-card">
+          <h3>Monthly Call Volume</h3>
+          <div class="chart-wrap"><canvas id="unit_bar_${panelId}"></canvas></div>
+        </div>
+        <div class="chart-card">
+          <h3>Answer Rate Trend (%)</h3>
+          <div class="chart-wrap"><canvas id="unit_line_${panelId}"></canvas></div>
+        </div>
+      </div>
+
+      <div class="charts-row-3">
+        <div class="chart-card">
+          <h3>Outcome Mix</h3>
+          <div class="chart-wrap"><canvas id="unit_dough_${panelId}"></canvas></div>
+        </div>
+        <div class="chart-card" style="grid-column:span 2">
+          <h3>Answered vs Voicemail vs No Answer &mdash; Monthly</h3>
+          <div class="chart-wrap"><canvas id="unit_stack_${panelId}"></canvas></div>
+        </div>
+      </div>
+
+      <div class="section-label">Call Patterns (May&ndash;Jun Detail)</div>
+      <div class="stat-mini-grid">
+        <div class="stat-mini">
+          <div class="sm-label">Avg Talk Time (Answered)</div>
+          <div class="sm-val">${dur.count ? fmtSec(dur.avgSec) : '&mdash;'}</div>
+          <div class="sm-sub">Median ${dur.count ? fmtSec(dur.medianSec) : '&mdash;'} &middot; ${dur.count} answered calls</div>
+        </div>
+        <div class="stat-mini">
+          <div class="sm-label">Voicemails Under 10 Sec</div>
+          <div class="sm-val" style="color:${vmq.shortPct > 5 ? 'var(--voicemail)' : 'var(--text)'}">${vmq.shortPct}%</div>
+          <div class="sm-sub">${vmq.shortVoicemails} of ${vmq.totalVoicemails} voicemails likely have no message</div>
+        </div>
+        <div class="stat-mini">
+          <div class="sm-label">Call Source Mix</div>
+          <div class="sm-val">${src.internalCalls}<span style="font-size:0.9rem;color:var(--muted)"> internal</span></div>
+          <div class="sm-sub">${src.externalCalls} external (outside line)</div>
+        </div>
+      </div>
+
+      <div class="source-grid">
+        <div class="table-card" style="margin-bottom:0">
+          <h3>Top Internal Extensions (May&ndash;Jun)</h3>
+          <table><thead><tr><th>Extension</th><th>Calls</th></tr></thead><tbody>${internalRows}</tbody></table>
+        </div>
+        <div class="table-card" style="margin-bottom:0">
+          <h3>Top External Numbers (May&ndash;Jun)</h3>
+          <table><thead><tr><th>Number</th><th>Calls</th></tr></thead><tbody>${externalRows}</tbody></table>
+        </div>
+      </div>
+
+      ${burstAlert}
+
+      <div class="table-card">
+        <h3>Monthly Breakdown</h3>
+        <table>
+          <thead><tr><th>Month</th><th>Total</th><th>Answered</th><th>No Answer</th><th>Voicemail</th><th>Answer Rate</th></tr></thead>
+          <tbody>${tableRows}</tbody>
+        </table>
+      </div>
+    </div>`;
+
+  setTimeout(() => {
+    makeChart(`unit_bar_${panelId}`, {
+      type: 'bar',
+      data: {
+        labels: monthLabels,
+        datasets: [
+          { label: 'Answered', data: months.map(m=>m.answered), backgroundColor: 'rgba(63,185,80,0.8)', borderRadius: 3 },
+          { label: 'No Answer', data: months.map(m=>m.noAnswer), backgroundColor: 'rgba(248,81,73,0.8)', borderRadius: 3 },
+          { label: 'Voicemail', data: months.map(m=>m.voicemail), backgroundColor: 'rgba(210,153,34,0.8)', borderRadius: 3 }
+        ]
+      },
+      options: {
+        ...baseChartOpts,
+        plugins: { ...baseChartOpts.plugins, legend: { display: true, position: 'bottom', labels: { color: '#6b7280', font: { family: 'DM Mono', size: 10 }, boxWidth: 10, padding: 10 } } },
+        scales: { x: { ...baseChartOpts.scales.x, stacked: true }, y: { ...baseChartOpts.scales.y, stacked: true } }
+      }
+    });
+
+    makeChart(`unit_line_${panelId}`, {
+      type: 'line',
+      data: {
+        labels: monthLabels,
+        datasets: [{
+          label: 'Answer Rate %',
+          data: months.map(m=>m.answerRate),
+          borderColor: '#58a6ff',
+          backgroundColor: 'rgba(88,166,255,0.1)',
+          borderWidth: 2.5,
+          pointRadius: 5,
+          pointHoverRadius: 7,
+          fill: true,
+          tension: 0.35
+        }]
+      },
+      options: {
+        ...baseChartOpts,
+        scales: {
+          x: { ...baseChartOpts.scales.x },
+          y: { ...baseChartOpts.scales.y, min: 0, max: 100, ticks: { ...baseChartOpts.scales.y.ticks, callback: v=>v+'%' } }
+        }
+      }
+    });
+
+    makeChart(`unit_dough_${panelId}`, {
+      type: 'doughnut',
+      data: {
+        labels: ['Answered','No Answer','Voicemail'],
+        datasets: [{ data: [ytd.answered, ytd.noAnswer, ytd.voicemail], backgroundColor: ['rgba(63,185,80,0.85)','rgba(248,81,73,0.85)','rgba(210,153,34,0.85)'], borderColor: '#ffffff', borderWidth: 3 }]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false, cutout: '62%',
+        plugins: {
+          legend: { display: true, position: 'bottom', labels: { color: '#6b7280', font: { family: 'DM Mono', size: 10 }, boxWidth: 10, padding: 10 } },
+          tooltip: { backgroundColor: '#1a2030', borderColor: '#d0d5dd', borderWidth: 1, titleColor: '#f9fafb', bodyColor: '#9ca3af', padding: 10,
+            callbacks: { label: ctx => ` ${ctx.label}: ${ctx.parsed} (${Math.round(ctx.parsed/ytd.total*1000)/10}%)` }
+          }
+        }
+      }
+    });
+
+    makeChart(`unit_stack_${panelId}`, {
+      type: 'bar',
+      data: {
+        labels: monthLabels,
+        datasets: [
+          { label: 'Answered', data: months.map(m=>m.answered), backgroundColor: 'rgba(63,185,80,0.75)', borderRadius: 3 },
+          { label: 'No Answer', data: months.map(m=>m.noAnswer), backgroundColor: 'rgba(248,81,73,0.75)', borderRadius: 3 },
+          { label: 'Voicemail', data: months.map(m=>m.voicemail), backgroundColor: 'rgba(210,153,34,0.75)', borderRadius: 3 }
+        ]
+      },
+      options: {
+        ...baseChartOpts,
+        plugins: { ...baseChartOpts.plugins, legend: { display: true, position: 'bottom', labels: { color: '#6b7280', font: { family: 'DM Mono', size: 10 }, boxWidth: 10, padding: 10 } } }
+      }
+    });
+  }, 50);
+}
+
+let currentTab = 'overview';
+
+function showTab(name) {
+  currentTab = name;
+  document.querySelectorAll('.tab-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.tab === name);
+  });
+  Object.values(chartInstances).forEach(c => c.destroy());
+  Object.keys(chartInstances).forEach(k => delete chartInstances[k]);
+
+  if (name === 'overview') buildOverview();
+  else buildUnitPanel(name);
+}
+
+buildOverview();
+</script>
+</body>
+</html>
