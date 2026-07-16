@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Welcome to the Team - July Update</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#0f2744; --navy-700:#1e3a5f; --blue-100:#e6eef7;
+    --amber:#c47f17; --amber-l:#fdf3e0;
+    --green:#1a7f5a; --green-l:#e8f5ee;
+    --teal:#7c3aed; --teal-l:#f3e8ff;
+    --gray-500:#64748b; --gray-300:#cbd5e1; --border:#e2e8f0;
+    --surface:#ffffff; --paper:#f7f9fc;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    font-family:'Sora',sans-serif; background:var(--paper); color:var(--navy);
+    padding:48px; -webkit-font-smoothing:antialiased;
+  }
+  .sheet{ max-width:680px; margin:0 auto; background:var(--surface); border:1px solid var(--border); border-radius:16px; overflow:hidden; }
+  .band{ background:linear-gradient(135deg,var(--navy) 0%,var(--navy-700) 100%); padding:36px 40px 30px; position:relative; }
+  .band::after{ content:''; position:absolute; bottom:0; left:0; right:0; height:5px;
+    background:linear-gradient(90deg,var(--amber) 0%, var(--amber) 33%, var(--green) 33%, var(--green) 66%, var(--teal) 66%); }
+  .eyebrow{ color:#a9c0dc; font-family:'DM Mono',monospace; font-size:11px; letter-spacing:0.14em; text-transform:uppercase; margin-bottom:10px; }
+  .title{ color:#fff; font-size:28px; font-weight:800; letter-spacing:-0.01em; line-height:1.15; }
+  .sub{ color:#c7d6e8; font-size:13.5px; margin-top:8px; }
+  .body{ padding:34px 40px 30px; }
+  .intro{ font-size:14px; color:#334155; line-height:1.65; margin-bottom:28px; }
+  .intro strong{ color:var(--navy); }
+  .section-lbl{ font-family:'DM Mono',monospace; font-size:10.5px; letter-spacing:0.1em; text-transform:uppercase; color:var(--gray-500); border-bottom:1px solid var(--border); padding-bottom:8px; margin-bottom:14px; display:flex; align-items:center; gap:8px; }
+  .section-lbl .dot{ width:7px; height:7px; border-radius:50%; }
+  .people{ display:flex; flex-direction:column; gap:14px; margin-bottom:30px; }
+  .person{ display:flex; gap:14px; align-items:flex-start; padding:14px 16px; background:var(--paper); border-radius:10px; border:1px solid var(--border); }
+  .avatar{ width:40px; height:40px; border-radius:50%; flex-shrink:0; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:14px; color:#fff; }
+  .p-name{ font-weight:700; font-size:14.5px; color:var(--navy); }
+  .p-role{ font-size:12.5px; color:var(--gray-500); margin-top:1px; }
+  .p-note{ font-size:12px; color:#475569; margin-top:5px; line-height:1.5; }
+  .p-date{ font-family:'DM Mono',monospace; font-size:11px; font-weight:600; padding:3px 9px; border-radius:20px; white-space:nowrap; margin-left:auto; align-self:center; }
+  .tag-new{ background:var(--amber-l); color:var(--amber); }
+  .tag-back{ background:var(--green-l); color:var(--green); }
+  .tag-travel{ background:var(--teal-l); color:var(--teal); }
+  .closing{ font-size:13.5px; color:#334155; line-height:1.65; padding-top:6px; border-top:1px solid var(--border); }
+  .sign{ margin-top:18px; font-size:13px; color:var(--gray-500); }
+  .sign strong{ color:var(--navy); display:block; font-size:13.5px; margin-bottom:2px; }
+  @media print{ body{ padding:0; background:#fff; } .sheet{ border:none; border-radius:0; max-width:100%; } }
+</style>
+</head>
+<body>
+  <div class="sheet">
+    <div class="band">
+      <div class="eyebrow">Pagosa Springs Medical Center · RHC Clinical Support Staff</div>
+      <div class="title">Welcome to the team! 🎉</div>
+      <div class="sub">A few updates we're excited to share from July</div>
+    </div>
+    <div class="body">
+      <div class="intro">It's been a great month for our team. Please join us in giving a warm welcome to
+      the newest faces joining RHC, plus a warm welcome back to a familiar face.</div>
+
+      <div class="section-lbl"><span class="dot" style="background:var(--amber)"></span>New team members starting this month</div>
+      <div class="people">
+        <div class="person">
+          <div class="avatar" style="background:#7c3aed">AT</div>
+          <div>
+            <div class="p-name">Ashley Tilley</div>
+            <div class="p-role">Patient Service Rep — Clinic-Facing 1</div>
+          </div>
+          <div class="p-date tag-new">Starts 7/27</div>
+        </div>
+        <div class="person">
+          <div class="avatar" style="background:#166534">JF</div>
+          <div>
+            <div class="p-name">James Fulbright</div>
+            <div class="p-role">Medical Assistant (Part-Time) — Green Team</div>
+          </div>
+          <div class="p-date tag-new">Starts 7/27</div>
+        </div>
+        <div class="person">
+          <div class="avatar" style="background:#1e40af">VS</div>
+          <div>
+            <div class="p-name">Veronica Shockley</div>
+            <div class="p-role">Patient Service Rep — Blue Team</div>
+          </div>
+          <div class="p-date tag-new">Starts 7/27</div>
+        </div>
+      </div>
+
+      <div class="section-lbl"><span class="dot" style="background:var(--teal)"></span>Joining us in August</div>
+      <div class="people">
+        <div class="person">
+          <div class="avatar" style="background:var(--teal)">MM</div>
+          <div>
+            <div class="p-name">Mario Montano</div>
+            <div class="p-role">Travel RN</div>
+          </div>
+          <div class="p-date tag-travel">Starts 8/3</div>
+        </div>
+        <div class="person">
+          <div class="avatar" style="background:var(--teal)">DM</div>
+          <div>
+            <div class="p-name">Deanna Montano</div>
+            <div class="p-role">Travel RN</div>
+          </div>
+          <div class="p-date tag-travel">Starts 8/3</div>
+        </div>
+      </div>
+
+      <div class="section-lbl"><span class="dot" style="background:var(--green)"></span>Welcome back</div>
+      <div class="people" style="margin-bottom:8px">
+        <div class="person">
+          <div class="avatar" style="background:#166534">TW</div>
+          <div>
+            <div class="p-name">Tori Watts</div>
+            <div class="p-role">RN, Ortho Coordinator</div>
+          </div>
+          <div class="p-date tag-back">Back 7/14</div>
+        </div>
+      </div>
+
+      <div class="closing">
+        Thank you all for the warm welcomes you give every new team member. It's what makes RHC feel like home
+        from day one. If you see Ashley, James, Veronica, Tori, Mario, or Deanna around the clinic, say hello!
+        <div class="sign"><strong>Jo Blaise</strong>Clinic Manager, RHC</div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
