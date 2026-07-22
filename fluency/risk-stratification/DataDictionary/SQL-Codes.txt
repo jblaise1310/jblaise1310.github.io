@@ -1,0 +1,138 @@
+-- Create new_med_db table for medical data
+CREATE TABLE new_med_db (
+    customer_id VARCHAR(50),
+    state VARCHAR(2),
+    age INT,
+    gender VARCHAR(10),
+    marital VARCHAR(20),
+    children INT,
+    income FLOAT,
+    allergic_rhinitis BOOLEAN,
+    anxiety BOOLEAN,
+    asthma BOOLEAN,
+    arthritis BOOLEAN,
+    backpain BOOLEAN,
+    diabetes BOOLEAN,
+    highblood BOOLEAN,
+    hyperlipidemia BOOLEAN,
+    overweight BOOLEAN,
+    reflux_esophagitis BOOLEAN,
+    stroke BOOLEAN,
+    complication_risk VARCHAR(10),
+    readmis BOOLEAN
+);
+
+-- Create new_sdoh_db table for SDoH data
+CREATE TABLE new_sdoh_db (
+    sdoh_id SERIAL PRIMARY KEY,
+    state VARCHAR(2),
+    total_population INT,
+    measure VARCHAR(255),
+    data_value FLOAT,
+    sdoh_factors VARCHAR(255),
+    sdoh_score FLOAT
+);
+
+-- Add score columns to new_med_db for medical risk scores
+ALTER TABLE new_med_db
+ADD COLUMN allergic_rhinitis_score FLOAT,
+ADD COLUMN anxiety_score FLOAT,
+ADD COLUMN asthma_score FLOAT,
+ADD COLUMN arthritis_score FLOAT,
+ADD COLUMN backpain_score FLOAT,
+ADD COLUMN diabetes_score FLOAT,
+ADD COLUMN highblood_score FLOAT,
+ADD COLUMN hyperlipidemia_score FLOAT,
+ADD COLUMN overweight_score FLOAT,
+ADD COLUMN reflux_esophagitis_score FLOAT,
+ADD COLUMN stroke_score FLOAT,
+ADD COLUMN readmis_score FLOAT,
+ADD COLUMN complication_risk_score FLOAT;
+
+-- Update scores based on conditions
+UPDATE new_med_db
+SET allergic_rhinitis_score = CASE WHEN allergic_rhinitis = 'Yes' THEN 2 ELSE 0 END,
+    anxiety_score = CASE WHEN anxiety = 'Yes' THEN 2 ELSE 0 END,
+    asthma_score = CASE WHEN asthma = 'Yes' THEN 6 ELSE 0 END,
+    arthritis_score = CASE WHEN arthritis = 'Yes' THEN 6 ELSE 0 END,
+    backpain_score = CASE WHEN backpain = 'Yes' THEN 4 ELSE 0 END,
+    diabetes_score = CASE WHEN diabetes = 'Yes' THEN 8 ELSE 0 END,
+    highblood_score = CASE WHEN highblood = 'Yes' THEN 8 ELSE 0 END,
+    hyperlipidemia_score = CASE WHEN hyperlipidemia = 'Yes' THEN 4 ELSE 0 END,
+    overweight_score = CASE WHEN overweight = 'Yes' THEN 3 ELSE 0 END,
+    reflux_esophagitis_score = CASE WHEN reflux_esophagitis = 'Yes' THEN 3 ELSE 0 END,
+    stroke_score = CASE WHEN stroke = 'Yes' THEN 10 ELSE 0 END,
+    readmis_score = CASE WHEN readmis = 'Yes' THEN 3 ELSE 0 END,
+    complication_risk_score = CASE 
+        WHEN complication_risk = 'Low' THEN 1 
+        WHEN complication_risk = 'Medium' THEN 3 
+        WHEN complication_risk = 'High' THEN 6 
+        ELSE 0 END;
+
+-- Add and calculate Medical_risk_score
+ALTER TABLE new_med_db ADD COLUMN Medical_risk_score INT;
+
+UPDATE new_med_db
+SET Medical_risk_score = 
+    COALESCE(allergic_rhinitis_score, 0) +
+    COALESCE(anxiety_score, 0) +
+    COALESCE(asthma_score, 0) +
+    COALESCE(arthritis_score, 0) +
+    COALESCE(backpain_score, 0) +
+    COALESCE(diabetes_score, 0) +
+    COALESCE(highblood_score, 0) +
+    COALESCE(hyperlipidemia_score, 0) +
+    COALESCE(overweight_score, 0) +
+    COALESCE(reflux_esophagitis_score, 0) +
+    COALESCE(stroke_score, 0) +
+    COALESCE(complication_risk_score, 0);
+
+-- Add coding for referential integrity
+ALTER TABLE new_med_db
+ADD COLUMN sdoh_id INT;
+
+
+-- Custom SQL in Tableau to join medical and SDoH data
+SELECT "new_sdoh_data"."SDOH Factors" AS "SDOH Factors",
+  "new_med_data"."age" AS "age",
+  CAST("new_med_data"."allergic_rhinitis" AS TEXT) AS "allergic_rhinitis",
+  CAST("new_med_data"."anxiety" AS TEXT) AS "anxiety",
+  CAST("new_med_data"."arthritis" AS TEXT) AS "arthritis",
+  CAST("new_med_data"."asthma" AS TEXT) AS "asthma",
+  "new_med_data"."allergic_rhinitis_score" AS "allergic_rhinitis_score",
+  "new_med_data"."anxiety_score" AS "anxiety_score",  
+  "new_med_data"."arthritis_score" AS "arthritis_score",
+  "new_med_data"."asthma_score" AS "asthma_score",
+  CAST("new_med_data"."backpain" AS TEXT) AS "backpain",
+  "new_med_data"."backpain_score" AS "backpain_score",
+  "new_med_data"."children" AS "children",
+  CAST("new_sdoh_data"."county" AS TEXT) AS "county (new_sdoh_data)",
+  CAST("new_med_data"."county" AS TEXT) AS "county",
+  "new_sdoh_data"."data_value" AS "data_value",
+  CAST("new_med_data"."diabetes" AS TEXT) AS "diabetes",
+  "new_med_data"."diabetes_score" AS "diabetes_score",
+  CAST("new_med_data"."gender" AS TEXT) AS "gender",
+  CAST("new_med_data"."highblood" AS TEXT) AS "highblood",
+  "new_med_data"."highblood_score" AS "highblood_score",
+  CAST("new_med_data"."hyperlipidemia" AS TEXT) AS "hyperlipidemia",
+  "new_med_data"."hyperlipidemia_score" AS "hyperlipidemia_score",
+  "new_med_data"."income" AS "income",
+  CAST("new_med_data"."marital" AS TEXT) AS "marital",
+  "new_sdoh_data"."measure" AS "measure",
+  CAST("new_med_data"."overweight" AS TEXT) AS "overweight",
+  "new_med_data"."overweight_score" AS "overweight_score",
+  CAST("new_med_data"."patient_id" AS TEXT) AS "patient_id",
+  "new_med_data"."population" AS "population",
+  CAST("new_med_data"."readmis" AS TEXT) AS "readmis",
+  CAST("new_med_data"."reflux_esophagitis" AS TEXT) AS "reflux_esophagitis",
+  "new_med_data"."reflux_esophagitis_score" AS "reflux_esophagitis_score",
+  "new_sdoh_data"."sdoh_score" AS "sdoh_score",
+  "new_med_data"."service_count" AS "service_count",
+  "new_sdoh_data"."state" AS "state (new_sdoh_data)",
+  CAST("new_med_data"."state" AS TEXT) AS "state",
+  CAST("new_med_data"."stroke" AS TEXT) AS "stroke",
+  "new_med_data"."stroke_score" AS "stroke_score",
+  "new_med_data"."readmit_risk_score" AS "readmit_risk_score",
+  "new_sdoh_data"."totalpopulation" AS "totalpopulation"
+FROM "public"."new_med_data" "new_med_data"
+  LEFT JOIN "public"."new_sdoh_data" "new_sdoh_data" ON (CAST("new_med_data"."state" AS TEXT) = "new_sdoh_data"."state");
