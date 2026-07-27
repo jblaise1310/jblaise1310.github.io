@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Welcome to PSMC</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Mulish:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#243240;
+    --soft-ink:#5a6b78;
+    --paper:#fbf9f5;
+    --line:#e4ded3;
+
+    --teal-bg:#e7f3ed;   --teal-bd:#bfddcb;   --teal-tx:#2f6b50;
+    --blue-bg:#e8f0f9;   --blue-bd:#c3d6ec;   --blue-tx:#2e5a8c;
+    --purp-bg:#eee9f6;   --purp-bd:#d2c6e6;   --purp-tx:#5a4a8c;
+    --coral-bg:#f8ebe9;  --coral-bd:#e6c5bf;  --coral-tx:#a8483c;
+    --goal-bg:#eef4e4;   --goal-bd:#cfdfb0;   --goal-tx:#5c7a2f;
+    --admin-bg:#f2f0eb;  --admin-bd:#d9d3c4;  --admin-tx:#6b6152;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    font-family:'Mulish',sans-serif;
+    background:
+      radial-gradient(1200px 600px at 85% -10%, #f4efe6 0%, transparent 60%),
+      radial-gradient(900px 500px at -10% 110%, #eef2ec 0%, transparent 55%),
+      var(--paper);
+    color:var(--ink);
+    line-height:1.55;
+    padding:48px 20px 64px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .sheet{
+    max-width:860px;margin:0 auto;
+    background:#fffdf9;
+    border:1px solid var(--line);
+    border-radius:22px;
+    box-shadow:0 1px 2px rgba(60,50,30,.04),0 30px 60px -30px rgba(60,50,30,.18);
+    overflow:hidden;
+  }
+
+  /* ---- Masthead ---- */
+  .masthead{
+    padding:46px 54px 38px;
+    border-bottom:1px solid var(--line);
+    background:linear-gradient(180deg,#ffffff 0%, #fdfbf6 100%);
+    position:relative;
+  }
+  .masthead::after{
+    content:"";position:absolute;left:54px;right:54px;bottom:-1px;height:3px;
+    background:linear-gradient(90deg,var(--admin-bd),var(--teal-bd),var(--blue-bd),var(--purp-bd),var(--coral-bd),var(--goal-bd));
+    border-radius:3px;opacity:.9;
+  }
+  .kicker{
+    font-size:12.5px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;
+    color:var(--soft-ink);
+  }
+  h1{
+    font-family:'Fraunces',serif;font-weight:500;
+    font-size:46px;line-height:1.05;letter-spacing:-.01em;
+    margin:10px 0 4px;color:var(--ink);
+  }
+  h1 .names{color:var(--teal-tx);font-style:italic;font-weight:500;}
+  .subtitle{
+    font-family:'Fraunces',serif;font-size:18.5px;font-weight:400;font-style:italic;
+    color:var(--soft-ink);margin-top:6px;
+  }
+
+  .section{padding:34px 54px;}
+  .section + .section{border-top:1px solid var(--line);}
+
+  .lead{font-size:16.5px;color:#3a4753;}
+  .lead strong{color:var(--ink);font-weight:700;}
+
+  /* ---- First-day callout ---- */
+  .callout{
+    margin-top:4px;
+    display:grid;grid-template-columns:1fr 1fr;gap:18px;
+  }
+  .info-card{
+    border:1px solid var(--line);border-radius:14px;
+    padding:18px 20px;background:#fffefb;
+  }
+  .info-card .label{
+    font-size:11.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;
+    color:var(--soft-ink);margin-bottom:7px;
+  }
+  .info-card .big{font-family:'Fraunces',serif;font-size:24px;font-weight:600;color:var(--ink);line-height:1.15;}
+  .info-card .sub{font-size:14px;color:var(--soft-ink);margin-top:3px;}
+
+  .huddle-note{
+    margin-top:18px;font-size:15px;color:#41505c;
+    background:var(--teal-bg);border:1px solid var(--teal-bd);
+    border-radius:14px;padding:16px 20px;
+  }
+  .huddle-note strong{color:var(--teal-tx);}
+
+  .dress-note{
+    margin-top:14px;font-size:14.5px;color:#5a4a6a;
+    background:var(--purp-bg);border:1px solid var(--purp-bd);
+    border-radius:14px;padding:14px 20px;
+  }
+  .dress-note .tag{font-weight:700;color:var(--purp-tx);}
+  .editable{color:#7a6a8a;font-style:italic;}
+
+  /* ---- Coverage map ---- */
+  .map-intro{font-size:16px;color:#3a4753;margin-bottom:26px;}
+  .map{position:relative;padding-left:30px;}
+  .map::before{
+    content:"";position:absolute;left:6px;top:34px;bottom:60px;width:2px;
+    background:var(--line);
+  }
+  .area{
+    position:relative;border-radius:16px;padding:18px 22px 19px;
+    margin-bottom:16px;border:1px solid;
+  }
+  .area::before{
+    content:"";position:absolute;left:-24px;top:34px;width:18px;height:2px;background:var(--line);
+  }
+  .area h3{
+    font-family:'Fraunces',serif;font-weight:600;font-size:19px;letter-spacing:-.005em;margin-bottom:9px;
+  }
+  .area p{font-size:14px;line-height:1.6;margin:2px 0;color:#46535e;}
+  .area p .dot{opacity:.4;padding:0 5px;}
+
+  .area.admin{background:var(--admin-bg);border-color:var(--admin-bd);}
+  .area.admin h3{color:var(--admin-tx);}
+  .area.admin .flag{
+    display:inline-block;font-size:10.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+    color:#fffdf9;background:var(--admin-tx);border-radius:20px;padding:3px 10px;margin-left:10px;vertical-align:2px;
+  }
+  .area.teal{background:var(--teal-bg);border-color:var(--teal-bd);}
+  .area.teal h3{color:var(--teal-tx);}
+  .area.blue{background:var(--blue-bg);border-color:var(--blue-bd);}
+  .area.blue h3{color:var(--blue-tx);}
+  .area.purp{background:var(--purp-bg);border-color:var(--purp-bd);}
+  .area.purp h3{color:var(--purp-tx);}
+  .area.coral{background:var(--coral-bg);border-color:var(--coral-bd);}
+  .area.coral h3{color:var(--coral-tx);}
+
+  .goal{
+    background:var(--goal-bg);border:1.5px solid var(--goal-bd);border-radius:16px;
+    padding:20px 22px;position:relative;margin-top:4px;
+  }
+  .goal::before{
+    content:"";position:absolute;left:-24px;top:30px;width:18px;height:2px;background:var(--line);
+  }
+  .goal h3{font-family:'Fraunces',serif;font-weight:600;font-size:19px;color:var(--goal-tx);margin-bottom:6px;}
+  .goal p{font-size:14px;color:#54632f;}
+
+  /* ---- Footer ---- */
+  .footer{
+    padding:26px 54px 34px;border-top:1px solid var(--line);
+    background:#fdfbf6;text-align:center;
+  }
+  .footer .sign{font-family:'Fraunces',serif;font-style:italic;font-size:17px;color:var(--ink);}
+  .footer .role{font-size:13px;color:var(--soft-ink);letter-spacing:.04em;margin-top:2px;}
+
+  @media (max-width:620px){
+    .section,.masthead,.footer{padding-left:26px;padding-right:26px;}
+    h1{font-size:34px;}
+    .callout{grid-template-columns:1fr;}
+    .masthead::after{left:26px;right:26px;}
+  }
+  @media print{
+    body{background:#fff;padding:0;}
+    .sheet{box-shadow:none;border:none;border-radius:0;max-width:none;}
+    .area,.goal,.huddle-note,.dress-note,.info-card{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+  <div class="sheet">
+
+    <div class="masthead">
+      <div class="kicker">PSMC &nbsp;&middot;&nbsp; Medical Assistant Onboarding</div>
+      <h1>Welcome, <span class="names">Alec</span></h1>
+      <div class="subtitle">We're so glad you're joining the team.</div>
+    </div>
+
+    <div class="section">
+      <p class="lead">As a Medical Assistant, you'll play an important role in delivering safe, high-quality, patient-centered care. This page is your starting point: what to expect today, and a look at everything we'll grow through together over the next few months.</p>
+
+      <div class="callout" style="margin-top:24px;">
+        <div class="info-card">
+          <div class="label">Today</div>
+          <div class="big">Monday, July 27</div>
+          <div class="sub">Onboarding begins with HR</div>
+        </div>
+        <div class="info-card">
+          <div class="label">HR Session</div>
+          <div class="big">10:00 AM</div>
+          <div class="sub">Then joins Jo in the clinic</div>
+        </div>
+      </div>
+
+      <div class="huddle-note">
+        <strong>After HR, you'll head to the clinic to begin onboarding with Jo.</strong> Starting tomorrow, we gather as a team every morning at 7:00 AM for huddle to walk through the day's schedule and any operations items. Arriving by 6:45 gives you a few minutes to settle in beforehand.
+      </div>
+
+      <div class="dress-note">
+        <span class="tag">What to wear:</span> Scrubs in any color you like.
+      </div>
+    </div>
+
+    <div class="section">
+      <p class="map-intro">Over your first few months, here's the ground we'll cover together. Your progress is measured by the skills you demonstrate, not by the calendar.</p>
+
+      <div class="map">
+        <div class="area admin">
+          <h3>EAF Review <span class="flag">Day 1</span></h3>
+          <p>Walking through your Employee Access Form together, confirming your computer login, Cerner access, email, and any other job-related system access you'll need.</p>
+        </div>
+
+        <div class="area admin">
+          <h3>Clinic Onboarding Portal Review <span class="flag">Day 1</span></h3>
+          <p>A tour of the onboarding portal itself, showing where to find your training modules, reference tools, and tracker so you always know what's next.</p>
+        </div>
+
+        <div class="area teal">
+          <h3>Foundational MA Training</h3>
+          <p>Scope of practice <span class="dot">&middot;</span> terminology <span class="dot">&middot;</span> anatomy &amp; physiology <span class="dot">&middot;</span> vital signs</p>
+          <p>Patient intake &amp; history <span class="dot">&middot;</span> infection control, asepsis &amp; PPE</p>
+          <p>Lab &amp; point-of-care testing <span class="dot">&middot;</span> medications, injections &amp; immunizations</p>
+        </div>
+
+        <div class="area blue">
+          <h3>Job Description Duties</h3>
+          <p>Rooming &amp; intake <span class="dot">&middot;</span> EKG <span class="dot">&middot;</span> ear lavage <span class="dot">&middot;</span> nebulizer treatments</p>
+          <p>Suture &amp; staple removal <span class="dot">&middot;</span> dressing changes <span class="dot">&middot;</span> DME fitting &amp; paperwork</p>
+          <p>Referrals &amp; prior auths <span class="dot">&middot;</span> order follow-up <span class="dot">&middot;</span> scheduling <span class="dot">&middot;</span> messaging</p>
+        </div>
+
+        <div class="area purp">
+          <h3>Clinic Processes &amp; Systems</h3>
+          <p>Patient flow <span class="dot">&middot;</span> exam room setup <span class="dot">&middot;</span> team-based care <span class="dot">&middot;</span> provider handoffs</p>
+          <p>Cerner templates <span class="dot">&middot;</span> Message Center <span class="dot">&middot;</span> eFax <span class="dot">&middot;</span> UpToDate <span class="dot">&middot;</span> Artera <span class="dot">&middot;</span> portal</p>
+        </div>
+
+        <div class="area coral">
+          <h3>Quality Measures</h3>
+          <p>QI &amp; population health <span class="dot">&middot;</span> preventive care <span class="dot">&middot;</span> care-gap management</p>
+          <p>Focus measures: CMS-2, 122, 146, 154, 155a, 165</p>
+          <p>Plus screening: CMS-124, 125, 130, 153</p>
+        </div>
+
+        <div class="goal">
+          <h3>The Goal: Every Competency Demonstrated Independently</h3>
+          <p>The plan is complete when your skills are validated, not when time passes.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <div class="sign">We're looking forward to it. Welcome to the team.</div>
+      <div class="role">Jo Blaise &nbsp;&middot;&nbsp; Clinic Manager</div>
+    </div>
+
+  </div>
+</body>
+</html>
