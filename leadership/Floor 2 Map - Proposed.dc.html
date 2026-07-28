@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    body { margin:0; background:#e7e8eb; }
+    @media print {
+      @page { size: landscape; margin: 7mm; }
+      body { background:#ffffff !important; }
+    }
+  </style>
+</helmet>
+<div style="min-height:100vh; box-sizing:border-box; padding:24px 18px 44px; font-family:Inter,system-ui,sans-serif; color:#1f2937; background:#e7e8eb; display:flex; flex-direction:column; align-items:center;">
+
+  <div ref="{{ setScaler }}" style="width:1300px; display:flex; flex-direction:column; align-items:stretch; gap:18px;">
+
+  <div style="width:1300px; max-width:100%; display:flex; align-items:flex-end; justify-content:space-between; gap:24px; flex-wrap:wrap;">
+    <div>
+      <div style="font-size:11px; font-weight:700; letter-spacing:.24em; color:#8a8f99;">WHO SITS WHERE &middot; LIVE ASSIGNMENTS</div>
+      <div style="font-size:36px; font-weight:800; letter-spacing:-.02em; margin-top:4px;">{{ title }}</div>
+      <div style="display:inline-flex; gap:4px; padding:4px; background:rgba(15,23,42,.05); border:1px solid rgba(15,23,42,.1); border-radius:11px; margin-top:14px;">
+        <a href="Floor 2 Map.dc.html" style="padding:7px 20px; border-radius:8px; font-size:13.5px; font-weight:600; color:#5a6475; text-decoration:none; transition:background .15s ease;" style-hover="background:rgba(15,23,42,.07)">Current</a>
+        <span style="padding:7px 20px; border-radius:8px; font-size:13.5px; font-weight:700; background:#16202e; color:#ffffff;">Proposed</span>
+      </div>
+    </div>
+    <div style="display:flex; flex-wrap:wrap; gap:8px; justify-content:flex-end; max-width:760px;">
+      <sc-for list="{{ legend }}" as="L" hint-placeholder-count="6">
+        <button style="{{ L.style }}" onClick="{{ L.onClick }}">
+          <span style="{{ L.dotStyle }}"></span>{{ L.name }}
+        </button>
+      </sc-for>
+    </div>
+  </div>
+
+  <div style="position:relative; width:1300px; height:1280px; border-radius:16px; overflow:hidden; border:1px solid rgba(15,23,42,.09); background:radial-gradient(1300px 700px at 32% -5%, #ffffff, #eef0f3 72%); box-shadow:0 20px 50px rgba(15,23,42,.12), inset 0 1px 0 rgba(255,255,255,.6);">
+    <div style="position:absolute; inset:0; pointer-events:none; background-image:linear-gradient(rgba(15,23,42,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(15,23,42,.035) 1px,transparent 1px); background-size:40px 40px;"></div>
+
+    <sc-for list="{{ cells }}" as="c" hint-placeholder-count="36">
+      <div style="{{ c.style }}" style-hover="{{ c.hover }}" onClick="{{ c.onClick }}">
+        <div style="{{ c.labelStyle }}">{{ c.label }}</div>
+        <sc-if value="{{ c.sub }}" hint-placeholder-val="{{ true }}">
+          <div style="{{ c.subStyle }}">{{ c.sub }}</div>
+        </sc-if>
+        <sc-if value="{{ c.micro }}" hint-placeholder-val="{{ true }}">
+          <div style="{{ c.microStyle }}">{{ c.micro }}</div>
+        </sc-if>
+        <sc-if value="{{ c.ext }}" hint-placeholder-val="{{ true }}">
+          <div style="{{ c.extStyle }}">{{ c.ext }}</div>
+        </sc-if>
+        <sc-if value="{{ c.vacant }}" hint-placeholder-val="{{ true }}">
+          <div style="{{ c.vacStyle }}">VACANT</div>
+        </sc-if>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="width:1300px; max-width:100%; display:flex; justify-content:space-between; align-items:center; font-size:11.5px; color:#6b7280; font-weight:500;">
+    <span>Click a team to highlight where they sit &middot; click again to clear &middot; dashed outline = proposed change</span>
+    <span style="font-family:'JetBrains Mono',monospace; color:#b45309; font-weight:600;">{{ vacancyLine }}</span>
+  </div>
+
+  </div>
+
+  <button ref="{{ setPrintBtn }}" onClick="{{ doPrint }}" style="position:fixed; right:22px; bottom:22px; z-index:50; display:inline-flex; align-items:center; gap:9px; padding:13px 19px; border-radius:12px; border:1px solid rgba(15,23,42,.12); background:#16202e; color:#ffffff; font-family:Inter,system-ui,sans-serif; font-size:14px; font-weight:600; cursor:pointer; box-shadow:0 12px 26px rgba(15,23,42,.24);" style-hover="background:#243244">
+    <span style="font-size:16px; line-height:1;">&#x23CF;</span>Print / Save PDF
+  </button>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1380,&quot;height&quot;:1320},&quot;variant&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;stripe&quot;,&quot;filled&quot;,&quot;outline&quot;],&quot;default&quot;:&quot;stripe&quot;,&quot;tsType&quot;:&quot;'stripe'|'filled'|'outline'&quot;}}">
+class Component extends DCLogic {
+  state = { focus: null };
+
+  setScaler = (el) => { this.scalerEl = el; };
+  setPrintBtn = (el) => { this.printBtnEl = el; };
+  doPrint = () => { window.print(); };
+
+  fit = () => {
+    if (!this.scalerEl) return;
+    const el = this.scalerEl;
+    el.style.zoom = 1;
+    const natW = el.offsetWidth, natH = el.offsetHeight;
+    const availW = window.innerWidth - 32;
+    const availH = window.innerHeight - 76;
+    let s = Math.min(availW / natW, availH / natH);
+    s = Math.max(0.35, Math.min(s, 1.7));
+    el.style.zoom = s;
+  };
+
+  onBeforePrint = () => {
+    if (this.scalerEl) this.scalerEl.style.zoom = 0.5;
+    if (this.printBtnEl) this.printBtnEl.style.display = 'none';
+  };
+  onAfterPrint = () => {
+    if (this.printBtnEl) this.printBtnEl.style.display = '';
+    this.fit();
+  };
+
+  componentDidMount() {
+    this.fit();
+    this._onResize = () => this.fit();
+    window.addEventListener('resize', this._onResize);
+    window.addEventListener('beforeprint', this.onBeforePrint);
+    window.addEventListener('afterprint', this.onAfterPrint);
+    this._mql = window.matchMedia('print');
+    this._mqlHandler = (e) => { e.matches ? this.onBeforePrint() : this.onAfterPrint(); };
+    if (this._mql.addEventListener) this._mql.addEventListener('change', this._mqlHandler);
+  }
+  componentWillUnmount() {
+    window.removeEventListener('resize', this._onResize);
+    window.removeEventListener('beforeprint', this.onBeforePrint);
+    window.removeEventListener('afterprint', this.onAfterPrint);
+    if (this._mql && this._mql.removeEventListener) this._mql.removeEventListener('change', this._mqlHandler);
+  }
+
+  teams = {
+    red:        { name: 'Red',         color: '#b91c1c' },
+    blue:       { name: 'Blue',        color: '#1d4ed8' },
+    gensurg:    { name: 'Gen Surgery', color: '#64748b' },
+    behavioral: { name: 'Behavioral', color: '#ec4899' },
+  };
+
+  rawCells = [
+    // zones (behind everything)
+    { k:'zone', x:624, y:56,  w:384, h:266, label:'PROVIDER POD' },
+    { k:'zone', x:624, y:336, w:384, h:424, label:'NURSE & WORK STATIONS' },
+    // counters — flank the workstation columns
+    { k:'counter', x:626, y:352, w:16, h:118 },
+    { k:'counter', x:626, y:628, w:16, h:120 },
+    { k:'counter', x:986, y:352, w:16, h:118 },
+    { k:'counter', x:986, y:628, w:16, h:120 },
+    // left exam rooms
+    { k:'room', team:'red',  x:356, y:88,  w:132, h:82, label:'Room 27', sub:'Dr. Norwood', micro:'MA · Charlene' },
+    { k:'room', team:'red',  x:356, y:184, w:132, h:82, label:'Room 26', sub:'Dr. Norwood', micro:'MA · Charlene' },
+    { k:'room', team:'red', x:356, y:332, w:132, h:76, label:'Room 25', sub:'Dr. Oliver', micro:'MA · Vacant' },
+    { k:'room', team:'blue', x:356, y:446, w:132, h:82, label:'Room 24', sub:'Mashburn', micro:'MA · Latia', ext:'Available Mon' },
+    { k:'room', team:'blue', x:356, y:560, w:132, h:82, label:'Room 23', sub:'Mashburn', micro:'MA · Latia', ext:'Available Mon' },
+    // far left + bottom-left (General Surgery)
+    { k:'zone', x:32, y:404, w:232, h:152, label:'CLINIC ADMIN' },
+    { k:'room', x:40, y:428, w:130, h:70, label:'Director', sub:'Vicki' },
+    { k:'room', x:178, y:428, w:78, h:70, label:'Manager', sub:'Jo' },
+    { k:'room', x:40, y:506, w:216, h:42, label:'Admin', sub:'Bren' },
+    { k:'room', team:'gensurg', x:64,  y:600, w:216, h:74, label:'Room 22', sub:'Gen Surgery Procedure', micro:'RN · Leah' },
+    { k:'room', team:'gensurg', x:64,  y:804, w:104, h:80, label:'Room 21', sub:'General Surgery', micro:'RN · Leah' },
+    { k:'room', team:'gensurg', x:176, y:804, w:104, h:80, label:'Room 20', sub:'General Surgery', micro:'RN · Leah' },
+    // hallway above the bottom row
+    { k:'hall', x:64, y:766, w:1042, h:30, label:'HALLWAY' },
+    // provider pod plates — left
+    { k:'plate', team:'blue', x:646, y:84,  w:168, h:58, label:'Dr. Stopher-Mitchell', sub:'Physician', ext:'Ext. 3922' },
+    { k:'plate', team:'blue', x:646, y:150, w:168, h:58, label:'Matthew Hintzman', sub:'PA', ext:'Ext. 3890' },
+    { k:'plate', team:'red',  x:646, y:216, w:168, h:58, label:'Nobles / Johnson', sub:'PA', ext:'Ext. 3884' },
+    // provider pod plates — right
+    { k:'plate', team:'blue', x:822, y:84,  w:168, h:58, label:'Keala Mashburn', sub:'PA · On Leave', ext:'Ext. 3902' },
+    { k:'plate', team:'gensurg', x:822, y:150, w:168, h:58, label:'Gazenko / Gross', sub:'General Surgery', ext:'Ext. 3822' },
+    { k:'plate', team:'red',  x:822, y:216, w:168, h:58, label:'Dr. Norwood', sub:'Physician · Sept \'26', ext:'Ext. 3875' },
+    // left workstations
+    { k:'ws', team:'red', x:650, y:352, w:156, h:58, label:'L6 · Bri', sub:'RN', ext:'Ext. 3874' },
+    { k:'ws', team:'red', x:650, y:412, w:156, h:58, label:'L5 · Charlene', sub:'MA · Norwood', ext:'Ext. 3871' },
+    { k:'ws', team:'red', x:650, y:490, w:156, h:58, label:'L4 · Sara Marino', sub:'PSR', ext:'Ext. 3996' },
+    { k:'ws', team:'blue', x:650, y:550, w:156, h:58, label:'L3 · Amoria', sub:'MA · Hintzman', ext:'Ext. 3879' },
+    { k:'ws', team:'blue', x:650, y:628, w:156, h:58, label:'L2 · Kinsey', sub:'RN', ext:'Ext. 3849' },
+    { k:'ws', team:'gensurg', x:650, y:690, w:156, h:58, label:'L1 · Leah', sub:'RN · Gen Surg / Pain', ext:'Ext. 3888' },
+    // right workstations
+    { k:'ws', team:'red', vacant:true, x:826, y:352, w:156, h:58, label:'R6 · TBD', sub:'RN · Red Team' },
+    { k:'ws', team:'red', x:826, y:412, w:156, h:58, label:'R5 · Hannah', sub:'MA · Nobles / Johnson', ext:'Ext. 3889' },
+    { k:'ws', team:'blue', vacant:true, x:826, y:490, w:156, h:58, label:'R4 · TBD', sub:'PSR · Blue Team' },
+    { k:'ws', team:'blue', x:826, y:550, w:156, h:58, label:'R3 · Haley', sub:'MA · Stopher-Mitchell', ext:'Ext. 3891' },
+    { k:'ws', team:'blue', vacant:true, x:826, y:628, w:156, h:58, label:'R2 · TBD', sub:'RN · Blue Team' },
+    { k:'ws', vacant:true, x:826, y:690, w:156, h:58, label:'R1 · TBD', sub:'' },
+    // right rooms — consolidated single column (Mashburn/Blue duplicates removed)
+    { k:'room', team:'red',  x:1056, y:84,  w:128, h:82, label:'Room 28', sub:'Nobles / Johnson', micro:'MA · Hannah' },
+    { k:'room', team:'red',  x:1056, y:176, w:128, h:82, label:'Room 29', sub:'Nobles / Johnson', micro:'MA · Hannah' },
+    { k:'room', team:'blue', x:1056, y:320, w:128, h:80, label:'Room 30', sub:'Dr. Stewart', micro:'MA · Vacant' },
+    { k:'room', team:'blue', x:1056, y:446, w:128, h:94, label:'Room 31', sub:'Dr. Stopher-Mitchell', micro:'MA · Haley', ext:'Available Fri' },
+    { k:'room', team:'blue', x:1056, y:548, w:128, h:94, label:'Room 32', sub:'Dr. Stopher-Mitchell', micro:'MA · Haley', ext:'Available Fri' },
+    { k:'util', x:1056, y:650, w:128, h:54, label:'Scale Area' },
+    // bottom service row
+    { k:'room', vacant:true, dense:true, x:300, y:804, w:216, h:40, label:'Discharge 2', sub:'Clinic Facing', ext:'Ext. 3952' },
+    { k:'room', dense:true, x:300, y:846, w:216, h:40, label:'Discharge 2', sub:'Sarah Rader · Waiting Rm Facing', ext:'Ext. 3908' },
+    { k:'util', x:532, y:804, w:74,  h:90, label:'Pt. Bathroom' },
+    { k:'util', x:614, y:804, w:74,  h:90, label:'Med Room' },
+    { k:'room', team:'blue', x:700, y:804, w:120, h:90, label:'Room 19', sub:'Matthew', micro:'MA · Amoria', ext:'Available Mon' },
+    { k:'room', team:'blue', x:842, y:804, w:120, h:90, label:'Room 18', sub:'Matthew', micro:'MA · Amoria', ext:'Available Mon' },
+    { k:'room', team:'behavioral', x:986, y:804, w:120, h:90, label:'Room 17', sub:'Jake / Courtney', micro:'Behavioral Health' },
+    // proposed conversion — added space
+    { k:'zone', x:24, y:914, w:730, h:332, label:'PROPOSED CONVERSION — ADDED SPACE' },
+    { k:'room', team:'red', x:40, y:944, w:120, h:90, label:'Dr. Oliver', sub:'Provider Desk' },
+    { k:'room', team:'blue', x:40, y:1042, w:120, h:90, label:'Dr. Stewart', sub:'Provider Desk' },
+    { k:'room', team:'red', x:360, y:944, w:370, h:96, label:'Exam Room', sub:'Oliver — new, from conversion' },
+    { k:'util', x:360, y:1044, w:370, h:88, label:'Storage Room' },
+    { k:'room', team:'red', x:40, y:1144, w:147, h:102, label:'MA Desk', sub:'Dr. Oliver\u2019s MA' },
+    { k:'util', x:191, y:1144, w:6, h:102, label:'' },
+    { k:'room', team:'blue', x:201, y:1144, w:139, h:102, label:'MA Desk', sub:'Dr. Stewart\u2019s MA' },
+    { k:'room', team:'blue', x:360, y:1144, w:370, h:102, label:'Exam Room', sub:'Stewart — new, from conversion' },
+  ];
+
+  hexToRgba(hex, a) {
+    const n = parseInt(hex.slice(1), 16);
+    return 'rgba(' + ((n >> 16) & 255) + ',' + ((n >> 8) & 255) + ',' + (n & 255) + ',' + a + ')';
+  }
+
+  buildCell(c, v, focus) {
+    const t = c.team ? this.teams[c.team] : null;
+    const color = c.colorOverride || (t ? t.color : null);
+    const interactive = (c.k === 'room' || c.k === 'plate' || c.k === 'ws');
+    const dim = focus && c.team !== focus && c.k !== 'zone' && c.k !== 'counter' && c.k !== 'hall';
+
+    const base = {
+      position: 'absolute', left: c.x, top: c.y, width: c.w, height: c.h, boxSizing: 'border-box',
+      display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: c.dense ? 0 : 2,
+      padding: c.dense ? '3px 9px' : '7px 10px', borderRadius: 8, overflow: 'hidden',
+      opacity: dim ? 0.2 : 1, transition: 'opacity .18s ease, transform .15s ease, filter .15s ease',
+      cursor: interactive ? 'pointer' : 'default',
+    };
+
+    if (c.k === 'hall') {
+      Object.assign(base, { alignItems: 'center', justifyContent: 'center',
+        background: 'repeating-linear-gradient(90deg,rgba(15,23,42,.05),rgba(15,23,42,.05) 10px,transparent 10px,transparent 20px)',
+        border: '1px dashed rgba(15,23,42,.16)', borderRadius: 8, zIndex: 0 });
+      return { style: base, label: c.label,
+        labelStyle: { fontSize: 10, fontWeight: 700, letterSpacing: '.3em', color: '#9aa6b3' } };
+    }
+    if (c.k === 'zone') {
+      Object.assign(base, { justifyContent: 'flex-start', alignItems: 'flex-start', padding: '4px 11px',
+        background: 'rgba(15,23,42,.018)', border: '1px solid rgba(15,23,42,.08)', borderRadius: 11, zIndex: 0 });
+      return { style: base, label: c.label,
+        labelStyle: { fontSize: 8.5, fontWeight: 700, letterSpacing: '.16em', color: '#9aa6b3' } };
+    }
+    if (c.k === 'counter') {
+      Object.assign(base, { background: 'rgba(100,116,139,.08)', border: '1px dashed rgba(100,116,139,.3)',
+        alignItems: 'center', justifyContent: 'center', borderRadius: 5, zIndex: 1 });
+      return { style: base, label: 'COUNTER',
+        labelStyle: { writingMode: 'vertical-rl', transform: 'rotate(180deg)', fontSize: 8.5, letterSpacing: '.26em', color: '#7b8696', fontWeight: 600 } };
+    }
+    if (c.k === 'util') {
+      Object.assign(base, { background: 'linear-gradient(180deg,#3a4150,#2b313c)', border: '1px solid rgba(15,23,42,.22)',
+        alignItems: 'center', justifyContent: 'center', zIndex: 2 });
+      return { style: base, label: c.label,
+        labelStyle: { fontSize: 12, fontWeight: 600, color: '#e7ebf1', textAlign: 'center', lineHeight: 1.15 } };
+    }
+
+    // team / room cells
+    base.zIndex = 2;
+    let labelColor = '#1f2a37';
+    if (!t) {
+      base.background = c.vacant
+        ? 'repeating-linear-gradient(45deg,#f1f3f5,#f1f3f5 7px,#e6eaee 7px,#e6eaee 14px)'
+        : '#ffffff';
+      base.border = '1px ' + (c.vacant ? 'dashed' : 'solid') + ' rgba(15,23,42,.16)';
+    } else if (v === 'outline') {
+      base.background = c.vacant ? this.hexToRgba(color, 0.06) : '#ffffff';
+      base.border = '1.5px ' + (c.vacant ? 'dashed' : 'solid') + ' ' + (c.vacant ? this.hexToRgba(color, 0.55) : color);
+    } else if (v === 'stripe') {
+      base.background = '#ffffff';
+      base.border = '1px solid rgba(15,23,42,.1)';
+      base.borderTop = '5px solid ' + (c.vacant ? this.hexToRgba(color, 0.55) : color);
+      base.paddingTop = c.dense ? 3 : 7;
+    } else { // filled (default)
+      base.background = this.hexToRgba(color, c.vacant ? 0.06 : 0.16);
+      base.border = '1px solid ' + this.hexToRgba(color, c.vacant ? 0.28 : 0.42);
+      base.borderLeft = '4px ' + (c.vacant ? 'dashed' : 'solid') + ' ' + (c.vacant ? this.hexToRgba(color, 0.55) : color);
+    }
+    if (c.vacant) labelColor = '#647488';
+
+    const microVac = c.micro && /vacant/i.test(c.micro);
+    return {
+      style: base,
+      label: c.label, sub: c.sub || '', micro: c.micro || '', ext: c.ext || '', vacant: !!c.vacant,
+      extStyle: { fontSize: c.dense ? 11 : 12.5, fontWeight: 800, letterSpacing: '.02em', marginTop: c.dense ? 1 : 3,
+        fontFamily: 'JetBrains Mono, monospace', color: '#0b1320' },
+      labelStyle: { fontSize: c.dense ? 11 : 13, fontWeight: 700, color: labelColor, lineHeight: 1.1, letterSpacing: '-.01em' },
+      subStyle: { fontSize: c.dense ? 10 : 11, fontWeight: 600, lineHeight: 1.15, color: '#5a6475' },
+      microStyle: { fontSize: 9.5, fontWeight: 600, letterSpacing: '.02em', marginTop: 1,
+        fontFamily: 'JetBrains Mono, monospace', color: microVac ? '#b45309' : '#7c8696' },
+      vacStyle: { position: 'absolute', top: 6, right: 7, fontSize: 8, fontWeight: 800, letterSpacing: '.1em',
+        color: '#475569', background: t ? this.hexToRgba(color, 0.14) : 'rgba(15,23,42,.06)',
+        border: '1px solid ' + (t ? this.hexToRgba(color, 0.45) : 'rgba(15,23,42,.18)'), padding: '2px 5px', borderRadius: 4 },
+      hover: { transform: 'translateY(-2px)', filter: 'brightness(1.14)', zIndex: 6 },
+      onClick: c.team ? () => this.setFocus(c.team) : null,
+    };
+  }
+
+  setFocus(id) {
+    this.setState({ focus: this.state.focus === id ? null : id });
+  }
+
+  renderVals() {
+    const v = this.props.variant || 'stripe';
+    const focus = this.state.focus;
+
+    const cells = this.rawCells.map(c => this.buildCell(c, v, focus));
+
+    const lum = (hex) => {
+      const n = parseInt(hex.slice(1), 16);
+      return 0.299 * ((n >> 16) & 255) + 0.587 * ((n >> 8) & 255) + 0.114 * (n & 255);
+    };
+    const legend = Object.entries(this.teams).map(([id, t]) => {
+      const active = focus === id;
+      const activeText = lum(t.color) < 140 ? '#ffffff' : '#16202e';
+      return {
+        name: t.name,
+        onClick: () => this.setFocus(id),
+        style: {
+          display: 'inline-flex', alignItems: 'center', gap: 7, padding: '7px 12px', borderRadius: 999,
+          fontFamily: 'Inter, sans-serif', fontSize: 12.5, fontWeight: 600, cursor: 'pointer',
+          color: active ? activeText : '#3f4756',
+          background: active ? t.color : 'rgba(15,23,42,.05)',
+          border: '1px solid ' + (active ? t.color : 'rgba(15,23,42,.12)'),
+          transition: 'all .15s ease',
+        },
+        dotStyle: { width: 9, height: 9, borderRadius: 3, background: t.color, flex: 'none' },
+      };
+    });
+
+    const vac = this.rawCells.filter(c => c.vacant).length;
+    return {
+      title: 'Floor 2 (Proposed)',
+      cells, legend,
+      setScaler: this.setScaler, setPrintBtn: this.setPrintBtn, doPrint: this.doPrint,
+      vacancyLine: vac + ' open seats / rooms',
+    };
+  }
+}
+
+</script>
+</body>
+</html>
