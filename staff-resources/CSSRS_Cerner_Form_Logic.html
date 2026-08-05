@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>How the C-SSRS Screen Opens & Branches in Cerner</title>
+<style>
+  @page { size: letter portrait; margin: 0.35in; }
+
+  :root {
+    --navy: #1a2f57;
+    --navy-deep: #142344;
+    --yellow: #ffe600;
+    --yellow-deep: #d4bd00;
+    --orange: #f2971f;
+    --orange-deep: #c4780f;
+    --red: #e0342c;
+    --red-deep: #b3241d;
+    --ink: #1c1c1c;
+    --paper: #ffffff;
+    --gray-line: #c9c9c9;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: #eef0f3;
+    font-family: 'Segoe UI', Helvetica, Arial, sans-serif;
+    color: var(--ink);
+  }
+
+  .sheet {
+    width: 8.3in;
+    min-height: 10.9in;
+    margin: 0.25in auto;
+    background: var(--paper);
+    padding: 0.35in 0.5in 0.4in;
+    box-shadow: 0 0 0 1px #d8d8d8, 0 10px 30px rgba(0,0,0,0.12);
+  }
+
+  .title {
+    background: var(--navy);
+    background-image: linear-gradient(135deg, var(--navy) 0%, var(--navy-deep) 100%);
+    color: white;
+    padding: 20px 26px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 6px;
+  }
+
+  .title h1 {
+    margin: 0;
+    font-size: 30px;
+    line-height: 1.15;
+    font-weight: 800;
+    letter-spacing: 0.2px;
+  }
+
+  .title .tag {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--navy-deep);
+    background: var(--yellow);
+    padding: 6px 12px;
+    border-radius: 999px;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    white-space: nowrap;
+    margin-left: 18px;
+  }
+
+  .step {
+    display: flex;
+    align-items: stretch;
+    gap: 18px;
+    margin-top: 22px;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 3px solid var(--edge, var(--navy));
+  }
+
+  .step.yellow { --edge: var(--yellow-deep); background: #fffdf0; }
+  .step.orange { --edge: var(--orange-deep); background: #fff8ef; }
+
+  .badge {
+    flex: 0 0 84px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--edge);
+    color: var(--navy-deep);
+    font-size: 44px;
+    font-weight: 900;
+  }
+  .step.orange .badge { color: #3a1f00; }
+
+  .step-body {
+    flex: 1;
+    padding: 14px 22px 16px 4px;
+  }
+
+  .step-title {
+    font-size: 24px;
+    font-weight: 800;
+    margin: 0 0 4px;
+    color: var(--navy-deep);
+  }
+  .step.orange .step-title { color: #7a4400; }
+
+  .step-sub {
+    font-size: 17px;
+    font-weight: 600;
+    margin: 0 0 10px;
+    color: #333;
+  }
+
+  .qline {
+    display: flex;
+    gap: 10px;
+    align-items: baseline;
+    font-size: 17px;
+    line-height: 1.35;
+    margin: 4px 0;
+  }
+  .qtag {
+    flex: 0 0 auto;
+    font-weight: 900;
+    color: var(--navy-deep);
+    background: white;
+    border: 2px solid var(--edge);
+    border-radius: 5px;
+    padding: 0px 8px;
+    font-size: 15px;
+  }
+
+  .divider {
+    text-align: center;
+    margin: 18px 0 10px;
+    font-size: 19px;
+    font-weight: 800;
+    color: var(--navy-deep);
+    letter-spacing: 0.2px;
+  }
+  .divider .arrow { font-size: 22px; margin: 0 6px; }
+
+  .branch {
+    display: flex;
+    gap: 14px;
+    margin-top: 4px;
+  }
+  .branch-card { flex: 1 1 0; }
+
+  .branch-card {
+    border-radius: 8px;
+    padding: 14px 18px;
+    border: 3px solid var(--card-edge);
+  }
+  .branch-card.no { background: #f4f4f4; --card-edge: #b9b9b9; }
+  .branch-card.yes-orange { background: #fdeedc; --card-edge: var(--orange-deep); }
+  .branch-card.yes-red { background: #fbe1df; --card-edge: var(--red-deep); }
+
+  .branch-head {
+    font-size: 20px;
+    font-weight: 900;
+    margin: 0 0 6px;
+  }
+  .branch-card.no .branch-head { color: #444; }
+  .branch-card.yes-orange .branch-head { color: var(--orange-deep); }
+  .branch-card.yes-red .branch-head { color: var(--red-deep); }
+
+  .branch-body {
+    font-size: 16.5px;
+    line-height: 1.4;
+    color: #262626;
+  }
+
+  .subquestions {
+    margin: 12px 2px 0;
+    padding: 12px 16px;
+    background: #f7f7f7;
+    border-left: 5px solid var(--orange-deep);
+    border-radius: 4px;
+  }
+  .subquestions .qline { font-size: 16.5px; }
+
+  .colorkey {
+    display: flex;
+    gap: 12px;
+    margin-top: 24px;
+  }
+  .key-chip {
+    flex: 1;
+    border-radius: 8px;
+    padding: 14px 16px;
+    text-align: center;
+    font-weight: 900;
+    font-size: 19px;
+    border: 3px solid rgba(0,0,0,0.12);
+  }
+  .key-chip.k-yellow { background: var(--yellow); color: #4a3f00; }
+  .key-chip.k-orange { background: var(--orange); color: #3a1f00; }
+  .key-chip.k-red { background: var(--red); color: #ffffff; }
+  .key-chip small {
+    display: block;
+    font-weight: 700;
+    font-size: 13px;
+    margin-top: 2px;
+    opacity: 0.85;
+  }
+
+  .footnote {
+    margin-top: 22px;
+    background: #eef1f6;
+    border: 2px solid #cfd6e2;
+    border-radius: 8px;
+    padding: 14px 20px;
+    font-size: 15.5px;
+    line-height: 1.45;
+    color: #333;
+  }
+  .footnote b { color: var(--navy-deep); }
+
+  @media print {
+    body { background: white; }
+    .sheet { box-shadow: none; margin: 0; width: auto; min-height: auto; }
+  }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <div class="title">
+    <h1>How the C-SSRS Screen Opens &amp; Branches in Cerner</h1>
+    <div class="tag">Quick Reference</div>
+  </div>
+
+  <!-- STEP 1 -->
+  <div class="step yellow">
+    <div class="badge">1</div>
+    <div class="step-body">
+      <p class="step-title">When the form opens</p>
+      <p class="step-sub">Questions 1, 2, and 6 are white and active right away. All three should be completed first.</p>
+      <div class="qline"><span class="qtag">Q1</span><span>Have you wished you were dead or wished you could go to sleep and not wake up?</span></div>
+      <div class="qline"><span class="qtag">Q2</span><span>Have you actually had any thoughts about killing yourself?</span></div>
+      <div class="qline"><span class="qtag">Q6</span><span>Have you ever done anything, started to do anything, or prepared to do anything to end your life?</span></div>
+    </div>
+  </div>
+
+  <div class="divider"><span class="arrow">&#8595;</span>Question 2 is a branch point<span class="arrow">&#8595;</span></div>
+
+  <div class="branch">
+    <div class="branch-card no">
+      <p class="branch-head">Q2 = No</p>
+      <p class="branch-body">Questions 3, 4, and 5 stay hidden. They are not needed.</p>
+    </div>
+    <div class="branch-card yes-orange">
+      <p class="branch-head">Q2 = Yes</p>
+      <p class="branch-body">Questions 3, 4, and 5 unlock and must be completed.</p>
+    </div>
+  </div>
+
+  <div class="subquestions">
+    <div class="qline"><span class="qtag">Q3</span><span>Have you been thinking about how you might do this?</span></div>
+    <div class="qline"><span class="qtag">Q4</span><span>Have you had these thoughts and had some intention of acting on them?</span></div>
+    <div class="qline"><span class="qtag">Q5</span><span>Have you started to work out or worked out the details of how to kill yourself? Did you intend to carry out this plan?</span></div>
+  </div>
+
+  <!-- STEP 2 -->
+  <div class="step orange">
+    <div class="badge">2</div>
+    <div class="step-body">
+      <p class="step-title">Question 6 has its own branch point</p>
+      <p class="step-sub">Q6 is answered up front with Questions 1 and 2. If Q6 is Yes, one more field unlocks.</p>
+    </div>
+  </div>
+
+  <div class="divider"><span class="arrow">&#8595;</span>Q6 branch<span class="arrow">&#8595;</span></div>
+
+  <div class="branch">
+    <div class="branch-card no">
+      <p class="branch-head">Q6 = No</p>
+      <p class="branch-body">No further fields appear for this question.</p>
+    </div>
+    <div class="branch-card yes-red">
+      <p class="branch-head">Q6 = Yes</p>
+      <p class="branch-body">The follow-up field unlocks and must be completed: "Was this within the past 3 months?"</p>
+    </div>
+  </div>
+
+  <!-- STEP 3 -->
+  <div class="step yellow" style="--edge: var(--navy);">
+    <div class="badge" style="background: var(--navy); color: white;">3</div>
+    <div class="step-body">
+      <p class="step-title" style="color: var(--navy-deep);">Determining the patient's risk level</p>
+      <p class="step-sub">Each color has a meaning. Work down the questions in order. The last question where the patient answered Yes sets the color, and that color is their risk level.</p>
+    </div>
+  </div>
+
+  <div class="colorkey">
+    <div class="key-chip k-yellow">Yellow = Low</div>
+    <div class="key-chip k-orange">Orange = Medium</div>
+    <div class="key-chip k-red">Red = High</div>
+  </div>
+
+  <div class="footnote">
+    <b>Good to know:</b> The yellow, orange, and red bands next to each question are not something staff select. They auto-populate as a triage indicator based on the answer given. They exist to help you recognize risk level at a glance, not as an additional field to complete.
+  </div>
+
+</div>
+</body>
+</html>
