@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>New Providers Joining PSMC 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#1c2d40;--teal:#1a7a6e;--teal-light:#e8f5f3;--teal-mid:#2a9d8e;
+    --gold:#e9a84c;--gold-light:#fdf6ea;--indigo:#4a5fc1;--indigo-light:#eef0fb;
+    --sage:#6b8f71;--sage-light:#eef4ef;--rose:#d95f5f;--rose-light:#fdf0f0;
+    --white:#fff;--bg:#f5f7f6;--border:#dde8e6;--muted:#6b7c85;--text:#2c3840;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);line-height:1.6;}
+
+  /* HERO */
+  .hero{background:linear-gradient(150deg,#1c2d40 0%,#1a3a5c 55%,#1a5a50 100%);padding:60px 40px 52px;text-align:center;position:relative;overflow:hidden;}
+  .hero::before{content:'';position:absolute;top:-80px;right:-60px;width:380px;height:380px;background:radial-gradient(circle,rgba(42,157,142,.2) 0%,transparent 65%);border-radius:50%;}
+  .hero::after{content:'';position:absolute;bottom:-60px;left:10%;width:280px;height:280px;background:radial-gradient(circle,rgba(233,168,76,.15) 0%,transparent 65%);border-radius:50%;}
+  .hero-inner{position:relative;z-index:1;max-width:700px;margin:0 auto;}
+  .hero-tag{display:inline-block;background:rgba(42,157,142,.3);color:#7dd4ca;font-size:11px;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;padding:5px 14px;border-radius:20px;margin-bottom:20px;}
+  .hero h1{font-family:'DM Serif Display',serif;font-size:clamp(30px,6vw,52px);color:#fff;line-height:1.1;margin-bottom:14px;}
+  .hero h1 em{font-style:italic;color:#7dd4ca;}
+  .hero-sub{font-size:15px;color:rgba(255,255,255,.75);max-width:520px;margin:0 auto 28px;}
+  .hero-divider{width:60px;height:3px;background:var(--gold);border-radius:2px;margin:0 auto;}
+
+  /* PROVIDER CARDS */
+  .providers{max-width:900px;margin:0 auto;padding:48px 32px 60px;display:grid;grid-template-columns:1fr;gap:24px;}
+
+  .provider-card{background:var(--white);border-radius:18px;border:1px solid var(--border);overflow:hidden;box-shadow:0 4px 20px rgba(28,45,64,.07);}
+  .provider-card-header{padding:28px 32px 0;display:flex;align-items:flex-start;gap:20px;}
+  .provider-avatar{width:64px;height:64px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0;}
+  .avatar-teal{background:var(--teal-light);}
+  .avatar-indigo{background:var(--indigo-light);}
+  .avatar-sage{background:var(--sage-light);}
+  .avatar-gold{background:var(--gold-light);}
+  .provider-card-meta{flex:1;}
+  .provider-specialty{font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:4px;}
+  .spec-teal{color:var(--teal);}
+  .spec-indigo{color:var(--indigo);}
+  .spec-sage{color:var(--sage);}
+  .spec-gold{color:#b07a1a;}
+  .provider-name{font-family:'DM Serif Display',serif;font-size:26px;color:var(--navy);margin-bottom:0;}
+  .provider-start{display:inline-flex;align-items:center;gap:7px;margin-top:10px;background:var(--navy);color:#fff;font-size:12px;font-weight:700;padding:5px 14px;border-radius:20px;letter-spacing:.3px;}
+  .provider-card-body{padding:20px 32px 28px;}
+  .provider-bio{font-size:14px;color:#4a5c65;line-height:1.75;}
+  .provider-highlights{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px;}
+  .highlight-chip{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:500;padding:5px 12px;border-radius:20px;border:1px solid var(--border);background:var(--bg);color:var(--text);}
+
+  /* FOOTER */
+  .flyer-footer{background:var(--navy);padding:32px 40px;text-align:center;}
+  .flyer-footer p{color:rgba(255,255,255,.65);font-size:13px;line-height:1.8;}
+  .flyer-footer strong{color:white;}
+
+  @media print{
+    body{background:white;}
+    .hero{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+    .provider-card{break-inside:avoid;box-shadow:none;border:1px solid #dde8e6;}
+    .flyer-footer{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  }
+  @media(max-width:600px){
+    .hero{padding:40px 24px 36px;}
+    .providers{padding:32px 16px 40px;}
+    .provider-card-header{flex-direction:column;gap:12px;}
+    .provider-card-header,.provider-card-body{padding-left:20px;padding-right:20px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-tag">Pagosa Springs Medical Center</div>
+    <h1>Exciting Providers<br><em>Joining Our Team</em></h1>
+    <p class="hero-sub">We are proud to welcome four exceptional providers to PSMC this fall. Please join us in making them feel right at home.</p>
+    <div class="hero-divider"></div>
+  </div>
+</div>
+
+<div class="providers">
+
+  <!-- DR. NORWOOD -->
+  <div class="provider-card">
+    <div class="provider-card-header">
+      <div class="provider-avatar avatar-teal">👨‍⚕️</div>
+      <div class="provider-card-meta">
+        <div class="provider-specialty spec-teal">Primary Care · Family Medicine</div>
+        <div class="provider-name">Dr. George Norwood</div>
+        <div class="provider-start">📅 Joining September 14, 2026</div>
+      </div>
+    </div>
+    <div class="provider-card-body">
+      <p class="provider-bio">Dr. Norwood is completing his Family Medicine Residency at the University of Arizona in Tucson, where he has been an active member of the Quality Improvement Committee and has contributed to research in areas including opiate use disorder management and shoulder dystocia safety. He is board eligible in Family Medicine and brings a strong foundation in outpatient care, quality improvement, and clinical research. We are so excited to have him joining our primary care team.</p>
+      <div class="provider-highlights">
+        <span class="highlight-chip">🏥 Family Medicine</span>
+        <span class="highlight-chip">🎓 University of Arizona</span>
+        <span class="highlight-chip">✅ Board Eligible</span>
+        <span class="highlight-chip">📊 Quality Improvement</span>
+        <span class="highlight-chip">💻 Cerner EHR</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- DR. MONTAÑO -->
+  <div class="provider-card">
+    <div class="provider-card-header">
+      <div class="provider-avatar avatar-indigo">🧠</div>
+      <div class="provider-card-meta">
+        <div class="provider-specialty spec-indigo">Neurology · Neurocritical Care</div>
+        <div class="provider-name">Dr. Arturo Montaño</div>
+        <div class="provider-start">📅 Joining September 15, 2026</div>
+      </div>
+    </div>
+    <div class="provider-card-body">
+      <p class="provider-bio">Dr. Montaño brings an exceptional depth of expertise in neurology to PSMC. He completed his neurology residency and a Neurocritical Care fellowship at the University of California San Francisco, and most recently has served as Division Chief of Neurocritical Care and Stroke Co-Medical Director at Denver Health. His arrival marks a significant expansion of our neurology capabilities and will bring specialized care closer to home for our community.</p>
+      <div class="provider-highlights">
+        <span class="highlight-chip">🧠 Neurology</span>
+        <span class="highlight-chip">🏥 UCSF Fellowship</span>
+        <span class="highlight-chip">⭐ Denver Health Division Chief</span>
+        <span class="highlight-chip">🩺 Neurocritical Care</span>
+        <span class="highlight-chip">🫀 Stroke Co-Medical Director</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- DR. GRAY -->
+  <div class="provider-card">
+    <div class="provider-card-header">
+      <div class="provider-avatar avatar-gold">🩺</div>
+      <div class="provider-card-meta">
+        <div class="provider-specialty spec-gold">Primary Care · Family Medicine</div>
+        <div class="provider-name">Dr. Chad Gray</div>
+        <div class="provider-start">📅 Joining Full Time November 1, 2026</div>
+      </div>
+    </div>
+    <div class="provider-card-body">
+      <p class="provider-bio">Many of you already know Dr. Gray well. He has been covering for us in both the clinic and the Emergency Department for years, and has become a familiar and trusted face to our team and our patients. We are so excited to share that he will be joining PSMC as a full-time Primary Care Provider beginning November 1st. This is wonderful news, and we know the whole team will be thrilled to have him here permanently!</p>
+      <div class="provider-highlights">
+        <span class="highlight-chip">🏥 Primary Care</span>
+        <span class="highlight-chip">🤝 Known to Our Team</span>
+        <span class="highlight-chip">📍 Full Time</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- DR. RENFREW -->
+  <div class="provider-card">
+    <div class="provider-card-header">
+      <div class="provider-avatar avatar-sage">👩‍⚕️</div>
+      <div class="provider-card-meta">
+        <div class="provider-specialty spec-sage">Primary Care · Family Medicine</div>
+        <div class="provider-name">Dr. Erin Renfrew</div>
+        <div class="provider-start">📅 Joining November 9, 2026</div>
+      </div>
+    </div>
+    <div class="provider-card-body">
+      <p class="provider-bio">Dr. Renfrew is a board-certified Family Medicine physician currently practicing at the Northern Navajo Medical Center, where she provides a broad scope of care including inpatient, outpatient, ICU, and obstetrics in a rural underserved setting. A Colorado State University graduate, she holds licensure in both Colorado and New Mexico. Dr. Renfrew's deep commitment to rural medicine and her comprehensive clinical background make her an exceptional fit for our team and our community.</p>
+      <div class="provider-highlights">
+        <span class="highlight-chip">🏥 Family Medicine</span>
+        <span class="highlight-chip">✅ Board Certified</span>
+        <span class="highlight-chip">🤰 Obstetrics</span>
+        <span class="highlight-chip">🏔️ Rural Medicine</span>
+        <span class="highlight-chip">📍 CO &amp; NM Licensed</span>
+        <span class="highlight-chip">🎓 Colorado State University</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="flyer-footer">
+  <div style="max-width:700px;margin:0 auto;">
+
+    <div style="background:rgba(74,95,193,.15);border:1px solid rgba(74,95,193,.3);border-radius:12px;padding:20px 24px;margin-bottom:24px;text-align:left;">
+      <div style="font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#a0b4f8;margin-bottom:8px;">🧠 Neurology Referrals — Now Open</div>
+      <p style="font-size:14px;color:rgba(255,255,255,.9);line-height:1.7;margin-bottom:10px;">Providers may begin sending referral orders to <strong style="color:white;">Dr. Montaño</strong> in Cerner immediately.</p>
+      <p style="font-size:13px;color:rgba(255,255,255,.75);margin-bottom:6px;">In Cerner, search: <span style="background:rgba(255,255,255,.12);padding:3px 10px;border-radius:6px;font-family:monospace;font-size:13px;color:white;">Referral Management: RM Neurology</span></p>
+      <p style="font-size:13px;color:rgba(255,255,255,.65);margin-top:10px;">Questions? Contact <strong style="color:white;">Vicki Goeckner</strong> &nbsp;·&nbsp; Ext. 3784 &nbsp;·&nbsp; Vicki.Goeckner@PSMedicalCenter.org</p>
+    </div>
+
+    <div style="background:rgba(42,157,142,.15);border:1px solid rgba(42,157,142,.3);border-radius:12px;padding:16px 24px;margin-bottom:24px;text-align:left;">
+      <div style="font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#7dd4ca;margin-bottom:6px;">📋 Waiting Lists</div>
+      <p style="font-size:13px;color:rgba(255,255,255,.8);line-height:1.7;">We have an active waiting list for all incoming providers. Patients who cannot be scheduled immediately will be contacted as soon as appointments become available.</p>
+    </div>
+
+    <p style="color:rgba(255,255,255,.5);font-size:13px;line-height:1.8;"><strong style="color:white;">Primary &amp; Specialty Clinic</strong><br>
+    We are proud to be growing our team and expanding care for our community.<br>
+    Please give a warm PSMC welcome to each of our new providers!</p>
+
+  </div>
+</div>
+
+</body>
+</html>
