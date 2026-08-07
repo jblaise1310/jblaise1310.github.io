@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Patient Prep Tickler: Top 20 Diagnoses | RHC MA Resources</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Mulish:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --teal-900:#0f3a38;
+    --teal-700:#1c5854;
+    --teal-500:#2f7a74;
+    --teal-100:#e3f1ef;
+    --blue-700:#1f4e73;
+    --blue-500:#3372a0;
+    --blue-100:#e5eef5;
+    --cream:#faf8f3;
+    --card-back:#ffffff;
+    --ink:#1c2624;
+    --muted:#5c6b68;
+    --line:#dde6e3;
+    --amber:#c1893c;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--cream);
+    color:var(--ink);
+    font-family:'Mulish',sans-serif;
+  }
+  .wrap{max-width:1240px;margin:0 auto;padding:40px 28px 90px;}
+
+  header{margin-bottom:6px;}
+  .eyebrow{
+    font-size:12.5px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;
+    color:var(--teal-700);margin-bottom:10px;
+  }
+  h1{
+    font-family:'Fraunces',serif;font-weight:700;font-size:clamp(28px,3.4vw,40px);
+    margin:0 0 10px;letter-spacing:-0.01em;color:var(--teal-900);
+  }
+  .lede{
+    max-width:760px;color:var(--muted);font-size:16px;line-height:1.6;margin:0 0 8px;
+  }
+  .lede b{color:var(--ink);}
+  .instructions{
+    display:flex;gap:22px;flex-wrap:wrap;margin:22px 0 34px;
+    padding:16px 20px;background:var(--blue-100);border-radius:12px;
+    border:1px solid #cfe0ec;
+  }
+  .instructions .item{display:flex;align-items:center;gap:10px;font-size:13.5px;color:var(--blue-700);font-weight:600;}
+  .flip-icon{
+    width:22px;height:22px;border-radius:6px;background:var(--blue-500);color:#fff;
+    display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0;
+  }
+
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill, minmax(258px, 1fr));
+    gap:20px;
+  }
+
+  .card-slot{
+    perspective:1400px;
+    height:280px;
+  }
+  .card{
+    position:relative;width:100%;height:100%;
+    transition:transform .55s cubic-bezier(.4,.2,.2,1);
+    transform-style:preserve-3d;
+    cursor:pointer;
+  }
+  .card-slot.flipped .card{transform:rotateY(180deg);}
+
+  .face{
+    position:absolute;inset:0;
+    -webkit-backface-visibility:hidden;backface-visibility:hidden;
+    border-radius:16px;
+    display:flex;flex-direction:column;
+    box-shadow:0 1px 2px rgba(15,58,56,.06), 0 6px 18px rgba(15,58,56,.07);
+  }
+
+  .front{
+    background:linear-gradient(160deg, var(--teal-700), var(--teal-900));
+    color:#fff;
+    padding:22px;
+    justify-content:flex-end;
+  }
+  .front .name{
+    font-family:'Fraunces',serif;font-weight:600;font-size:23px;line-height:1.18;
+    margin-top:auto;
+  }
+  .front .tap-hint{
+    font-size:11.5px;color:rgba(255,255,255,.6);margin-top:14px;
+    display:flex;align-items:center;gap:6px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;
+  }
+
+  .back{
+    background:var(--card-back);
+    border:1.5px solid var(--teal-500);
+    transform:rotateY(180deg);
+    padding:18px 20px 16px;
+    overflow-y:auto;
+  }
+  .back .back-title{
+    font-family:'Fraunces',serif;font-weight:600;font-size:15.5px;color:var(--teal-900);
+    margin:0 0 10px;padding-bottom:8px;border-bottom:2px solid var(--teal-100);
+  }
+  .back ul{list-style:none;margin:0;padding:0;}
+  .back li{
+    font-size:12.8px;line-height:1.42;color:var(--ink);
+    padding:6px 0 6px 22px;position:relative;
+  }
+  .back li::before{
+    content:'';position:absolute;left:2px;top:11px;
+    width:7px;height:7px;border-radius:2px;background:var(--amber);
+    transform:rotate(45deg);
+  }
+
+  .legend{
+    margin-top:44px;padding:20px 22px;background:var(--teal-100);
+    border-radius:14px;border:1px solid #cfe4e0;
+  }
+  .legend .legend-title{
+    font-family:'Fraunces',serif;font-weight:600;font-size:16px;color:var(--teal-900);margin:0 0 8px;
+  }
+  .legend p{margin:0;font-size:13.5px;color:var(--teal-700);line-height:1.55;}
+
+  footer{
+    margin-top:38px;text-align:center;color:var(--muted);font-size:12px;
+  }
+
+  @media (max-width:520px){
+    .card-slot{height:300px;}
+    .instructions{flex-direction:column;gap:10px;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="eyebrow">RHC · MA Resource · Rooming &amp; Patient Preparation</div>
+    <h1>Patient Prep Tickler: Top 20 Diagnoses</h1>
+    <p class="lede">A quick-reference reminder for the diagnosis categories seen most often across our providers' panels. Tap a card to flip it and see what's worth double-checking before the provider walks in. These are things to <b>consider and flag</b>, not orders to carry out on your own.</p>
+  </header>
+
+  <div class="instructions">
+    <div class="item"><span class="flip-icon">↻</span> Tap or click any card to flip it</div>
+    <div class="item"><span class="flip-icon" style="background:var(--teal-500);">✓</span> Front shows the diagnosis, back shows the prep checklist</div>
+    <div class="item"><span class="flip-icon" style="background:var(--amber);">!</span> Anything unusual, always flag it for the provider</div>
+  </div>
+
+  <div class="grid" id="cardGrid"></div>
+
+  <div class="legend">
+    <div class="legend-title">A Note on Scope</div>
+    <p>These reminders are about <b>gathering information, prepping the room, and flagging what you notice</b>, checking a chart date, exposing an area, confirming a symptom timeline. Ordering labs, reconciling medications, and interpreting results stay with the provider. When in doubt, note exactly what the patient told you and let the provider take it from there.</p>
+  </div>
+
+  <footer>Built from combined top-20 diagnosis category data across all providers · Pagosa Springs Medical Center Rural Health Clinic</footer>
+</div>
+
+<script>
+const cards = [
+  {
+    name: "Diabetes",
+    items: [
+      "Did you check the chart for the most recent A1c and its date?",
+      "Are the patient's shoes and socks off before the provider comes in?",
+      "Did you ask about any new sores, cuts, or numbness in their feet?",
+      "Do they have a home glucose log or meter reading to share?",
+      "A1c 9 or higher: due every 3 months, flag it for the provider if it's been longer.",
+      "A1c 7 or lower: due every 6 months.",
+      "A1c between 7 and 9: check with the provider on timing."
+    ]
+  },
+  {
+    name: "Musculoskeletal Pain",
+    items: [
+      "Is the area of pain exposed and easy for the provider to see right away?",
+      "Did you ask when the pain started and what makes it better or worse?",
+      "Did you document a pain scale, 0 to 10?",
+      "Did you ask about any recent falls, injuries, or new weakness?",
+      "Is there a prior imaging or physical therapy note worth flagging?"
+    ]
+  },
+  {
+    name: "Hypertension",
+    items: [
+      "Did the patient rest quietly for 5 minutes, feet flat, back supported, before the BP was taken?",
+      "Is the cuff the correct size for the patient's arm?",
+      "Did you ask if they check BP at home? If they have a log, give it to the Lead or Team RN.",
+      "Did you confirm they took today's BP medication?",
+      "If the first reading is elevated, did you take a second reading and average the two?"
+    ]
+  },
+  {
+    name: "Cardiovascular Disease",
+    items: [
+      "Did you ask about chest pain, shortness of breath, or leg swelling since the last visit?",
+      "Is a current weight documented and compared to the last visit?",
+      "Did you confirm cardiac medications, including any blood thinners?",
+      "If an EKG is likely, is the room and equipment ready?",
+      "Did you note any new or worsening symptoms to flag for the provider?"
+    ]
+  },
+  {
+    name: "Respiratory Infections",
+    items: [
+      "Did you get a full set of vitals, including temperature and oxygen saturation?",
+      "Does the patient need a mask, and is the room set up for precautions?",
+      "Did you ask about symptom duration, sick contacts, and recent travel?",
+      "Is a rapid test kit ready if the provider is likely to want one?",
+      "Did you note the severity of cough or congestion as the patient described it?"
+    ]
+  },
+  {
+    name: "Gastrointestinal Disorders",
+    items: [
+      "Did you ask about timing and character of symptoms, pain location, nausea, bowel changes?",
+      "Did you confirm when the patient last ate or drank?",
+      "Did you ask about blood in stool or vomit, and document exactly what was reported?",
+      "Is hydration status noted, dizziness, dry mouth, reduced urination?",
+      "Did you confirm current GI medications with the patient?"
+    ]
+  },
+  {
+    name: "Sleep Disorders",
+    items: [
+      "If the patient uses a CPAP, did they bring compliance data or the device?",
+      "Did you ask about daytime sleepiness, snoring, or witnessed breathing pauses?",
+      "Is a current weight and blood pressure documented, since sleep apnea and hypertension often overlap?",
+      "Did you ask about caffeine, alcohol, or medications that could affect sleep?"
+    ]
+  },
+  {
+    name: "Neurological",
+    items: [
+      "Did you ask about falls, dizziness, or balance changes since the last visit? (STEADI applies for age 65+.)",
+      "Did you observe and document the patient's gait as they walked back?",
+      "Did you ask when symptoms started and whether they're constant or come and go?",
+      "Did you confirm the current medication list, since interactions can cause neuro symptoms?"
+    ]
+  },
+  {
+    name: "Skin Disorders",
+    items: [
+      "Is the affected area exposed with good lighting for the provider to see clearly?",
+      "Did you ask how long it's been present and whether it has changed?",
+      "Did you ask about itching, pain, or drainage, and document exactly what was reported?",
+      "Did you take an image via Camera Capture? This helps the provider track how the lesion develops over time."
+    ]
+  },
+  {
+    name: "Mental Health – Mood/Anxiety",
+    items: [
+      "Did you complete the PHQ-2/PHQ-9 and C-SSRS, required every visit?"
+    ]
+  },
+  {
+    name: "Injuries/Trauma",
+    items: [
+      "Did you take images via Camera Capture?",
+      "Is the injury site exposed and ready for the provider to see the moment they walk in?",
+      "Did you ask when and how it happened, and document it in the patient's own words?",
+      "Did you ask about tetanus vaccination status if there's a wound?",
+      "Did you note any visible swelling, bruising, or deformity?"
+    ]
+  },
+  {
+    name: "Urinary Tract/Kidney",
+    items: [
+      "Did you ask about frequency, urgency, burning, or blood in the urine?",
+      "Is a clean-catch sample ready if a urinalysis is likely?",
+      "For patients who could be pregnant, has a pregnancy test been offered per protocol?",
+      "Did you confirm hydration and any recent change in urination habits?"
+    ]
+  },
+  {
+    name: "Lipid &amp; Metabolic Disorders",
+    items: [
+      "Did you check the chart for the most recent lipid panel and its date?",
+      "Did you ask if the patient fasted, in case same-day labs come up?",
+      "Did you confirm current cholesterol or metabolic medications with the patient?"
+    ]
+  },
+  {
+    name: "Thyroid Disorders",
+    items: [
+      "Did you check the chart for the most recent TSH and its date?",
+      "Did you ask about weight change, fatigue, temperature sensitivity, or heart racing?",
+      "Did you confirm current thyroid medication and whether it's taken on an empty stomach?"
+    ]
+  },
+  {
+    name: "GI Symptoms",
+    items: [
+      "Did you ask about timing, location, and severity of the symptom?",
+      "Is a current weight documented and compared to the last visit?",
+      "Did you ask about recent diet changes, travel, or new medications?"
+    ]
+  },
+  {
+    name: "Respiratory Symptoms",
+    items: [
+      "Did you get oxygen saturation along with the rest of vitals?",
+      "Did you ask how long the symptom has been present and whether it's worsening?",
+      "Did you ask about smoking history or exposure to irritants?"
+    ]
+  },
+  {
+    name: "Asthma/COPD",
+    items: [
+      "Did the patient bring their rescue inhaler? Is inhaler technique worth noting?",
+      "If spirometry or peak flow is likely, is the equipment ready?",
+      "Did you ask about recent flare-ups, ER visits, or steroid courses?",
+      "Did you get oxygen saturation as part of vitals?"
+    ]
+  },
+  {
+    name: "Oncology",
+    items: [
+      "Are recent labs, imaging, or outside oncology notes available for the visit?",
+      "Did you ask about new or worsening symptoms since the last visit?",
+      "Did you confirm current medications, including any recently started treatments?",
+      "Did you ask about pain and document a pain scale if relevant?"
+    ]
+  },
+  {
+    name: "Female GU Disorders",
+    items: [
+      "Is a chaperone available if the visit is likely to include a sensitive exam?",
+      "Did you document the date of the patient's last menstrual period, if relevant?",
+      "For patients who could be pregnant, has a pregnancy test been offered per protocol?",
+      "Is the room stocked and ready for the type of exam expected?"
+    ]
+  },
+  {
+    name: "General/Constitutional Symptoms",
+    items: [
+      "Is a current weight documented and compared to the last visit?",
+      "Did you ask about fever, chills, night sweats, or unexplained weight change?",
+      "Did you ask how long the symptom has been present and whether it's improving?",
+      "Did you confirm the current medication list?"
+    ]
+  }
+];
+
+const grid = document.getElementById('cardGrid');
+cards.forEach(c => {
+  const slot = document.createElement('div');
+  slot.className = 'card-slot';
+  slot.innerHTML = `
+    <div class="card">
+      <div class="face front">
+        <div>
+          <div class="name">${c.name}</div>
+          <div class="tap-hint">↻ Tap to Flip</div>
+        </div>
+      </div>
+      <div class="face back">
+        <div class="back-title">Before the Provider Walks In</div>
+        <ul>${c.items.map(i => `<li>${i}</li>`).join('')}</ul>
+      </div>
+    </div>
+  `;
+  slot.addEventListener('click', () => slot.classList.toggle('flipped'));
+  grid.appendChild(slot);
+});
+</script>
+</body>
+</html>
