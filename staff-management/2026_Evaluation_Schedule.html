@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026 Performance Evaluation Schedule</title>
+<style>
+  :root {
+    --ink: #1f2a24;
+    --ink-soft: #4b564e;
+    --paper: #faf8f3;
+    --card: #ffffff;
+    --line: #dcd7c8;
+    --pine: #2f4d3a;
+    --pine-light: #e7efe6;
+    --amber: #a7631c;
+    --amber-light: #fbeedd;
+    --clay: #9c4a3a;
+    --clay-light: #f7e8e2;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+    line-height: 1.5;
+    padding: 48px 24px 96px;
+  }
+
+  .wrap {
+    max-width: 980px;
+    margin: 0 auto;
+  }
+
+  header {
+    border-bottom: 3px double var(--pine);
+    padding-bottom: 24px;
+    margin-bottom: 36px;
+  }
+
+  .eyebrow {
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    font-size: 12px;
+    color: var(--pine);
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+
+  h1 {
+    font-size: 36px;
+    margin: 0 0 8px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+  .subhead {
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    color: var(--ink-soft);
+    font-size: 15px;
+    max-width: 640px;
+  }
+
+  .meta-row {
+    display: flex;
+    gap: 32px;
+    margin-top: 22px;
+    flex-wrap: wrap;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+  }
+
+  .meta-item .label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--ink-soft);
+    margin-bottom: 3px;
+  }
+
+  .meta-item .value {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--pine);
+  }
+
+  .flags {
+    background: var(--amber-light);
+    border: 1px solid #e6cfa5;
+    border-radius: 6px;
+    padding: 18px 22px;
+    margin-bottom: 40px;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 14px;
+    color: #5b3d16;
+  }
+
+  .flags .flags-title {
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: var(--amber);
+  }
+
+  .flags ul {
+    margin: 0;
+    padding-left: 20px;
+  }
+
+  .flags li { margin-bottom: 4px; }
+
+  .section-title {
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--pine);
+    margin: 0 0 14px;
+  }
+
+  .block {
+    margin-bottom: 44px;
+  }
+
+  .week {
+    margin-bottom: 14px;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .week-head {
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    background: var(--pine);
+    color: #f4f1e6;
+    padding: 12px 22px;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .week-head.exception {
+    background: #6b5b45;
+  }
+
+  .week-head .count {
+    font-weight: 400;
+    opacity: 0.8;
+    text-transform: none;
+    letter-spacing: 0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+  }
+
+  thead th {
+    text-align: left;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--ink-soft);
+    padding: 10px 22px;
+    border-bottom: 1px solid var(--line);
+    font-weight: 600;
+  }
+
+  tbody td {
+    padding: 12px 22px;
+    border-bottom: 1px solid var(--line);
+    font-size: 14.5px;
+    vertical-align: top;
+  }
+
+  tbody tr:last-child td { border-bottom: none; }
+
+  tbody tr:nth-child(even) { background: #fbfaf6; }
+
+  .date-cell { white-space: nowrap; font-weight: 600; width: 150px; }
+  .day-cell { color: var(--ink-soft); width: 90px; }
+  .name-cell { font-weight: 600; }
+  .position-cell { color: var(--ink-soft); }
+
+  .tag {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 2px 9px;
+    border-radius: 20px;
+    margin-left: 8px;
+    vertical-align: middle;
+  }
+
+  .tag-limited {
+    background: var(--amber-light);
+    color: var(--amber);
+  }
+
+  .tag-cannot {
+    background: #eee3d9;
+    color: #6b5b45;
+  }
+
+  .note {
+    font-size: 12.5px;
+    color: var(--ink-soft);
+    font-style: italic;
+    margin-top: 2px;
+  }
+
+  .prn-section {
+    background: var(--clay-light);
+    border: 1px solid #e3c3b6;
+    border-radius: 8px;
+    padding: 22px 28px;
+    margin-bottom: 40px;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+  }
+
+  .prn-section .prn-title {
+    font-weight: 700;
+    color: var(--clay);
+    font-size: 15px;
+    margin-bottom: 6px;
+  }
+
+  .prn-section p {
+    margin: 0 0 14px;
+    font-size: 14px;
+    color: #4d2b21;
+    max-width: 680px;
+  }
+
+  .prn-list {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+
+  .prn-card {
+    background: var(--card);
+    border: 1px solid #e3c3b6;
+    border-radius: 6px;
+    padding: 10px 16px;
+    font-size: 14px;
+  }
+
+  .prn-card .prn-name {
+    font-weight: 600;
+    color: var(--ink);
+  }
+
+  .prn-card .prn-position {
+    color: var(--ink-soft);
+    font-size: 12.5px;
+  }
+
+  footer {
+    margin-top: 48px;
+    padding-top: 18px;
+    border-top: 1px solid var(--line);
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 12px;
+    color: var(--ink-soft);
+  }
+
+  @media print {
+    body { padding: 0; background: #fff; }
+    .week { break-inside: avoid; }
+  }
+
+  @media (max-width: 640px) {
+    h1 { font-size: 28px; }
+    .meta-row { gap: 18px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="eyebrow">Clinic Operations</div>
+    <h1>2026 Performance Evaluation Schedule</h1>
+    <div class="subhead">Every staff member who works Fridays has been consolidated onto a Friday date, so Monday, Tuesday, and Thursday stay as clear as possible for regular clinic operations.</div>
+    <div class="meta-row">
+      <div class="meta-item">
+        <div class="label">Reviews begin</div>
+        <div class="value">September 1, 2026</div>
+      </div>
+      <div class="meta-item">
+        <div class="label">Last scheduled review</div>
+        <div class="value">October 23, 2026</div>
+      </div>
+      <div class="meta-item">
+        <div class="label">Deadline</div>
+        <div class="value">October 30, 2026</div>
+      </div>
+      <div class="meta-item">
+        <div class="label">On a Friday</div>
+        <div class="value">16</div>
+      </div>
+      <div class="meta-item">
+        <div class="label">Cannot work Friday</div>
+        <div class="value">9</div>
+      </div>
+    </div>
+  </header>
+
+  <div class="flags">
+    <div class="flags-title">Before this is final</div>
+    <ul>
+      <li>16 of 25 dated staff work Fridays and are now scheduled on one. Most Fridays carry two reviews.</li>
+      <li>The 9 staff in the exceptions table genuinely do not work Fridays, based on confirmed schedules, so they stay on their next best available day.</li>
+      <li>One date per person is listed, with no time attached. Your admin will place each on the calendar.</li>
+    </ul>
+  </div>
+
+  <div class="prn-section">
+    <div class="prn-title">Scheduled based on availability</div>
+    <p>These four work variable or PRN schedules. Rather than assign them a fixed date here, pull their upcoming shifts and slot each one into an open date between now and October 30, on a Friday if their shifts allow it.</p>
+    <div class="prn-list">
+      <div class="prn-card"><div class="prn-name">Nusi Hughes</div><div class="prn-position">RN, Clinic, PRN</div></div>
+      <div class="prn-card"><div class="prn-name">Remy Oney</div><div class="prn-position">Assistant, Medical, PRN</div></div>
+      <div class="prn-card"><div class="prn-name">Meghan Waugh</div><div class="prn-position">Position not provided, PRN</div></div>
+      <div class="prn-card"><div class="prn-name">Laura Sanchez</div><div class="prn-position">Assistant, Medical</div></div>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="section-title">Friday reviews</div>
+
+    <div class="week">
+      <div class="week-head"><span>September 4</span><span class="count">2 reviews</span></div>
+      <table>
+        <tbody>
+          <tr><td class="date-cell">Megan Niederkorn</td><td class="position-cell">Lead, RN Clinic</td></tr>
+          <tr><td class="date-cell">Deb Calavan</td><td class="position-cell">Specialist, Referral</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="week">
+      <div class="week-head"><span>September 11</span><span class="count">2 reviews</span></div>
+      <table>
+        <tbody>
+          <tr><td class="date-cell">Kinsey O'Dell</td><td class="position-cell">RN, Clinic</td></tr>
+          <tr><td class="date-cell">Sara Marino</td><td class="position-cell">Representative, Patient Services</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="week">
+      <div class="week-head"><span>September 18</span><span class="count">2 reviews</span></div>
+      <table>
+        <tbody>
+          <tr><td class="date-cell">Brandy Prestridge</td><td class="position-cell">Assistant, Medical</td></tr>
+          <tr><td class="date-cell">Tori Watts</td><td class="position-cell">RN, Orthopedic Clinic Coordinator</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="week">
+      <div class="week-head"><span>September 25</span><span class="count">2 reviews</span></div>
+      <table>
+        <tbody>
+          <tr><td class="date-cell">Madilyn Smith</td><td class="position-cell">RN, Clinic</td></tr>
+          <tr><td class="date-cell">Vickie Perales</td><td class="position-cell">Specialist, Referral</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="week">
+      <div class="week-head"><span>October 2</span><span class="count">2 reviews</span></div>
+      <table>
+        <tbody>
+          <tr><td class="date-cell">Ruth Vance</td><td class="position-cell">LPN/LVN, Clinic</td></tr>
+          <tr><td class="date-cell">Paula Quintana</td><td class="position-cell">Representative, Patient Services</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="week">
+      <div class="week-head"><span>October 9</span><span class="count">2 reviews</span></div>
+      <table>
+        <tbody>
+          <tr><td class="date-cell">Veronica Shockley</td><td class="position-cell">Representative, Patient Services</td></tr>
+          <tr><td class="date-cell">Mckenna Sutton</td><td class="position-cell">RN, Care Manager</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="week">
+      <div class="week-head"><span>October 16</span><span class="count">2 reviews</span></div>
+      <table>
+        <tbody>
+          <tr><td class="date-cell">Dakoda Morris</td><td class="position-cell">Representative, Patient Service</td></tr>
+          <tr><td class="date-cell">Latia Albue</td><td class="position-cell">Assistant, Medical</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="week">
+      <div class="week-head"><span>October 23</span><span class="count">2 reviews</span></div>
+      <table>
+        <tbody>
+          <tr><td class="date-cell">Tyler McCain <span class="tag tag-limited">New hire</span></td><td class="position-cell">RN, Clinic</td></tr>
+          <tr><td class="date-cell">Amoria Netzahualt</td><td class="position-cell">Assistant, Medical</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="section-title">Cannot be moved to Friday</div>
+    <div class="week">
+      <div class="week-head exception"><span>Non Friday exceptions</span><span class="count">9 reviews</span></div>
+      <table>
+        <thead><tr><th>Date</th><th>Day</th><th>Staff</th><th>Position</th></tr></thead>
+        <tbody>
+          <tr><td class="date-cell">Sept 1</td><td class="day-cell">Tuesday</td><td class="name-cell">Brianne Albach</td><td class="position-cell">RN, Graduate</td></tr>
+          <tr><td class="date-cell">Sept 3</td><td class="day-cell">Thursday</td><td class="name-cell">David Albue</td><td class="position-cell">Assistant, Medical</td></tr>
+          <tr><td class="date-cell">Sept 8</td><td class="day-cell">Tuesday</td><td class="name-cell">Hannah Brostek</td><td class="position-cell">Assistant, Medical</td></tr>
+          <tr><td class="date-cell">Sept 14</td><td class="day-cell">Monday</td><td class="name-cell">Charlene Caldwell</td><td class="position-cell">Assistant, Medical</td></tr>
+          <tr><td class="date-cell">Sept 15</td><td class="day-cell">Tuesday</td><td class="name-cell">Haley Dalton</td><td class="position-cell">Assistant, Medical</td></tr>
+          <tr><td class="date-cell">Sept 21</td><td class="day-cell">Monday</td><td class="name-cell">Pricilla Garcia</td><td class="position-cell">Assistant, Medical</td></tr>
+          <tr><td class="date-cell">Sept 22</td><td class="day-cell">Tuesday</td><td class="name-cell">Ariana Shabro</td><td class="position-cell">RN, Specialty Clinic</td></tr>
+          <tr><td class="date-cell">Sept 28</td><td class="day-cell">Monday</td><td class="name-cell">Leah Wattier</td><td class="position-cell">RN, Specialty Clinic</td></tr>
+          <tr><td class="date-cell">Oct 19</td><td class="day-cell">Monday</td><td class="name-cell">Alec Fulbright <span class="tag tag-cannot">New hire, M/T only</span></td><td class="position-cell">Assistant, Medical</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <footer>
+    Prepared for the 2026 evaluation cycle. Self evaluations due September 1, individual review dates assigned on receipt.
+  </footer>
+
+</div>
+</body>
+</html>
