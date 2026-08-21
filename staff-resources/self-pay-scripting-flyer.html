@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Self-Pay $100 Collection Scripting</title>
+<style>
+  @media print {
+    .no-print { display: none; }
+    body { margin: 0; }
+  }
+  * { box-sizing: border-box; }
+  body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 0 40px 0;
+    color: #1a1a1a;
+    line-height: 1.55;
+    background: #ffffff;
+  }
+  .header {
+    background: #10233f;
+    color: #fff;
+    padding: 34px 40px 30px 40px;
+    text-align: center;
+  }
+  .eyebrow {
+    letter-spacing: 2px;
+    font-size: 12px;
+    font-weight: 700;
+    color: #7ea3d6;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  h1 {
+    font-size: 30px;
+    margin: 0;
+    line-height: 1.2;
+  }
+  .subtitle {
+    font-size: 15px;
+    color: #cdd9ec;
+    margin-top: 8px;
+  }
+  .content {
+    padding: 0 40px;
+  }
+  h2 {
+    font-size: 17px;
+    color: #10233f;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-top: 34px;
+    margin-bottom: 12px;
+  }
+  .script-box {
+    background: #f4f7fb;
+    border-left: 6px solid #2b5faa;
+    padding: 22px 24px;
+    border-radius: 4px;
+    font-size: 16px;
+  }
+  .script-box p {
+    margin: 0 0 14px 0;
+  }
+  .script-box p:last-child {
+    margin-bottom: 0;
+  }
+  .label {
+    font-weight: 700;
+    color: #2b5faa;
+  }
+  .callout {
+    background: #fff8ec;
+    border: 2px solid #d99b1e;
+    border-radius: 6px;
+    padding: 22px 24px;
+    margin-top: 18px;
+  }
+  .callout .callout-label {
+    font-weight: 700;
+    color: #a86c0a;
+    text-transform: uppercase;
+    font-size: 13px;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+  }
+  .callout p {
+    margin: 0 0 14px 0;
+    font-size: 15px;
+  }
+  .phone-row {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-top: 12px;
+  }
+  .phone-chip {
+    background: #d99b1e;
+    color: #fff;
+    font-size: 22px;
+    font-weight: 700;
+    padding: 10px 20px;
+    border-radius: 6px;
+    letter-spacing: 0.5px;
+  }
+  .walkin-note {
+    font-size: 14px;
+    color: #6b5109;
+    margin-top: 14px;
+  }
+  ul.errors {
+    background: #fdf3f2;
+    border-left: 6px solid #c0392b;
+    padding: 18px 22px 18px 42px;
+    border-radius: 4px;
+    font-size: 15px;
+    margin-top: 12px;
+  }
+  ul.errors li {
+    margin-bottom: 10px;
+  }
+  ul.errors li:last-child {
+    margin-bottom: 0;
+  }
+  .print-btn {
+    display: block;
+    margin: 32px auto 0 auto;
+    padding: 10px 20px;
+    background: #10233f;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+  }
+  .print-btn:hover {
+    background: #1a3560;
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="eyebrow">Staff Coaching Flyer</div>
+  <h1>Self-Pay $100 Collection Scripting</h1>
+  <div class="subtitle">RHC self-pay walk-in encounters</div>
+</div>
+
+<div class="content">
+
+<h2>Scripting for Collection on RHC Encounters (Self-Pay)</h2>
+<div class="script-box">
+  <p>Hello, Good Morning, etc. <span class="label">(Patient's Name/Guarantor Name)</span></p>
+  <p>Example: "Ms. Campbell, we are asking for a payment of $100.00 toward your visit today, and the final charge(s) will be based on the services provided to you today. You will receive a statement from Pagosa Springs Medical Center within 10 days from the date of service."</p>
+  <p>"If you pay in full within 30 days of your first statement date, you will receive a 30% discount off of your total charges for this visit today. We accept American Express, Discover, MasterCard, Visa, checks and cash. Do you have any questions?"</p>
+</div>
+
+<div class="callout">
+  <div class="callout-label">If They Can't Pay</div>
+  <p>Suggest referring to our Financial Counselor for assistance, after they see the provider. They can also stop by and see the Financial Counselor directly.</p>
+  <div class="phone-row">
+    <div class="phone-chip">970.507.3939</div>
+    <div class="phone-chip">970.507.3942</div>
+  </div>
+</div>
+
+<h2>Common Errors to Avoid</h2>
+<ul class="errors">
+  <li>Telling the patient $100 is the "full cost" of the visit.</li>
+  <li>Skipping the explanation of the 10-day statement timeline.</li>
+  <li>Forgetting to mention the 30% prompt-pay discount.</li>
+  <li>Offering the Financial Counselor referral before the patient has seen the provider.</li>
+</ul>
+
+<button class="print-btn no-print" onclick="window.print()">Print / Save as PDF</button>
+
+</div>
+</body>
+</html>
