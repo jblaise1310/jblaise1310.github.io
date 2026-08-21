@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Employee Coaching Sheet</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    font-family: Georgia, 'Times New Roman', serif;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 40px 50px;
+    color: #222;
+    line-height: 1.55;
+    background: #f4f7f9;
+  }
+  h1 {
+    font-size: 26px;
+    margin-bottom: 4px;
+    color: #0b3d5c;
+    border-bottom: 4px solid #1d7a8c;
+    padding-bottom: 10px;
+  }
+  .meta-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0 30px 0;
+    font-size: 14px;
+    background: white;
+    border-radius: 6px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  }
+  .meta-table td {
+    padding: 10px 14px;
+    vertical-align: top;
+    border-bottom: 1px solid #e3e9ec;
+  }
+  .meta-label {
+    font-weight: bold;
+    width: 220px;
+    color: #0b3d5c;
+    background: #eaf3f5;
+  }
+  h2 {
+    font-size: 16px;
+    color: #0b3d5c;
+    border-left: 4px solid #1d7a8c;
+    padding-left: 10px;
+    margin-top: 30px;
+    margin-bottom: 10px;
+  }
+  p, li {
+    font-size: 14px;
+  }
+  ol {
+    padding-left: 20px;
+  }
+  li {
+    margin-bottom: 10px;
+  }
+  .box {
+    background: white;
+    border-left: 5px solid #1d7a8c;
+    border-radius: 6px;
+    padding: 16px 20px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  }
+  .impact-box {
+    background: #fdf3f0;
+    border-left: 5px solid #c0392b;
+    border-radius: 6px;
+    padding: 16px 20px 4px 20px;
+  }
+  .expect-box {
+    background: #f2f9f2;
+    border-left: 5px solid #2e8b57;
+    border-radius: 6px;
+    padding: 16px 20px 4px 20px;
+  }
+  .instructions {
+    background: #fff8e1;
+    border: 1px solid #e8c968;
+    border-left: 5px solid #d4a017;
+    border-radius: 6px;
+    padding: 16px 20px;
+    margin: 25px 0;
+    font-size: 14px;
+  }
+  .instructions h2 {
+    margin-top: 0;
+    color: #8a6d00;
+    border-left: none;
+    padding-left: 0;
+  }
+  .instructions ol {
+    margin-bottom: 0;
+  }
+  .sign-section {
+    margin-top: 40px;
+    background: white;
+    border-radius: 6px;
+    padding: 20px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  }
+  .sign-line {
+    margin-top: 25px;
+    display: flex;
+    gap: 40px;
+  }
+  .sign-block {
+    flex: 1;
+  }
+  .sign-input {
+    width: 100%;
+    padding: 10px;
+    font-size: 15px;
+    font-family: Georgia, 'Times New Roman', serif;
+    border: none;
+    border-bottom: 2px solid #1d7a8c;
+    background: #eaf3f5;
+    border-radius: 4px 4px 0 0;
+  }
+  .sign-input:focus {
+    outline: none;
+    background: #dcecef;
+  }
+  .sign-caption {
+    font-size: 12px;
+    color: #555;
+    margin-top: 4px;
+  }
+  .comments-box {
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    height: 90px;
+    margin-top: 8px;
+    padding: 10px;
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 14px;
+    resize: vertical;
+  }
+  #print-btn {
+    background: #1d7a8c;
+    color: white;
+    border: none;
+    padding: 10px 22px;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+    margin-bottom: 20px;
+  }
+  #print-btn:hover {
+    background: #145d6b;
+  }
+  @media print {
+    #print-btn { display: none; }
+    .instructions { display: none; }
+    body { padding: 20px 40px; background: white; }
+    .sign-input { background: transparent; border-bottom: 1px solid #333; }
+  }
+</style>
+</head>
+<body>
+
+<h1>Employee Coaching Sheet</h1>
+
+<table class="meta-table">
+  <tr>
+    <td class="meta-label">Department:</td>
+    <td>RHC</td>
+  </tr>
+  <tr>
+    <td class="meta-label">Role:</td>
+    <td>Patient Services Representative</td>
+  </tr>
+  <tr>
+    <td class="meta-label">Date Sent:</td>
+    <td>August 21, 2026</td>
+  </tr>
+  <tr>
+    <td class="meta-label">Coaching Provided By:</td>
+    <td>Jo Blaise, Manager: Clinic</td>
+  </tr>
+</table>
+
+<h2>Situation Summary</h2>
+<div class="box">
+<p>A patient arrived for a scheduled appointment at 8:30 a.m. and missed being seen due to registration processing time. The patient was directed to the walk-in clinic. When she attempted to check in, she asked the Patient Services Representative how long the wait would be. The representative told her "it's going to be a long time" and that they were "booked all day," without offering a specific timeframe or checking with clinical staff first.</p>
+<p>A nurse was pulled in to clarify wait times and informed the patient she could return at approximately 12:45 p.m. When the patient referenced what she had been told about being "booked all day," the representative denied having said it, responding "I never said that" in a raised voice in front of the patient.</p>
+<p>The patient described the interaction as unprofessional and left the encounter frustrated, feeling she had been given inaccurate and dismissive information.</p>
+</div>
+
+<h2>Behavior Observed</h2>
+<div class="box">
+<ul>
+  <li>Provided a vague, non-specific response ("it's going to be a long time," "booked all day") instead of checking actual availability before answering</li>
+  <li>Did not escalate to the Lead RN or Team RN to get an accurate wait time before speaking with the patient</li>
+  <li>When the patient repeated back what she was told, responded defensively and denied it in a raised voice, rather than de-escalating</li>
+  <li>Did not offer the patient a concrete alternative (e.g., the 12:45 p.m. return time) until a nurse intervened</li>
+</ul>
+</div>
+
+<h2>Impact</h2>
+<div class="impact-box">
+<ul>
+  <li>Patient left the interaction feeling dismissed and unheard</li>
+  <li>Vague answers created confusion and required a nurse to step in to resolve something that could have been handled at registration</li>
+  <li>Raised voice and denial in front of the patient escalated the situation and damaged trust</li>
+  <li>Contributed to a formal complaint</li>
+</ul>
+</div>
+
+<h2>Expectations Going Forward</h2>
+<div class="expect-box">
+<ol>
+  <li><strong>For any missed appointment, check with the Lead RN or Team RN before responding to the patient.</strong> Do not tell a patient about wait times, availability, or next steps until this has been confirmed. Do not guess or estimate.</li>
+  <li><strong>Use a simple, appropriate response while checking.</strong> For a missed appointment, the response should be: "I'm sorry your appointment was missed. Let me check with the nurse and I'll get back to you." Then follow up with the nurse, find out what can be done, and inform the patient of the outcome.</li>
+  <li><strong>Never raise your voice with a patient, under any circumstance.</strong> If a patient repeats or questions something that was said, respond calmly and clarify. A raised voice is not acceptable, even if the patient is upset or mistaken about what was said.</li>
+  <li><strong>Give specific, actionable information.</strong> Avoid vague phrases like "a long time" or "booked all day." Once confirmed with the nurse, give the patient a concrete time or next step (e.g., "The next opening is around 12:45 p.m.").</li>
+</ol>
+</div>
+
+<button id="print-btn" onclick="window.print()">Print / Save as PDF</button>
+
+<div class="instructions">
+  <h2>Instructions</h2>
+  <ol>
+    <li>Type your full name in the "Employee Name" box below.</li>
+    <li>Type today's date in the "Date" box below.</li>
+    <li>Click the <strong>Print / Save as PDF</strong> button above.</li>
+    <li>In the print window, choose <strong>Save as PDF</strong> (instead of a physical printer) and save the file.</li>
+    <li>Send the saved PDF back to Jo Blaise.</li>
+  </ol>
+</div>
+
+<div class="sign-section">
+<h2>Employee Acknowledgment</h2>
+<p>I have read and understand the scenario described above and the expectations going forward.</p>
+
+<div class="sign-line">
+  <div class="sign-block">
+    <input type="text" class="sign-input" placeholder="Type your full name" id="empName">
+    <div class="sign-caption">Employee Name</div>
+  </div>
+  <div class="sign-block">
+    <input type="text" class="sign-input" placeholder="Type today's date" id="empDate">
+    <div class="sign-caption">Date</div>
+  </div>
+</div>
+</div>
+
+<h2>Employee Comments (optional)</h2>
+<textarea class="comments-box" placeholder="Type any comments here"></textarea>
+
+</body>
+</html>
