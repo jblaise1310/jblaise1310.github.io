@@ -1,0 +1,1319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>RHC Staff Directory</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=DM+Mono:wght@400;500&family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+
+:root {
+  --bg:        #F7F9FC;
+  --surface:   #FFFFFF;
+  --surface2:  #EEF2F7;
+  --border:    #DDE3ED;
+  --blue-900:  #0F2744;
+  --blue-700:  #1A3A5C;
+  --blue-500:  #2D6FA8;
+  --blue-300:  #6FA8D6;
+  --blue-100:  #E0EDF9;
+  --gray-700:  #374151;
+  --gray-500:  #6B7280;
+  --gray-300:  #D1D9E6;
+  --gray-100:  #F1F4F9;
+  --green:     #1A7A4A;
+  --green-l:   #E6F4ED;
+  --amber:     #B45309;
+  --amber-l:   #FEF3C7;
+  --red:       #B91C1C;
+  --red-l:     #FEE2E2;
+  --slate:     #64748B;
+  --slate-l:   #F0F4F8;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Sora', sans-serif;
+  background: var(--bg);
+  color: var(--gray-700);
+  min-height: 100vh;
+  font-size: 14px;
+}
+
+/* ── Top bar ── */
+.topbar {
+  background: var(--blue-900);
+  padding: 0 28px;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  border-bottom: 2px solid var(--blue-500);
+}
+.topbar-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+  letter-spacing: 0.02em;
+}
+.topbar-meta {
+  font-size: 11px;
+  color: var(--blue-300);
+  font-family: 'DM Mono', monospace;
+}
+
+/* ── Layout ── */
+.layout {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  min-height: calc(100vh - 52px);
+}
+
+/* ── Sidebar ── */
+.sidebar {
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  padding: 24px 0;
+  position: sticky;
+  top: 52px;
+  height: calc(100vh - 52px);
+  overflow-y: auto;
+}
+.sidebar-label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--gray-500);
+  padding: 0 20px 8px;
+  margin-top: 8px;
+}
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 20px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--gray-700);
+  cursor: pointer;
+  transition: all 0.15s;
+  border-left: 3px solid transparent;
+}
+.nav-item:hover { background: var(--gray-100); color: var(--blue-700); }
+.nav-item.active {
+  background: var(--blue-100);
+  color: var(--blue-700);
+  border-left-color: var(--blue-500);
+  font-weight: 600;
+}
+.nav-icon { font-size: 15px; }
+.nav-badge {
+  margin-left: auto;
+  background: var(--blue-900);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 7px;
+  border-radius: 10px;
+  font-family: 'DM Mono', monospace;
+}
+.nav-badge.amber { background: var(--amber); }
+.nav-badge.red   { background: var(--red); }
+
+/* ── Main ── */
+.main { padding: 28px 32px; overflow-y: auto; }
+.page { display: none; }
+.page.active { display: block; }
+.page-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--blue-900);
+  margin-bottom: 4px;
+}
+.page-sub {
+  font-size: 12px;
+  color: var(--gray-500);
+  margin-bottom: 24px;
+  font-family: 'DM Mono', monospace;
+}
+.report-sheet { max-width: 1100px; }
+.fc-lbl { display:block; font-size:11px; font-weight:700; color:var(--gray-500); text-transform:uppercase; letter-spacing:0.05em; margin-bottom:5px; }
+.fc-in { border:1px solid var(--border); border-radius:5px; padding:6px 9px; font-size:13px; font-family:'DM Mono',monospace; width:82px; }
+.fc-unit { font-size:12px; color:var(--gray-500); }
+.fc-hint { font-size:10.5px; color:var(--gray-500); margin-top:4px; font-style:italic; }
+.fc-add { color:#047857; } .fc-sub { color:#b45309; }
+.fc-cell { width:72px; border:1px solid var(--border); border-radius:4px; padding:3px 6px; font-size:12px; font-family:'DM Mono',monospace; text-align:right; background:#fffdf5; }
+.fc-cell:focus { outline:2px solid #7c3aed; background:#fff; }
+.fc-total-row { background:var(--blue-900); color:#fff; font-weight:700; }
+.fc-total-row td { color:#fff !important; }.report-head { display:flex; justify-content:space-between; align-items:flex-start; gap:20px; border-bottom:2px solid var(--blue-900); padding-bottom:14px; margin-bottom:18px; }
+.report-title { font-size:24px; font-weight:800; color:var(--blue-900); letter-spacing:-0.01em; }
+.report-sub { font-size:12px; color:var(--gray-500); margin-top:2px; }
+.print-btn { background:var(--blue-700,#1d4ed8); color:#fff; border:none; border-radius:6px; padding:9px 16px; font-size:13px; font-weight:600; cursor:pointer; margin-bottom:18px; }
+.print-btn:hover { opacity:0.9; }
+.report-foot { font-size:11px; color:var(--gray-500); margin-top:18px; font-style:italic; }
+@media print {
+  @page { margin: 0.3in; }
+  .topbar, .sidebar, .print-hide { display:none !important; }
+  .layout { grid-template-columns:1fr !important; display:block !important; }
+  .main { padding:0 !important; overflow:visible !important; }
+  .page { display:none !important; }
+  .page.active { display:block !important; }
+  .report-title { font-size:20px; }
+  #team-breakdown-report { grid-template-columns:repeat(2,1fr) !important; gap:10px !important; }
+  #weekly-schedule-grid { column-count:2 !important; }
+  body { background:#fff !important; }
+
+  /* ── Team Assignments: compact, single-page layout ── */
+  #page-team-assignments .page-title { font-size:18px !important; margin-bottom:2px !important; }
+  #page-team-assignments .page-sub { font-size:11px !important; margin-bottom:8px !important; }
+  #team-assignments-grid { column-count:2 !important; column-gap:8px !important; }
+  #page-team-assignments .ta-card { margin-bottom:9px !important; border-radius:6px !important; }
+  #page-team-assignments .ta-head { padding:5px 9px !important; font-size:10.5px !important; letter-spacing:0 !important; }
+  #page-team-assignments .ta-callback { padding:4px 9px !important; font-size:9px !important; gap:4px !important; }
+  #page-team-assignments table.ta-table { font-size:9px !important; }
+  #page-team-assignments table.ta-table thead th { padding:3px 9px 2px !important; font-size:8px !important; letter-spacing:0 !important; }
+  #page-team-assignments table.ta-table tbody td { padding:2.5px 9px !important; line-height:1.2 !important; }
+  #page-team-assignments .ta-leave-tag, #page-team-assignments .ta-flag-tag { font-size:7px !important; padding:1px 4px !important; margin-left:4px !important; }
+  #page-team-assignments .ta-vacant-flag { margin-right:2px !important; }
+  #page-team-assignments .ta-foot { font-size:8.5px !important; margin-top:4px !important; }
+  #page-team-assignments div[style*="border-top:1px solid var(--border)"] { padding:4px 9px !important; font-size:8px !important; }
+}
+}
+
+/* ── KPI cards ── */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 14px;
+  margin-bottom: 28px;
+}
+.kpi-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px 18px;
+  position: relative;
+  overflow: hidden;
+}
+.kpi-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+}
+.kpi-card.blue::before   { background: var(--blue-500); }
+.kpi-card.green::before  { background: var(--green); }
+.kpi-card.amber::before  { background: var(--amber); }
+.kpi-card.red::before    { background: var(--red); }
+.kpi-card.slate::before  { background: var(--slate); }
+.kpi-label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--gray-500);
+  margin-bottom: 8px;
+}
+.kpi-value {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--blue-900);
+  font-family: 'DM Mono', monospace;
+  line-height: 1;
+}
+.kpi-value.small { font-size: 20px; }
+.kpi-sub {
+  font-size: 11px;
+  color: var(--gray-500);
+  margin-top: 4px;
+}
+
+/* ── Table ── */
+.table-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 24px;
+}
+.table-toolbar {
+  padding: 14px 18px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-bottom: 1px solid var(--border);
+  background: var(--gray-100);
+  flex-wrap: wrap;
+}
+.table-toolbar-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--blue-900);
+  margin-right: 8px;
+}
+.search-box {
+  padding: 6px 12px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 12px;
+  font-family: 'Sora', sans-serif;
+  background: white;
+  color: var(--gray-700);
+  outline: none;
+  width: 200px;
+}
+.search-box:focus { border-color: var(--blue-300); }
+select.filter-sel {
+  padding: 6px 10px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 12px;
+  font-family: 'Sora', sans-serif;
+  background: white;
+  color: var(--gray-700);
+  outline: none;
+  cursor: pointer;
+}
+.count-badge {
+  margin-left: auto;
+  font-size: 11px;
+  color: var(--gray-500);
+  font-family: 'DM Mono', monospace;
+}
+table.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12.5px;
+}
+table.data-table thead th {
+  padding: 9px 12px;
+  text-align: left;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--gray-500);
+  background: var(--gray-100);
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+  cursor: pointer;
+  user-select: none;
+}
+table.data-table thead th:hover { color: var(--blue-700); }
+table.data-table thead th.sort-asc::after  { content: ' ↑'; color: var(--blue-500); }
+table.data-table thead th.sort-desc::after { content: ' ↓'; color: var(--blue-500); }
+table.data-table tbody tr {
+  border-bottom: 1px solid var(--border);
+  transition: background 0.1s;
+}
+table.data-table tbody tr:last-child { border-bottom: none; }
+table.data-table tbody tr:hover { background: var(--blue-100); }
+table.data-table td {
+  padding: 9px 12px;
+  vertical-align: middle;
+}
+.mono { font-family: 'DM Mono', monospace; }
+
+/* ── Badges ── */
+.badge {
+  display: inline-block;
+  padding: 2px 9px;
+  border-radius: 12px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+.badge-active  { background: var(--green-l);  color: var(--green); }
+.badge-leave   { background: var(--amber-l);  color: var(--amber); }
+.badge-inactive{ background: var(--red-l);    color: var(--red);   }
+.badge-vacant  { background: var(--blue-100); color: var(--blue-700); }
+.badge-open    { background: var(--slate-l);  color: var(--slate); }
+.badge-yes     { background: var(--green-l);  color: var(--green); }
+.badge-no      { background: var(--gray-100); color: var(--gray-500); }
+.badge-action  { background: var(--amber-l);  color: var(--amber); }
+
+/* ── Staff Roster ── */
+.staff-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:14px; }
+.staff-card { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:14px; cursor:pointer; transition:box-shadow .15s,border-color .15s; }
+.staff-card:hover { border-color:var(--blue-300); box-shadow:0 2px 8px rgba(15,39,68,0.08); }
+.staff-card.flag-recon { border-left:3px solid var(--amber); }
+.avatar { width:36px; height:36px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:700; flex-shrink:0; }
+.recon-banner { background:var(--amber-l); border:1px solid #f5d78e; border-left:4px solid var(--amber); border-radius:8px; padding:12px 16px; margin-bottom:20px; font-size:12.5px; color:#7a4a06; }
+.recon-banner strong { color:var(--amber); }
+.recon-banner ul { margin:8px 0 0 18px; }
+.badge-recon { background:var(--amber-l); color:var(--amber); }
+
+/* ── Staff Birthdays ── */
+#page-birthdays { font-family:'DM Sans',sans-serif; }
+.bday-wrap { max-width:800px; }
+.bday-masthead { background:linear-gradient(135deg,#0F2744 0%,#1A3A5C 60%,#1D6FBA 100%); border-radius:16px; padding:36px 32px; margin-bottom:20px; position:relative; overflow:hidden; color:#fff; }
+.bday-masthead::before { content:''; position:absolute; top:-40px; right:-40px; width:200px; height:200px; border-radius:50%; background:rgba(201,152,10,0.15); }
+.bday-masthead::after { content:''; position:absolute; bottom:-60px; left:20%; width:300px; height:300px; border-radius:50%; background:rgba(45,134,212,0.1); }
+.bday-eyebrow { font-size:12px; letter-spacing:0.12em; text-transform:uppercase; color:rgba(255,255,255,0.6); margin-bottom:8px; position:relative; z-index:1; }
+.bday-title { font-family:'Playfair Display',serif; font-size:44px; font-weight:900; line-height:1; color:#fff; margin-bottom:4px; position:relative; z-index:1; }
+.bday-sub { font-size:13px; color:rgba(255,255,255,0.65); position:relative; z-index:1; }
+.bday-month-sel { position:relative; z-index:1; margin-top:16px; }
+.bday-month-sel select { font-family:'DM Sans',sans-serif; font-size:13px; padding:7px 12px; border-radius:8px; border:1px solid rgba(255,255,255,0.3); background:rgba(255,255,255,0.1); color:#fff; }
+.bday-month-sel select option { color:#0F2744; }
+.bday-grid2 { display:grid; grid-template-columns:1fr 1.3fr; gap:16px; margin-bottom:16px; align-items:start; }
+.zodiac-card { background:#0F2744; border-radius:14px; padding:20px; color:#fff; }
+.zodiac-title { font-family:'Playfair Display',serif; font-size:20px; color:#E8B422; margin-bottom:4px; }
+.zodiac-sub { font-size:12px; color:rgba(255,255,255,0.55); margin-bottom:14px; }
+.zodiac-signs { font-size:14px; color:#fff; margin-bottom:14px; line-height:1.8; }
+.gem-row { display:flex; align-items:center; gap:10px; background:rgba(255,255,255,0.08); border-radius:8px; padding:9px 11px; margin-bottom:7px; }
+.gem-icon { font-size:19px; }
+.gem-label { font-size:11px; color:rgba(255,255,255,0.55); text-transform:uppercase; letter-spacing:0.06em; }
+.gem-val { font-size:13.5px; font-weight:600; color:#fff; }
+.bday-card { background:#fff; border-radius:14px; overflow:hidden; box-shadow:0 2px 12px rgba(0,0,0,0.06); }
+.bday-card-head { padding:14px 18px 10px; border-bottom:1px solid #EDF0F5; }
+.bday-card-head h2 { font-family:'Playfair Display',serif; font-size:17px; color:#0F2744; }
+.bday-card-head p { font-size:12.5px; color:#6B7280; margin-top:2px; }
+.bday-card-body { padding:6px 18px 14px; }
+.bday-row { display:flex; align-items:center; justify-content:space-between; padding:9px 0; border-bottom:1px solid #EDF0F5; font-size:13.5px; }
+.bday-row:last-child { border-bottom:none; }
+.bday-name { font-weight:600; color:#0F2744; font-size:14.5px; }
+.bday-role { font-size:11.5px; color:#6B7280; margin-top:1px; }
+.bday-date-badge { background:#FDF5DC; color:#854D0E; font-size:11.5px; font-weight:600; padding:4px 12px; border-radius:20px; white-space:nowrap; }
+.bday-empty { padding:24px 18px; text-align:center; color:#9CA3AF; font-size:13.5px; }
+.spotlight-card { background:#fff; border-radius:14px; overflow:hidden; box-shadow:0 2px 12px rgba(0,0,0,0.06); margin-top:16px; }
+.spotlight-banner { background:linear-gradient(135deg,#C9980A,#E8B422); padding:10px 18px; display:flex; align-items:center; gap:8px; }
+.spotlight-banner span { font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.1em; color:#fff; }
+.spotlight-body { text-align:center; padding:22px 20px; }
+.spotlight-avatar { width:76px; height:76px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:26px; font-weight:700; color:#fff; margin:0 auto 12px; border:4px solid #E8B422; box-shadow:0 4px 16px rgba(201,152,10,0.3); }
+.spotlight-name { font-family:'Playfair Display',serif; font-size:22px; font-weight:700; color:#0F2744; }
+.spotlight-role { font-size:13px; color:#6B7280; margin-top:3px; margin-bottom:16px; }
+.spotlight-divider { height:2px; background:linear-gradient(90deg,transparent,#E8B422,transparent); margin:0 20px 16px; }
+.spotlight-fact { background:linear-gradient(135deg,#F0F4F9,#E8F2FB); border-radius:10px; padding:16px 18px; font-size:14.5px; color:#1A2744; line-height:1.8; border-left:4px solid #C9980A; text-align:left; }
+/* ── Weekly Schedule matrix ── */
+.ws-card { background:var(--surface); border:1px solid var(--border); border-radius:8px; overflow:hidden; margin-bottom:16px; break-inside:avoid; }
+.ws-head { padding:10px 16px; background:var(--blue-900); color:#fff; font-weight:700; font-size:13px; letter-spacing:0.02em; text-transform:uppercase; }
+table.ws-table { width:100%; border-collapse:collapse; font-size:12.5px; }
+table.ws-table th { text-align:center; font-size:10px; font-weight:700; color:var(--gray-500); padding:8px 4px 6px; border-bottom:1px solid var(--border); width:34px; }
+table.ws-table th:first-child { text-align:left; width:auto; padding-left:16px; }
+table.ws-table td { padding:6px 4px; text-align:center; border-bottom:1px solid #f1f5f9; }
+table.ws-table td:first-child { text-align:left; padding-left:16px; }
+tr.ws-provider td:first-child { font-weight:700; color:var(--blue-900); }
+tr.ws-ma td:first-child { color:var(--gray-500); padding-left:30px; font-style:italic; }
+tr.ws-ma td:first-child::before { content:'↳ '; color:var(--gray-300); }
+tr.ws-group-shade td { background:#eef1f5; }
+tr.ws-rn-head td { padding-top:10px; font-size:10px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; color:var(--gray-500); border-bottom:1px solid var(--border); }
+tr.ws-rn td:first-child { font-weight:600; color:var(--blue-900); }
+.ws-dot { display:inline-block; width:10px; height:10px; border-radius:50%; background:var(--green); }
+.ws-dot-off { display:inline-block; width:10px; height:10px; }
+.ws-vacant-badge { display:inline-block; background:var(--amber-l); color:var(--amber); font-size:9.5px; font-weight:700; text-transform:uppercase; padding:2px 7px; border-radius:10px; }
+.ws-gap-badge { display:inline-block; background:var(--red-l); color:var(--red); font-size:9px; font-weight:700; padding:1px 5px; border-radius:8px; margin-left:5px; }
+.ws-grid { column-count:2; column-gap:16px; }
+@media (max-width: 900px){ .ws-grid{ column-count:1; } }
+
+/* ── Team Assignments (extension/queue list) ── */
+.ta-card { background:var(--surface); border:1px solid var(--border); border-radius:8px; overflow:hidden; break-inside:avoid; margin-bottom:16px; }
+.ta-head { padding:10px 16px; color:#fff; font-weight:700; font-size:13px; letter-spacing:0.02em; text-transform:uppercase; }
+.ta-callback { padding:7px 16px; font-size:11.5px; color:var(--gray-500); border-bottom:1px solid var(--border); display:flex; align-items:center; gap:6px; }
+.ta-callback b { color:var(--blue-900); font-weight:600; }
+table.ta-table { width:100%; border-collapse:collapse; font-size:12.5px; }
+table.ta-table thead th { text-align:left; font-size:10px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; color:var(--gray-500); padding:8px 16px 6px; border-bottom:1px solid var(--border); }
+table.ta-table thead th:last-child, table.ta-table td:last-child { text-align:right; }
+table.ta-table tbody td { padding:7px 16px; border-bottom:1px solid #f1f5f9; color:var(--blue-900); }
+table.ta-table tbody tr:last-child td { border-bottom:none; }
+table.ta-table td.ta-ext { font-family:'DM Mono',monospace; font-weight:700; }
+table.ta-table td.ta-role { color:var(--gray-500); }
+.ta-name { font-weight:600; }
+.ta-leave-tag { display:inline-block; margin-left:6px; font-size:9.5px; font-weight:700; text-transform:uppercase; background:var(--amber-l); color:var(--amber); padding:1px 6px; border-radius:10px; vertical-align:1px; }
+.ta-flag-tag { display:inline-block; margin-left:6px; font-size:9.5px; font-weight:700; text-transform:uppercase; background:var(--blue-100); color:var(--blue-700); padding:1px 6px; border-radius:10px; vertical-align:1px; }
+tr.ta-vacant td { background:var(--amber-l); }
+tr.ta-vacant .ta-name { color:var(--amber); font-style:italic; font-weight:700; }
+.ta-vacant-flag { color:var(--amber); margin-right:3px; }
+.ta-grid { column-count:2; column-gap:16px; }
+.ta-foot { text-align:center; font-size:11px; color:var(--gray-300); margin-top:8px; }
+@media (max-width: 900px){ .ta-grid{ column-count:1; } }
+
+/* ── Roster detail modal ── */
+.ros-modal-overlay { display:none; position:fixed; inset:0; background:rgba(15,39,68,0.45); z-index:200; align-items:flex-start; justify-content:center; padding:40px 16px; overflow-y:auto; }
+.ros-modal-overlay.open { display:flex; }
+.ros-modal-box { background:var(--surface); border-radius:14px; max-width:640px; width:100%; padding:28px 32px 24px; position:relative; box-shadow:0 12px 40px rgba(15,39,68,0.25); }
+.ros-modal-close { position:absolute; top:22px; right:24px; background:none; border:none; font-size:20px; color:var(--gray-500); cursor:pointer; line-height:1; }
+.ros-modal-close:hover { color:var(--blue-900); }
+.ros-modal-head { display:flex; align-items:center; gap:14px; margin-bottom:20px; padding-bottom:18px; border-bottom:1px solid var(--border); }
+.ros-modal-name { font-size:19px; font-weight:700; color:var(--blue-900); }
+.ros-modal-sub { font-size:12.5px; color:var(--gray-500); margin-top:2px; }
+.ros-detail-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px 24px; margin-bottom:18px; }
+.ros-detail-item.full { grid-column:1 / -1; }
+.ros-detail-lbl { font-size:10px; font-weight:700; letter-spacing:0.07em; text-transform:uppercase; color:var(--gray-500); margin-bottom:4px; }
+.ros-detail-val { font-size:13px; color:var(--gray-700); }
+.ros-detail-val.empty { color:var(--gray-300); font-style:italic; }
+.ros-admin-box { background:var(--amber-l); border:1px solid #f5d78e; border-radius:8px; padding:12px 14px; margin-top:6px; }
+.ros-admin-lbl { font-size:10px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; color:var(--amber); margin-bottom:6px; }
+.ros-admin-val { font-size:12.5px; color:#7a4a06; }
+
+/* ── Action items ── */
+.action-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 14px;
+  margin-bottom: 24px;
+}
+.action-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px 18px;
+  border-left: 4px solid var(--amber);
+}
+.action-card.open { border-left-color: var(--blue-500); }
+.action-pos  { font-size: 13px; font-weight: 600; color: var(--blue-900); margin-bottom: 3px; }
+.action-name { font-size: 12px; color: var(--gray-500); margin-bottom: 8px; }
+.action-meta { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.action-note { font-size: 11px; color: var(--amber); margin-top: 6px; font-style: italic; }
+
+/* ── Progress bar ── */
+.prog-wrap { background: var(--gray-300); border-radius: 4px; height: 6px; overflow: hidden; }
+.prog-bar  { height: 100%; border-radius: 4px; background: var(--blue-500); transition: width 0.6s ease; }
+
+/* ── Divider ── */
+.section-hdr {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--gray-500);
+  padding: 4px 0 10px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 16px;
+}
+
+@media(max-width:768px){
+  .layout{grid-template-columns:1fr}
+  .sidebar{display:none}
+}
+
+/* ── Provider Weekly Schedule (staff-friendly) ── */
+.pws-table { width:100%; border-collapse:collapse; font-size:13px; background:var(--surface); border-radius:8px; overflow:hidden; border:1px solid var(--border); }
+.pws-table th { text-align:center; font-size:11px; font-weight:700; color:var(--gray-500); padding:10px 8px; border-bottom:2px solid var(--border); background:var(--gray-50,#f8fafc); }
+.pws-table th:first-child, .pws-table th:nth-child(2) { text-align:left; }
+.pws-table td { padding:8px; text-align:center; border-bottom:1px solid #f1f5f9; }
+.pws-table td:first-child { text-align:left; font-weight:700; color:var(--blue-900); padding-left:14px; }
+.pws-table td:nth-child(2) { text-align:left; color:var(--gray-500); font-size:12px; }
+.pws-dot { display:inline-block; width:11px; height:11px; border-radius:50%; background:var(--green); }
+
+</style>
+</head>
+<body>
+<div class="layout">
+  <div class="sidebar">
+    <div class="sidebar-brand" style="padding:16px 18px;font-weight:700;color:var(--blue-900);font-size:15px;border-bottom:1px solid var(--border);margin-bottom:8px">RHC Staff Directory</div>
+    <div class="sidebar-label">Navigation</div>
+    <div class="nav-item active" onclick="showPage('roster',this)">
+      <span class="nav-icon">👤</span> Staff Roster
+    </div>
+    <div class="nav-item" onclick="showPage('team-assignments',this)">
+      <span class="nav-icon">☎</span> Team Assignments
+    </div>
+    <div class="nav-item" onclick="showPage('weekly-schedule',this)">
+      <span class="nav-icon">📅</span> Weekly Schedule
+    </div>
+    <div class="nav-item" onclick="showPage('provider-schedule',this)">
+      <span class="nav-icon">🩺</span> Provider Weekly Schedule
+    </div>
+  </div>
+
+  <div class="main">
+    <div id="page-roster" class="page active">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:4px">
+        <div>
+          <div class="page-title">Staff Roster</div>
+          <div class="page-sub">Active clinical &amp; CSS staff</div>
+        </div>
+        <button class="print-btn print-hide" onclick="window.print()">🖨 Print / Save as PDF</button>
+      </div>
+
+      <div class="table-card" style="padding:0;margin-top:10px">
+        <div class="table-toolbar">
+          <span class="table-toolbar-title">Directory</span>
+          <input class="search-box" id="roster-search" placeholder="Search name, role, team..." oninput="renderRoster()">
+          <select class="filter-sel" id="roster-role" onchange="renderRoster()">
+            <option value="">All roles</option>
+            <option>MA</option><option>RN</option><option>PSR</option>
+            <option>Physician</option><option>PA</option><option>FNP</option><option>CRNA</option>
+            <option>Specialist</option><option>Referral Spec</option>
+            <option>Behavioral Health</option><option>Leadership</option>
+          </select>
+          <select class="filter-sel" id="roster-team" onchange="renderRoster()">
+            <option value="">All teams</option>
+            <option>Green</option><option>Red</option><option>Blue</option>
+            <option>Specialty</option><option>Ortho</option><option>Behavioral Health</option>
+            <option>Gen Surg / Neurology</option><option>Clinic</option><option>Referrals</option>
+            <option>PRN</option><option>As Assigned</option><option>Care Management</option><option>Unassigned</option>
+          </select>
+          <select class="filter-sel" id="roster-stage" onchange="renderRoster()">
+            <option value="">All statuses</option>
+            <option>Working</option><option>Onboarding</option><option>On Leave</option>
+          </select>
+          <span class="count-badge" id="roster-count"></span>
+        </div>
+        <div class="staff-grid" id="roster-grid" style="padding:16px 18px"></div>
+      </div>
+    </div>
+
+    <div id="page-team-assignments" class="page">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px">
+        <div>
+          <div class="page-title">Team Assignments</div>
+          <div class="page-sub">Team rosters, extensions &amp; vacancies</div>
+        </div>
+        <button class="print-btn print-hide" onclick="window.print()">🖨 Print / Save as PDF</button>
+      </div>
+      <div class="ta-grid" id="team-assignments-grid"></div>
+      <div class="ta-foot" id="ta-psr-hours" style="font-style:italic"></div>
+      <div class="ta-foot" id="ta-asof"></div>
+    </div>
+
+    <div id="page-weekly-schedule" class="page">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px">
+        <div>
+          <div class="page-title">Weekly Schedule</div>
+          <div class="page-sub">Provider · MA · RN coverage by day — PSRs excluded (daily coverage)</div>
+        </div>
+        <button class="print-btn print-hide" onclick="window.print()">🖨 Print / Save as PDF</button>
+      </div>
+      <div class="ws-grid" id="weekly-schedule-grid"></div>
+      <div id="ws-unassigned-note" style="font-size:11px;color:var(--gray-500);margin-top:10px;font-style:italic"></div>
+    </div>
+
+    <div id="page-provider-schedule" class="page">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px">
+        <div>
+          <div class="page-title">Provider Weekly Schedule</div>
+          <div class="page-sub">All providers by team, alphabetical — days worked this week</div>
+        </div>
+        <button class="print-btn print-hide" onclick="window.print()">🖨 Print / Save as PDF</button>
+      </div>
+      <div id="pws-grid"></div>
+    </div>
+  </div>
+</div>
+
+<div class="ros-modal-overlay" id="ros-modal" onclick="if(event.target===this) closeRosterDetail()">
+  <div class="ros-modal-box">
+    <button class="ros-modal-close" onclick="closeRosterDetail()">✕</button>
+    <div id="ros-modal-body"></div>
+  </div>
+</div>
+
+<script>
+const DATA = [
+  {bname:"Sarah Rader",cname:"Veronica Shockley",        role:"PSR",           team:"Clinic",          status:"Active", supervisor:"Vicki Goeckner", empstatus:"FT",  dept:"RHC", deptnum:"7910", fte:1, filled:"Yes", repl:"No",  action:"",                                    notes:"Discharge 2: Walk-in PSR. Reassigned from PSR: Blue to cover this desk after Sarah Rader's resignation (7/28/2026). Onboarding continues here instead.", hire_date:"7/29/2026", seat:"PSR: Walk-In 2", seat_status:"Funded", occ:"Filled", stage:"Onboarding", seat_group:"Walk-In", former:"Sarah Rader (resigned 7/28/2026)", provider:"N/A", bday:"10/18"},
+  {bname:"Hannah",       cname:"Bren Berryhill",     role:"Admin Support", team:"Clinic",          status:"Active",   supervisor:"Vicki Goeckner", empstatus:"FT",  dept:"RHC", deptnum:"7910", fte:1, filled:"Yes", repl:"No",  action:"",                                    notes:"Budget line was Hannah. Johnna Thompson followed her but was only here a few months. Bren Berryhill hired 6/4/2026.", hire_date:"6/4/2026", seat:"Admin Support: Clinic", seat_status:"Funded", occ:"Filled", stage:"Working", former:"Hannah - then Johnna Thompson (brief tenure) - now Bren Berryhill", seat_fixed:"Admin Support: Clinic", provider:"N/A", bday:"04/30"},
+  {bname:"Bri Albach",          cname:"Brianne Albach",     role:"RN",            team:"Red",             status:"Active",   supervisor:"Vicki Goeckner", empstatus:"FT",  dept:"RHC", deptnum:"7940", fte:1, filled:"Yes", repl:"No",  action:"Plan maternity coverage (Sept 2026)", notes:"Going on maternity leave early September 2026 — Red Team RN coverage gap to plan", hire_date:"6/17/2025", seat:"RN: Red 1", seat_status:"Funded", occ:"Filled", stage:"Working", provider:"N/A", bday:"04/10"},
+  {bname:"Cathy Canty",         cname:"Tori Watts",         role:"RN: Ortho Coordinator", team:"Ortho",   status:"Active", supervisor:"Vicki Goeckner", empstatus:"FT",  dept:"RHC", deptnum:"7910", fte:1.015, filled:"Yes", repl:"No",  action:"",                                    notes:"Ortho Coordinator. Cathy Canty held it, then Lisa Grooms (only lasted a few months), then Tori Watts (transferred from Green RN 5/5/2026). Returned from maternity leave 7/14/2026.", hire_date:"10/7/2024", seat:"RN: Ortho Coordinator: Ortho", seat_status:"Funded", occ:"Filled", stage:"Working", term_date:"8/18/2025", former:"Cathy Canty (termed 8/18/2025) - then Lisa Grooms (only a few months) - now Tori Watts", seat_fixed:"RN: Ortho Coordinator: Ortho", provider:"N/A", bday:"11/09"},
+  {bname:"Charlene Caldwell",   cname:"Amoria Netzahualt",  role:"MA",            team:"Blue",           status:"Active",   supervisor:"Vicki Goeckner", empstatus:"FT",  dept:"RHC", deptnum:"7910", fte:1.044, filled:"Yes", repl:"No",  action:"",                                    notes:"Onboarded 6/1/2026. Out sick — not expected back until 9/8/2026. Ruth Vance covering Hintzman in the meantime (Ruth transfers to Gen Surg / Neurology 9/14/2026). Amoria resumes as MA for Hintzman upon her return 9/8/2026 — provider reverts from Clinic to Hintzman then.", provider:"Clinic", hire_date:"10/7/2025", seat:"MA: Blue 4", seat_status:"Funded", occ:"Filled", stage:"On Leave", former:"Charlene Caldwell (moved to MA: Red 3)", bday:"01/04"},
+  {bname:"Ashly Grosso",        cname:"",                   role:"PSR",           team:"Unknown",         status:"Inactive", supervisor:"Vicki Goeckner", empstatus:"FT",  dept:"RHC", deptnum:"7910", fte:1.015, filled:"No",  repl:"No", action:"",  notes:"Confirmed inactive. Old FY2026 line, unclear team assignment — not carried into FY2027; only one open PSR position going forward (the released Overhire seat, PSR: Clinic 2).", hire_date:"", seat:"PSR: Unknown 1", seat_status:"Closed", occ:"Vacant", stage:"Backfill not needed", provider:"N/A"},
+  {bname:"Courtney Swan",       cname:"Brandy Prestridge",  role:"MA",            team:"Specialty",       status:"Inactive", supervisor:"Vicki Goeckner", empstatus:"FT",  dept:"RHC", deptnum:"7910", fte:1.03, filled:"Yes", repl:"No",  action:"",                                    notes:"MA for Dr. Holcomb (Pulmonary). Brandy Prestridge backfilled Courtney Swan.", provider:"Holcomb (Pulmonologist)", hire_date:"11/14/2025", seat:"MA: Pulmonary", seat_status:"Funded", occ:"Filled", stage:"Working", term_date:"5/29/2026", former:"Courtney Swan (termed 5/29/2026)", seat_fixed:"MA: Pulmonary", bday:"11/23"},
+  {bname:"David Albue",         cname:"David Albue",        role:"MA",            team:"Green",           status:"Active",   supervisor:"Vicki Goeckner", empstatus:"FT",  dept:"RHC", deptnum:"7910", fte:1.02, filled:"Yes", repl:"No",  action:"",                                    notes:"MA for Barber and Zappone.", provider:"Barber (T, Th), Zappone (M, W)", hire_date:"2/21/2023", seat:"MA: Green 2", seat_status:"Funded", occ:"Filled", stage:"Working", bday:"04/06"},
+  {bname:"New FTE: Green MA",   cname:"Alec Fulbright",     role:"MA-PT",            team:"Green",           status:"Active",   supervisor:"Vicki Goeckner", empstatus:"PT",  dept:"RHC", deptnum:"7910", fte:0.5,  filled:"Yes", repl:"No",  action:"",                                    notes:"Part-time MA covering Brown/Liverett walk-in (Green). Goes by Alec. Started 7/27/2026. Rate confirmed: $18.00/hr.", provider:"Brown, Liverett", hire_date:"7/27/2026", seat:"MA: Green 3", seat_status:"Funded", occ:"Filled", stage:"Working", bday:"10/04"},
+  {bname:"New FTE 2026: Green MA", cname:"",  role:"MA",            team:"Green",           status:"Open",   supervisor:"Vicki Goeckner", empstatus:"FT",  dept:"RHC", deptnum:"7910", fte:1, filled:"No",  repl:"No", action:"Active hire — MA for Dr. Renfrew",  notes:"New FY2026 FTE — MA for Dr. Renfrew (Green), arrives Nov 2026. Contract signed 2026; hits FY2026 budget. Rate is a PLACEHOLDER — confirm with Paycom.", provider:"Dr. Renfrew (Nov)", hire_date:"", seat:"MA: Green 4", seat_status:"Funded", occ:"Vacant", stage:"Never filled"},
+  {bname:"New FTE 2026: Green MA", cname:"Jacque Holt (Offered)",  role:"MA",            team:"Green",           status:"Active",   supervisor:"Vicki Goeckner", empstatus:"FT",  dept:"RHC", deptnum:"7910", fte:1, filled:"No",  repl:"No", action:"Offer in progress",  notes:"New FY2026 FTE — MA for Dr. Gray (Green), arrives Nov 2026. Contract signed 2026; hits FY2026 budget. Offering Jacque Holt. Rate is a PLACEHOLDER — confirm with Paycom.", provider:"Dr. Gray (Nov)", hire_date:"", seat:"MA: Green 5", seat_status:"Funded", occ:"Vacant", stage:"Offer pending"},
+  {bname:"New FTE: Green RN",   cname:"",                   role:"RN",            team:"Green",           status:"Inactive", supervisor:"Vicki Goeckner", empstatus:"FT",  dept:"RHC", deptnum:"7910", fte:1,    filled:"No",  repl:"No",  action:"",              notes:"Closed — only one RN position confirmed available for Green (the existing backfill seat, RN: Green 1). Team composition check concluded.", provider:"N/A", hire_date:"", seat:"RN: Green 2", seat_status:"Closed", occ:"Vacant", stage:"Backfill not needed"},
+  {bname:"Deb Calavan",         cname:"Deb Calavan",        role:"Referral Spec", team:"Referrals",       status:"Active",   supervisor:"Vicki Goeckner", empstatus:"FT",  dept:"RHC", deptnum:"7910", fte:0.499, filled:"Yes", repl:"No",  action:"",                                    notes:"0.5 FTE", hire_date:"9/8/2014", seat:"Referral Spec: Referrals 1", seat_status:"Funded", occ:"Filled", stage:"Working", provider:"N/A", bday:"02/11"},
+  {bname:"Edna Harding",        cname:"",       role:"RN PRN",            team:"PRN",           status:"Inactive", supervisor:"Vicki Goeckner", empstatus:"PRN", dept:"RHC", deptnum:"7910", fte:0.5, filled:"No",  repl:"Yes", action:"",                                    notes:"PRN float RN (0.5 FTE). Cate Harding termed 6/10/2026. Not a team RN seat.", hire_date:"3/21/2018", seat:"RN: PRN 1", seat_status:"Funded", occ:"Vacant", stage:"Backfill needed", term_date:"6/10/2026", former:"Cate Harding (termed 6/10/2026)", provider:"N/A"},
+  {bname:"Elvina Hamby",        cname:"Haley Dalton",       role:"MA",            team:"Blue",            status:"Inactive", supervisor:"Vicki Goeckner", empstatus:"FT",  dept:"RHC", deptnum:"7910", fte:1.039, filled:"Yes", repl:"No",  action:"",                                    notes:"Haley Dalton took over as MA for Dr. Stopher-Mitchell from Elvina Hamby.", provider:"Dr. Stopher-Mitchell", hire_date:"10/1/2024", seat:"MA: Blue 1", seat_status:"Funded", occ:"Filled", stage:"Working", former:"Elvina Hamby (termed)", bday:"11/10"},
+  {bname:"Emily Morris",        cname:"",                   role:"RN PRN",        team:"PRN",             status:"Inactive", supervisor:"Vicki Goeckner", empstatus:"PRN", dept:"RHC", deptnum:"7910", fte:0.216, filled:"No",  repl:"No",  action:"Evaluate PRN RN slot",                notes:"PRN RN slot — evaluate if still needed", hire_date:"", seat:"RN: PRN 2", seat_status:"Funded", occ:"Vacant", stage:"Backfill needed", term_date:"8/22/2025", former:"Emily Morris (termed 8/22/2025)", provider:"N/A"},
+  {bname:"Grant Aucoin/Seasonal",cname:"",                  role:"MA PRN",        team:"PRN",    status:"Inactive", supervisor:"Vicki Goeckner", empstatus:"PRN", dept:"RHC", deptnum:"7910", fte:0.144, filled:"No",  repl:"No",  action:"",              notes:"Seasonal MA PRN seat. Not being renewed — closed out.", provider:"N/A", hire_date:"", seat:"MA: PRN 1", seat_status:"Closed", occ:"Vacant", stage:"Backfill not needed", term_date:"2/24/2026", former:"Grant Aucoin (termed 2/24/2026)"},
+  {bname:"Courtney Swan (Red)",       cname:"Hannah Brostek",     role:"MA",            team:"Red",             status:"Active",   supervisor:"Vicki Goeckner", empstatus:"FT",  dept:"RHC", deptnum:"7910", fte:1.029, filled:"Yes", repl:"No",  action:"",                                    notes:"Courtney Swan held this Red MA seat before Hannah Brostek.", provider:"Johnson, Nobles", hire_date:"5/15/2023", seat:"MA: Red 1", seat_status:"Funded", occ:"Filled", stage:"Working", former:"Courtney Swan (held this seat before Hannah)", bday:"04/07"},
+  {bname:"Jennifer Carr",       cname:"",      role:"MA PRN",        team:"PRN",             status:"Open",   supervisor:"Vicki Goeckner", empstatus:"PRN", dept:"RHC", deptnum:"7910", fte:0.75, filled:"No", repl:"Yes",  action:"Repost — last day 7/31/2026",                                    notes:"PRN MA. Jennifer Carr's last day is 7/31/2026.", provider:"N/A", hire_date:"", seat:"MA: PRN 2", seat_status:"Funded", occ:"Vacant", stage:"Backfill needed", former:"Jennifer Carr (last day 7/31/2026)"},
+  {bname:"Jo Blaise",           cname:"Jo Blaise",          role:"Manager",       team:"Clinic",          status:"Active",   supervisor:"Vicki Goeckner", empstatus:"FT",  dept:"RHC", deptnum:"7910", fte:1, filled:"Yes", repl:"No",  action:"",                                    notes:"", hire_date:"", seat:"Manager: Clinic", seat_status:"Funded", occ:"Filled", stage:"Working", seat_fixed:"Manager: Clinic", provider:"N/A", bday:"03/19"},
+  {bname:"Nicole Flinn",        cname:"",  role:"PSR",            team:"Clinic",       status:"Open",   supervisor:"Vicki Goeckner", empstatus:"FT",  dept:"RHC", deptnum:"7910", fte:1.015, filled:"No",  repl:"Yes",  action:"Repost — offer declined",                                    notes:"Clinic-Facing PSR (shared with Specialty). Susan Hansen declined the offer.", provider:"N/A", hire_date:"", seat:"PSR: Clinic-Facing 1", seat_status:"Funded", occ:"Vacant", stage:"Backfill needed", seat_fixed:"PSR: Clinic-Facing 1", former:"Nicole Flinn (then Ashley Tilley — withdrew 7/19/2026)"},
+  {bname:"Katy Carey",          cname:"Latia Albue",                   role:"MA",       team:"Blue",         status:"Inactive", supervisor:"Vicki Goeckner", empstatus:"FT",  dept:"RHC", deptnum:"7910", fte:0.75, filled:"No",  repl:"Yes", action:"Identify replacement — confirm team", notes:"Brandy Prestridge held this position before Latia. Latia onboarding, starts July 2026.", hire_date:"6/18/2024", seat:"MA: Blue 3", seat_status:"Funded", occ:"Filled", stage:"Onboarding", term_date:"9/13/2025", former:"Katy Carey (termed 9/13/2025) - then Brandy Prestridge - now Latia Albue", provider:"Mashburn", bday:"07/21"},
+  {bname:"Kinsey O'Dell",       cname:"Kinsey O'Dell",      role:"RN",            team:"Blue",            status:"Active",   supervisor:"Vicki Goeckner", empstatus:"FT",  dept:"RHC", deptnum:"7910", fte:1.025, filled:"Yes", repl:"No",  action:"",                                    notes:"", hire_date:"2/8/2022", seat:"RN: Blue 1", seat_status:"Funded", occ:"Filled", stage:"Working", provider:"N/A", bday:"07/28"},
+  {bname:"Latia Albue",         cname:"Dakoda Morris",        role:"PSR",            team:"Clinic",            status:"Active",   supervisor:"Vicki Goeckner", empstatus:"FT",  dept:"RHC", deptnum:"7910", fte:1.015, filled:"Yes", repl:"No",  action:"",                                    notes:"Discharge 1: Walk-in. Latia Albue held this PSR seat before transitioning to MA; Dakoda Morris backfilled.", provider:"N/A", hire_date:"4/7/2026", seat:"PSR: Walk-In 1", seat_status:"Funded", occ:"Filled", stage:"Working", former:"Latia Albue (transferred to MA 6/1/2026)", seat_group:"Walk-In", bday:"04/07"},
+  {bname:"Laura Sanchez",       cname:"Laura Sanchez",      role:"MA PRN",        team:"PRN",             status:"Active",   supervisor:"Vicki Goeckner", empstatus:"PRN", dept:"RHC", deptnum:"7910", fte:0.5, filled:"Yes", repl:"No",  action:"",                                    notes:"PRN", provider:"N/A", hire_date:"10/31/2024", seat:"MA: PRN 3", seat_status:"Funded", occ:"Filled", stage:"Working", bday:"05/24"},
+  {bname:"Leah Wattier",        cname:"Leah Wattier",       role:"RN",            team:"Gen Surg / Neurology",status:"Active",   supervisor:"Vicki Goeckner", empstatus:"FT",  dept:"RHC", deptnum:"7910", fte:1.015, filled:"Yes", repl:"No",  action:"",                                    notes:"", hire_date:"8/29/2022", seat:"RN: Gen Surg / Neurology", seat_status:"Funded", occ:"Filled", stage:"Working", seat_fixed:"RN: Gen Surg / Neurology", provider:"N/A", bday:"02/09"},
+  {bname:"New FTE: Gen Surg MA", cname:"",  role:"MA",            team:"Gen Surg / Neurology",           status:"Inactive",   supervisor:"Vicki Goeckner", empstatus:"FT",  dept:"RHC", deptnum:"7910", fte:1, filled:"No",  repl:"No", action:"",  notes:"Closed — consolidated into the single shared Gen Surg / Neurology MA seat (MA: Gen Surg / Neurology 1) instead of a separate Gazenko-only ask. Only one shared MA needed for this team.", provider:"N/A", hire_date:"", seat:"MA: Gen Surg 1", seat_status:"Closed", occ:"Vacant", stage:"Backfill not needed"},
+  {bname:"Madi Devooght",       cname:"Lara Taylor",                   role:"MA PRN",        team:"PRN",             status:"Active", supervisor:"Vicki Goeckner", empstatus:"PRN", dept:"RHC", deptnum:"7910", fte:0.346, filled:"Yes",  repl:"No",  action:"",              notes:"Backfill for Madi Devooght (termed 6/1/2026). Signed — $19.10/hr base + $1.00/hr PRN differential = $20.10/hr. Starts Monday 8/24/2026.", provider:"N/A", hire_date:"8/24/2026", seat:"MA: PRN 4", seat_status:"Funded", occ:"Filled", stage:"Onboarding", term_date:"6/1/2026", former:"Madi Devooght (termed 6/1/2026)"},
+  {bname:"Madilyn Smith",       cname:"Madilyn Smith",      role:"RN",            team:"Clinic/Triage",   status:"Active",   supervisor:"Vicki Goeckner", empstatus:"FT",  dept:"RHC", deptnum:"7910", fte:1.015, filled:"Yes", repl:"No",  action:"",                                    notes:"As Assigned — remote", hire_date:"6/28/2023", seat:"RN: Clinic/Triage 1", seat_status:"Funded", occ:"Filled", stage:"Working", provider:"N/A", bday:"12/05"},
+  {bname:"McKenna Sutton",      cname:"McKenna Sutton",     role:"RN Care Mgr",   team:"Care Management", status:"Active",   supervisor:"Vicki Goeckner", empstatus:"FT",  dept:"RHC", deptnum:"7910", fte:1.015, filled:"Yes", repl:"No",  action:"",                                    notes:"", hire_date:"12/5/2023", seat:"RN Care Mgr", seat_status:"Funded", occ:"Filled", stage:"Working", seat_fixed:"RN Care Mgr", provider:"N/A", bday:"04/04"},
+  {bname:"Megan Niederkorn",    cname:"Megan Niederkorn",   role:"Lead RN",       team:"Clinic/Triage",   status:"Active",   supervisor:"Vicki Goeckner", empstatus:"FT",  dept:"RHC", deptnum:"7910", fte:1.039, filled:"Yes", repl:"No",  action:"",                                    notes:"Returned from personal leave — Lead RN.", hire_date:"7/12/2022", seat:"Lead RN: Clinic/Triage", seat_status:"Funded", occ:"Filled", stage:"Working", seat_fixed:"Lead RN: Clinic/Triage", provider:"N/A", bday:"05/25"},
+  {bname:"Meghan Waugh",        cname:"Meghan Waugh",       role:"RN PRN",        team:"PRN",             status:"Active",   supervisor:"Vicki Goeckner", empstatus:"PRN", dept:"RHC", deptnum:"7910", fte:0.115, filled:"Yes", repl:"No",  action:"",                                    notes:"PRN", hire_date:"9/27/2021", seat:"RN: PRN 3", seat_status:"Funded", occ:"Filled", stage:"Working", provider:"N/A", bday:"07/17"},
+  {bname:"Nusi Hughes",         cname:"Nusi Hughes",        role:"RN PRN",        team:"PRN",             status:"Active",   supervisor:"Vicki Goeckner", empstatus:"PRN", dept:"RHC", deptnum:"7910", fte:0.115, filled:"Yes", repl:"No",  action:"",                                    notes:"PRN float", hire_date:"9/10/2024", seat:"RN: PRN 4", seat_status:"Funded", occ:"Filled", stage:"Working", provider:"N/A", bday:"08/12"},
+  {bname:"Paula Quintana",      cname:"Paula Quintana",     role:"PSR",           team:"Green/Ortho",     status:"Active",   supervisor:"Vicki Goeckner", empstatus:"FT",  dept:"RHC", deptnum:"7910", fte:1, filled:"Yes", repl:"No",  action:"",                                    notes:"", hire_date:"4/6/2015", seat:"PSR: Green/Ortho", seat_status:"Funded", occ:"Filled", stage:"Working", provider:"N/A", bday:"11/02"},
+  {bname:"Peyton Rasmussen",    cname:"Charlene Caldwell",     role:"MA",            team:"Red",             status:"Inactive", supervisor:"Vicki Goeckner", empstatus:"FT",  dept:"RHC", deptnum:"7910", fte:1.039, filled:"Yes", repl:"No",  action:"",                                    notes:"Charlene Caldwell - MA for McIntyre (Red). Dr. Norwood succeeds McIntyre Sept 2026; Charlene follows to Norwood.", provider:"McIntyre, Norwood (Sep)", hire_date:"10/31/2016", seat:"MA: Red 3", seat_status:"Funded", occ:"Filled", stage:"Working", term_date:"10/4/2025", former:"Peyton Rasmussen (termed 10/4/2025)", bday:"10/01"},
+  {bname:"Pricilla Quevedo",    cname:"Pricilla Garcia",    role:"MA",            team:"Ortho",           status:"Active",   supervisor:"Vicki Goeckner", empstatus:"FT",  dept:"RHC", deptnum:"7910", fte:1.015, filled:"Yes", repl:"No",  action:"",                                    notes:"Name change — married. MA for Webb and Steed (both Ortho providers).", provider:"Webb / Steed", hire_date:"9/9/2024", seat:"MA: Ortho 1", seat_status:"Funded", occ:"Filled", stage:"Working", bday:"05/23"},
+  {bname:"Remy Oney",           cname:"Remy Oney",          role:"MA PRN",        team:"PRN",             status:"Active",   supervisor:"Vicki Goeckner", empstatus:"PRN", dept:"RHC", deptnum:"7910", fte:0.119, filled:"Yes", repl:"No",  action:"",                                    notes:"PRN", provider:"N/A", hire_date:"11/30/2020", seat:"MA: PRN 5", seat_status:"Funded", occ:"Filled", stage:"Working", bday:"01/30"},
+  {bname:"",         cname:"Sara Marino",        role:"PSR",           team:"Red",             status:"Active",   supervisor:"Vicki Goeckner", empstatus:"FT",  dept:"RHC", deptnum:"7910", fte:1.015, filled:"Yes", repl:"No",  action:"",                                    notes:"Prior occupant unknown.", hire_date:"8/18/2025", seat:"PSR: Red", seat_status:"Funded", occ:"Filled", stage:"Working", former:"", provider:"N/A", bday:"04/04"},
+  {bname:"Tamra Lavengood",     cname:"Vicki Goeckner",     role:"Director",      team:"Clinic",          status:"Active",   supervisor:"Vicki Goeckner", empstatus:"FT",  dept:"RHC", deptnum:"7910", fte:0, filled:"Yes", repl:"No",  action:"",                                    notes:"Vicki Goeckner — Clinic Director (succeeded Tamra Lavengood). $0 in CSS budget; director comp tracked separately.", hire_date:"", seat:"Director: Clinic", seat_status:"Funded", occ:"Filled", stage:"Working", seat_fixed:"Director: Clinic", provider:"N/A", bday:"03/21"},
+  {bname:"Tori Watts",          cname:"Tyler McCain",         role:"RN",            team:"Green",           status:"Active", supervisor:"Vicki Goeckner", empstatus:"FT",  dept:"RHC", deptnum:"7910", fte:1.063, filled:"Yes", repl:"No",  action:"",  notes:"Green Team RN seat. Tori transferred out 5/5/2026; offer extended to Tyler McCain. Signed at $34.00/hr, starts 8/10/2026.", hire_date:"8/10/2026", seat:"RN: Green 1", seat_status:"Funded", occ:"Filled", stage:"Onboarding", former:"Tori Watts (transferred 5/5/2026 to RN: Ortho Coordinator)", provider:"N/A"},
+  {bname:"Vickie Perales",      cname:"Vickie Perales",     role:"Referral Spec", team:"Referrals",       status:"Active",   supervisor:"Vicki Goeckner", empstatus:"FT",  dept:"RHC", deptnum:"7910", fte:1.125, filled:"Yes", repl:"No",  action:"",                                    notes:"High OT budgeted", hire_date:"6/24/2019", seat:"Referral Spec: Referrals 2", seat_status:"Funded", occ:"Filled", stage:"Working", provider:"N/A", bday:"06/18"},
+  {bname:"Ruth Vance",          cname:"Ruth Vance",     role:"MA",           team:"Blue",      status:"Active", supervisor:"Vicki Goeckner", empstatus:"FT",  dept:"RHC", deptnum:"7910", fte:1.005, filled:"Yes", repl:"No",  action:"", notes:"MA seat - Ruth works as an MA (LPN credential is personal, not the seat). Covering Hintzman while Amoria Netzahualt is out sick (expected back 9/8/2026). Ruth transfers to MA: Gen Surg / Neurology 1 effective 9/14/2026.", provider:"Hintzman", hire_date:"7/28/2014", seat:"MA: Blue 2", seat_status:"Funded", occ:"Filled", stage:"Working", former:"", seat_fixed:"MA: Blue 2", bday:"11/22"},
+  {bname:"Yeun Fiedler",        cname:"",                   role:"Comm Adv",      team:"N/A",             status:"Inactive", supervisor:"Vicki Goeckner", empstatus:"FT",  dept:"RHC", deptnum:"7910", fte:0.000, filled:"No",  repl:"No",  action:"Remove from next budget — position eliminated", notes:"Community Advocate — no replacement. Funding eliminated.", hire_date:"", seat:"Comm Adv: N/A 1", seat_status:"Funded", occ:"Vacant", stage:"Backfill not needed", former:"Yeun Fiedler — position eliminated, no funding", provider:"N/A"},
+  {bname:"New FTE: Referral",   cname:"",                   role:"Referral Spec", team:"Referrals",       status:"Vacant",     supervisor:"Vicki Goeckner", empstatus:"FT",  dept:"RHC", deptnum:"7910", fte:1, filled:"No",  repl:"Yes", action:"Active hire",                         notes:"Approved new FTE — converted from 0.5 FTE (PT) to 1.0 FTE (FT).", hire_date:"", seat:"Referral Spec: Referrals 3", seat_status:"Funded", occ:"Vacant", stage:"Never filled", provider:"N/A"},
+  {bname:"New FTE: PRN MA",  cname:"",                   role:"MA PRN",        team:"PRN",             status:"Open",     supervisor:"Vicki Goeckner", empstatus:"PRN", dept:"RHC", deptnum:"7910", fte:0.462, filled:"No",  repl:"Yes", action:"",                      notes:"PRN MA slot — open, never filled.", provider:"N/A", hire_date:"", seat:"MA: PRN 6", seat_status:"Funded", occ:"Vacant", stage:"Never filled", seat_fixed:"MA: PRN 6"},
+  {bname:"New FTE: PRN MA",  cname:"",                   role:"MA PRN",        team:"PRN",             status:"Open",     supervisor:"Vicki Goeckner", empstatus:"PRN", dept:"RHC", deptnum:"7910", fte:0.462, filled:"No",  repl:"Yes", action:"Active hire x4",                      notes:"4 PRN MA slots approved", provider:"N/A", hire_date:"", seat:"MA: PRN 7", seat_status:"Funded", occ:"Vacant", stage:"Never filled", seat_fixed:"MA: PRN 7"},
+  {bname:"New FTE: PRN MA",  cname:"",                   role:"MA PRN",        team:"PRN",             status:"Open",     supervisor:"Vicki Goeckner", empstatus:"PRN", dept:"RHC", deptnum:"7910", fte:0.462, filled:"No",  repl:"Yes", action:"Active hire x4",                      notes:"4 PRN MA slots approved", provider:"N/A", hire_date:"", seat:"MA: PRN 8", seat_status:"Funded", occ:"Vacant", stage:"Never filled", seat_fixed:"MA: PRN 8"},
+  {bname:"New FTE: PRN MA",  cname:"",                   role:"MA PRN",        team:"PRN",             status:"Open",     supervisor:"Vicki Goeckner", empstatus:"PRN", dept:"RHC", deptnum:"7910", fte:0.462, filled:"No",  repl:"Yes", action:"Active hire x4",                      notes:"4 PRN MA slots approved", provider:"N/A", hire_date:"", seat:"MA: PRN 9", seat_status:"Funded", occ:"Vacant", stage:"Never filled", seat_fixed:"MA: PRN 9"},
+  {bname:"New FTE: PRN RN",  cname:"",                   role:"RN PRN",        team:"PRN",             status:"Open",     supervisor:"Vicki Goeckner", empstatus:"PRN", dept:"RHC", deptnum:"7910", fte:0.462, filled:"No",  repl:"Yes", action:"Active hire x4",                      notes:"4 PRN RN slots approved", hire_date:"", seat:"RN: PRN 5", seat_status:"Funded", occ:"Vacant", stage:"Never filled", seat_fixed:"RN: PRN 5", provider:"N/A"},
+  {bname:"New FTE: PRN RN",  cname:"",                   role:"RN PRN",        team:"PRN",             status:"Open",     supervisor:"Vicki Goeckner", empstatus:"PRN", dept:"RHC", deptnum:"7910", fte:0.462, filled:"No",  repl:"Yes", action:"Active hire x4",                      notes:"4 PRN RN slots approved", hire_date:"", seat:"RN: PRN 6", seat_status:"Funded", occ:"Vacant", stage:"Never filled", seat_fixed:"RN: PRN 6", provider:"N/A"},
+  {bname:"New FTE: PRN RN",  cname:"",                   role:"RN PRN",        team:"PRN",             status:"Open",     supervisor:"Vicki Goeckner", empstatus:"PRN", dept:"RHC", deptnum:"7910", fte:0.462, filled:"No",  repl:"Yes", action:"Active hire x4",                      notes:"4 PRN RN slots approved", hire_date:"", seat:"RN: PRN 7", seat_status:"Funded", occ:"Vacant", stage:"Never filled", seat_fixed:"RN: PRN 7", provider:"N/A"},
+  {bname:"New FTE: PRN RN",  cname:"",                   role:"RN PRN",        team:"PRN",             status:"Open",     supervisor:"Vicki Goeckner", empstatus:"PRN", dept:"RHC", deptnum:"7910", fte:0.462, filled:"No",  repl:"Yes", action:"Active hire x4",                      notes:"4 PRN RN slots approved", hire_date:"", seat:"RN: PRN 8", seat_status:"Funded", occ:"Vacant", stage:"Never filled", seat_fixed:"RN: PRN 8", provider:"N/A"},
+  {bname:"Neurology MA",        cname:"",                   role:"MA",            team:"Gen Surg / Neurology",       status:"Vacant",   supervisor:"Vicki Goeckner", empstatus:"FT",  dept:"RHC", deptnum:"7910", fte:1.02, filled:"No",  repl:"Yes", action:"Active hire — shared Gen Surg / Neurology MA",           notes:"ONE shared MA for the combined Gen Surg / Neurology team — supports both Dr. Gazenko and Dr. Montano. Not two separate positions. Ruth Vance transferring in from MA: Blue 2, effective 9/14/2026.", provider:"Dr. Gazenko, Dr. Montano (Neurologist)", hire_date:"", seat:"MA: Gen Surg / Neurology 1", seat_status:"Funded", occ:"Vacant", stage:"Never filled", seat_fixed:"MA: Gen Surg / Neurology 1"},
+  {bname:"Ariana Shabro",       cname:"Ariana Shabro",      role:"RN",            team:"Specialty",       status:"Active",   supervisor:"Vicki Goeckner", empstatus:"FT",  dept:"RHC", deptnum:"7910", fte:1, filled:"Yes", repl:"No",  action:"",                                    notes:"Specialty RN. Wage EST — confirm with Vicki.", hire_date:"9/15/2025", seat:"RN: Specialty", seat_status:"Funded", occ:"Filled", stage:"Working", seat_fixed:"RN: Specialty", provider:"N/A", bday:"02/19"},
+  {bname:"Emily Barber",    cname:"",                   role:"APRN",          team:"Specialty",       status:"Inactive",   supervisor:"Vicki Goeckner", empstatus:"FT",  dept:"RHC", deptnum:"7910", fte:1, filled:"No",  repl:"No", action:"",                  notes:"APRN seat - Specialty. Budget line was Emily Barber. Closed — APRN is a provider role, not a CSS FTE; never counted in the clinic staffing budget. Corrinne Johnson (PA) is processing pulmonary referrals in the interim as a working provider in the clinic.", hire_date:"", seat:"APRN: Specialty", seat_status:"Closed", occ:"Vacant", stage:"Backfill not needed", seat_fixed:"APRN: Specialty", former:"Emily Barber", provider:"N/A"},
+  {bname:"New FTE: MAWV RN",    cname:"",                   role:"RN",            team:"TBD",             status:"Vacant",   supervisor:"Vicki Goeckner", empstatus:"FT",  dept:"RHC", deptnum:"7910", fte:1, filled:"No",  repl:"Yes", action:"Active hire — RN position",           notes:"Never filled — MAWV RN slot still open. Low priority — not expected to be filled this year.", provider:"N/A", hire_date:"", seat:"RN: TBD 1", seat_status:"Funded", occ:"Vacant", stage:"Never filled"},
+  {bname:"Haley Dalton",cname:"",        role:"PSR",           team:"Blue",          status:"Open", supervisor:"Vicki Goeckner", empstatus:"FT",  dept:"RHC", deptnum:"7910", fte:1.015, filled:"No",  repl:"Yes",  action:"Repost — Veronica reassigned to Walk-In 2",                                    notes:"Blue PSR seat. Haley Dalton held it before transitioning to MA. Veronica Shockley was assigned here but reassigned to PSR: Walk-In 2 (7/28/2026) to cover Sarah Rader's resignation.", hire_date:"", seat:"PSR: Blue", seat_status:"Funded", occ:"Vacant", stage:"Backfill needed", former:"Haley Dalton (transferred to MA - Blue/RSM) - then Veronica Shockley (reassigned to Walk-In 2)", provider:"N/A"},
+  {bname:"New FTE: Clinic PSR", cname:"",             role:"PSR",           team:"Clinic",          status:"Open",     supervisor:"Vicki Goeckner", empstatus:"FT",  dept:"RHC", deptnum:"7910", fte:1, filled:"No",  repl:"Yes", action:"Position posted 7/16 by HR",           notes:"Formerly an overhire arrangement (shared, no dedicated FTE) — seat released and formally posted by HR 7/16/2026.", provider:"N/A", hire_date:"", seat:"PSR: Clinic 2", seat_status:"Funded", occ:"Vacant", stage:"Never filled"},
+  {bname:"Travel RN (Authorized)",cname:"Mario Montano",            role:"Travel RN",     team:"PRN",             status:"Active",     supervisor:"Vicki Goeckner", empstatus:"Contract", dept:"RHC", deptnum:"7910", fte:1, filled:"Yes",  repl:"No", action:"", notes:"Agency/contract labor — bridge coverage for RN gaps (Niederkorn LOA, Vance LOA, Albach Sept maternity leave). Bill rate per contract — tracked outside approved comp budget. Mario Montano, confirmed start 8/3/2026.", hire_date:"8/3/2026", seat:"Travel RN 1", seat_status:"Funded", occ:"Filled", stage:"Onboarding", seat_fixed:"Travel RN 1", provider:"N/A"},
+  {bname:"Travel RN (Authorized)",cname:"Deanna Montano",            role:"Travel RN",     team:"PRN",             status:"Active",     supervisor:"Vicki Goeckner", empstatus:"Contract", dept:"RHC", deptnum:"7910", fte:1, filled:"Yes",  repl:"No", action:"", notes:"Agency/contract labor — bridge coverage for RN gaps (Niederkorn LOA, Vance LOA, Albach Sept maternity leave). Bill rate per contract — tracked outside approved comp budget. Deanna Montano, confirmed start 8/3/2026.", hire_date:"8/3/2026", seat:"Travel RN 2", seat_status:"Funded", occ:"Filled", stage:"Onboarding", seat_fixed:"Travel RN 2", provider:"N/A"},
+  {bname:"NEW FTE 2027", cname:"", seat:"MA: Unassigned 1", seat_fixed:"MA: Unassigned 1", seat_status:"Funded", occ:"Vacant", stage:"Never filled", role:"MA", team:"Unassigned", status:"Vacant", supervisor:"Vicki Goeckner", empstatus:"FT", dept:"RHC", deptnum:"7910", fte:1.0, filled:"No", repl:"No", action:"", notes:"NEW FY2027 FTE - MA for Dr. Oliver (Summer 2027). Target hire by May 2027 to onboard ahead of his start. Rate is a PLACEHOLDER ($22/hr) - confirm.", provider:"Dr. Oliver (Summer 27)", hire_date:"", former:"", start27:5},
+  {bname:"NEW FTE 2027", cname:"", seat:"MA: Unassigned 2", seat_fixed:"MA: Unassigned 2", seat_status:"Funded", occ:"Vacant", stage:"Never filled", role:"MA", team:"Unassigned", status:"Vacant", supervisor:"Vicki Goeckner", empstatus:"FT", dept:"RHC", deptnum:"7910", fte:1.0, filled:"No", repl:"No", action:"", notes:"NEW FY2027 FTE - MA for Dr. Marie Stewart (Summer 2027), incoming primary care provider. Target hire ahead of her start. Rate is a PLACEHOLDER ($22/hr) - confirm.", provider:"Dr. Marie Stewart (Summer 27)", hire_date:"", former:"", start27:5},
+  {bname:"NEW FTE 2027", cname:"", seat:"MA: Unassigned 3", seat_fixed:"MA: Unassigned 3", seat_status:"Closed", occ:"Vacant", stage:"Backfill not needed", role:"MA", team:"Unassigned", status:"Vacant", supervisor:"Vicki Goeckner", empstatus:"FT", dept:"RHC", deptnum:"7910", fte:1.0, filled:"No", repl:"No", action:"", notes:"Closed — only one other Summer 2027 PCP confirmed (Dr. Stewart, seated on MA: Unassigned 2). Not needed.", provider:"N/A", hire_date:"", former:""}
+];
+
+const ROSTER_CONTACTS=[
+  {id:1,n:"ALBUE, DAVID",pos:"Assistant: Medical",sub:"CSS",teams:["Green"],ext:"3797",phone:"720-372-8082",wemail:"david.albue@psmedicalcenter.org",pemail:"david.albue@gmail.com",hire:"2/21/2023",bday:"Apr 06",loc:"On-Site",status:"Active",tshirt:"Large",sched:["Mon","Tue","Wed","Thur"],notes:"",preferred:"",provider:"Barber, Zappone",whatweknow:"",hours:""},
+  {id:2,n:"BROSTEK, HANNAH",pos:"Assistant: Medical",sub:"CSS",teams:["Red"],ext:"3889",phone:"410-777-3254",wemail:"hannah.brostek@psmedicalcenter.org",pemail:"hannahbcsp@gmail.com",hire:"5/15/2023",bday:"Apr 07",loc:"On-Site",status:"Active",tshirt:"3XL",sched:["Mon","Tue","Wed","Thur"],notes:"",preferred:"",provider:"Johnson, Nobles",whatweknow:"",hours:""},
+  {id:3,n:"CALDWELL, CHARLENE",pos:"Assistant: Medical",sub:"CSS",teams:["Red"],ext:"3871",phone:"970-946-7508",wemail:"charlene.caldwell@psmedicalcenter.org",pemail:"Charcald1980@gmail.com",hire:"10/31/2016",bday:"Oct 01",loc:"On-Site",status:"Active",tshirt:"Med",sched:["Mon","Tue","Wed","Thur"],notes:"",preferred:"",provider:"McIntyre",whatweknow:"",hours:""},
+  {id:4,n:"DALTON, HALEY",pos:"Assistant: Medical",sub:"CSS",teams:["Blue"],ext:"3891",phone:"505-310-9579",wemail:"haley.dalton@psmedicalcenter.org",pemail:"ahgriffin17@gmail.com",hire:"10/1/2024",bday:"Nov 10",loc:"On-Site",status:"Active",tshirt:"Med",sched:["Mon","Tue","Wed","Thur"],notes:"",preferred:"",provider:"Dr. Stopher-Mitchell",whatweknow:"",hours:""},
+  {id:5,n:"GARCIA, PRICILLA",pos:"Assistant: Medical",sub:"CSS",teams:["Ortho"],ext:"3950",phone:"970-398-6188",wemail:"pricilla.quevedo@psmedicalcenter.org",pemail:"pricqvdo@gmail.com",hire:"9/9/2024",bday:"May 23",loc:"On-Site",status:"Active",tshirt:"Small",sched:["Mon","Tue","Wed","Thur"],notes:"",preferred:"",provider:"Webb",whatweknow:"",hours:""},
+  {id:6,n:"PRESTRIDGE, BRANDY",pos:"Assistant: Medical",sub:"CSS",teams:["Specialty"],ext:"3997",phone:"907-306-3416",wemail:"brandy.prestridge@psmedicalcenter.org",pemail:"brandyhood84@hotmail.com",hire:"11/14/2025",bday:"Nov 23",loc:"On-Site",status:"Active",tshirt:"XL",sched:["Tue","Wed","Thur","Fri"],notes:"",preferred:"",provider:"Holcomb",whatweknow:"",hours:""},
+  {id:7,n:"SWAN, COURTNEY",pos:"Assistant: Medical",sub:"CSS",teams:[],ext:"3997",phone:"970-903-2427",wemail:"courtney.swan@psmedicalcenter.org",pemail:"cswan95@hotmail.com",hire:"2/5/2024",bday:"Jun 25",loc:"On-Site",status:"Inactive",tshirt:"XL",sched:[],notes:"Separated 5/29/2026",preferred:"",provider:"",whatweknow:"",hours:""},
+  {id:8,n:"NIEDERKORN, MEGAN",pos:"RN: Lead Clinic",sub:"CSS",teams:["Clinic"],ext:"3873",phone:"970-590-8064",wemail:"megan.niederkorn@psmedicalcenter.org",pemail:"megan.mniederkorn@gmail.com",hire:"7/12/2022",bday:"May 25",loc:"On-Site",status:"Active",tshirt:"Large",sched:["Mon","Tue","Wed","Thur","Fri"],notes:"",preferred:"",provider:"",whatweknow:"",hours:""},
+  {id:9,n:"VANCE, VIRGINIA",pos:"LPN/LVN: Clinic",sub:"CSS",teams:["Blue"],ext:"3879",phone:"970-264-4542",wemail:"ruth.vance@psmedicalcenter.org",pemail:"vrv_2004@yahoo.com",hire:"7/28/2014",bday:"Nov 22",loc:"On-Site",status:"Active",tshirt:"Small",sched:["Tue","Wed","Thur","Fri"],notes:"",preferred:"Ruth",provider:"Clinic",whatweknow:"",hours:""},
+  {id:10,n:"ALBACH, BRIANNE",pos:"RN: Clinic",sub:"CSS",teams:["Red"],ext:"3874",phone:"970-903-4720",wemail:"brianne.albach@psmedicalcenter.org",pemail:"albachbrianne@gmail.com",hire:"6/17/2025",bday:"Apr 10",loc:"On-Site",status:"Active",tshirt:"Small",sched:["Mon","Tue","Wed","Thur"],notes:"",preferred:"Bri",provider:"",whatweknow:"",hours:""},
+  {id:11,n:"O'DELL, KINSEY",pos:"RN: Clinic",sub:"CSS",teams:["Blue"],ext:"3849",phone:"765-437-4577",wemail:"kinsey.neher@psmedicalcenter.org",pemail:"kinseyneher98@gmail.com",hire:"2/8/2022",bday:"Jul 28",loc:"On-Site",status:"Active",tshirt:"Med",sched:["Tue","Wed","Thur","Fri"],notes:"",preferred:"",provider:"",whatweknow:"",hours:""},
+  {id:12,n:"SMITH, MADILYN",pos:"RN: Clinic",sub:"CSS",teams:["As Assigned"],ext:"3931",phone:"970-570-5137",wemail:"madilyn.smith@psmedicalcenter.org",pemail:"madilynhankins@dc2j.org",hire:"6/28/2023",bday:"Dec 05",loc:"Remote",status:"Active",tshirt:"Large",sched:["Tue","Wed","Thur","Fri"],notes:"",preferred:"",provider:"",whatweknow:"Born and raised in Dove Creek — and proud of it! Madilyn moved back from Grand Junction with her husband, who graduated from the police academy at Pueblo Community College at the same time she finished her nursing program. Their whole world is rooted in Dove Creek — both sets of grandparents, parents, and in-laws all live there. She loves cooking with her mom, spending time with family, and watching her dog Honey enjoy the wide open space. Their house is currently being built, so she and her husband are living with her parents in the meantime. At work, Madilyn is a natural organizer — she starts every day by mapping out her tasks and loves the satisfaction of checking things off. She relies on Kinsey for day-to-day questions and Megan when she needs backup, and she swears by auto-text templates to keep her documentation sharp. Fun fact: she once asked for an updated extension list as her top quality-of-life improvement!",hours:""},
+  {id:13,n:"WATTS, TORI",pos:"RN: Ortho Clinic Coordinator",sub:"CSS",teams:["Ortho"],ext:"3919",phone:"208-881-8703",wemail:"tori.watts@psmedicalcenter.org",pemail:"toriwatts18@icloud.com",hire:"10/7/2024",bday:"Nov 09",loc:"On-Site",status:"Active",tshirt:"Med",sched:["Tue","Wed","Thur","Fri"],notes:"Transitioned from Green Team RN to RN: Ortho Coordinator.",preferred:"",provider:"",whatweknow:"",hours:""},
+  {id:14,n:"SHABRO, ARIANA",pos:"RN: General Surgery/Pain",sub:"CSS",teams:["Specialty"],ext:"3886",phone:"512-718-7097",wemail:"ariana.shabro@psmedicalcenter.org",pemail:"ariana.shabro@gmail.com",hire:"9/15/2025",bday:"Feb 19",loc:"On-Site",status:"Active",tshirt:"Small",sched:["Mon","Tue","Wed","Thur"],notes:"",preferred:"",provider:"",whatweknow:"",hours:""},
+  {id:15,n:"WATTIER, LEAH",pos:"RN: Gen Surg / Neurology",sub:"CSS",teams:["Gen Surg / Neurology"],ext:"3888",phone:"402-681-9929",wemail:"leah.wattier@psmedicalcenter.org",pemail:"leahwattier@gmail.com",hire:"8/29/2022",bday:"Feb 09",loc:"On-Site",status:"Active",tshirt:"Med",sched:["Mon","Tue","Wed","Thur"],notes:"",preferred:"",provider:"",whatweknow:"",hours:""},
+  {id:16,n:"MARINO, SARA",pos:"Representative: Patient Services",sub:"CSS",teams:["Red"],ext:"3996",phone:"719-850-2842",wemail:"sara.marino@psmedicalcenter.org",pemail:"LIME_4405@HOTMAIL.COM",hire:"8/18/2025",bday:"Apr 04",loc:"On-Site",status:"Active",tshirt:"Large",sched:["Mon","Tue","Wed","Thur","Fri"],notes:"",preferred:"",provider:"",whatweknow:"",hours:"8:00–5:00"},
+  {id:17,n:"QUINTANA, PAULA T",pos:"Representative: Patient Services",sub:"CSS",teams:["Green","Ortho"],ext:"3986",phone:"970-507-0228",wemail:"paula.quintana@psmedicalcenter.org",pemail:"bubba_paula@yahoo.com",hire:"4/6/2015",bday:"Nov 02",loc:"On-Site",status:"Active",tshirt:"Large",sched:["Mon","Tue","Wed","Thur","Fri"],notes:"",preferred:"",provider:"",whatweknow:"",hours:"7:00–4:00"},
+  {id:18,n:"RADER, SARAH LOUISE",pos:"Representative: Patient Services",sub:"CSS",teams:["Clinic","Behavioral Health"],ext:"3908",phone:"970-903-0967",wemail:"sarah.rader@psmedicalcenter.org",pemail:"smiley21987@yahoo.com",hire:"1/3/2024",bday:"Feb 19",loc:"On-Site",status:"Active",tshirt:"XL",sched:["Mon","Tue","Wed","Thur","Fri"],notes:"",preferred:"",provider:"",whatweknow:"",hours:"7:00–4:00"},
+  {id:19,n:"WAUGH, MEGHAN",pos:"RN: Clinic",sub:"CSS",teams:["PRN"],ext:"3877",phone:"312-799-0757",wemail:"meghan.waugh@psmedicalcenter.org",pemail:"meghanswaugh@gmail.com",hire:"9/27/2021",bday:"Jul 17",loc:"Remote",status:"Active",tshirt:"XL",sched:[],notes:"",preferred:"",provider:"",whatweknow:"",hours:""},
+  {id:20,n:"GROOMS, LISA",pos:"RN: Ortho Clinic Coordinator",sub:"CSS",teams:["Ortho"],ext:"3919",phone:"952-594-4674",wemail:"lisa.grooms@psmedicalcenter.org",pemail:"lgrooms815@gmail.com",hire:"1/12/2025",bday:"Jul 05",loc:"On-Site",status:"Inactive",tshirt:"Med",sched:["Tue","Wed","Thur","Fri"],notes:"Resigned",preferred:"",provider:"",whatweknow:"",hours:""},
+  {id:21,n:"ALBUE, LATIA",pos:"Assistant: Medical",sub:"CSS",teams:["Blue"],ext:"3951",phone:"720-372-8012",wemail:"latia.albue@psmedicalcenter.org",pemail:"albue.latia@gmail.com",hire:"6/18/2024",bday:"Jul 21",loc:"On-Site",status:"Active",tshirt:"Med",sched:["Tue","Wed","Thur","Fri"],notes:"Assigned as MA to Mashburn (Blue Team) effective 7/8/2026. Transitioned from PSR 6/1/2026.",preferred:"",provider:"Mashburn",teamOptions:[],whatweknow:"",hours:"8:00–5:00"},
+  {id:22,n:"CALAVAN, DEB",pos:"Specialist: Referral",sub:"CSS",teams:["Referrals"],ext:"3840",phone:"970-946-3039",wemail:"debbie.calavan@psmedicalcenter.org",pemail:"dcalavan66@gmail.com",hire:"9/8/2014",bday:"Feb 11",loc:"Remote",status:"Active",tshirt:"Large",sched:["Mon","Tue","Wed","Thur","Fri"],notes:"",preferred:"",provider:"",whatweknow:"",hours:""},
+  {id:23,n:"PERALES, VICKIE",pos:"Specialist: Referral",sub:"CSS",teams:["Referrals"],ext:"3834",phone:"970-903-7678",wemail:"vickie.perales@psmedicalcenter.org",pemail:"vickiep99@yahoo.com",hire:"6/24/2019",bday:"Jun 18",loc:"Remote",status:"Active",tshirt:"XL",sched:["Mon","Tue","Wed","Thur","Fri"],notes:"",preferred:"",provider:"",whatweknow:"",hours:""},
+  {id:24,n:"THOMPSON, JOHNNA",pos:"Administrative Support - Clinic",sub:"CSS",teams:[],ext:"",phone:"425-577-0768",wemail:"johnna.thompson@psmedicalcenter.org",pemail:"",hire:"12/2/2025",bday:"Aug 26",loc:"On-Site",status:"Inactive",tshirt:"2XL",sched:[],notes:"Separated 3/4/2026",preferred:"",provider:"",whatweknow:"",hours:""},
+  {id:64,n:"BERRYHILL, BRENDA",pos:"Administrative Support: Clinic",sub:"CSS",teams:["Clinic"],ext:"3901",phone:"970-903-9373",wemail:"bren.berryhill@psmedicalcenter.org",pemail:"cturtles333@gmail.com",hire:"6/4/2026",bday:"Apr 30",loc:"On-Site",status:"Active",tshirt:"",sched:["Mon","Tue","Wed","Thur","Fri"],notes:"",preferred:"Bren",provider:"",whatweknow:"",hours:""},
+  {id:66,n:"WALLACE, DR.",pos:"Primary Care Physician",sub:"Provider",teams:["Green"],ext:"",phone:"",wemail:"",pemail:"",hire:"",bday:"",loc:"On-Site",status:"Inactive",tshirt:"",sched:[],notes:"Green Team physician. Resigned 6/25/2026. Katy Carey (MA) also resigned. Green Team physician slot open.",preferred:"",provider:"",teamOptions:[],whatweknow:"",hours:""},
+  {id:67,n:"VACANT, RN",pos:"RN: Clinic",sub:"CSS",teams:["Green"],ext:"",phone:"",wemail:"",pemail:"",hire:"",bday:"",loc:"On-Site",status:"Vacant",tshirt:"",sched:[],notes:"Green Team RN vacancy — Tori Watts transitioned to Ortho Coordinator.",preferred:"",provider:"",whatweknow:"",hours:""},
+  {id:65,n:"NORWOOD, DR.",pos:"Primary Care Physician",sub:"Provider",teams:["Red"],ext:"",phone:"",wemail:"",pemail:"",hire:"9/16/2026",bday:"",loc:"On-Site",status:"Onboarding",tshirt:"",sched:["Mon","Tue","Wed","Thur"],notes:"Starts 9/16/2026, Mon-Thu. Succeeds McIntyre on Red Team; Charlene Caldwell assigned as MA.",preferred:"",provider:"",teamOptions:[],whatweknow:"",hours:""},
+  {id:25,n:"HARDING, CATE",pos:"RN: Clinic",sub:"CSS",teams:[],ext:"",phone:"970-884-8551",wemail:"cate.harding@psmedicalcenter.org",pemail:"mtncate.bay@gmail.com",hire:"3/21/2018",bday:"Jan 15",loc:"On-Site",status:"Inactive",tshirt:"Med",sched:[],notes:"Retired 6/11/2026",preferred:"",provider:"",whatweknow:"",hours:""},
+  {id:26,n:"HUGHES, NUSI",pos:"RN: Clinic",sub:"CSS",teams:["PRN"],ext:"PRN",phone:"432-386-8683",wemail:"denise.hughes@psmedicalcenter.org",pemail:"nuscur@yahoo.com",hire:"9/10/2024",bday:"Aug 12",loc:"On-Site",status:"Active",tshirt:"Med",sched:[],notes:"",preferred:"",provider:"",whatweknow:"",hours:""},
+  {id:27,n:"SUTTON, MCKENNA",pos:"RN: Care Manager",sub:"CSS",teams:[],ext:"3831",phone:"970-946-4535",wemail:"mckenna.sutton@psmedicalcenter.org",pemail:"msutt629@gmail.com",hire:"12/5/2023",bday:"Apr 04",loc:"Remote",status:"Active",tshirt:"Small",sched:["Mon","Tue","Wed","Thur","Fri"],notes:"Standalone RN Care Manager",preferred:"",provider:"",whatweknow:"",hours:""},
+  {id:28,n:"JOHNSON, CORRINNE",pos:"Physician Assistant",sub:"Provider",teams:["Red"],ext:"3884",phone:"970-222-7633",wemail:"corrinne.johnson@psmedicalcenter.org",pemail:"corrinnejohnson@yahoo.com",hire:"1/19/2026",bday:"Jun 17",loc:"On-Site",status:"Active",tshirt:"Med",sched:["Wed","Thur","Fri"],notes:"Rooms 28, 29",preferred:"",provider:"",whatweknow:"",hours:""},
+  {id:29,n:"HINTZMAN, MATTHEW",pos:"Physician Assistant",sub:"Provider",teams:["Blue"],ext:"3890",phone:"928-255-2590",wemail:"matthew.hintzman@psmedicalcenter.org",pemail:"mkhintzman@gmail.com",hire:"2/3/2026",bday:"Jun 17",loc:"On-Site",status:"Active",tshirt:"Med",sched:["Tue","Wed","Thur","Fri"],notes:"",preferred:"",provider:"",whatweknow:"",hours:""},
+  {id:30,n:"MASHBURN, KAELA",pos:"Physician Assistant",sub:"Provider",teams:["Blue"],ext:"3902",phone:"970-398-5588",wemail:"kaela.mashburn@psmedicalcenter.org",pemail:"kaelamashburn@gmail.com",hire:"3/28/2022",bday:"Aug 07",loc:"On-Site",status:"Active",tshirt:"Med",sched:["Wed","Thur","Fri"],notes:"Schedule changes in Nov: adds Tue (PM) alongside Wed–Fri.",preferred:"",provider:"",whatweknow:"",hours:""},
+  {id:31,n:"NOBLES, HEATHER",pos:"Physician Assistant",sub:"Provider",teams:["Red"],ext:"3884",phone:"970-946-8234",wemail:"heather.nobles@psmedicalcenter.org",pemail:"hdahm.nobles@gmail.com",hire:"1/25/2023",bday:"Sep 22",loc:"On-Site",status:"Active",tshirt:"Small",sched:["Mon","Tue"],notes:"",preferred:"",provider:"",whatweknow:"",hours:""},
+  {id:32,n:"BROWN, ROBERT",pos:"Primary Care Physician",sub:"Provider",teams:["Green"],ext:"3902",phone:"970-903-9445",wemail:"robert.brown@psmedicalcenter.org",pemail:"drbobpagosa@hotmail.com",hire:"7/1/2010",bday:"Sep 25",loc:"On-Site",status:"Active",tshirt:"Large",sched:["Wed","Thur","Fri"],notes:"",preferred:"",provider:"",whatweknow:"",hours:""},
+  {id:33,n:"STOPHER-MITCHELL, RYAN",pos:"Primary Care Physician",sub:"Leadership",teams:["Blue"],ext:"3922",phone:"480-286-9865",wemail:"ryan.stopher-mitchell@psmedicalcenter.org",pemail:"RN.Mitchell@yahoo.com",hire:"9/5/2017",bday:"Aug 18",loc:"On-Site",status:"Active",tshirt:"Med",sched:["Mon","Tue","Wed","Thur"],notes:"Medical Director",preferred:"",provider:"",whatweknow:"",hours:""},
+  {id:34,n:"MCINTYRE, EMILIE",pos:"Primary Care Physician",sub:"Provider",teams:["Red"],ext:"3875",phone:"406-607-1760",wemail:"emilie.mcintyre@psmedicalcenter.org",pemail:"emilie.mcintyre@gmail.com",hire:"9/23/2024",bday:"Feb 09",loc:"On-Site",status:"Active",tshirt:"Small",sched:["Mon","Tue","Wed","Thur"],notes:"Replaced Dr. Buchner on Red Team. Offboarding September 2026. Dr. Norwood onboarding as replacement.",preferred:"",provider:"",whatweknow:"",hours:""},
+  {id:35,n:"STEED MD, JEREMIAH T",pos:"Specialist: Orthopedics",sub:"Provider",teams:["Ortho"],ext:"3953",phone:"970-903-4084",wemail:"jeremiah.steed@psmedicalcenter.org",pemail:"jeremiahtsteed@gmail.com",hire:"9/16/2024",bday:"Sep 19",loc:"Specialty Clinic",status:"Active",tshirt:"",sched:["Mon","Tue","Wed","Fri"],notes:"Clinic: Mon/Wed/Fri (PM). Surgery: Tue/Fri (AM).",preferred:"",provider:"",whatweknow:"",hours:""},
+  {id:36,n:"WEBB, WILLIAM",pos:"Specialist: Orthopedics",sub:"Provider",teams:["Ortho"],ext:"3920",phone:"318-426-5753",wemail:"bill.webb@psmedicalcenter.org",pemail:"wrmjwebb@gmail.com",hire:"1/6/2014",bday:"May 15",loc:"Specialty Clinic",status:"Active",tshirt:"Large",sched:["Mon","Tue","Thur","Fri"],notes:"Surgery: M, F (AM). Clinic: T, Th.",preferred:"Bill",provider:"",whatweknow:"",hours:""},
+  {id:37,n:"HOLCOMB JR, BARRY WAYNE",pos:"Specialist: Pulmonary",sub:"Provider",teams:["Specialty"],ext:"3921",phone:"970-222-6789",wemail:"barry.holcomb@psmedicalcenter.org",pemail:"hbarryheather@gmail.com",hire:"",bday:"Aug 22",loc:"Specialty Clinic",status:"Active",tshirt:"Large",sched:["Tue","Wed","Thur","Fri"],notes:"",preferred:"",provider:"",whatweknow:"",hours:""},
+  {id:38,n:"BENTLEY, WILLIAM",pos:"Specialist: Neurology",sub:"Provider",teams:[],ext:"",phone:"720-244-7744",wemail:"william.bentley@psmedicalcenter.org",pemail:"wbentley62@gmail.com",hire:"2/1/2018",bday:"Oct 07",loc:"Specialty Clinic",status:"Inactive",tshirt:"Large",sched:[],notes:"Retired 6/11/2026",preferred:"",provider:"",whatweknow:"",hours:""},
+  {id:39,n:"GROSS, TERESA S",pos:"Specialist: General",sub:"Provider",teams:["Gen Surgery/Pain"],ext:"3822",phone:"919-943-6569",wemail:"teresa.gross@psmedicalcenter.org",pemail:"teresa.shireen.gross@gmail.com",hire:"8/28/2025",bday:"Aug 29",loc:"PRN",status:"Inactive",tshirt:"",sched:[],notes:"",preferred:"",provider:"",whatweknow:"",hours:""},
+  {id:40,n:"ABBAS, JAKE",pos:"LPC",sub:"Provider",teams:["Behavioral Health"],ext:"3893",phone:"815-375-0409",wemail:"jacob.abbas@psmedicalcenter.org",pemail:"",hire:"8/5/2024",bday:"Jan 31",loc:"On-Site",status:"Active",tshirt:"Large",sched:["Mon","Tue","Wed","Thur","Fri"],notes:"",preferred:"",provider:"",whatweknow:"",hours:""},
+  {id:41,n:"SMITH, BRIAN",pos:"CRNA",sub:"Provider",teams:[],ext:"3917",phone:"",wemail:"brian.smith@psmedicalcenter.org",pemail:"",hire:"9/14/2016",bday:"Sep 13",loc:"Pain Clinic",status:"Inactive",tshirt:"",sched:[],notes:"Pain Management Team closed (moved to Surgery Dept). Leaving separately — not folded into Gen Surg / Neurology.",preferred:"",provider:"",whatweknow:"",hours:""},
+  {id:42,n:"BLAISE, JO",pos:"Manager: Clinic",sub:"Leadership",teams:["Clinic"],ext:"3757",phone:"",wemail:"jo.blaise@psmedicalcenter.org",pemail:"joblaise13@icloud.com",hire:"",bday:"Mar 19",loc:"On-Site",status:"Active",tshirt:"Med",sched:["Mon","Tue","Thur","Fri"],notes:"",preferred:"",provider:"",whatweknow:"",hours:""},
+  {id:43,n:"GOECKNER, VICKI",pos:"Director: Clinic Operations",sub:"Leadership",teams:["Clinic"],ext:"3784",phone:"505-635-9156",wemail:"vicki.goeckner@psmedicalcenter.org",pemail:"",hire:"",bday:"Mar 21",loc:"On-Site",status:"Active",tshirt:"Large",sched:["Mon","Tue","Wed","Thur"],notes:"",preferred:"",provider:"",whatweknow:"",hours:""},
+  {id:44,n:"LIVERETT, RACHEL",pos:"FNP-C",sub:"Provider",teams:["Green"],ext:"3868",phone:"970-903-0257",wemail:"rachel.liverett@psmedicalcenter.org",pemail:"rachelliverett@gmail.com",hire:"7/28/2008",bday:"Jun 23",loc:"On-Site",status:"Active",tshirt:"Med",sched:["Mon","Tue"],notes:"",preferred:"",provider:"",whatweknow:"",hours:""},
+  {id:45,n:"ZAPPONE, PHILLIP",pos:"FNP-C",sub:"Provider",teams:["Green"],ext:"3880",phone:"970-946-1472",wemail:"phil.zappone@psmedicalcenter.org",pemail:"zappone.p@gmail.com",hire:"3/28/2022",bday:"Jun 03",loc:"On-Site",status:"Active",tshirt:"XL",sched:["Mon","Wed"],notes:"",preferred:"",provider:"",whatweknow:"",hours:""},
+  {id:46,n:"BARBER, EMILY",pos:"FNP-C",sub:"Provider",teams:["Green"],ext:"3880",phone:"720-519-8830",wemail:"emily.barber@psmedicalcenter.org",pemail:"emily.barber01@frontier.edu",hire:"7/15/2024",bday:"Jul 04",loc:"On-Site",status:"Active",tshirt:"Small",sched:["Tue","Thur"],notes:"Transitioned to Primary Care 6/16. Shares desk with Phil Zappone at ext 3880.",preferred:"",provider:"",whatweknow:"",hours:""},
+  {id:47,n:"ARAGON, SHELBY",pos:"FNP-C",sub:"Provider",teams:["Green"],ext:"3880",phone:"970-398-0133",wemail:"shelby.aragon@psmedicalcenter.org",pemail:"shelbymaragon@gmail.com",hire:"12/2/2019",bday:"Mar 28",loc:"On-Site",status:"Inactive",tshirt:"Med",sched:["Tue","Thur"],notes:"Resigned",preferred:"",provider:"",whatweknow:"",hours:""},
+  {id:48,n:"AUCOIN, GRANT",pos:"Assistant: Medical",sub:"CSS",teams:["PRN"],ext:"PRN",phone:"225-305-5622",wemail:"grant.aucoin@psmedicalcenter.org",pemail:"g2aucoin@gmail.com",hire:"6/13/2022",bday:"Feb 07",loc:"Seasonal",status:"Inactive",tshirt:"",sched:[],notes:"PRN/Seasonal",preferred:"",provider:"",whatweknow:"",hours:""},
+  {id:49,n:"CARR, JENNIFER",pos:"Assistant: Medical",sub:"CSS",teams:["PRN"],ext:"PRN",phone:"337-496-7546",wemail:"jennifer.carr@psmedicalcenter.org",pemail:"newgreeneyes2010@hotmail.com",hire:"11/2/2023",bday:"Jul 30",loc:"On-Site",status:"Inactive",tshirt:"XL",sched:[],notes:"Last day 7/31/2026.",preferred:"",provider:"",whatweknow:"",hours:""},
+  {id:50,n:"DEVOOGHT, MADI",pos:"Assistant: Medical",sub:"CSS",teams:[],ext:"",phone:"970-799-0037",wemail:"Madison.Devooght@psmedicalcenter.org",pemail:"madidevooght@gmail.com",hire:"11/25/2024",bday:"Jan 03",loc:"On-Site",status:"Inactive",tshirt:"Med",sched:[],notes:"Separated 3/31/2026",preferred:"",provider:"",whatweknow:"",hours:""},
+  {id:51,n:"ONEY, REMY",pos:"Assistant: Medical",sub:"CSS",teams:["PRN"],ext:"PRN",phone:"970-903-9048",wemail:"remy.oney@psmedicalcenter.org",pemail:"horsecrazy011@gmail.com",hire:"11/30/2020",bday:"Jan 30",loc:"On-Site",status:"Active",tshirt:"Small",sched:[],notes:"",preferred:"",provider:"",whatweknow:"",hours:""},
+  {id:52,n:"SANCHEZ, LAURA M",pos:"Assistant: Medical",sub:"CSS",teams:["PRN"],ext:"3810",phone:"361-687-9215",wemail:"laura.sanchez@psmedicalcenter.org",pemail:"0524lms@gmail.com",hire:"10/31/2024",bday:"May 24",loc:"On-Site",status:"Active",tshirt:"Small",sched:[],notes:"",preferred:"",provider:"",whatweknow:"",hours:""},
+  {id:53,n:"BARNES, COURTNEY",pos:"LSW-C",sub:"CSS",teams:["Behavioral Health"],ext:"3044",phone:"",wemail:"courtney.barnes@psmedicalcenter.org",pemail:"",hire:"",bday:"",loc:"On-Site",status:"Active",tshirt:"",sched:["Mon","Tue","Wed"],notes:"",preferred:"",provider:"",whatweknow:"",hours:""},
+  {id:54,n:"MORRIS, DAKODA",pos:"Representative: Patient Services",sub:"CSS",teams:["Clinic"],ext:"3951",phone:"240-385-7768",wemail:"dakoda.morris@psmedicalcenter.org",pemail:"dakoda.lee.morris@icloud.com",hire:"4/7/2026",bday:"Apr 07",loc:"On-Site",status:"Active",tshirt:"",sched:["Mon","Tue","Wed","Thur","Fri"],notes:"Walk-In / Discharge 1 permanent position",preferred:"",provider:"",whatweknow:"",hours:"8:00–5:00"},
+  {id:68,n:"TILLEY, ASHLEY",pos:"Representative: Patient Services",sub:"CSS",teams:["Clinic"],ext:"",phone:"",wemail:"ashley.tilley@psmedicalcenter.org",pemail:"",hire:"11/14/2025",bday:"",loc:"On-Site",status:"Onboarding",tshirt:"",sched:["Mon","Tue","Wed","Thur","Fri"],notes:"Clinic-Facing 1 (Specialty). Start date 7/27/2026.",preferred:"",provider:"",whatweknow:"",hours:"7:00–4:00"},
+  {id:69,n:"FULBRIGHT, JAMES",pos:"Assistant: Medical",sub:"CSS",teams:["Green"],ext:"3870",phone:"719-733-7444",wemail:"james.fulbright@psmedicalcenter.org",pemail:"",hire:"7/27/2026",bday:"Oct 04",loc:"On-Site",status:"Active",tshirt:"",sched:["Mon","Tue"],notes:"Goes by Alec. Part-time — 2 days/week (Mon-Tue). Covers Brown/Liverett walk-in (Green). Started 7/27/2026.",preferred:"Alec",provider:"Brown, Liverett",whatweknow:"",hours:""},
+  {id:70,n:"MCCAIN, TYLER",pos:"RN",sub:"CSS",teams:["Green"],ext:"3887",phone:"979-422-8456",wemail:"tyler.mccain@psmedicalcenter.org",pemail:"Tmccain4568@gmail.com",hire:"8/10/2026",bday:"Sep 20",loc:"On-Site",status:"Onboarding",tshirt:"",sched:["Tue","Wed","Thur","Fri"],notes:"Starts 8/10/2026.",preferred:"",provider:"",whatweknow:"",hours:""},
+  {id:72,n:"SHOCKLEY, VERONICA",pos:"Representative: Patient Services",sub:"CSS",teams:["Clinic"],ext:"3908",phone:"505-497-1035",wemail:"veronica.shockley@psmedicalcenter.org",pemail:"xxoctoberxx3327@gmail.com",hire:"7/29/2026",bday:"Oct 18",loc:"On-Site",status:"Onboarding",tshirt:"",sched:[],notes:"Walk-In 2 — reassigned here 7/28/2026 after Sarah Rader's resignation. Schedule TBD.",preferred:"",provider:"",whatweknow:"",hours:""},
+  {id:73,n:"TAYLOR, LARA",pos:"Assistant: Medical",sub:"CSS",teams:["PRN"],ext:"",phone:"309-781-5659",wemail:"lara.taylor@psmedicalcenter.org",pemail:"harleemom17@gmail.com",hire:"8/24/2026",bday:"Mar 02",loc:"On-Site",status:"Onboarding",tshirt:"",sched:[],notes:"Starts Monday 8/24/2026. Schedule TBD.",preferred:"",provider:"",whatweknow:"",hours:""},
+  {id:74,n:"RENFREW, DR.",pos:"Primary Care Physician",sub:"Provider",teams:["Green"],ext:"",phone:"",wemail:"",pemail:"",hire:"11/11/2026",bday:"",loc:"On-Site",status:"Onboarding",tshirt:"",sched:["Tue","Wed","Thur","Fri"],notes:"Starts 11/11/2026, Tue-Fri.",preferred:"",provider:"",whatweknow:"",hours:""},
+  {id:75,n:"GRAY, CHAD",pos:"Primary Care Physician",sub:"Provider",teams:["Green"],ext:"",phone:"806-445-3201",wemail:"",pemail:"",hire:"11/3/2026",bday:"",loc:"On-Site",status:"Onboarding",tshirt:"",sched:["Tue","Wed","Thur","Fri"],notes:"Starts 11/3/2026, Tue-Fri.",preferred:"",provider:"",whatweknow:"",hours:""},
+  {id:55,n:"WILLIAMS, KENNA",pos:"Specialist: General",sub:"Provider",teams:["Gen Surgery/Pain"],ext:"3822",phone:"",wemail:"",pemail:"",hire:"",bday:"",loc:"On-Site",status:"Inactive",tshirt:"",sched:[],notes:"",preferred:"",provider:"",whatweknow:"",hours:""},
+  {id:56,n:"AUCOIN, YODY",pos:"CRNA",sub:"Provider",teams:[],ext:"3917",phone:"",wemail:"yody.aucoin@psmedicalcenter.org",pemail:"",hire:"",bday:"",loc:"Pain Clinic",status:"Inactive",tshirt:"",sched:[],notes:"Pain Management Team closed (moved to Surgery Dept). Leaving separately — not folded into Gen Surg / Neurology.",preferred:"",provider:"",whatweknow:"",hours:""},
+  {id:57,n:"SIEGEL, MINDY",pos:"Specialist: Orthopedics PRN",sub:"Provider",teams:["Ortho"],ext:"3920",phone:"",wemail:"mindy.siegel@psmedicalcenter.org",pemail:"",hire:"",bday:"",loc:"Specialty Clinic",status:"Active",tshirt:"",sched:[],notes:"",preferred:"",provider:"",whatweknow:"",hours:""},
+  {id:62,n:"GAZENKO, KATE",pos:"General Surgeon",sub:"Provider",teams:["Gen Surg / Neurology"],ext:"3822",phone:"513-806-6770",wemail:"kate.gazenko@psmedicalcenter.org",pemail:"gazenkokate@gmail.com",hire:"",bday:"May 07",loc:"On-Site",status:"Active",tshirt:"",sched:["Mon","Tue","Wed","Thur","Fri"],notes:"Clinic: M, T, Th, F / Surgery: W",preferred:"",provider:"",whatweknow:"",hours:""},
+  {id:71,n:"MONTANO, DR.",pos:"Neurologist",sub:"Provider",teams:["Gen Surg / Neurology"],ext:"",phone:"",wemail:"",pemail:"",hire:"9/16/2026",bday:"",loc:"On-Site",status:"Onboarding",tshirt:"",sched:["Mon","Tue","Wed","Thur"],notes:"Succeeds retired Dr. Bentley. Starts 9/16/2026. Clinic Mon-Thu — Friday off. Part of the combined Gen Surg / Neurology team.",preferred:"",provider:"",whatweknow:"",hours:""},
+  {id:63,n:"NETZAHUALT, AMORIA",pos:"Assistant: Medical",sub:"CSS",teams:[],ext:"",phone:"575-244-2337",wemail:"amoria.sine@psmedicalcenter.org",pemail:"amorianetzahualt@gmail.com",hire:"6/1/2026",bday:"Jan 04",loc:"On-Site",status:"On Leave",tshirt:"",sched:["Tue","Wed","Thur","Fri"],notes:"Out sick — not expected back until 9/8/2026. Ruth Vance covering Hintzman (Blue) in the meantime. Regular schedule Tue-Fri once back.",preferred:"",provider:"Clinic",teamOptions:["Brown/Liverett (Green — Walk-In)","Mashburn (Blue — seat vacant while on maternity leave)","Norwood (Green — onboarding September, no MA yet)"],whatweknow:"",hours:""},
+  {id:58,n:"VACANT, MA PT",pos:"Assistant: Medical",sub:"CSS",teams:["Ortho"],ext:"3810",phone:"",wemail:"",pemail:"",hire:"",bday:"",loc:"Specialty Clinic",status:"Vacant",tshirt:"",sched:[],notes:"Part-time position.",preferred:"",provider:"Steed",whatweknow:"",hours:""},
+  {id:59,n:"VACANT, MA",pos:"Assistant: Medical",sub:"CSS",teams:["Green"],ext:"3797",phone:"",wemail:"",pemail:"",hire:"",bday:"",loc:"On-Site",status:"Vacant",tshirt:"",sched:[],notes:"",preferred:"",provider:"Brown, Liverett",whatweknow:"",hours:""},
+  {id:60,n:"VACANT, MA 30HR",pos:"Assistant: Medical",sub:"CSS",teams:["Specialty"],ext:"3823",phone:"",wemail:"",pemail:"",hire:"",bday:"",loc:"Specialty Clinic",status:"Vacant",tshirt:"",sched:[],notes:"30-hour position.",preferred:"",provider:"Bentley",whatweknow:"",hours:""},
+  {id:61,n:"VACANT, MA",pos:"Assistant: Medical",sub:"CSS",teams:["Blue"],ext:"3902",phone:"",wemail:"",pemail:"",hire:"",bday:"",loc:"On-Site",status:"Vacant",tshirt:"",sched:[],notes:"",preferred:"",provider:"Mashburn",whatweknow:"",hours:""},
+];
+
+const ROSTER_CONTACT_INDEX=(()=>{
+  const idx={};
+  ROSTER_CONTACTS.forEach(c=>{ rosterContactKeys(c).forEach(k=>{ idx[k]=c; }); });
+  return idx;
+})();
+
+const ROSTER_AC=[['#DBEAFE','#1E40AF'],['#DCFCE7','#166534'],['#EDE9FE','#5B21B6'],['#FEF9C3','#854D0E'],['#FFE4E6','#9F1239'],['#E0F2FE','#0C4A6E'],['#FCE7F3','#831843'],['#F3E8FF','#6B21A8']];
+
+const ROSTER_TEAM_COLOR={
+  'Green':'#2d6a4f', 'Green/Ortho':'#2d6a4f',
+  'Red':'#a13d3d',
+  'Blue':'#3a6ea5',
+  'Specialty':'#6b4c8a',
+  'Ortho':'#a68a3c',
+  'Clinic/Triage':'#1e2a3a',
+  'Clinic':'#8a5a2e',
+  'Gen Surg / Neurology':'#6b7280',
+  'Referrals':'#3f3f56',
+  'Behavioral Health':'#2f7a6b',
+};
+
+const TA_TEAM_QUEUES={
+  'Green':['Green'], 'Green/Ortho':['Green','Ortho'],
+  'Red':['Red'], 'Blue':['Blue'], 'Specialty':['Specialty'], 'Ortho':['Ortho'],
+  'Clinic/Triage':['Clinic Triage'],
+  'Clinic':['Clinic PSR'],
+  'Gen Surg / Neurology':['Gen Surg / Neurology'],
+  'Referrals':['Referral Specialists'], 'Behavioral Health':['Behavioral Health'],
+};
+
+const TA_EXCLUDE_ROLES=['Manager','Director','Admin Support'];
+
+const TA_EXTRA_MEMBERS=[
+  {cname:'Sarah Rader', queue:'Behavioral Health'},
+];
+
+const TA_TEMP_REASSIGN=[
+];
+
+const TA_PRN_FLOATS=[
+];
+
+const TA_PROVIDERS=[
+  {name:'Emily Barber',        role:'FNP-C',                  queue:'Green'},
+  {name:'Dr. Brown',           role:'Physician',               queue:'Green', flag:'Walk-In'},
+  {name:'Rachel Liverett',     role:'FNP-C',                  queue:'Green', flag:'Walk-In'},
+  {name:'Phillip Zappone',     role:'FNP-C',                  queue:'Green'},
+  {name:'Corrinne Johnson',    role:'PA',                      queue:'Red'},
+  {name:'Dr. McIntyre',        role:'Physician',               queue:'Red'},
+  {name:'Heather Nobles',      role:'PA',                      queue:'Red'},
+  {name:'Matthew Hintzman',    role:'PA',                      queue:'Blue'},
+  {name:'Kaela Mashburn',      role:'PA',                      queue:'Blue'},
+  {name:'Dr. Stopher-Mitchell',role:'Physician',               queue:'Blue'},
+  {name:'Dr. Holcomb',         role:'Specialist: Pulmonary',   queue:'Specialty'},
+  {name:'Dr. Siegel',          role:'Specialist: Orthopedics PRN', queue:'Ortho'},
+  {name:'Dr. Steed',           role:'Specialist: Ortho',       queue:'Ortho'},
+  {name:'Dr. Webb',            role:'Specialist: Ortho',       queue:'Ortho'},
+  {name:'Dr. Gazenko',         role:'Surgeon: General',        queue:'Gen Surg / Neurology'},
+  {name:'Dr. Montano',         role:'Neurologist',             queue:'Gen Surg / Neurology'},
+  {name:'Dr. Norwood',         role:'Physician',                queue:'Red'},
+  {name:'Dr. Renfrew',         role:'Physician',                queue:'Green'},
+  {name:'Dr. Gray',            role:'Physician',                queue:'Green'},
+  {name:'Jake Abbas',          role:'LPC/LAC',                 queue:'Behavioral Health'},
+  {name:'Courtney Barnes',     role:'LSW-C',                   queue:'Behavioral Health'},
+];
+
+const QUEUE_META=[
+  {queue:'Green', num:'7020', callback:'Option 1, 2, 1, 1', color:'#2d6a4f'},
+  {queue:'Red', num:'7030', callback:'Option 1, 2, 1, 3', color:'#a13d3d'},
+  {queue:'Blue', num:'7040', callback:'Option 1, 2, 1, 2', color:'#3a6ea5'},
+  {queue:'Specialty', num:'7060', callback:'Option 1, 2, 2, 2', color:'#6b4c8a'},
+  {queue:'Ortho', num:'7010', callback:'Option 1, 2, 2, 1', color:'#a68a3c'},
+  {queue:'Clinic Triage', num:'N/A', callback:'Option 1, 2, 1, 5', color:'#1e2a3a', note:'Triage queue rolls over to all nurses.'},
+  {queue:'Clinic PSR', num:'—', callback:'Option —', color:'#8a5a2e'},
+  {queue:'Gen Surg / Neurology', num:'7080', callback:'Option 1, 2, 2, 3', color:'#6b7280'},
+  {queue:'Referral Specialists', num:'—', callback:'Option —', color:'#3f3f56'},
+  {queue:'Behavioral Health', num:'N/A', callback:'Option 1, 2, 1, 4', color:'#2f7a6b'},
+];
+
+const WS_DAYS=['Mon','Tue','Wed','Thur','Fri'];
+
+const WS_DAY_LABEL={Mon:'M',Tue:'T',Wed:'W',Thur:'Th',Fri:'F'};
+
+const WS_UNASSIGNED = [
+  {name:'Amoria Netzahualt', role:'MA', note:'out sick, not expected back until 9/8/2026 — not currently assigned'},
+];
+
+const WEEKLY_SCHEDULE=[
+  {team:'Behavioral Health', groups:[], soloProviders:['Jake Abbas (LPC/LAC)','Courtney Barnes (LSW-C)'], rn:[]},
+  {team:'Blue', groups:[
+    {ma:'Haley Dalton', providers:['Dr. Stopher-Mitchell']},
+    {ma:'Latia Albue', providers:['Mashburn (PA)']},
+    {ma:'Ruth Vance', providers:['Hintzman (PA)']},
+  ], soloProviders:[], rn:['Kinsey O\'Dell']},
+  {team:'Clinic Triage', groups:[
+  ], soloProviders:[], rn:['Megan Niederkorn','Madilyn Smith']},
+  {team:'Gen Surg / Neurology', groups:[
+    {ma:null, maVacant:true, providers:[{name:'Dr. Gazenko (Surgeon)', days:['Mon','Tue','Thur','Fri']}, 'Dr. Montano']},
+  ], soloProviders:[], rn:['Leah Wattier']},
+  {team:'Green', groups:[
+    {ma:'David Albue', providers:['Emily Barber (FNP-C)','Phillip Zappone (FNP-C)']},
+    {ma:'Alec Fulbright', providers:['Dr. Brown','Rachel Liverett (FNP-C)']},
+  ], soloProviders:[], rn:['Tyler McCain']},
+  {team:'Ortho', groups:[
+    {ma:'Pricilla Garcia', providers:['Webb (Bill)']},
+    {ma:null, maVacant:true, providers:['Steed']},
+  ], soloProviders:['Dr. Siegel (PRN)'], rn:['Tori Watts']},
+  {team:'Red', groups:[
+    {ma:'Hannah Brostek', providers:['Corrinne Johnson (PA)','Heather Nobles (PA)']},
+    {ma:'Charlene Caldwell', providers:['Dr. McIntyre']},
+  ], soloProviders:[], rn:['Brianne Albach']},
+  {team:'Specialty', groups:[
+    {ma:'Brandy Prestridge', providers:['Dr. Holcomb']},
+  ], soloProviders:[], rn:['Ariana Shabro']},
+];
+
+
+
+const RETURN_DATE = {'Amoria Netzahualt':'9/8'};
+const leaveLabel = cn => RETURN_DATE[cn] ? 'Returns '+RETURN_DATE[cn] : 'On Leave';
+
+
+
+function showPage(id, el){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  el.classList.add('active');
+}
+
+function escHtml(s){ return String(s==null?'':s).replace(/[&<>"']/g, m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
+
+function rosterNormKey(first,last){
+  return (first+' '+last).toUpperCase().replace(/[^A-Z ]/g,'').replace(/\s+/g,' ').trim();
+}
+
+function rosterContactKeys(c){
+  const parts=c.n.split(',');
+  const last=(parts[0]||'').trim();
+  const firstFull=(parts[1]||'').trim();
+  const firstWord=firstFull.split(' ')[0]||'';
+  const keys=new Set();
+  if(firstWord) keys.add(rosterNormKey(firstWord,last));
+  if(c.preferred) keys.add(rosterNormKey(c.preferred,last));
+  return [...keys];
+}
+
+function findRosterContact(cname){
+  if(!cname) return null;
+  const words=cname.replace(/\(.*?\)/g,'').trim().split(/\s+/);
+  if(words.length<2) return null;
+  const first=words[0], last=words[words.length-1];
+  return ROSTER_CONTACT_INDEX[rosterNormKey(first,last)]||null;
+}
+
+function findContactRobust(rawName){
+  if(!rawName) return null;
+  const name = rawName.replace(/^Dr\.\s*/i,'').replace(/\(.*?\)/g,'').trim();
+  const words = name.split(/\s+/).filter(Boolean);
+  if(!words.length) return null;
+  const last = words[words.length-1];
+  const first = words.length>1 ? words[0] : null;
+  let best=null;
+  for(const cc of ROSTER_CONTACTS){
+    const parts=cc.n.split(',');
+    const cLast=(parts[0]||'').trim().toUpperCase();
+    const cFirst=(cc.preferred||(parts[1]||'').trim().split(' ')[0]||'').trim().toUpperCase();
+    if(cLast===last.toUpperCase() || cLast.startsWith(last.toUpperCase()+' ')){
+      if(!first || cFirst===first.toUpperCase()) return cc;
+      best = best || cc;
+    }
+  }
+  return best;
+}
+
+function rosterAvColor(n, team){
+  if(team && ROSTER_TEAM_COLOR[team]) return [ROSTER_TEAM_COLOR[team], '#ffffff'];
+  let h=0; for(const ch of n) h=(h<<5)-h+ch.charCodeAt(0)|0; return ROSTER_AC[Math.abs(h)%ROSTER_AC.length];
+}
+
+function rosterInitials(name){ const p=name.trim().split(/\s+/); return ((p[0]||'')[0]||'')+((p[p.length-1]||'')[0]||''); }
+
+function rosterRoleGroup(role){
+  const r=(role||'').trim();
+  if(r==='MA'||r==='MA PRN'||r==='MA-PT'||r==='LPN') return 'MA';
+  if(r==='RN'||r==='Lead RN'||r.startsWith('RN')) return 'RN';
+  if(r==='PSR') return 'PSR';
+  if(r==='Physician Assistant') return 'PA';
+  if(r==='FNP-C') return 'FNP';
+  if(r==='CRNA') return 'CRNA';
+  if(r==='Primary Care Physician'||r==='General Surgeon'||r==='Physician') return 'Physician';
+  if(r.startsWith('Specialist:')) return 'Specialist';
+  if(r==='Referral Spec') return 'Referral Spec';
+  if(r==='LPC'||r==='LPC/LAC'||r==='LSW-C') return 'Behavioral Health';
+  if(r==='Manager'||r==='Director'||r==='Admin Support') return 'Leadership';
+  return 'Other';
+}
+
+function buildRosterRows(){
+  const cssRows = DATA.filter(d=>d.occ==='Filled' && d.cname && d.cname.trim())
+    .map(d=>{
+      const c=findRosterContact(d.cname)||{};
+      // Structural inclusion in the FY2027 forecast mirrors buildForecast()'s own
+      // `staff` filter: any filled, non-closed, non-backfill-suppressed, non-Travel-RN
+      // seat is already rolled into the FY2027 total (falling back to the FY2026 rate
+      // if no confirmed Paycom rate exists yet). w27 presence is NOT the inclusion test.
+      const inFY27 = d.seat_status!=='Closed' && d.stage!=='Backfill not needed' && d.role!=='Travel RN';
+      const hasConfirmedRate = d.w27!==undefined;
+      const rosterLocation = (d.role==='PSR' && /\s\d+$/.test(d.seat||''))
+        ? (d.seat||'').replace(/^PSR:\s*/,'')
+        : '';
+      return {
+        display: d.cname,
+        role: d.role||'', roleDisplay: rosterLocation||d.role||'', team: d.team||'', seat: d.seat||'',
+        stage: d.stage||'',
+        provider: (d.provider && d.provider!=='N/A') ? d.provider : '',
+        hire: d.hire_date || c.hire || '',
+        ext: c.ext||'', phone: c.phone||'',
+        sched: c.sched||[], notes: c.notes||'',
+        inFY27, hasConfirmedRate, isProvider:false,
+        // extra detail for the card's detail modal — not shown on the card face
+        wemail: c.wemail||'', pemail: c.pemail||'', bday: c.bday||'',
+        loc: c.loc||'', tshirt: c.tshirt||'', whatweknow: c.whatweknow||'',
+        eecode: d.eecode||'',
+        occ: d.occ||''
+      };
+    });
+  // Providers are never CSS-budgeted (no seat, no FY2027 line) — but they're
+  // part of the team, so they show on the Roster sourced straight from Staff
+  // Manager. isProvider:true keeps them out of any budget/FY2027 reconciliation.
+  const providerRows = ROSTER_CONTACTS.filter(c=>c.sub==='Provider' && c.status!=='Inactive')
+    .map(c=>{
+      const titleCase=s=>(s||'').toLowerCase().replace(/\b\w/g,ch=>ch.toUpperCase());
+      const parts=c.n.split(',');
+      const last=titleCase((parts[0]||'').trim());
+      const first=titleCase(c.preferred || (parts[1]||'').trim().split(' ')[0] || '');
+      const display=(first+' '+last).trim() || c.n;
+      const stage = c.status==='On Leave' ? 'On Leave' : c.status==='Onboarding' ? 'Onboarding' : 'Working';
+      return {
+        display, role: c.pos||'Provider', team: (c.teams&&c.teams[0])||'', seat:'',
+        stage, provider:'', hire: c.hire||'',
+        ext: c.ext||'', phone: c.phone||'',
+        sched: c.sched||[], notes: c.notes||'',
+        inFY27:true, hasConfirmedRate:true, isProvider:true,
+        wemail: c.wemail||'', pemail: c.pemail||'', bday: c.bday||'',
+        loc: c.loc||'', tshirt: c.tshirt||'', whatweknow: c.whatweknow||'',
+        eecode: '', occ:'Filled'
+      };
+    });
+  ROSTER_ROWS = cssRows.concat(providerRows).sort((a,b)=>a.display.localeCompare(b.display));
+  ROSTER_ROWS.forEach((r,i)=>{ r._idx=i; });
+  return ROSTER_ROWS;
+}
+
+function renderRoster(){
+  if(!ROSTER_ROWS) buildRosterRows();
+  const q=(document.getElementById('roster-search')?.value||'').toLowerCase();
+  const frole=document.getElementById('roster-role')?.value||'';
+  const fteam=document.getElementById('roster-team')?.value||'';
+  const fstage=document.getElementById('roster-stage')?.value||'';
+
+  let list=ROSTER_ROWS.filter(r=>{
+    if(frole && rosterRoleGroup(r.role)!==frole) return false;
+    if(fteam && r.team!==fteam) return false;
+    if(fstage && r.stage!==fstage) return false;
+    if(q && !(r.display.toLowerCase().includes(q) || r.role.toLowerCase().includes(q) || r.team.toLowerCase().includes(q))) return false;
+    return true;
+  });
+  const countEl=document.getElementById('roster-count');
+  if(countEl) countEl.textContent = list.length+' staff';
+
+  const grid=document.getElementById('roster-grid');
+  if(!grid) return;
+  const dayAbbr={Mon:'Mon',Tue:'Tue',Wed:'Wed',Thur:'Thu',Fri:'Fri'};
+  grid.innerHTML = list.map(r=>{
+    const [bg,fg]=rosterAvColor(r.display, r.team);
+    const stageBadge = r.stage==='On Leave' ? `<span class="badge badge-leave">Filled · ${leaveLabel(r.display)}</span>`
+                      : r.stage==='Onboarding' ? '<span class="badge badge-vacant">Filled · Onboarding</span>'
+                      : '<span class="badge badge-active">Filled · Working</span>';
+    return `<div class="staff-card" onclick="openRosterDetail(${r._idx})">      <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+        <div class="avatar" style="background:${bg};color:${fg}">${escHtml(rosterInitials(r.display))}</div>
+        <div>
+          <div style="font-weight:700;color:var(--blue-900);font-size:13px">${escHtml(r.display)}</div>
+          <div style="font-size:11px;color:var(--gray-500)">${escHtml(r.roleDisplay)}</div>
+        </div>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:8px">
+        ${stageBadge}
+        ${r.isProvider?'<span class="badge" style="background:var(--blue-100);color:var(--blue-700)">Provider</span>':''}
+        ${r.loc==='Remote'?'<span class="badge" style="background:var(--gray-100);color:var(--gray-500)">Remote</span>':''}
+      </div>
+      <div style="font-size:11.5px;color:var(--gray-500);display:flex;flex-direction:column;gap:3px">
+        ${r.ext?`<span>Ext ${escHtml(r.ext)}</span>`:''}
+        ${r.provider?`<span style="color:var(--blue-700)">Covers: ${escHtml(r.provider)}</span>`:''}
+        ${r.sched.length?`<span>${r.sched.map(d=>dayAbbr[d]||d).join(' · ')}</span>`:''}
+      </div>
+    </div>`;
+  }).join('') || '<div style="padding:20px;color:var(--gray-500);font-size:13px">No staff match your filters</div>';
+}
+
+function openRosterDetail(idx){
+  const r = ROSTER_ROWS[idx]; if(!r) return;
+  const [bg,fg]=rosterAvColor(r.display, r.team);
+  const dayAbbr={Mon:'Mon',Tue:'Tue',Wed:'Wed',Thur:'Thu',Fri:'Fri'};
+  const stageBadge = r.stage==='On Leave' ? `<span class="badge badge-leave">Filled · ${leaveLabel(r.display)}</span>`
+                    : r.stage==='Onboarding' ? '<span class="badge badge-vacant">Filled · Onboarding</span>'
+                    : '<span class="badge badge-active">Filled · Working</span>';
+  const body = `
+    <div class="ros-modal-head">
+      <div class="avatar" style="width:52px;height:52px;font-size:17px;background:${bg};color:${fg}">${escHtml(rosterInitials(r.display))}</div>
+      <div>
+        <div class="ros-modal-name">${escHtml(r.display)}</div>
+        <div class="ros-modal-sub">${escHtml(r.roleDisplay)} · ${escHtml(r.team)} ${stageBadge}</div>
+      </div>
+    </div>
+    <div class="ros-detail-grid">
+      ${rosterDetailField('Seat ID', r.seat)}
+      ${rosterDetailField('Extension', r.ext)}
+      ${rosterDetailField('Primary Phone', r.phone)}
+      ${rosterDetailField('Work Email', r.wemail)}
+      ${rosterDetailField('Personal Email', r.pemail)}
+      ${rosterDetailField('Hire Date', r.hire)}
+      ${rosterDetailField('Birthday', r.bday)}
+      ${rosterDetailField('Location', r.loc)}
+      ${rosterDetailField('Schedule', r.sched.length?r.sched.map(d=>dayAbbr[d]||d).join(' · '):'')}
+      ${rosterDetailField('Provider Assignment', r.provider)}
+      ${rosterDetailField('Notes', r.notes, {full:true})}
+    </div>
+    ${r.whatweknow?`<div class="ros-admin-box"><div class="ros-admin-lbl">🔒 What We Know (admin only — for staff spotlight)</div><div class="ros-admin-val">${escHtml(r.whatweknow)}</div></div>`:''}
+    <div style="font-size:11px;color:var(--gray-500);margin-top:16px;font-style:italic">Read-only — sourced from the seat map and Staff Manager contact records. Edit contact details in Staff Manager; edit seat/occupancy in 2026 Budget.</div>
+  `;
+  document.getElementById('ros-modal-body').innerHTML = body;
+  document.getElementById('ros-modal').classList.add('open');
+}
+
+function closeRosterDetail(){
+  document.getElementById('ros-modal').classList.remove('open');
+}
+
+function rosterDetailField(label, value, opts){
+  opts=opts||{};
+  const v = (value && String(value).trim()) ? escHtml(value) : null;
+  return `<div class="ros-detail-item${opts.full?' full':''}">
+    <div class="ros-detail-lbl">${escHtml(label)}</div>
+    <div class="ros-detail-val${v?'':' empty'}">${v || '—'}</div>
+  </div>`;
+}
+
+function taRoleLabel(d, queue){
+  if(d.role==='PSR'){
+    if(queue==='Clinic PSR') return /\s\d+$/.test(d.seat||'') ? (d.seat||'').replace(/^PSR:\s*/,'') : 'PSR';
+    return 'PSR — '+queue;
+  }
+  if(d.role==='MA'||d.role==='LPN') return d.role+(d.provider && d.provider!=='N/A' ? ' — '+d.provider : '');
+  if(d.role==='Lead RN') return 'Lead RN';
+  if(d.role==='RN' && d.team && d.team.includes('/')) return 'RN: '+d.team;
+  if((d.role||'').startsWith('RN:')) return d.role.replace('Ortho Coordinator','Ortho Coord.');
+  return d.role||'';
+}
+
+function taRoleCategory(role){
+  const r=(role||'').toLowerCase();
+  if(r.startsWith('physician')) return 0;
+  if(r.startsWith('surgeon')||r.startsWith('specialist')||r.startsWith('prn - spec')) return 1;
+  if(r==='pa') return 2;
+  if(r.startsWith('fnp')) return 3;
+  if(r==='crna') return 4;
+  if(r.startsWith('lead rn')) return 5;
+  if(r.startsWith('rn')) return 6;
+  if(r.startsWith('lpn')) return 7;
+  if(r.startsWith('ma')) return 8;
+  if(r.startsWith('psr')) return 9;
+  if(r.startsWith('lpc')||r.startsWith('lsw')) return 10;
+  if(r.startsWith('referral')) return 11;
+  return 12;
+}
+
+function taSortQueue(rows){
+  return rows.slice().sort((a,b)=>{
+    const ca = a.vacant ? 99 : taRoleCategory(a.role);
+    const cb = b.vacant ? 99 : taRoleCategory(b.role);
+    if(ca!==cb) return ca-cb;
+    return (a.name||a.flag||'').localeCompare(b.name||b.flag||'');
+  });
+}
+
+function taBuildQueues(){
+  const byQueue={};
+  QUEUE_META.forEach(q=>byQueue[q.queue]=[]);
+
+  // Auto-populate from the budget via TA_TEAM_QUEUES
+  const reassignMap={}; TA_TEMP_REASSIGN.forEach(r=>reassignMap[r.cname]=r);
+  DATA.forEach(d=>{
+    if(d.occ!=='Filled' || !d.cname) return;
+    if(TA_EXCLUDE_ROLES.includes(d.role)) return;
+    const queues=TA_TEAM_QUEUES[d.team];
+    if(!queues) return;
+    const c=findRosterContact(d.cname)||{};
+    const reassign=reassignMap[d.cname];
+    if(reassign){
+      byQueue[reassign.toQueue].push({name:d.cname, role:reassign.roleOverride||taRoleLabel(d,reassign.toQueue), hours:c.hours||'', ext:c.ext||'', onLeave:d.stage==='On Leave'?leaveLabel(d.cname):''});
+      return; // don't also place on the auto-derived queue
+    }
+    queues.forEach(q=>{
+      byQueue[q].push({name:d.cname, role:taRoleLabel(d,q), hours:c.hours||'', ext:c.ext||'', onLeave:d.stage==='On Leave'?leaveLabel(d.cname):''});
+    });
+  });
+  // Extra-queue members (same live lookup, just placed on an additional queue)
+  TA_EXTRA_MEMBERS.forEach(x=>{
+    const d=DATA.find(r=>r.cname===x.cname && r.occ==='Filled');
+    if(!d) return;
+    const c=findRosterContact(d.cname)||{};
+    byQueue[x.queue].push({name:d.cname, role:taRoleLabel(d,x.queue), hours:c.hours||'', ext:c.ext||'', onLeave:d.stage==='On Leave'?leaveLabel(d.cname):''});
+  });
+  // PRN floats (fully manual — no seat to sync from)
+  TA_PRN_FLOATS.forEach(p=>byQueue[p.queue].push({name:p.name, role:p.role, hours:'', ext:p.ext, onLeave:false, manual:true}));
+  // Providers (fully manual)
+  TA_PROVIDERS.forEach(p=>{
+    const c=findContactRobust(p.name);
+    byQueue[p.queue].push({name:p.name, role:p.role, hours:'', ext:c?c.ext:'', onLeave:c?(c.status==='On Leave'):false, manual:true, flag:p.flag||''});
+  });
+  // Vacant/open desks — reuse the Staffing Report's own vacancy classification,
+  // projected onto whichever queue(s) that budget team maps to.
+  DATA.forEach(d=>{
+    if(d.seat_status==='Closed' || d.stage==='Backfill not needed') return;
+    if(d.occ!=='Vacant') return;
+    const queues=TA_TEAM_QUEUES[d.team];
+    if(!queues) return;
+    const hasFormer=!!(d.former && d.former.trim());
+    const flag = hasFormer ? 'VACANT' : 'OPEN';
+    const roleLbl = (d.role==='MA'||d.role==='LPN') ? d.role+(d.provider&&d.provider!=='N/A'?' — '+d.provider:'') : (d.role||'');
+    queues.forEach(q=>byQueue[q].push({vacant:true, flag, role:roleLbl, ext:''}));
+  });
+  Object.keys(byQueue).forEach(q=>{ byQueue[q]=taSortQueue(byQueue[q]); });
+  return byQueue;
+}
+
+function renderTeamAssignments(){
+  const grid=document.getElementById('team-assignments-grid');
+  if(!grid) return;
+  const byQueue=taBuildQueues();
+  grid.innerHTML = QUEUE_META.map(q=>{
+    const rows=(byQueue[q.queue]||[]).map(r=>{
+      if(r.vacant){
+        return `<tr class="ta-vacant"><td class="ta-name"><span class="ta-vacant-flag">⚠</span>${escHtml(r.flag)}</td><td class="ta-role">${escHtml(r.role)}</td><td class="ta-ext">${r.ext?escHtml(r.ext):'—'}</td></tr>`;
+      }
+      return `<tr><td class="ta-name">${escHtml(r.name)}${r.onLeave?`<span class="ta-leave-tag">${escHtml(r.onLeave)}</span>`:''}${r.flag?`<span class="ta-flag-tag">${escHtml(r.flag)}</span>`:''}</td><td class="ta-role">${escHtml(r.role)}</td><td class="ta-ext">${r.ext?escHtml(r.ext):'—'}</td></tr>`;
+    }).join('');
+    return `<div class="ta-card">
+      <div class="ta-head" style="background:${q.color}">${escHtml(q.queue)} Team — Queue Number ${escHtml(q.num)}</div>
+      <div class="ta-callback">☎ Call Back Shortcut &nbsp;<b>${escHtml(q.callback)}</b></div>
+      <table class="ta-table">
+        <thead><tr><th>Team Member</th><th>Role</th><th>Extension</th></tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
+      ${q.note?`<div style="padding:7px 16px;font-size:11px;color:var(--gray-500);font-style:italic;border-top:1px solid var(--border)">* ${escHtml(q.note)}</div>`:''}
+    </div>`;
+  }).join('');
+  // PSR shift hours — the only role where hours matter — collected once as a
+  // page footnote instead of a column repeated on every card.
+  const psrHours=[];
+  const seen=new Set();
+  DATA.forEach(d=>{
+    if(d.role!=='PSR' || d.occ!=='Filled' || !d.cname || seen.has(d.cname)) return;
+    const c=findRosterContact(d.cname)||{};
+    if(c.hours){ psrHours.push(`${d.cname} (${c.hours})`); seen.add(d.cname); }
+  });
+  const psrNote=document.getElementById('ta-psr-hours');
+  if(psrNote) psrNote.textContent = psrHours.length ? 'PSR hours — '+psrHours.join(' · ') : '';
+  const asof=document.getElementById('ta-asof');
+  if(asof) asof.textContent='Current as of '+new Date().toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});
+}
+
+function wsFindSched(rawName){
+  const c = findContactRobust(rawName);
+  return c ? (c.sched||[]) : [];
+}
+
+function wsDotRow(activeDays){
+  return WS_DAYS.map(d=>{
+    const on = activeDays.includes(d);
+    return `<td>${on?'<span class="ws-dot"></span>':'<span class="ws-dot-off"></span>'}</td>`;
+  }).join('');
+}
+
+function renderWeeklySchedule(){
+  const grid=document.getElementById('weekly-schedule-grid');
+  if(!grid) return;
+  grid.innerHTML = WEEKLY_SCHEDULE.map(team=>{
+    let h=`<div class="ws-card"><div class="ws-head">${escHtml(team.team)}</div>`;
+    h+=`<table class="ws-table"><thead><tr><th>MA / Provider</th>${WS_DAYS.map(d=>`<th>${WS_DAY_LABEL[d]}</th>`).join('')}</tr></thead><tbody>`;
+
+    let gi=0; // group index, for alternating shading across groups AND solo providers
+    (team.groups||[]).forEach(g=>{
+      const shade = (gi++ % 2===1) ? ' ws-group-shade' : '';
+      const maSched = g.maVacant ? [] : wsFindSched(g.ma);
+      if(g.maVacant){
+        h+=`<tr class="ws-provider${shade}"><td colspan="6"><span class="ws-vacant-badge">⚠ MA Vacant</span></td></tr>`;
+      } else {
+        h+=`<tr class="ws-provider${shade}"><td>${escHtml(g.ma)}</td>${wsDotRow(maSched)}</tr>`;
+      }
+      (g.providers||[]).forEach(p=>{
+        const pname = typeof p==='string' ? p : p.name;
+        const provSched = typeof p==='string' ? wsFindSched(pname) : p.days;
+        const overlap = g.maVacant ? [] : provSched.filter(d=>maSched.includes(d));
+        const gapDays = g.maVacant ? provSched : provSched.filter(d=>!maSched.includes(d));
+        h+=`<tr class="ws-ma${shade}"><td>${escHtml(pname)}${gapDays.length?`<span class="ws-gap-badge">${g.maVacant?'uncovered':'gap'}: ${gapDays.map(d=>WS_DAY_LABEL[d]).join('')}</span>`:''}</td>${wsDotRow(overlap)}</tr>`;
+      });
+    });
+    (team.soloProviders||[]).forEach(p=>{
+      const shade = (gi++ % 2===1) ? ' ws-group-shade' : '';
+      const pname = typeof p==='string' ? p : p.name;
+      const sched = typeof p==='string' ? wsFindSched(pname) : p.days;
+      h+=`<tr class="ws-provider${shade}"><td>${escHtml(pname)}</td>${wsDotRow(sched)}</tr>`;
+    });
+
+    if((team.rn&&team.rn.length) || (team.rnVacant&&team.rnVacant.length)){
+      h+=`<tr class="ws-rn-head"><td colspan="6">Team RN</td></tr>`;
+      team.rn.forEach(name=>{
+        const sched=wsFindSched(name);
+        h+=`<tr class="ws-rn"><td>${escHtml(name)}</td>${wsDotRow(sched)}</tr>`;
+      });
+      (team.rnVacant||[]).forEach(label=>{
+        h+=`<tr class="ws-rn"><td colspan="6"><span class="ws-vacant-badge">⚠ ${escHtml(label)}</span></td></tr>`;
+      });
+    }
+    h+=`</tbody></table></div>`;
+    return h;
+  }).join('');
+
+  const noteEl=document.getElementById('ws-unassigned-note');
+  if(noteEl){
+    noteEl.innerHTML = WS_UNASSIGNED.length
+      ? 'Not currently on the matrix: ' + WS_UNASSIGNED.map(p=>`<strong>${escHtml(p.name)}</strong> (${escHtml(p.role)}) — ${escHtml(p.note)}`).join(' · ')
+      : '';
+  }
+}
+
+
+
+
+// ── PROVIDER WEEKLY SCHEDULE (simple grid) ──────────────────────────────
+function renderProviderSchedule(){
+  const grid=document.getElementById('pws-grid');
+  if(!grid) return;
+  const rows = TA_PROVIDERS.slice().sort((a,b)=>a.name.localeCompare(b.name));
+  let h = `<table class="pws-table"><thead><tr><th>Provider</th><th>Team</th>${WS_DAYS.map(d=>`<th>${WS_DAY_LABEL[d]}</th>`).join('')}</tr></thead><tbody>`;
+  rows.forEach(p=>{
+    const sched = wsFindSched(p.name);
+    h += `<tr><td>${escHtml(p.name)}</td><td>${escHtml(p.queue)}</td>`;
+    WS_DAYS.forEach(d=>{
+      h += `<td>${sched.includes(d)?'<span class="pws-dot"></span>':''}</td>`;
+    });
+    h += `</tr>`;
+  });
+  h += `</tbody></table>`;
+  grid.innerHTML = h;
+}
+
+
+// ── INIT ──
+buildRosterRows();
+renderRoster();
+renderTeamAssignments();
+renderWeeklySchedule();
+renderProviderSchedule();
+</script>
+</body>
+</html>
