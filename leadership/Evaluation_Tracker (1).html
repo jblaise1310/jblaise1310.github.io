@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Evaluation Tracker</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<style>
+  :root {
+    --ink: #1f2a24;
+    --ink-soft: #4b564e;
+    --paper: #faf8f3;
+    --card: #ffffff;
+    --line: #dcd7c8;
+    --pine: #2f4d3a;
+    --pine-light: #e7efe6;
+    --amber: #a7631c;
+    --amber-light: #fbeedd;
+    --gold: #f4b942;
+    --clay: #9c4a3a;
+    --clay-light: #f7e8e2;
+    --slate: #4a5b6b;
+    --slate-light: #e6ebef;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+    line-height: 1.5;
+    padding: 32px 20px 64px;
+  }
+
+  .wrap {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  header {
+    border-bottom: 3px double var(--pine);
+    padding-bottom: 20px;
+    margin-bottom: 24px;
+  }
+
+  .eyebrow {
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    font-size: 11px;
+    color: var(--pine);
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+
+  h1 {
+    font-size: 27px;
+    margin: 0 0 6px;
+    font-weight: 600;
+  }
+
+  .subhead {
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    color: var(--ink-soft);
+    font-size: 14px;
+    max-width: 620px;
+  }
+
+  .summary-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  .summary-card {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 14px 16px;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+  }
+
+  .summary-card .stage-dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 6px;
+  }
+
+  .summary-card-top {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .pie-chart {
+    flex-shrink: 0;
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+
+  .pie-chart .pie-center {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: var(--card);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--ink);
+  }
+
+  .summary-card .summary-label {
+    font-size: 11px;
+    color: var(--ink-soft);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    display: flex;
+    align-items: center;
+    margin-bottom: 6px;
+  }
+
+  .summary-card .summary-count {
+    font-family: Georgia, serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--ink);
+  }
+
+  .summary-bar-track {
+    height: 5px;
+    background: var(--line);
+    border-radius: 20px;
+    margin-top: 8px;
+    overflow: hidden;
+  }
+
+  .summary-bar-fill {
+    height: 100%;
+    border-radius: 20px;
+    transition: width 0.4s ease;
+  }
+
+  .toolbar {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 16px;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    flex-wrap: wrap;
+  }
+
+  .toolbar button {
+    font-family: inherit;
+    font-size: 12.5px;
+    font-weight: 600;
+    padding: 7px 14px;
+    border-radius: 20px;
+    border: 1px solid var(--line);
+    background: var(--card);
+    color: var(--ink-soft);
+    cursor: pointer;
+  }
+
+  .toolbar button.active {
+    background: var(--pine);
+    color: #f4f1e6;
+    border-color: var(--pine);
+  }
+
+  #exportExcel {
+    background: var(--amber-light);
+    color: var(--amber);
+    border-color: var(--amber);
+  }
+
+  .list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .staff-card {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 16px 20px;
+  }
+
+  .staff-card.complete {
+    background: var(--pine-light);
+    border-color: #c3d8bf;
+  }
+
+  .who {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 12px;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .who .name {
+    font-family: "Iowan Old Style", Georgia, serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--ink);
+  }
+
+  .who .position {
+    font-size: 12px;
+    color: var(--ink-soft);
+  }
+
+  .stages {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+  }
+
+  .stage {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .stage-btn {
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 11.5px;
+    font-weight: 600;
+    padding: 8px 6px;
+    border-radius: 8px;
+    border: 1px solid var(--line);
+    background: var(--paper);
+    color: var(--ink-soft);
+    cursor: pointer;
+    text-align: center;
+    line-height: 1.25;
+  }
+
+  .stage-btn.done-1 { background: var(--amber-light); color: var(--amber); border-color: #e6cfa5; }
+  .stage-btn.done-2 { background: var(--slate-light); color: var(--slate); border-color: #c9d4dc; }
+  .stage-btn.done-3 { background: var(--clay-light); color: var(--clay); border-color: #e3c3b6; }
+  .stage-btn.done-4 { background: var(--pine); color: #f4f1e6; border-color: var(--pine); }
+
+  .stage-date {
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 10.5px;
+    color: var(--ink-soft);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 3px 4px;
+    background: var(--card);
+    width: 100%;
+    text-align: center;
+  }
+
+  .stage-date:focus {
+    outline: 2px solid var(--pine);
+    outline-offset: 1px;
+  }
+
+  footer {
+    margin-top: 28px;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 12px;
+    color: var(--ink-soft);
+    text-align: center;
+  }
+
+  .loading {
+    text-align: center;
+    padding: 40px;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    color: var(--ink-soft);
+  }
+
+  @media (max-width: 640px) {
+    .summary-grid { grid-template-columns: repeat(2, 1fr); }
+    .stages { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="eyebrow">Clinic Operations</div>
+    <h1>Evaluation Tracker</h1>
+    <div class="subhead">Four stages per person: self-eval received, self-eval uploaded to HR, performance eval done, performance eval uploaded to HR. Tap a stage to mark it complete, then set the date.</div>
+  </header>
+
+  <div class="summary-grid" id="summaryGrid"></div>
+
+  <div class="toolbar">
+    <button id="filterAll" class="active">All</button>
+    <button id="filterInProgress">In progress</button>
+    <button id="filterComplete">All 4 done</button>
+    <button id="exportExcel" style="margin-left:auto;">Export to Excel</button>
+  </div>
+
+  <div class="list" id="list">
+    <div class="loading">Loading tracker...</div>
+  </div>
+
+  <footer>Data is saved automatically and stays here between visits.</footer>
+</div>
+
+<script>
+  const STORAGE_KEY = "eval_tracker_2026_v2";
+  const OLD_STORAGE_KEY = "self_eval_tracker_2026";
+
+  const staff = [
+    { name: "Brianne Albach", position: "RN, Graduate" },
+    { name: "David Albue", position: "Assistant, Medical" },
+    { name: "Latia Albue", position: "Assistant, Medical" },
+    { name: "Hannah Brostek", position: "Assistant, Medical" },
+    { name: "Deb Calavan", position: "Specialist, Referral" },
+    { name: "Charlene Caldwell", position: "Assistant, Medical" },
+    { name: "Haley Dalton", position: "Assistant, Medical" },
+    { name: "Alec Fulbright", position: "Assistant, Medical" },
+    { name: "Pricilla Garcia", position: "Assistant, Medical" },
+    { name: "Nusi Hughes", position: "RN, Clinic (PRN)" },
+    { name: "Sara Marino", position: "Representative, Patient Services" },
+    { name: "Tyler McCain", position: "RN, Clinic" },
+    { name: "Dakoda Morris", position: "Representative, Patient Service" },
+    { name: "Amoria Netzahualt", position: "Assistant, Medical" },
+    { name: "Megan Niederkorn", position: "Lead, RN Clinic" },
+    { name: "Kinsey O'Dell", position: "RN, Clinic" },
+    { name: "Remy Oney", position: "Assistant, Medical (PRN)" },
+    { name: "Vickie Perales", position: "Specialist, Referral" },
+    { name: "Brandy Prestridge", position: "Assistant, Medical" },
+    { name: "Paula Quintana", position: "Representative, Patient Services" },
+    { name: "Laura Sanchez", position: "Assistant, Medical" },
+    { name: "Ariana Shabro", position: "RN, Specialty Clinic" },
+    { name: "Veronica Shockley", position: "Representative, Patient Services" },
+    { name: "Madilyn Smith", position: "RN, Clinic" },
+    { name: "Mckenna Sutton", position: "RN, Care Manager" },
+    { name: "Ruth Vance", position: "LPN/LVN, Clinic" },
+    { name: "Leah Wattier", position: "RN, Specialty Clinic" },
+    { name: "Tori Watts", position: "RN, Orthopedic Clinic Coordinator" },
+    { name: "Meghan Waugh", position: "PRN" },
+  ];
+
+  const stageDefs = [
+    { key: "selfReceived", label: "Self-eval received" },
+    { key: "selfUploaded", label: "Self-eval uploaded to HR" },
+    { key: "reviewDone", label: "Performance eval done" },
+    { key: "reviewUploaded", label: "Performance eval uploaded to HR" },
+  ];
+
+  let state = {};
+  let currentFilter = "all";
+
+  function todayISO() {
+    const d = new Date();
+    const yyyy = d.getFullYear();
+    const mm = String(d.getMonth() + 1).padStart(2, "0");
+    const dd = String(d.getDate()).padStart(2, "0");
+    return yyyy + "-" + mm + "-" + dd;
+  }
+
+  function emptyStages() {
+    const obj = {};
+    stageDefs.forEach(function(st) {
+      obj[st.key] = { done: false, date: null };
+    });
+    return obj;
+  }
+
+  async function loadState() {
+    let loaded = null;
+    try {
+      const result = await window.storage.get(STORAGE_KEY, false);
+      if (result && result.value) {
+        loaded = JSON.parse(result.value);
+      }
+    } catch (e) {
+      loaded = null;
+    }
+
+    if (loaded) {
+      state = loaded;
+    } else {
+      // fresh tracker: try to migrate the old single-stage tracker if it exists
+      let oldState = null;
+      try {
+        const oldResult = await window.storage.get(OLD_STORAGE_KEY, false);
+        if (oldResult && oldResult.value) {
+          oldState = JSON.parse(oldResult.value);
+        }
+      } catch (e) {
+        oldState = null;
+      }
+
+      state = {};
+      staff.forEach(function(s) {
+        state[s.name] = emptyStages();
+        if (oldState && oldState[s.name] && oldState[s.name].returned) {
+          state[s.name].selfReceived = {
+            done: true,
+            date: oldState[s.name].date || todayISO(),
+          };
+        }
+      });
+      await saveState();
+    }
+
+    // make sure every staff member and every stage key exists, in case the roster changed
+    staff.forEach(function(s) {
+      if (!state[s.name]) {
+        state[s.name] = emptyStages();
+      }
+      stageDefs.forEach(function(st) {
+        if (!state[s.name][st.key]) {
+          state[s.name][st.key] = { done: false, date: null };
+        }
+      });
+    });
+  }
+
+  async function saveState() {
+    try {
+      await window.storage.set(STORAGE_KEY, JSON.stringify(state), false);
+    } catch (e) {
+      console.error("Could not save tracker state", e);
+    }
+  }
+
+  function lastNameKey(fullName) {
+    const parts = fullName.trim().split(" ");
+    return parts[parts.length - 1].toLowerCase();
+  }
+
+  function renderSummary() {
+    const grid = document.getElementById("summaryGrid");
+    grid.innerHTML = "";
+    const total = staff.length;
+    const dotColors = ["#a7631c", "#4a5b6b", "#9c4a3a", "#2f4d3a"];
+
+    stageDefs.forEach(function(st, idx) {
+      const count = staff.filter(function(s) {
+        return state[s.name] && state[s.name][st.key] && state[s.name][st.key].done;
+      }).length;
+
+      const card = document.createElement("div");
+      card.className = "summary-card";
+
+      const pct = total ? (count / total * 100) : 0;
+      const color = dotColors[idx];
+
+      const top = document.createElement("div");
+      top.className = "summary-card-top";
+
+      const pie = document.createElement("div");
+      pie.className = "pie-chart";
+      pie.style.background = "conic-gradient(" + color + " " + pct + "%, var(--line) " + pct + "% 100%)";
+      const pieCenter = document.createElement("div");
+      pieCenter.className = "pie-center";
+      pieCenter.textContent = Math.round(pct) + "%";
+      pie.appendChild(pieCenter);
+
+      const labelWrap = document.createElement("div");
+
+      const label = document.createElement("div");
+      label.className = "summary-label";
+      const dot = document.createElement("span");
+      dot.className = "stage-dot";
+      dot.style.background = dotColors[idx];
+      label.appendChild(dot);
+      label.appendChild(document.createTextNode(st.label));
+
+      const countEl = document.createElement("div");
+      countEl.className = "summary-count";
+      countEl.textContent = count + " / " + total;
+
+      labelWrap.appendChild(label);
+      labelWrap.appendChild(countEl);
+
+      top.appendChild(pie);
+      top.appendChild(labelWrap);
+
+      const barTrack = document.createElement("div");
+      barTrack.className = "summary-bar-track";
+      const barFill = document.createElement("div");
+      barFill.className = "summary-bar-fill";
+      barFill.style.width = pct + "%";
+      barFill.style.background = dotColors[idx];
+      barTrack.appendChild(barFill);
+
+      card.appendChild(top);
+      card.appendChild(barTrack);
+      grid.appendChild(card);
+    });
+  }
+
+  function render() {
+    renderSummary();
+
+    const sorted = staff.slice().sort(function(a, b) {
+      return lastNameKey(a.name).localeCompare(lastNameKey(b.name));
+    });
+
+    const listEl = document.getElementById("list");
+    listEl.innerHTML = "";
+
+    const filtered = sorted.filter(function(s) {
+      const entry = state[s.name];
+      const doneCount = stageDefs.filter(function(st) { return entry[st.key].done; }).length;
+      if (currentFilter === "complete") return doneCount === stageDefs.length;
+      if (currentFilter === "in-progress") return doneCount < stageDefs.length;
+      return true;
+    });
+
+    if (filtered.length === 0) {
+      const empty = document.createElement("div");
+      empty.className = "loading";
+      empty.textContent = "Nothing to show here.";
+      listEl.appendChild(empty);
+      return;
+    }
+
+    filtered.forEach(function(s) {
+      const entry = state[s.name];
+      const doneCount = stageDefs.filter(function(st) { return entry[st.key].done; }).length;
+
+      const card = document.createElement("div");
+      card.className = "staff-card" + (doneCount === stageDefs.length ? " complete" : "");
+
+      const who = document.createElement("div");
+      who.className = "who";
+      const nameEl = document.createElement("div");
+      nameEl.className = "name";
+      nameEl.textContent = s.name;
+      const posEl = document.createElement("div");
+      posEl.className = "position";
+      posEl.textContent = s.position;
+      who.appendChild(nameEl);
+      who.appendChild(posEl);
+
+      const stagesEl = document.createElement("div");
+      stagesEl.className = "stages";
+
+      stageDefs.forEach(function(st, idx) {
+        const stageWrap = document.createElement("div");
+        stageWrap.className = "stage";
+
+        const stageEntry = entry[st.key];
+
+        const btn = document.createElement("button");
+        btn.className = "stage-btn" + (stageEntry.done ? " done-" + (idx + 1) : "");
+        btn.textContent = st.label;
+        btn.addEventListener("click", async function() {
+          const wasDone = stageEntry.done;
+          entry[st.key] = {
+            done: !wasDone,
+            date: !wasDone ? todayISO() : null,
+          };
+          await saveState();
+          render();
+        });
+        stageWrap.appendChild(btn);
+
+        if (stageEntry.done) {
+          const dateInput = document.createElement("input");
+          dateInput.type = "date";
+          dateInput.className = "stage-date";
+          dateInput.value = stageEntry.date || todayISO();
+          dateInput.title = st.label + " date";
+          dateInput.addEventListener("change", async function(e) {
+            entry[st.key].date = e.target.value;
+            await saveState();
+            render();
+          });
+          stageWrap.appendChild(dateInput);
+        }
+
+        stagesEl.appendChild(stageWrap);
+      });
+
+      card.appendChild(who);
+      card.appendChild(stagesEl);
+      listEl.appendChild(card);
+    });
+  }
+
+  function setFilter(filter, btnId) {
+    currentFilter = filter;
+    ["filterAll", "filterInProgress", "filterComplete"].forEach(function(id) {
+      document.getElementById(id).classList.toggle("active", id === btnId);
+    });
+    render();
+  }
+
+  document.getElementById("filterAll").addEventListener("click", function() { setFilter("all", "filterAll"); });
+  document.getElementById("filterInProgress").addEventListener("click", function() { setFilter("in-progress", "filterInProgress"); });
+  document.getElementById("filterComplete").addEventListener("click", function() { setFilter("complete", "filterComplete"); });
+
+  function exportToExcel() {
+    const sorted = staff.slice().sort(function(a, b) {
+      return lastNameKey(a.name).localeCompare(lastNameKey(b.name));
+    });
+
+    const header = ["Employee Name", "Position"];
+    stageDefs.forEach(function(st) {
+      header.push(st.label + " - Done");
+      header.push(st.label + " - Date");
+    });
+    header.push("Stages Complete");
+
+    const rows = [header];
+
+    sorted.forEach(function(s) {
+      const entry = state[s.name] || emptyStages();
+      const row = [s.name, s.position];
+      let doneCount = 0;
+      stageDefs.forEach(function(st) {
+        const se = entry[st.key] || { done: false, date: null };
+        row.push(se.done ? "Yes" : "No");
+        row.push(se.date || "");
+        if (se.done) doneCount++;
+      });
+      row.push(doneCount + " / " + stageDefs.length);
+      rows.push(row);
+    });
+
+    const ws = XLSX.utils.aoa_to_sheet(rows);
+    ws["!cols"] = [
+      { wch: 22 }, { wch: 30 },
+      { wch: 14 }, { wch: 12 },
+      { wch: 20 }, { wch: 12 },
+      { wch: 16 }, { wch: 12 },
+      { wch: 22 }, { wch: 12 },
+      { wch: 14 }
+    ];
+
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Evaluation Tracker");
+
+    const dateStr = todayISO();
+    XLSX.writeFile(wb, "Evaluation_Tracker_" + dateStr + ".xlsx");
+  }
+
+  document.getElementById("exportExcel").addEventListener("click", exportToExcel);
+
+  (async function init() {
+    await loadState();
+    render();
+  })();
+</script>
+</body>
+</html>
