@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Primary Care Clinic — On-Call Sign-Up, Reimagined</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #16294F;
+    --navy-deep: #0D1B36;
+    --gold: #C9A227;
+    --gold-light: #E6C868;
+    --teal: #2E6E62;
+    --paper: #F4F6F9;
+    --ink: #1B1F27;
+    --ink-soft: #4A5164;
+    --line: #D8DEE9;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'IBM Plex Sans', sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .sheet {
+    max-width: 900px;
+    margin: 0 auto;
+    background: #FFFFFF;
+    box-shadow: 0 0 0 1px var(--line);
+  }
+
+  /* ---------- Hero ---------- */
+  .hero {
+    background: linear-gradient(155deg, var(--navy) 0%, var(--navy-deep) 100%);
+    color: #FFFFFF;
+    padding: 3.2rem 3rem 3rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::after {
+    content: "";
+    position: absolute;
+    right: -60px;
+    top: -60px;
+    width: 260px;
+    height: 260px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(201,162,39,0.25) 0%, rgba(201,162,39,0) 70%);
+  }
+
+  .eyebrow {
+    font-size: 0.95rem;
+    letter-spacing: 0.02em;
+    color: var(--gold-light);
+    font-weight: 600;
+    margin: 0 0 0.9rem;
+  }
+
+  .hero h1 {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 3rem;
+    line-height: 1.08;
+    margin: 0 0 1.1rem;
+    max-width: 11ch;
+  }
+
+  .hero p.lede {
+    font-size: 1.15rem;
+    line-height: 1.55;
+    max-width: 46ch;
+    color: #DCE3F0;
+    margin: 0;
+  }
+
+  .hero .tag {
+    display: inline-block;
+    margin-top: 1.6rem;
+    padding: 0.5rem 1rem;
+    border: 1px solid rgba(255,255,255,0.35);
+    border-radius: 999px;
+    font-size: 0.9rem;
+    color: #FFFFFF;
+  }
+
+  /* ---------- Old way / new way ---------- */
+  .compare {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .compare > div {
+    padding: 2.2rem 2.4rem;
+  }
+
+  .compare .old {
+    background: #F1F0EC;
+    color: var(--ink-soft);
+  }
+
+  .compare .new {
+    background: #FFFFFF;
+  }
+
+  .compare h3 {
+    font-family: 'Fraunces', serif;
+    font-size: 1.25rem;
+    margin: 0 0 0.9rem;
+    font-weight: 600;
+  }
+
+  .compare .old h3 { color: #7A7362; }
+  .compare .new h3 { color: var(--teal); }
+
+  .compare ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .compare li {
+    padding: 0.35rem 0;
+    font-size: 0.98rem;
+    line-height: 1.4;
+  }
+
+  .compare .old li::before { content: "✕  "; color: #A79E86; }
+  .compare .new li::before { content: "✓  "; color: var(--teal); font-weight: 700; }
+
+  /* ---------- Callout ---------- */
+  .callout {
+    background: #FBF3D9;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    padding: 1.2rem 3rem;
+  }
+
+  .callout p {
+    margin: 0;
+    font-size: 0.98rem;
+    line-height: 1.5;
+    color: var(--navy);
+  }
+
+  .callout strong {
+    color: var(--navy);
+  }
+
+  /* ---------- Benefits ---------- */
+  .benefits {
+    padding: 2.6rem 3rem 1rem;
+  }
+
+  .benefits h2 {
+    font-family: 'Fraunces', serif;
+    font-size: 1.7rem;
+    font-weight: 600;
+    margin: 0 0 1.6rem;
+    color: var(--navy);
+  }
+
+  .benefit-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 2.2rem;
+    row-gap: 1.5rem;
+  }
+
+  .benefit {
+    border-left: 3px solid var(--gold);
+    padding-left: 1rem;
+  }
+
+  .benefit h4 {
+    margin: 0 0 0.3rem;
+    font-size: 1.02rem;
+    font-weight: 600;
+    color: var(--ink);
+  }
+
+  .benefit p {
+    margin: 0;
+    font-size: 0.94rem;
+    line-height: 1.5;
+    color: var(--ink-soft);
+  }
+
+  /* ---------- Steps ---------- */
+  .steps {
+    padding: 1.4rem 3rem 2.6rem;
+  }
+
+  .steps h2 {
+    font-family: 'Fraunces', serif;
+    font-size: 1.7rem;
+    font-weight: 600;
+    margin: 1.2rem 0 1.7rem;
+    color: var(--navy);
+  }
+
+  .step-row {
+    display: flex;
+    gap: 1.3rem;
+    margin-bottom: 1.5rem;
+    align-items: flex-start;
+  }
+
+  .step-num {
+    flex: none;
+    width: 2.3rem;
+    height: 2.3rem;
+    border-radius: 50%;
+    background: var(--navy);
+    color: var(--gold-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 1.05rem;
+  }
+
+  .step-text h4 {
+    margin: 0.15rem 0 0.25rem;
+    font-size: 1.02rem;
+    font-weight: 600;
+  }
+
+  .step-text p {
+    margin: 0;
+    font-size: 0.94rem;
+    line-height: 1.5;
+    color: var(--ink-soft);
+  }
+
+  /* ---------- Footer ---------- */
+  .footer {
+    background: var(--navy-deep);
+    color: #FFFFFF;
+    padding: 2.2rem 3rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 2rem;
+  }
+
+  .footer .find-it p.label {
+    margin: 0 0 0.7rem;
+    color: var(--gold-light);
+    font-weight: 600;
+    font-size: 0.9rem;
+  }
+
+  .footer .btn-row {
+    display: flex;
+    gap: 0.8rem;
+  }
+
+  .footer .btn {
+    display: inline-block;
+    padding: 0.55rem 1.2rem;
+    background: var(--gold);
+    color: var(--navy-deep);
+    font-weight: 600;
+    font-size: 0.92rem;
+    border-radius: 4px;
+    text-decoration: none;
+    transition: background 0.15s ease;
+  }
+
+  .footer .btn:hover {
+    background: var(--gold-light);
+  }
+
+  .footer .find-it p.detail {
+    margin: 0 0 0.2rem;
+    color: #C9D0E0;
+    font-size: 0.92rem;
+    line-height: 1.5;
+    max-width: 40ch;
+  }
+
+  .footer .find-it p.detail:last-child {
+    margin-bottom: 0;
+  }
+
+  .footer .clinic {
+    text-align: right;
+    font-family: 'Fraunces', serif;
+    font-size: 1.05rem;
+    color: #FFFFFF;
+    white-space: nowrap;
+  }
+
+  .footer .clinic span {
+    display: block;
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 0.8rem;
+    color: #98A2BC;
+    margin-top: 0.2rem;
+  }
+
+  @media (max-width: 640px) {
+    .hero { padding: 2.4rem 1.5rem; }
+    .hero h1 { font-size: 2.2rem; max-width: none; }
+    .compare { grid-template-columns: 1fr; }
+    .benefits, .steps { padding-left: 1.5rem; padding-right: 1.5rem; }
+    .callout { padding-left: 1.5rem; padding-right: 1.5rem; }
+    .benefit-grid { grid-template-columns: 1fr; }
+    .footer { flex-direction: column; align-items: flex-start; }
+    .footer .clinic { text-align: left; }
+    .footer .btn-row { flex-direction: column; width: 100%; }
+    .footer .btn { text-align: center; }
+  }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <section class="hero">
+    <p class="eyebrow">PRIMARY CARE CLINIC · ON-CALL SCHEDULING</p>
+    <h1>Type your name. Claim your date. Done.</h1>
+    <p class="lede">Our on-call sign-up just moved off paper and onto one shared calendar. No clipboard, no hunting for a marker, no lost sheet.</p>
+    <span class="tag">Starting this month</span>
+  </section>
+
+  <section class="compare">
+    <div class="old">
+      <h3>The old way</h3>
+      <ul>
+        <li>Having to hunt down the sign-up sheet</li>
+        <li>Handwriting that's hard to read (sorry, Dr. Stopher-Mitchell)</li>
+        <li>Whoever has the sheet has the only copy</li>
+        <li>No way to tell who's covered until you find it</li>
+      </ul>
+    </div>
+    <div class="new">
+      <h3>The new way</h3>
+      <ul>
+        <li>One shared Excel file, open on any clinic computer</li>
+        <li>Type your first name in the box under the date</li>
+        <li>Everyone sees the same calendar, always current</li>
+        <li>Open shifts are obvious at a glance</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="callout">
+    <p><strong>Sign-ups are due by the 15th of each month.</strong> Feel free to click the tabs at the bottom of the file to schedule days for months ahead, whenever it's convenient for you.</p>
+  </section>
+
+  <section class="benefits">
+    <h2>Why it's better</h2>
+    <div class="benefit-grid">
+      <div class="benefit">
+        <h4>Nothing to search for</h4>
+        <p>The calendar lives in one file, in one place. No more asking around for who has the document.</p>
+      </div>
+      <div class="benefit">
+        <h4>Always up to date</h4>
+        <p>One shared file means one version of the truth. What you see is what's actually scheduled.</p>
+      </div>
+      <div class="benefit">
+        <h4>Coverage at a glance</h4>
+        <p>A built-in summary tallies shifts per provider and flags any open weekday automatically.</p>
+      </div>
+      <div class="benefit">
+        <h4>Print it if you want it</h4>
+        <p>Each month is ready to print on one page, if you'd rather post a copy or keep one on your desk.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="steps">
+    <h2>How to claim a shift</h2>
+    <div class="step-row">
+      <div class="step-num">1</div>
+      <div class="step-text">
+        <h4>Open the shared file</h4>
+        <p>Find it in the location noted below and open the tab for the month you're looking at.</p>
+      </div>
+    </div>
+    <div class="step-row">
+      <div class="step-num">2</div>
+      <div class="step-text">
+        <h4>Find an open date</h4>
+        <p>Each weekday has a box underneath it. If it's blank, the shift is open.</p>
+      </div>
+    </div>
+    <div class="step-row">
+      <div class="step-num">3</div>
+      <div class="step-text">
+        <h4>Type your first name</h4>
+        <p>After you hit enter in the cell, it will be saved. You can close the file when done as auto-save is on.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="footer">
+    <div class="find-it">
+      <p class="label">Where to find it</p>
+      <div class="btn-row">
+        <a href="#" class="btn">2026 Schedule</a>
+        <a href="#" class="btn">2027 Schedule</a>
+      </div>
+    </div>
+    <div class="clinic">
+      Primary Care Clinic
+      <span>On-Call Schedule</span>
+    </div>
+  </section>
+
+</div>
+</body>
+</html>
