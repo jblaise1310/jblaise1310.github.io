@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>RHC eCQM Strategic Measures 2026 · Provider Actions</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Mulish:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#26313a;
+    --soft-ink:#5c6a74;
+    --paper:#faf7f0;
+    --card:#fffdf9;
+    --line:#e2ddd0;
+    --spruce:#3f6b52;
+    --spruce-bg:#e9f2ec;
+    --spruce-line:#c3ddcd;
+    --coral:#a8483c;
+    --coral-bg:#f8ebe9;
+    --gold:#a97a1f;
+    --gold-bg:#faf1de;
+
+    --neg-bg:#e9f2ec; --neg-tx:#3f6b52;
+    --low-bg:#faf1c9; --low-tx:#8a6d0f;
+    --mod-bg:#fbe3cd; --mod-tx:#a15a1f;
+    --high-bg:#f8dcd8; --high-tx:#a8342a;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:'Mulish',sans-serif;
+    color:var(--ink);
+    background:
+      radial-gradient(1100px 550px at 88% -10%, #f2ede1 0%, transparent 60%),
+      var(--paper);
+    line-height:1.55;
+    padding:36px 20px 70px;
+  }
+  .wrap{max-width:980px;margin:0 auto;}
+
+  .print-btn{
+    position:fixed;
+    top:22px;
+    right:26px;
+    z-index:50;
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    background:var(--spruce);
+    color:#fff;
+    border:none;
+    border-radius:24px;
+    padding:11px 20px;
+    font-family:'Mulish',sans-serif;
+    font-weight:700;
+    font-size:14px;
+    cursor:pointer;
+    box-shadow:0 10px 24px -10px rgba(63,107,82,0.55);
+    transition:transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .print-btn:hover{transform:translateY(-1px);box-shadow:0 14px 28px -10px rgba(63,107,82,0.6);}
+  .print-btn svg{width:16px;height:16px;}
+
+  header.hero{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:18px;
+    padding:34px 42px 28px;
+    margin-bottom:22px;
+    position:relative;
+    overflow:hidden;
+  }
+  header.hero::after{
+    content:"";
+    position:absolute;left:0;right:0;bottom:0;height:4px;
+    background:linear-gradient(90deg,var(--spruce-line),var(--gold-bg),var(--coral-bg));
+  }
+  .kicker{
+    font-size:12px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;
+    color:var(--soft-ink);
+  }
+  h1{
+    font-family:'Fraunces',serif;font-weight:600;font-size:32px;
+    margin:8px 0 6px;line-height:1.1;
+  }
+  .hero-sub{
+    font-family:'Fraunces',serif;font-style:italic;color:var(--soft-ink);
+    font-size:16px;max-width:66ch;margin:0;
+  }
+
+  .intro{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:16px 24px;
+    margin-bottom:26px;
+    font-size:14.5px;
+    color:var(--soft-ink);
+  }
+
+  .banner{
+    font-family:'Fraunces',serif;
+    font-weight:600;
+    font-size:15px;
+    text-align:center;
+    background:var(--gold-bg);
+    border:1px solid #ecd9ad;
+    color:var(--gold);
+    border-radius:10px;
+    padding:12px 18px;
+    margin:30px 0 18px;
+    text-transform:uppercase;
+    letter-spacing:.06em;
+  }
+
+  .grid2{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:16px;
+    margin-bottom:16px;
+  }
+
+  .card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:20px 24px 22px;
+    break-inside:avoid;
+    page-break-inside:avoid;
+  }
+  .card.full{grid-column:1 / -1;}
+
+  .card .mtitle{
+    display:flex;
+    align-items:baseline;
+    gap:10px;
+    flex-wrap:wrap;
+    font-family:'Fraunces',serif;
+    font-weight:600;
+    font-size:18.5px;
+    color:var(--ink);
+    margin:0 0 4px;
+    border-bottom:2px double var(--ink);
+    padding-bottom:10px;
+  }
+  .card .pts{
+    font-family:'Mulish',sans-serif;
+    font-weight:800;
+    font-size:11.5px;
+    letter-spacing:.04em;
+    background:var(--spruce);
+    color:#fff;
+    padding:3px 10px;
+    border-radius:20px;
+    white-space:nowrap;
+  }
+  .card .flag{
+    font-family:'Mulish',sans-serif;
+    font-weight:800;
+    font-size:10.5px;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    color:var(--coral);
+    background:var(--coral-bg);
+    padding:3px 9px;
+    border-radius:20px;
+    white-space:nowrap;
+  }
+
+  .desc{
+    font-size:14px;
+    color:var(--soft-ink);
+    margin:12px 0 14px;
+  }
+
+  .actions-label{
+    font-weight:800;
+    font-size:13.5px;
+    margin:0 0 8px;
+    color:var(--ink);
+  }
+
+  .trigger{
+    display:inline-block;
+    background:#fdf1a8;
+    color:#5c4a05;
+    font-weight:700;
+    font-size:13px;
+    padding:2px 8px;
+    border-radius:5px;
+    margin-bottom:8px;
+  }
+
+  ul.actions{
+    margin:0 0 4px;
+    padding-left:20px;
+    font-size:14px;
+  }
+  ul.actions li{margin-bottom:5px;}
+  ul.actions li.strong{font-weight:700;}
+  ul.actions li:last-child{margin-bottom:0;}
+
+  .no-action{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    background:var(--spruce-bg);
+    color:var(--spruce);
+    font-weight:700;
+    font-size:14px;
+    padding:8px 14px;
+    border-radius:8px;
+  }
+
+  /* PHQ-9 / CSSRS grid tables */
+  table.scoretable{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:6px;
+    font-size:13.5px;
+  }
+  table.scoretable th{
+    text-align:left;
+    font-family:'Mulish',sans-serif;
+    font-weight:800;
+    font-size:12.5px;
+    padding:9px 12px;
+    border:1px solid var(--line);
+  }
+  table.scoretable td{
+    vertical-align:top;
+    padding:10px 12px;
+    border:1px solid var(--line);
+  }
+  table.scoretable td ul, table.scoretable td.wrap ul{
+    margin:6px 0 0;
+    padding-left:18px;
+  }
+  th.neg, td.neg-c{background:var(--neg-bg);}
+  th.low, td.low-c{background:var(--low-bg);}
+  th.mod, td.mod-c{background:var(--mod-bg);}
+  th.high, td.high-c{background:var(--high-bg);}
+  th.neg{color:var(--neg-tx);}
+  th.low{color:var(--low-tx);}
+  th.mod{color:var(--mod-tx);}
+  th.high{color:var(--high-tx);}
+
+  .footer-note{
+    text-align:center;
+    font-family:'Fraunces',serif;
+    font-style:italic;
+    color:var(--soft-ink);
+    font-size:13px;
+    margin-top:26px;
+  }
+
+  @media print{
+    body{
+      background:#fff;
+      padding:0;
+      -webkit-print-color-adjust:exact;
+      print-color-adjust:exact;
+    }
+    .print-btn{display:none;}
+    header.hero, .intro, .card, .banner{
+      box-shadow:none;
+    }
+    .wrap{max-width:100%;}
+    .grid2{gap:10px;}
+    .card{padding:14px 18px 16px;}
+    a{color:inherit;text-decoration:none;}
+  }
+
+  @media (max-width:760px){
+    .grid2{grid-template-columns:1fr;}
+    header.hero{padding:26px 22px 22px;}
+    h1{font-size:26px;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <button class="print-btn" onclick="window.print()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+    Print
+  </button>
+
+  <header class="hero">
+    <div class="kicker">RHC · eCQM Strategic Measures 2026</div>
+    <h1>Provider Actions</h1>
+    <p class="hero-sub">Active quality measures and the required provider actions needed to meet performance standards.</p>
+  </header>
+
+  <div class="intro">This document outlines active quality measures and the required provider actions necessary to meet performance standards.</div>
+
+  <!-- CMS-2 -->
+  <div class="card full">
+    <div class="mtitle">CMS-2: Depression Screening and Follow-Up Plan <span class="pts">12 PTS</span></div>
+    <p class="desc">Percentage of patients age 12 and older who are screened for depression using a standardized tool (PHQ-2/PHQ-9) and, if positive, have a documented follow-up plan on the same date of service.</p>
+    <p class="actions-label">Provider Required Actions:</p>
+    <table class="scoretable">
+      <tr>
+        <th>PHQ-9 Score 1&ndash;4</th>
+        <th>PHQ-9 Score 5&ndash;9</th>
+        <th>PHQ-9 Score &ge;10</th>
+      </tr>
+      <tr>
+        <td>
+          <ul class="actions"><li>No action required</li></ul>
+        </td>
+        <td>
+          <ul class="actions">
+            <li>Clinical discretion for follow-up</li>
+            <li>Consider adding diagnosis when appropriate</li>
+          </ul>
+        </td>
+        <td>
+          Provider must complete and document at least one of the following:
+          <ul class="actions">
+            <li>Behavioral Health referral</li>
+            <li>Initiate or adjust a common depression medication</li>
+            <li>Engage Integrated Behavioral Health</li>
+          </ul>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- CSSRS -->
+  <div class="card full">
+    <div class="mtitle">CSSRS: Suicide Risk Screening <span class="flag">HQIP Zero Suicide</span></div>
+    <p class="desc">All patients are screened for suicide risk using the CSSRS tool. Any positive finding requires documented provider assessment and action prior to discharge. <strong>Screenings:</strong> All patients (screened every visit).</p>
+    <p class="actions-label">Provider Required Actions:</p>
+    <table class="scoretable">
+      <tr>
+        <th class="neg">Negative Screen</th>
+        <th class="low">Low Risk</th>
+        <th class="mod">Moderate Risk</th>
+        <th class="high">High Risk</th>
+      </tr>
+      <tr>
+        <td class="neg-c">No action required</td>
+        <td class="low-c">Place Mental Health referral</td>
+        <td class="mod-c">
+          Provider must take and document clinical action, which may include:
+          <ul class="actions">
+            <li>Behavioral Health consultation</li>
+            <li>Documented Safety Plan</li>
+            <li>Consider ED transfer</li>
+          </ul>
+        </td>
+        <td class="high-c">
+          Patient must not be discharged without documented intervention:
+          <ul class="actions">
+            <li>Safety Plan and Behavioral Health consult or ED transfer required</li>
+          </ul>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- CMS-155a + CMS-122 -->
+  <div class="grid2">
+    <div class="card">
+      <div class="mtitle">CMS-155a: Weight Assessment &amp; BMI <span class="pts">4 PTS</span></div>
+      <p class="desc">Percentage of patients age 3&ndash;17 with documented BMI percentile and counseling for nutrition and physical activity during the measurement period.</p>
+      <p class="actions-label">Provider Required Action:</p>
+      <span class="no-action">No provider action required</span>
+    </div>
+    <div class="card">
+      <div class="mtitle">CMS-122: Diabetes, Hemoglobin A1c <span class="pts">6 PTS</span></div>
+      <p class="desc">Poor Control (&gt;9%). Percentage of patients age 18&ndash;75 with diabetes whose most recent A1c is greater than 9%, or who have no documented A1c during the measurement period. Lower performance percentage reflects better control.</p>
+      <p class="actions-label">Provider Required Actions:</p>
+      <span class="trigger">If A1c &gt;9% or missing:</span>
+      <ul class="actions">
+        <li class="strong">Inform CSS to obtain A1c during visit</li>
+        <li>Other therapies / medications per provider discretion</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- CMS-951 + CMS-165 -->
+  <div class="grid2">
+    <div class="card">
+      <div class="mtitle">CMS-951: Kidney Health Evaluation in Patients with Diabetes <span class="pts">4 PTS</span></div>
+      <p class="desc">Percentage of patients age 18&ndash;85 with diabetes who received a kidney health evaluation during the measurement period, defined as both an eGFR and a uACR completed with quantitative results, once per year.</p>
+      <p class="actions-label">Provider Required Actions:</p>
+      <ul class="actions">
+        <li class="strong">Order Microalb/Creat Ratio (uACR) alongside the CMP for diabetic patients if not yet completed this year</li>
+        <li>eGFR is typically captured with the CMP already; confirm both are resulted</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="mtitle">CMS-165: Controlling High Blood Pressure <span class="pts">12 PTS</span></div>
+      <p class="desc">Percentage of patients age 18&ndash;85 with a diagnosis of hypertension whose most recent blood pressure during the measurement period is less than 140/90 mmHg.</p>
+      <p class="actions-label">Provider Required Action:</p>
+      <span class="trigger">If BP &ge;140/90 during the visit:</span>
+      <ul class="actions">
+        <li>Direct and document a follow-up plan for blood pressure management</li>
+        <li>Communicate need for BP recheck prior to discharge</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- CMS-146 + CMS-154 -->
+  <div class="grid2">
+    <div class="card">
+      <div class="mtitle">CMS-146: Testing for Pharyngitis <span class="pts">4 PTS</span></div>
+      <p class="desc">Percentage of patients age 3 and older diagnosed with pharyngitis who were prescribed an antibiotic and received a Group A streptococcus (strep) test on or within 3 days of the visit.</p>
+      <p class="actions-label">Provider Required Actions:</p>
+      <ul class="actions">
+        <li>Order a Strep Test when entering a diagnosis of pharyngitis AND prescribing antibiotics</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="mtitle">CMS-154: Treatment for URI <span class="pts">4 PTS</span></div>
+      <p class="desc">Percentage of patients age 3 months and older diagnosed with upper respiratory infection (URI) who were NOT prescribed an antibiotic. This is an inverse measure: lower antibiotic prescribing reflects better performance.</p>
+      <p class="actions-label">Provider Required Actions:</p>
+      <ul class="actions">
+        <li>For patients diagnosed with a URI, do not prescribe antibiotics</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="banner">Additional Measures (not included in Strategic Measures above)</div>
+
+  <!-- CMS-125 + CMS-130 -->
+  <div class="grid2">
+    <div class="card">
+      <div class="mtitle">CMS-125: Breast Cancer Screening <span class="pts">6 PTS</span></div>
+      <p class="desc">Percentage of female patients age 50&ndash;74 who have received a mammogram within the past 27 months.</p>
+      <p class="actions-label">Recommended Provider Action:</p>
+      <ul class="actions">
+        <li>Order screening mammogram when indicated</li>
+        <li>Document if patient declines or screening is contraindicated</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="mtitle">CMS-130: Colorectal Cancer Screening <span class="pts">6 PTS</span></div>
+      <p class="desc">Percentage of patients age 50&ndash;75 who have appropriate colorectal cancer screening documented (FIT within 12 months, colonoscopy within 10 years, or other approved methods).</p>
+      <p class="actions-label">Recommended Provider Action:</p>
+      <ul class="actions">
+        <li>Order appropriate colorectal cancer screening when indicated</li>
+        <li>Document if patient declines or screening is contraindicated</li>
+      </ul>
+    </div>
+  </div>
+
+  <p class="footer-note">RHC · eCQM Strategic Measures 2026 · Questions: Ask Vicki or Jo</p>
+
+</div>
+</body>
+</html>
