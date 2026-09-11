@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Medicare Preventive Services: Quick Reference</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700&family=Mulish:ital,wght@0,400;0,500;0,600;0,700;0,800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#FBF7EF; --cream:#FDFAF3; --card:#FFFFFF;
+    --ink:#26303D; --ink-soft:#5C6671; --line:#EDE3D2;
+    --green:#2F7D54; --green-tint:#E8F1EA;
+    --blue:#3A6CA4; --blue-tint:#E6ECF6;
+    --amber:#9A6A1A; --amber-tint:#FBF0DB; --amber-line:#F0DEBC;
+    --radius:20px; --shadow:0 1px 2px rgba(38,48,61,.04), 0 10px 30px rgba(38,48,61,.06);
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:'Mulish',system-ui,sans-serif;font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:1000px;margin:0 auto;padding:34px 22px 90px;}
+  .eyebrow{font-weight:800;letter-spacing:.13em;text-transform:uppercase;font-size:12.5px;margin:0 0 14px;color:var(--green);}
+  h1{font-family:'Fraunces',serif;font-weight:600;font-size:clamp(36px,6vw,54px);line-height:1.04;letter-spacing:-.015em;margin:0 0 16px;}
+  .lede{font-size:19px;color:var(--ink-soft);max-width:62ch;margin:0;}
+  .hero{background:var(--cream);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:38px 40px 36px;position:relative;overflow:hidden;}
+  .hero::after{content:"";position:absolute;left:0;right:0;bottom:0;height:5px;background:linear-gradient(90deg,var(--green),var(--blue),var(--amber));opacity:.85;}
+
+  .toolsrow{display:flex;gap:14px;align-items:center;flex-wrap:wrap;margin:24px 0 14px;}
+  .search{flex:1 1 320px;position:relative;}
+  .search input{width:100%;font-family:inherit;font-size:16px;padding:13px 16px 13px 44px;border:1px solid var(--line);border-radius:12px;background:var(--card);box-shadow:var(--shadow);color:var(--ink);}
+  .search input:focus{outline:none;border-color:var(--green);}
+  .search svg{position:absolute;left:15px;top:50%;transform:translateY(-50%);width:19px;height:19px;stroke:var(--ink-soft);}
+  .count{color:var(--ink-soft);font-size:14px;font-weight:700;white-space:nowrap;}
+  .printbtn{font-family:inherit;font-weight:700;font-size:13px;background:var(--card);border:1px solid var(--line);color:var(--ink-soft);border-radius:10px;padding:12px 16px;cursor:pointer;}
+  .printbtn:hover{color:var(--ink);border-color:var(--ink-soft);}
+
+  .tablecard{background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);overflow:hidden;}
+  .scroll{overflow-x:auto;}
+  table{border-collapse:collapse;width:100%;min-width:720px;font-size:15px;}
+  thead th{position:sticky;top:0;background:var(--ink);color:#fff;text-align:left;font-weight:800;font-size:12px;letter-spacing:.05em;text-transform:uppercase;padding:14px 18px;z-index:2;}
+  tbody td{padding:12px 18px;border-top:1px solid var(--line);vertical-align:top;}
+  tbody tr:nth-child(even){background:#FCF9F2;}
+  tbody td:first-child{font-weight:700;color:var(--ink);}
+  tbody td:nth-child(2){white-space:nowrap;color:var(--ink);}
+  tbody td:nth-child(3),tbody td:nth-child(4){color:var(--ink-soft);font-variant-numeric:tabular-nums;}
+  tr.anchor td:first-child{box-shadow:inset 4px 0 0 var(--green);}
+  tr.anchor{background:var(--green-tint)!important;}
+  tr.hidden{display:none;}
+  .noresults{padding:22px 18px;color:var(--ink-soft);display:none;}
+
+  .note{margin-top:22px;background:var(--amber-tint);border:1px solid var(--amber-line);border-radius:16px;padding:20px 24px;}
+  .note .lbl{font-weight:800;font-size:11.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--amber);margin:0 0 8px;display:flex;align-items:center;gap:8px;}
+  .note .lbl svg{width:16px;height:16px;stroke:var(--amber);}
+  .note p{margin:0;color:var(--ink);}
+
+  .foot{margin-top:40px;padding-top:22px;border-top:1px solid var(--line);color:var(--ink-soft);font-size:13.5px;}
+  .foot b{color:var(--ink);}
+
+  @media print{
+    body{background:#fff;font-size:11px;}
+    .wrap{max-width:100%;padding:0;}
+    .no-print{display:none!important;}
+    .hero,.tablecard,.note{box-shadow:none;break-inside:avoid;}
+    .hero::after{display:none;}
+    thead th{background:#26303D!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+    tr.anchor{background:#E8F1EA!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+    tbody tr:nth-child(even){background:#F4F1EA!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+    table{min-width:0;font-size:10px;}
+    tbody td,thead th{padding:6px 10px;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="hero">
+    <p class="eyebrow">Medicare &middot; Staff Quick Reference</p>
+    <h1>Medicare Preventive Services</h1>
+    <p class="lede">A quick-reference of covered Medicare preventive services, with how often each is covered, the HCPCS or CPT code, and the ICD-10 diagnosis codes most commonly used. The three wellness visits are listed first; everything else is alphabetical.</p>
+  </div>
+
+  <div class="toolsrow">
+    <div class="search no-print">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input id="q" type="text" placeholder="Search a service, code, or ICD-10..." oninput="filterTable()" aria-label="Search services">
+    </div>
+    <span class="count" id="count"></span>
+    <button class="printbtn no-print" onclick="window.print()">Print / Save PDF</button>
+  </div>
+
+  <div class="tablecard">
+    <div class="scroll">
+      <table id="tbl">
+        <thead>
+          <tr><th>Service</th><th>Frequency</th><th>HCPCS / CPT</th><th>Common ICD-10</th></tr>
+        </thead>
+        <tbody>
+      <tr class="anchor" data-svc="welcome to medicare visit (ippe)"><td>Welcome to Medicare Visit (IPPE)</td><td>Once lifetime</td><td>G0402</td><td>Z00.00, Z00.01</td></tr>
+      <tr class="anchor" data-svc="annual wellness visit - initial"><td>Annual Wellness Visit - Initial</td><td>Once lifetime</td><td>G0438</td><td>Z00.00, Z00.01</td></tr>
+      <tr class="anchor" data-svc="annual wellness visit - subsequent"><td>Annual Wellness Visit - Subsequent</td><td>Every 12 months</td><td>G0439</td><td>Z00.00, Z00.01</td></tr>
+      <tr data-svc="aaa screening"><td>AAA Screening</td><td>Once lifetime</td><td>G0389</td><td>Z13.6</td></tr>
+      <tr data-svc="alcohol counseling"><td>Alcohol Counseling</td><td>Up to 4 sessions/year</td><td>G0443</td><td>Z71.41</td></tr>
+      <tr data-svc="alcohol misuse screening"><td>Alcohol Misuse Screening</td><td>Every 12 months</td><td>G0442</td><td>Z13.39</td></tr>
+      <tr data-svc="bone mass measurement (dexa)"><td>Bone Mass Measurement (DEXA)</td><td>Every 24 months</td><td>Various</td><td>Z13.820</td></tr>
+      <tr data-svc="cardiovascular disease counseling"><td>Cardiovascular Disease Counseling</td><td>Every 12 months</td><td>G0446</td><td>Z13.6</td></tr>
+      <tr data-svc="cardiovascular screening (lipid panel)"><td>Cardiovascular Screening (Lipid Panel)</td><td>Every 5 years</td><td>80061, 82465, 83718, 84478</td><td>Z13.220</td></tr>
+      <tr data-svc="cervical cancer screening"><td>Cervical Cancer Screening</td><td>Every 24 months</td><td>Q0091</td><td>Z12.4</td></tr>
+      <tr data-svc="covid-19 vaccine"><td>COVID-19 Vaccine</td><td>Per CDC schedule</td><td>Various</td><td>Z23</td></tr>
+      <tr data-svc="depression screening"><td>Depression Screening</td><td>Every 12 months</td><td>G0444</td><td>Z13.31</td></tr>
+      <tr data-svc="diabetes screening"><td>Diabetes Screening</td><td>1-2/year</td><td>82947, 82950, 82951</td><td>Z13.1</td></tr>
+      <tr data-svc="diabetes self-management training"><td>Diabetes Self-Management Training</td><td>10 hrs initial; 2 hrs annually</td><td>G0108,G0109</td><td>E10.-, E11.-</td></tr>
+      <tr data-svc="digital rectal exam"><td>Digital Rectal Exam</td><td>Every 12 months</td><td>G0102</td><td>Z12.5</td></tr>
+      <tr data-svc="fit/fobt"><td>FIT/FOBT</td><td>Every 12 months</td><td>G0328</td><td>Z12.11</td></tr>
+      <tr data-svc="flexible sigmoidoscopy"><td>Flexible Sigmoidoscopy</td><td>Every 48 months</td><td>Various</td><td>Z12.11</td></tr>
+      <tr data-svc="glaucoma screening"><td>Glaucoma Screening</td><td>Every 12 months</td><td>G0117,G0118</td><td>Z13.5</td></tr>
+      <tr data-svc="hepatitis b screening"><td>Hepatitis B Screening</td><td>Every 12 months high risk</td><td>G0499</td><td>Z11.59</td></tr>
+      <tr data-svc="hepatitis b vaccine"><td>Hepatitis B Vaccine</td><td>Per CDC schedule</td><td>Various</td><td>Z23</td></tr>
+      <tr data-svc="hepatitis c screening"><td>Hepatitis C Screening</td><td>Once/annual high risk</td><td>G0472</td><td>Z11.59</td></tr>
+      <tr data-svc="hiv screening"><td>HIV Screening</td><td>Every 12 months</td><td>G0432-G0435</td><td>Z11.4</td></tr>
+      <tr data-svc="hpv testing"><td>HPV Testing</td><td>Every 5 years</td><td>G0476</td><td>Z11.51</td></tr>
+      <tr data-svc="influenza vaccine"><td>Influenza Vaccine</td><td>Annually</td><td>Various</td><td>Z23</td></tr>
+      <tr data-svc="low dose ct lung screening"><td>Low Dose CT Lung Screening</td><td>Every 12 months</td><td>Various</td><td>Z87.891</td></tr>
+      <tr data-svc="lung cancer screening counseling"><td>Lung Cancer Screening Counseling</td><td>Every 12 months</td><td>G0296</td><td>Z87.891</td></tr>
+      <tr data-svc="medical nutrition therapy"><td>Medical Nutrition Therapy</td><td>3 hrs first year; 2 hrs annually</td><td>97802-97804,G0270,G0271</td><td>E11.-, N18.-</td></tr>
+      <tr data-svc="obesity counseling"><td>Obesity Counseling</td><td>Per Medicare schedule</td><td>G0447</td><td>E66.9, Z68.-</td></tr>
+      <tr data-svc="pelvic &amp; clinical breast exam"><td>Pelvic &amp; Clinical Breast Exam</td><td>Every 24 months</td><td>G0101</td><td>Z12.4</td></tr>
+      <tr data-svc="pneumococcal vaccine"><td>Pneumococcal Vaccine</td><td>Per CDC schedule</td><td>Various</td><td>Z23</td></tr>
+      <tr data-svc="psa screening"><td>PSA Screening</td><td>Every 12 months</td><td>G0103</td><td>Z12.5</td></tr>
+      <tr data-svc="screening colonoscopy (average risk)"><td>Screening Colonoscopy (Average Risk)</td><td>Every 10 years</td><td>Various</td><td>Z12.11</td></tr>
+      <tr data-svc="screening colonoscopy (high risk)"><td>Screening Colonoscopy (High Risk)</td><td>Every 24 months</td><td>Various</td><td>Z12.11, Z80.0</td></tr>
+      <tr data-svc="screening mammography"><td>Screening Mammography</td><td>Every 12 months</td><td>77067</td><td>Z12.31</td></tr>
+      <tr data-svc="sti counseling"><td>STI Counseling</td><td>Up to 2 sessions annually</td><td>G0445</td><td>Z11.3</td></tr>
+      <tr data-svc="sti screening"><td>STI Screening</td><td>Every 12 months</td><td>Various</td><td>Z11.3</td></tr>
+      <tr data-svc="stool dna (cologuard)"><td>Stool DNA (Cologuard)</td><td>Every 3 years</td><td>81528</td><td>Z12.11</td></tr>
+      <tr data-svc="tobacco cessation counseling"><td>Tobacco Cessation Counseling</td><td>Up to 8 sessions/12 months</td><td>G0436, G0437</td><td>F17.2-, Z72.0</td></tr>
+        </tbody>
+      </table>
+      <div class="noresults" id="noresults">No services match that search.</div>
+    </div>
+  </div>
+
+  <div class="note">
+    <p class="lbl"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>Important Medicare note</p>
+    <p>For several services (especially lung cancer screening, glaucoma screening, AAA screening, hepatitis screening, and obesity counseling), coverage depends on meeting specific risk-factor requirements in addition to the diagnosis code. AWVs (G0438/G0439) themselves are generally not diagnosis-driven and are commonly billed with Z00.00 or Z00.01 for tracking purposes.</p>
+  </div>
+
+  <div class="foot">
+    <p>Coverage rules, frequencies, and codes change. Use this as a quick reference and verify current details against CMS or the payer before billing. Coding and billing are handled by the provider and billing team.</p>
+    <p>Developed by <b>Jo Blaise, RN-DNP</b> &middot; Clinic Manager</p>
+  </div>
+
+</div>
+<script>
+  function filterTable(){
+    var term = document.getElementById('q').value.trim().toLowerCase();
+    var rows = document.querySelectorAll('#tbl tbody tr');
+    var shown = 0;
+    rows.forEach(function(tr){
+      var text = tr.textContent.toLowerCase();
+      var match = term === '' || text.indexOf(term) !== -1;
+      tr.classList.toggle('hidden', !match);
+      if(match) shown++;
+    });
+    document.getElementById('noresults').style.display = shown ? 'none' : 'block';
+    document.getElementById('count').textContent = shown + ' of ' + rows.length + ' services';
+  }
+  filterTable();
+</script>
+</body>
+</html>
