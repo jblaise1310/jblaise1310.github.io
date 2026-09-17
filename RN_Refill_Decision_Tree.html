@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>RN Refill Decision Tree</title>
+<style>
+  :root{
+    --ink:#1a2436;
+    --navy:#1F3864;
+    --navy-deep:#132340;
+    --paper:#f5f6f8;
+    --card:#ffffff;
+    --line:#dde2ea;
+    --teal:#1d7a70;
+    --teal-bg:#e6f3f1;
+    --amber:#9a6b00;
+    --amber-bg:#fbf1dc;
+    --red:#a5271e;
+    --red-bg:#fbeae8;
+    --mono: 'IBM Plex Mono', 'SFMono-Regular', Consolas, monospace;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Source Serif 4','Georgia',serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  .ui{
+    font-family:'Inter','Segoe UI',system-ui,sans-serif;
+  }
+  .wrap{
+    max-width:760px;
+    margin:0 auto;
+    padding:28px 20px 80px;
+  }
+  header.top{
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    margin-bottom:22px;
+    border-bottom:2px solid var(--navy);
+    padding-bottom:14px;
+  }
+  header.top h1{
+    font-size:22px;
+    margin:0;
+    color:var(--navy-deep);
+    font-weight:700;
+    letter-spacing:-0.01em;
+  }
+  header.top span{
+    font-family:var(--mono);
+    font-size:11px;
+    color:#6b7686;
+    text-transform:uppercase;
+    letter-spacing:.08em;
+  }
+
+  /* trail */
+  .trail{
+    display:flex;
+    flex-direction:column;
+    gap:0;
+    margin-bottom:22px;
+  }
+  .trail-item{
+    display:flex;
+    gap:10px;
+    font-family:var(--mono);
+    font-size:12.5px;
+    color:#57657a;
+    padding:5px 0;
+    position:relative;
+  }
+  .trail-item:not(:last-child)::before{
+    content:"";
+    position:absolute;
+    left:5px;
+    top:20px;
+    bottom:-5px;
+    width:1px;
+    background:var(--line);
+  }
+  .trail-dot{
+    min-width:11px;height:11px;border-radius:50%;
+    background:var(--teal);
+    margin-top:2px;
+    flex-shrink:0;
+  }
+  .trail-q{color:#8891a0;}
+  .trail-a{color:var(--navy-deep); font-weight:600;}
+
+  /* card */
+  .card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:28px 30px 26px;
+    box-shadow:0 1px 2px rgba(20,30,50,.04);
+  }
+  .step-tag{
+    font-family:var(--mono);
+    font-size:11px;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    color:var(--teal);
+    margin-bottom:10px;
+    display:block;
+  }
+  .question{
+    font-size:22px;
+    line-height:1.35;
+    color:var(--navy-deep);
+    margin:0 0 8px;
+    font-weight:600;
+  }
+  .subtext{
+    font-family:'Inter',sans-serif;
+    font-size:14px;
+    color:#5a6577;
+    margin:0 0 22px;
+    line-height:1.5;
+  }
+  .options{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+  }
+  .opt-row{display:flex; gap:10px; flex-wrap:wrap;}
+  button.opt{
+    font-family:'Inter',sans-serif;
+    font-size:15px;
+    font-weight:600;
+    padding:14px 18px;
+    border-radius:8px;
+    border:1.5px solid var(--line);
+    background:#fbfcfd;
+    color:var(--navy-deep);
+    cursor:pointer;
+    text-align:left;
+    flex:1;
+    min-width:150px;
+    transition:border-color .12s, background .12s;
+  }
+  button.opt:hover{border-color:var(--navy); background:#fff;}
+  button.opt:active{transform:translateY(1px);}
+  button.opt.stopish{border-color:#e3b3ad;}
+  button.opt.stopish:hover{border-color:var(--red); background:#fff9f8;}
+  button.opt.goish:hover{border-color:var(--teal); background:#f7fdfc;}
+
+  .checklist{
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+    margin:6px 0 22px;
+  }
+  .check-row{
+    display:flex; align-items:flex-start; gap:10px;
+    font-family:'Inter',sans-serif;
+    font-size:14.5px;
+    color:var(--ink);
+    padding:12px 14px;
+    border:1.5px solid var(--line);
+    border-radius:8px;
+    background:#fbfcfd;
+  }
+  .check-row input{margin-top:3px; width:16px;height:16px; flex-shrink:0;}
+
+  .field-row{margin-bottom:16px;}
+  .field-row label{
+    display:block; font-family:'Inter',sans-serif; font-size:13px;
+    color:#5a6577; margin-bottom:6px; font-weight:600;
+  }
+  .field-row input[type=text], .field-row input[type=date]{
+    font-family:'Inter',sans-serif;
+    font-size:15px;
+    padding:10px 12px;
+    border:1.5px solid var(--line);
+    border-radius:7px;
+    width:100%;
+    color:var(--ink);
+  }
+
+  .btn-primary{
+    font-family:'Inter',sans-serif;
+    font-weight:700;
+    font-size:15px;
+    background:var(--navy-deep);
+    color:#fff;
+    border:none;
+    border-radius:8px;
+    padding:13px 22px;
+    cursor:pointer;
+    margin-top:4px;
+  }
+  .btn-primary:hover{background:var(--navy);}
+
+  /* result cards */
+  .result{
+    border-radius:10px;
+    padding:26px 28px;
+  }
+  .result.stop{background:var(--red-bg); border:1.5px solid #e3b3ad;}
+  .result.go{background:var(--teal-bg); border:1.5px solid #a9d8d1;}
+  .result.caution{background:var(--amber-bg); border:1.5px solid #e8cf97;}
+  .result-label{
+    font-family:var(--mono);
+    font-size:11px;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    font-weight:700;
+    margin-bottom:10px;
+    display:inline-block;
+    padding:3px 9px;
+    border-radius:20px;
+  }
+  .result.stop .result-label{background:var(--red); color:#fff;}
+  .result.go .result-label{background:var(--teal); color:#fff;}
+  .result.caution .result-label{background:var(--amber); color:#fff;}
+  .result h2{
+    font-size:21px;
+    margin:0 0 10px;
+    color:var(--navy-deep);
+  }
+  .result p{
+    font-family:'Inter',sans-serif;
+    font-size:15px;
+    line-height:1.55;
+    color:#374254;
+    margin:0 0 10px;
+  }
+
+  .doc-box{
+    margin-top:20px;
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:8px;
+    padding:16px 18px;
+  }
+  .doc-box h3{
+    font-family:'Inter',sans-serif;
+    font-size:12px;
+    text-transform:uppercase;
+    letter-spacing:.08em;
+    color:#5a6577;
+    margin:0 0 10px;
+  }
+  .doc-box ul{margin:0; padding-left:18px; font-family:'Inter',sans-serif; font-size:14px; color:var(--ink); line-height:1.9;}
+
+  .msg-box{
+    border-color:#c9d6e8;
+    background:#f4f7fb;
+  }
+  .msg-box h3{color:var(--navy-deep);}
+  .msg-plain{
+    position:absolute;
+    left:-9999px;
+    opacity:0;
+    height:1px;
+    width:1px;
+  }
+  .copy-btn{
+    margin-top:8px;
+    background:var(--navy-deep);
+    color:#fff;
+    border-color:var(--navy-deep);
+  }
+  .copy-btn:hover{background:var(--navy); color:#fff;}
+  .copy-btn.copied{background:var(--teal); border-color:var(--teal);}
+
+  .footer-actions{
+    display:flex; gap:10px; margin-top:22px;
+  }
+  .btn-ghost{
+    font-family:'Inter',sans-serif;
+    font-size:13.5px;
+    font-weight:600;
+    background:transparent;
+    border:1.5px solid var(--line);
+    color:#5a6577;
+    padding:9px 16px;
+    border-radius:7px;
+    cursor:pointer;
+  }
+  .btn-ghost:hover{border-color:var(--navy); color:var(--navy-deep);}
+
+  .note-inline{
+    font-family:'Inter',sans-serif;
+    font-size:12.5px;
+    color:#8891a0;
+    margin-top:18px;
+    line-height:1.5;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <h1>RN Refill Decision Tree</h1>
+    <span class="ui">Protocol Tool</span>
+  </header>
+
+  <div id="trail" class="trail"></div>
+  <div id="stage"></div>
+
+  <p class="note-inline">Decision aid based on "RN Refill of Prescriptions by Protocol." Doesn't replace clinical judgment or Team-specific protocols — check with the Clinic Nurse Manager on edge cases.</p>
+</div>
+
+<script>
+const state = {
+  path: [],       // {q, a}
+  data: {},       // collected fields
+  ctx: null       // scratch context for multi-step branches (e.g. 1224 vs over24)
+};
+
+function renderTrail(){
+  const el = document.getElementById('trail');
+  el.innerHTML = state.path.map(p => `
+    <div class="trail-item">
+      <div class="trail-dot"></div>
+      <div><span class="trail-q">${p.q}</span> — <span class="trail-a">${p.a}</span></div>
+    </div>
+  `).join('');
+}
+
+function go(stepId, answer){
+  if(answer) state.path.push(answer);
+  renderTrail();
+  render(stepId);
+  window.scrollTo({top: document.body.scrollHeight, behavior:'smooth'});
+}
+
+function restart(){
+  state.path = [];
+  state.data = {};
+  state.ctx = null;
+  renderTrail();
+  render('start');
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+function stageHTML(tag, question, subtext, bodyHTML){
+  return `
+    <div class="card">
+      <span class="step-tag">${tag}</span>
+      <h2 class="question">${question}</h2>
+      ${subtext ? `<p class="subtext">${subtext}</p>` : ''}
+      ${bodyHTML}
+    </div>
+    <div class="footer-actions">
+      <button class="btn-ghost" onclick="restart()">↺ Start over</button>
+    </div>
+  `;
+}
+
+let msgCounter = 0;
+function resultHTML(kind, label, title, bodyText, docItems, message){
+  msgCounter++;
+  const msgId = 'msg-' + msgCounter;
+  const docId = 'doc-' + msgCounter;
+  const messageBlock = message ? `
+      <div class="doc-box msg-box">
+        <h3>${message.heading}</h3>
+        <ul>${message.lines.map(i=>`<li>${i}</li>`).join('')}</ul>
+        <textarea class="msg-plain" id="${msgId}" aria-hidden="true">${message.lines.map(i=>'- ' + i).join('\n')}</textarea>
+        <button class="btn-ghost copy-btn" data-copy-target="${msgId}">Copy message</button>
+      </div>
+  ` : '';
+  return `
+    <div class="result ${kind}">
+      <span class="result-label">${label}</span>
+      <h2>${title}</h2>
+      <p>${bodyText}</p>
+      <div class="doc-box">
+        <h3>Document</h3>
+        <ul>${docItems.map(i=>`<li>${i}</li>`).join('')}</ul>
+        <textarea class="msg-plain" id="${docId}" aria-hidden="true">${docItems.map(i=>'- ' + i).join('\n')}</textarea>
+        <button class="btn-ghost copy-btn" data-copy-target="${docId}">Copy</button>
+      </div>
+      ${messageBlock}
+    </div>
+    <div class="footer-actions">
+      <button class="btn-ghost" data-restart="1" onclick="restart()">↺ Start new request</button>
+    </div>
+  `;
+}
+
+const PROVIDER_MSG = {
+  heading: 'Message to provider pool',
+  lines: [
+    'Patient requested a medication refill',
+    'REASON_PLACEHOLDER',
+    'RN unable to authorize under protocol — provider review needed'
+  ]
+};
+
+function providerMsg(reason){
+  return { heading: PROVIDER_MSG.heading, lines: [PROVIDER_MSG.lines[0], reason, PROVIDER_MSG.lines[2]] };
+}
+
+const STOPS = {
+  notOnList: {
+    title: 'Not on medication list',
+    body: 'The medication is not currently in "Prescribed" status on the patient\'s established medication list, so it cannot be refilled under RN protocol.',
+    doc: ['Reason: not on prescribed med list','Request routed to prescribing provider'],
+    message: providerMsg('Reason: not on active med list')
+  },
+  changeRequested: {
+    title: 'Change requested',
+    body: 'A change to dose, route, or schedule/interval is outside RN protocol authority.',
+    doc: ['Reason: dose/route/schedule change requested','Request routed to prescribing provider'],
+    message: providerMsg('Reason: dose/route/schedule change requested')
+  },
+  noVisitSinceRN: {
+    title: 'No visit since RN refill',
+    body: 'There has been no provider visit since the RN\'s last refill. No further RN refill can be authorized.',
+    doc: ['Reason: no provider visit since last RN refill','Request routed to prescribing provider'],
+    message: providerMsg('Reason: last refill was RN-authorized, no visit since')
+  },
+  noteNotContinue: {
+    title: 'Note doesn\'t support continuing',
+    body: 'The provider\'s note does not indicate intent to continue this medication.',
+    doc: ['Reason: note doesn\'t indicate intent to continue','Request routed to prescribing provider'],
+    message: providerMsg('Reason: prior note doesn\'t indicate intent to continue')
+  },
+  over24: {
+    title: 'Over 24 months since last visit',
+    body: 'No refill may be authorized. Per Team protocol, either send the request to the provider or contact the patient to schedule a visit.',
+    doc: ['Reason: last qualifying visit over 24 months ago','Request routed to provider, or patient contacted to schedule visit'],
+    message: {
+      heading: 'Message to scheduler',
+      lines: [
+        'Patient requested a medication refill',
+        'Last qualifying office visit was over 24 months ago — no refill authorized',
+        'Please schedule as soon as possible'
+      ]
+    }
+  }
+};
+
+const steps = {
+  start(){
+    document.getElementById('stage').innerHTML = stageHTML(
+      'Step 1 · Exclusion check',
+      'Is the medication in a restricted class?',
+      'Check none, one, or more. Any match means the RN cannot refill this medication.',
+      `<div class="checklist">
+        ${['Narcotics','Amphetamines','Benzodiazepines','Antibiotics','Oral/injectable Steroids','Antipsychotics','Anticoagulants/Antiplatelets','Other controlled substance (e.g. sedatives, gabapentin, testosterone)']
+          .map((c,i)=>`<label class="check-row"><input type="checkbox" data-excl id="excl${i}"> ${c}</label>`).join('')}
+      </div>
+      <button class="btn-primary" data-action="checkExclusions">Continue</button>`
+    );
+  },
+
+  medlist(){
+    document.getElementById('stage').innerHTML = stageHTML(
+      'Step 2 · Med list status',
+      'Is the medication in "Prescribed" status on the patient\'s med list?',
+      '',
+      `<div class="opt-row">
+        <button class="opt goish" data-goto="changes" data-q="Prescribed status?" data-a="Yes">Yes</button>
+        <button class="opt stopish" data-stop="notOnList">No</button>
+      </div>`
+    );
+  },
+
+  changes(){
+    document.getElementById('stage').innerHTML = stageHTML(
+      'Step 3 · Requested changes',
+      'Is a change to dose, route, or schedule/interval being requested?',
+      '',
+      `<div class="opt-row">
+        <button class="opt stopish" data-stop="changeRequested">Yes</button>
+        <button class="opt goish" data-goto="diabetic" data-q="Change requested?" data-a="No">No</button>
+      </div>`
+    );
+  },
+
+  diabetic(){
+    document.getElementById('stage').innerHTML = stageHTML(
+      'Step 4 · Medication type',
+      'Is this a diabetic medication?',
+      '',
+      `<div class="opt-row">
+        <button class="opt goish" data-goto="a1c" data-q="Diabetic medication?" data-a="Yes">Yes</button>
+        <button class="opt goish" data-goto="lastRefillBy" data-q="Diabetic medication?" data-a="No">No</button>
+      </div>`
+    );
+  },
+
+  a1c(){
+    document.getElementById('stage').innerHTML = stageHTML(
+      'Step 5A · Diabetic path',
+      "What is the patient's most recent A1C?",
+      'Clinic goal: A1C < 7 is controlled. A1C ≥ 7 is not at goal.',
+      `<div class="opt-row">
+        <button class="opt goish" data-goto="diabeticA1cDate" data-ctx="high" data-q="A1C" data-a="≥ 7 (not at goal)">A1C ≥ 7 (not at goal)</button>
+        <button class="opt goish" data-goto="diabeticA1cDate" data-ctx="low" data-q="A1C" data-a="&lt; 7 (controlled)">A1C &lt; 7 (controlled)</button>
+      </div>`
+    );
+  },
+
+  diabeticA1cDate(){
+    const months = state.ctx === 'high' ? 3 : 6;
+    document.getElementById('stage').innerHTML = stageHTML(
+      'Step 5A · Last A1C',
+      "When was the patient's most recent A1C drawn?",
+      `${state.ctx === 'high' ? 'A1C ≥ 7 (not at goal)' : 'A1C < 7 (controlled)'} calls for a refill of up to ${months} months and an A1C recheck around the same time — enter the date it was drawn.`,
+      `<div class="field-row">
+        <label for="diabeticDate">Date of most recent A1C</label>
+        <input type="date" id="diabeticDate">
+        <div id="diabeticDateErr" style="color:#a5271e; font-family:'Inter',sans-serif; font-size:13px; margin-top:6px;"></div>
+      </div>
+      <button class="btn-primary" data-action="diabeticA1cDateSubmit">Continue</button>`
+    );
+  },
+
+  diabeticFutureVisitCheck(){
+    const d = state.data.diabetic;
+    document.getElementById('stage').innerHTML = stageHTML(
+      'Step 5A · Confirm scheduling status',
+      'Does the patient already have a future appointment on the books?',
+      `An A1C recheck is due around ${d.dueDisplay}. If a visit is already scheduled, staff can add A1C due to the reason for visit instead of booking a new one.`,
+      `<div class="opt-row">
+        <button class="opt goish" data-goto="diabeticFutureVisitDate">Yes — has an upcoming appointment</button>
+        <button class="opt stopish" data-action="diabeticFutureVisitNo">No — nothing scheduled</button>
+      </div>`
+    );
+  },
+
+  diabeticFutureVisitDate(){
+    document.getElementById('stage').innerHTML = stageHTML(
+      'Step 5A · Upcoming appointment date',
+      "When is the patient's upcoming appointment?",
+      '',
+      `<div class="field-row">
+        <label for="diabeticFutureDate">Scheduled appointment date</label>
+        <input type="date" id="diabeticFutureDate">
+        <div id="diabeticFutureDateErr" style="color:#a5271e; font-family:'Inter',sans-serif; font-size:13px; margin-top:6px;"></div>
+      </div>
+      <button class="btn-primary" data-action="diabeticFutureVisitDateSubmit">Continue</button>`
+    );
+  },
+
+  lastRefillBy(){
+    document.getElementById('stage').innerHTML = stageHTML(
+      'Step 5B · Refill history',
+      "Who authorized the patient's last refill of this medication?",
+      '',
+      `<div class="opt-row">
+        <button class="opt goish" data-goto="visitRecency" data-q="Last refill by" data-a="Provider">Provider</button>
+        <button class="opt goish" data-goto="rnVisitSince" data-q="Last refill by" data-a="RN">RN</button>
+      </div>`
+    );
+  },
+
+  rnVisitSince(){
+    document.getElementById('stage').innerHTML = stageHTML(
+      'Step 5B · RN follow-up check',
+      'Has the patient had a provider visit since that RN-authorized refill?',
+      '',
+      `<div class="opt-row">
+        <button class="opt goish" data-goto="rnNoteContinue" data-q="Visit since RN refill?" data-a="Yes">Yes</button>
+        <button class="opt stopish" data-stop="noVisitSinceRN">No</button>
+      </div>`
+    );
+  },
+
+  rnNoteContinue(){
+    document.getElementById('stage').innerHTML = stageHTML(
+      'Step 5B · Provider note check',
+      "Does the provider's note from that visit indicate intent to continue this medication?",
+      '',
+      `<div class="opt-row">
+        <button class="opt goish" data-goto="visitRecency" data-q="Note indicates continue?" data-a="Yes">Yes</button>
+        <button class="opt stopish" data-stop="noteNotContinue">No</button>
+      </div>`
+    );
+  },
+
+  visitRecency(){
+    document.getElementById('stage').innerHTML = stageHTML(
+      'Step 5C · Visit recency',
+      "When was the patient's most recent qualifying visit (annual physical/wellness exam or chronic disease management visit) for this condition?",
+      '',
+      `<div class="opt-row">
+        <button class="opt goish" data-goto="verify12" data-q="Last qualifying visit" data-a="Within 12 months">Within 12 months</button>
+        <button class="opt goish" data-goto="futureVisitCheck" data-ctx="1224" data-q="Last qualifying visit" data-a="12–24 months ago">12–24 months ago</button>
+        <button class="opt stopish" data-goto="futureVisitCheck" data-ctx="over24" data-q="Last qualifying visit" data-a="More than 24 months ago">More than 24 months ago</button>
+      </div>`
+    );
+  },
+
+  verify12(){
+    document.getElementById('stage').innerHTML = stageHTML(
+      'Step 5C · Chart verification',
+      'Confirm both, required before authorizing more than 30 days:',
+      '',
+      `<div class="checklist">
+        <label class="check-row"><input type="checkbox" id="v1"> Patient was seen for this condition/issue, or had a qualifying annual exam, within the last 12 months</label>
+        <label class="check-row"><input type="checkbox" id="v2"> The medication plan documented in the note supports continuing this medication</label>
+      </div>
+      <button class="btn-primary" data-action="checkVerify">Continue</button>`
+    );
+  },
+
+  nextVisit(){
+    document.getElementById('stage').innerHTML = stageHTML(
+      'Step 5D · Bridge to next visit',
+      'Does the patient have an upcoming scheduled appointment?',
+      'This determines how much refill to give — enough to bridge to that visit, without going further than needed.',
+      `<div class="field-row">
+        <label for="nextVisitDate">Scheduled appointment date</label>
+        <input type="date" id="nextVisitDate">
+        <div id="dateErr" style="color:#a5271e; font-family:'Inter',sans-serif; font-size:13px; margin-top:6px;"></div>
+      </div>
+      <button class="btn-primary" data-action="calcDuration">Calculate refill duration</button>
+      <div style="margin-top:16px;">
+        <button class="btn-ghost" data-action="noUpcomingVisit">No upcoming appointment scheduled</button>
+      </div>`
+    );
+  },
+
+  futureVisitCheck(){
+    document.getElementById('stage').innerHTML = stageHTML(
+      'Step 5C · Confirm scheduling status',
+      'Does the patient already have a future appointment on the books?',
+      "Check before recommending scheduler contact — no need to ask the scheduler to book a visit that's already set.",
+      `<div class="opt-row">
+        <button class="opt goish" data-goto="futureVisitDate">Yes — has an upcoming appointment</button>
+        <button class="opt stopish" data-action="futureVisitNo">No — nothing scheduled</button>
+      </div>`
+    );
+  },
+
+  futureVisitDate(){
+    document.getElementById('stage').innerHTML = stageHTML(
+      'Step 5C · Upcoming appointment date',
+      "When is the patient's upcoming appointment?",
+      '',
+      `<div class="field-row">
+        <label for="futureDate">Scheduled appointment date</label>
+        <input type="date" id="futureDate">
+        <div id="futureDateErr" style="color:#a5271e; font-family:'Inter',sans-serif; font-size:13px; margin-top:6px;"></div>
+      </div>
+      <button class="btn-primary" data-action="futureVisitDateSubmit">Continue</button>`
+    );
+  },
+};
+
+function checkExclusions(){
+  const boxes = document.querySelectorAll('[data-excl]');
+  const anyChecked = Array.from(boxes).some(b=>b.checked);
+  if(anyChecked){
+    const checkedLabels = Array.from(boxes).filter(b=>b.checked).map(b=>b.closest('label').textContent.trim());
+    state.path.push({q:'Excluded class?', a:'Yes — ' + checkedLabels.join(', ')});
+    renderTrail();
+    document.getElementById('stage').innerHTML = resultHTML('stop','Not authorized','Excluded drug class',
+      'This medication falls into a class the RN is not authorized to refill under protocol.',
+      ['Excluded class identified: ' + checkedLabels.join(', '), "Request routed to prescribing provider's message center pool"]);
+    window.scrollTo({top: document.body.scrollHeight, behavior:'smooth'});
+  } else {
+    go('medlist', {q:'Excluded class?', a:'No'});
+  }
+}
+
+function checkVerify(){
+  const v1 = document.getElementById('v1').checked;
+  const v2 = document.getElementById('v2').checked;
+  if(v1 && v2){
+    go('nextVisit', {q:'Chart verified?', a:'Yes — both confirmed'});
+  } else {
+    state.path.push({q:'Chart verified?', a:'No — cannot confirm'});
+    renderTrail();
+    document.getElementById('stage').innerHTML = resultHTML('caution','Verify before proceeding','Cannot confirm chart support',
+      "Both items must be confirmed in the chart before authorizing more than 30 days. If they can't be confirmed, don't authorize an extended refill — consider a short bridge supply only per Team protocol, or route to the provider.",
+      ['Note the missing verification item(s)','Consider routing to provider if unresolved']);
+    window.scrollTo({top: document.body.scrollHeight, behavior:'smooth'});
+  }
+}
+
+function daysBetweenTodayAnd(dateStr){
+  const target = new Date(dateStr + 'T00:00:00');
+  const today = new Date();
+  today.setHours(0,0,0,0);
+  return Math.round((target - today) / 86400000);
+}
+
+function suggestDuration(days){
+  if (days <= 30) return { months: 1, label: '30 days (1 month)' };
+  const months = Math.min(12, Math.max(1, Math.ceil(days / 30)));
+  return { months, label: months === 1 ? '30 days (1 month)' : months + ' months' };
+}
+
+function calcDuration(){
+  const input = document.getElementById('nextVisitDate');
+  const errEl = document.getElementById('dateErr');
+  const val = input.value;
+  if (!val) {
+    errEl.textContent = 'Enter the scheduled appointment date.';
+    return;
+  }
+  const days = daysBetweenTodayAnd(val);
+  if (days < 0) {
+    errEl.textContent = 'That date is in the past — double check the scheduled appointment date.';
+    return;
+  }
+  errEl.textContent = '';
+  const suggestion = suggestDuration(days);
+  const dateDisplay = new Date(val + 'T00:00:00').toLocaleDateString('en-US', { month:'long', day:'numeric', year:'numeric' });
+  state.path.push({q:'Next scheduled visit', a: dateDisplay + ' (~' + days + ' days out)'});
+  renderTrail();
+  document.getElementById('stage').innerHTML = resultHTML('go','Authorized', 'Refill ' + suggestion.label,
+    'Next scheduled visit is ' + dateDisplay + ' (~' + days + ' days from today). Authorizing the least amount needed to bridge to that visit: ' + suggestion.label + '. Confirm the pharmacy fill quantity matches this duration at the prescribed frequency.',
+    ['Note reviewed, medication plan verified','Next scheduled visit date: ' + dateDisplay, 'Refill duration authorized: ' + suggestion.label]);
+  window.scrollTo({top: document.body.scrollHeight, behavior:'smooth'});
+}
+
+function noUpcomingVisit(){
+  state.path.push({q:'Next scheduled visit', a:'None on the books'});
+  renderTrail();
+  document.getElementById('stage').innerHTML = resultHTML('caution','Authorized — max range','Refill up to 1 year',
+    'No upcoming appointment is scheduled, so there\'s no visit date to bridge to. The policy\'s outer limit for this path is 1 year — but since nothing is on the books, strongly encourage the patient to schedule their next annual/chronic-disease visit now rather than authorizing the full year by default.',
+    ['Note reviewed, medication plan verified','No next visit currently scheduled','Refill duration authorized (recommend confirming with patient before defaulting to 1 year)'],
+    {
+      heading: 'Message to scheduler (optional)',
+      lines: [
+        'Patient had a medication refill authorized',
+        'No upcoming appointment currently on file',
+        'Please schedule the patient\'s next annual/chronic-disease visit'
+      ]
+    });
+  window.scrollTo({top: document.body.scrollHeight, behavior:'smooth'});
+}
+
+function addMonths(dateStr, months){
+  const d = new Date(dateStr + 'T00:00:00');
+  const targetMonth = d.getMonth() + months;
+  const result = new Date(d.getFullYear(), targetMonth, d.getDate());
+  // handle month-end overflow (e.g. Jan 31 + 1 month shouldn't become Mar 3)
+  if (result.getDate() !== d.getDate()) {
+    result.setDate(0); // roll back to last day of the intended month
+  }
+  return result;
+}
+
+function diabeticA1cDateSubmit(){
+  const input = document.getElementById('diabeticDate');
+  const errEl = document.getElementById('diabeticDateErr');
+  const val = input.value;
+  if (!val) {
+    errEl.textContent = 'Enter the date the A1C was drawn.';
+    return;
+  }
+  const a1cDate = new Date(val + 'T00:00:00');
+  const today = new Date(); today.setHours(0,0,0,0);
+  if (a1cDate > today) {
+    errEl.textContent = "That date is in the future — double check the A1C date.";
+    return;
+  }
+  errEl.textContent = '';
+  const months = state.ctx === 'high' ? 3 : 6;
+  const a1cDisplay = a1cDate.toLocaleDateString('en-US', { month:'long', day:'numeric', year:'numeric' });
+  const dueDate = addMonths(val, months);
+  const dueDisplay = dueDate.toLocaleDateString('en-US', { month:'long', day:'numeric', year:'numeric' });
+  const a1cLabel = state.ctx === 'high' ? '≥ 7 (not at goal)' : '< 7 (controlled)';
+  state.data.diabetic = { months, a1cDisplay, dueDate, dueDisplay, a1cLabel };
+  state.path.push({q:'Last A1C drawn', a: a1cDisplay});
+  renderTrail();
+  render('diabeticFutureVisitCheck');
+  window.scrollTo({top: document.body.scrollHeight, behavior:'smooth'});
+}
+
+function diabeticFutureVisitNo(){
+  const d = state.data.diabetic;
+  const today = new Date(); today.setHours(0,0,0,0);
+  const isOverdue = d.dueDate <= today;
+  state.path.push({q:'Already has upcoming visit?', a:'No'});
+  renderTrail();
+  document.getElementById('stage').innerHTML = resultHTML('caution','Authorized','Refill up to ' + d.months + ' months',
+    'A1C ' + d.a1cLabel + ': maximum refill is ' + d.months + ' months from the last A1C (' + d.a1cDisplay + '). An A1C recheck is ' + (isOverdue ? 'due now' : 'due around ' + d.dueDisplay) + ', and nothing is currently scheduled — route to the scheduler.',
+    ['Last A1C: ' + d.a1cDisplay + ' (' + d.a1cLabel + ')', 'Refill duration authorized (≤ ' + d.months + ' months)', 'A1C recheck due: ' + (isOverdue ? 'now' : d.dueDisplay), 'No upcoming visit currently scheduled'],
+    {
+      heading: 'Message to scheduler',
+      lines: [
+        'Patient had a diabetic medication refill authorized',
+        'A1C recheck ' + (isOverdue ? 'is due now' : 'is due by ' + d.dueDisplay),
+        isOverdue ? 'Please schedule as soon as possible' : 'Please schedule an appointment (RN or provider) by ' + d.dueDisplay
+      ]
+    });
+  window.scrollTo({top: document.body.scrollHeight, behavior:'smooth'});
+}
+
+function diabeticFutureVisitDateSubmit(){
+  const input = document.getElementById('diabeticFutureDate');
+  const errEl = document.getElementById('diabeticFutureDateErr');
+  const val = input.value;
+  if (!val) {
+    errEl.textContent = 'Enter the scheduled appointment date.';
+    return;
+  }
+  errEl.textContent = '';
+  const d = state.data.diabetic;
+  const apptDisplay = new Date(val + 'T00:00:00').toLocaleDateString('en-US', { month:'long', day:'numeric', year:'numeric' });
+  state.path.push({q:'Already has upcoming visit?', a:'Yes — ' + apptDisplay});
+  renderTrail();
+  document.getElementById('stage').innerHTML = resultHTML('go','Authorized','Refill up to ' + d.months + ' months',
+    'A1C ' + d.a1cLabel + ': maximum refill is ' + d.months + ' months from the last A1C (' + d.a1cDisplay + '). The patient already has an appointment on ' + apptDisplay + ' — have staff add A1C due to the reason for visit rather than scheduling a new one.',
+    ['Last A1C: ' + d.a1cDisplay + ' (' + d.a1cLabel + ')', 'Refill duration authorized (≤ ' + d.months + ' months)', 'Upcoming visit already scheduled: ' + apptDisplay + ' — A1C due added to reason for visit']);
+  window.scrollTo({top: document.body.scrollHeight, behavior:'smooth'});
+}
+
+function futureVisitNo(){
+  state.path.push({q:'Already has upcoming visit?', a:'No'});
+  renderTrail();
+  const ctx = state.ctx;
+  if (ctx === 'over24') {
+    showStop('over24');
+    return;
+  }
+  // 1224 context — original behavior, with scheduler message
+  document.getElementById('stage').innerHTML = resultHTML('caution','Authorized — limited','Refill up to 3 months',
+    'Maximum refill is 3 months. Instruct the patient to schedule an appointment for any further refills.',
+    ['Last qualifying visit date (12–24 months ago)','Refill duration authorized (≤ 3 months)','Patient instructed to schedule follow-up appointment'],
+    {
+      heading: 'Message to scheduler',
+      lines: [
+        'Patient requested a medication refill',
+        'Last qualifying office visit was more than 12 months ago (12–24 month range)',
+        'Please schedule within the next 3 months, before the current refill runs out'
+      ]
+    });
+  window.scrollTo({top: document.body.scrollHeight, behavior:'smooth'});
+}
+
+function futureVisitDateSubmit(){
+  const input = document.getElementById('futureDate');
+  const errEl = document.getElementById('futureDateErr');
+  const val = input.value;
+  if (!val) {
+    errEl.textContent = 'Enter the scheduled appointment date.';
+    return;
+  }
+  errEl.textContent = '';
+  const dateDisplay = new Date(val + 'T00:00:00').toLocaleDateString('en-US', { month:'long', day:'numeric', year:'numeric' });
+  state.path.push({q:'Already has upcoming visit?', a:'Yes — ' + dateDisplay});
+  renderTrail();
+  const ctx = state.ctx;
+  if (ctx === 'over24') {
+    document.getElementById('stage').innerHTML = resultHTML('stop','Not authorized','Over 24 months since last visit',
+      'No refill may be authorized. The patient already has an upcoming appointment scheduled, so no scheduler contact is needed — route this request to the provider ahead of that visit.',
+      ['Reason: last qualifying visit over 24 months ago','Upcoming visit already scheduled: ' + dateDisplay, 'Request routed to prescribing provider'],
+      providerMsg('Reason: last qualifying visit over 24 months ago; patient has upcoming visit on ' + dateDisplay));
+  } else {
+    // 1224 context — duration is still capped at 3 months per policy, but no scheduler contact needed
+    document.getElementById('stage').innerHTML = resultHTML('go','Authorized','Refill up to 3 months',
+      'Maximum refill is 3 months. The patient already has an appointment scheduled, so no further scheduling action is needed.',
+      ['Last qualifying visit date (12–24 months ago)','Refill duration authorized (≤ 3 months)','Upcoming visit already scheduled: ' + dateDisplay + ' — no scheduler contact needed']);
+  }
+  window.scrollTo({top: document.body.scrollHeight, behavior:'smooth'});
+}
+
+function showStop(key){
+  const s = STOPS[key];
+  state.path.push({q:'Result', a:'Not authorized — ' + s.title});
+  renderTrail();
+  document.getElementById('stage').innerHTML = resultHTML('stop','Not authorized', s.title, s.body, s.doc, s.message);
+  window.scrollTo({top: document.body.scrollHeight, behavior:'smooth'});
+}
+
+function fallbackCopy(ta, done){
+  try {
+    ta.style.left = '0px';
+    ta.style.opacity = '1';
+    ta.select();
+    document.execCommand('copy');
+    ta.style.left = '-9999px';
+    ta.style.opacity = '0';
+    done();
+  } catch (e) {
+    console.error('Copy failed', e);
+  }
+}
+
+function render(stepId){
+  steps[stepId]();
+}
+
+// Event delegation: stage content is replaced via innerHTML, so attach
+// listeners once on the persistent parent elements.
+document.getElementById('stage').addEventListener('click', (e) => {
+  const gotoBtn = e.target.closest('[data-goto]');
+  if (gotoBtn) {
+    if (gotoBtn.dataset.ctx) state.ctx = gotoBtn.dataset.ctx;
+    const answer = gotoBtn.dataset.q ? { q: gotoBtn.dataset.q, a: gotoBtn.dataset.a } : null;
+    go(gotoBtn.dataset.goto, answer);
+    return;
+  }
+  const stopBtn = e.target.closest('[data-stop]');
+  if (stopBtn) {
+    showStop(stopBtn.dataset.stop);
+    return;
+  }
+  const actionBtn = e.target.closest('[data-action]');
+  if (actionBtn) {
+    const fn = actionBtn.dataset.action;
+    if (fn === 'checkExclusions') checkExclusions();
+    if (fn === 'checkVerify') checkVerify();
+    if (fn === 'calcDuration') calcDuration();
+    if (fn === 'noUpcomingVisit') noUpcomingVisit();
+    if (fn === 'futureVisitNo') futureVisitNo();
+    if (fn === 'futureVisitDateSubmit') futureVisitDateSubmit();
+    if (fn === 'diabeticA1cDateSubmit') diabeticA1cDateSubmit();
+    if (fn === 'diabeticFutureVisitNo') diabeticFutureVisitNo();
+    if (fn === 'diabeticFutureVisitDateSubmit') diabeticFutureVisitDateSubmit();
+    return;
+  }
+  const copyBtn = e.target.closest('[data-copy-target]');
+  if (copyBtn) {
+    const ta = document.getElementById(copyBtn.dataset.copyTarget);
+    const text = ta ? ta.value : '';
+    const done = () => {
+      copyBtn.textContent = 'Copied ✓';
+      copyBtn.classList.add('copied');
+      setTimeout(() => { copyBtn.textContent = 'Copy message'; copyBtn.classList.remove('copied'); }, 1800);
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(done).catch(() => fallbackCopy(ta, done));
+    } else {
+      fallbackCopy(ta, done);
+    }
+    return;
+  }
+  const restartBtn = e.target.closest('[data-restart]');
+  if (restartBtn) { restart(); return; }
+});
+document.body.addEventListener('click', (e) => {
+  if (e.target.closest('[data-restart]')) restart();
+});
+
+render('start');
+
+</script>
+</body>
+</html>
