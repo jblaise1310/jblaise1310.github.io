@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>RHC Team Culture: October 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'DM Sans',sans-serif;background:#1a0f0a;color:#1A2744;max-width:900px;margin:0 auto;padding:20px}
+
+  /* MASTHEAD */
+  .masthead{background:linear-gradient(135deg,#1a0a00 0%,#3d1a00 50%,#1a0f2e 100%);border-radius:16px;padding:40px 36px;margin-bottom:24px;color:white;position:relative;overflow:hidden;}
+  .masthead::before{content:'🎃';font-size:120px;position:absolute;right:-10px;top:-10px;opacity:.15;transform:rotate(15deg);}
+  .masthead::after{content:'🕷️';font-size:80px;position:absolute;left:10px;bottom:-10px;opacity:.12;}
+  .pub-label{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.6);margin-bottom:8px}
+  .pub-title{font-family:'Playfair Display',serif;font-size:52px;font-weight:900;line-height:1;color:white;margin-bottom:4px}
+  .pub-title span{color:#f97316;}
+  .pub-sub{font-size:13px;color:#E8B422;font-weight:600;letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px}
+  .pub-date{font-size:13px;color:rgba(255,255,255,.55)}
+  .theme-pills{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap;}
+  .theme-pill{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.85);font-size:12px;font-weight:600;padding:5px 14px;border-radius:20px;}
+
+  /* GRID */
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px}
+
+  /* CARDS */
+  .card{background:white;border-radius:14px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,.1)}
+  .card-header{padding:14px 18px 10px;border-bottom:1px solid #EDF0F5}
+  .card-header h2{font-family:'Playfair Display',serif;font-size:18px;color:#0F2744}
+  .card-header p{font-size:12px;color:#6B7280;margin-top:2px}
+  .card-body{padding:16px 18px}
+
+  /* HALLOWEEN HERO */
+  .halloween-hero{background:linear-gradient(135deg,#1a0a00,#3d1a00,#2d0a3d);border-radius:14px;padding:28px;margin-bottom:16px;color:white;position:relative;overflow:hidden;}
+  .halloween-hero::after{content:'🕸️';font-size:60px;position:absolute;right:20px;top:10px;opacity:.2;}
+  .halloween-title{font-family:'Playfair Display',serif;font-size:28px;color:#f97316;margin-bottom:6px}
+  .halloween-sub{font-size:13px;color:rgba(255,255,255,.7);line-height:1.6}
+
+  /* STORY */
+  .story-card{background:linear-gradient(160deg,#1a0a00,#2d0a3d);border-radius:14px;padding:28px 32px;margin-bottom:24px;color:white;position:relative;overflow:hidden;}
+  .story-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#f97316,#a855f7,#f97316);}
+  .story-eyebrow{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#f97316;margin-bottom:12px}
+  .story-title{font-family:'Playfair Display',serif;font-size:26px;color:white;margin-bottom:18px;line-height:1.2}
+  .story-title em{font-style:italic;color:#f97316}
+  .story-body p{font-size:14px;color:rgba(255,255,255,.82);line-height:1.85;margin-bottom:14px}
+  .story-body p:last-child{margin-bottom:0}
+  .story-divider{text-align:center;font-size:20px;letter-spacing:8px;margin:16px 0;opacity:.5}
+
+  /* OKTOBERFEST */
+  .okto-card{background:linear-gradient(135deg,#1a3a00,#2d5a0a);border-radius:14px;padding:24px 28px;margin-bottom:16px;color:white;position:relative;overflow:hidden;}
+  .okto-card::before{content:'🍺';font-size:80px;position:absolute;right:10px;top:-5px;opacity:.15;}
+  .okto-title{font-family:'Playfair Display',serif;font-size:22px;color:#E8B422;margin-bottom:8px}
+  .okto-body{font-size:14px;color:rgba(255,255,255,.82);line-height:1.7}
+  .okto-facts{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+  .okto-fact{background:rgba(255,255,255,.08);border-radius:8px;padding:10px 12px;}
+  .okto-fact-label{font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#E8B422;margin-bottom:3px}
+  .okto-fact-val{font-size:13px;color:white;line-height:1.4}
+
+  /* PRINCESS TABLE */
+  .princess-card{background:linear-gradient(160deg,#0f1a3d,#1a0a2e);border-radius:14px;overflow:hidden;margin-bottom:24px;}
+  .princess-header{background:linear-gradient(135deg,#7c3aed,#a855f7);padding:18px 24px}
+  .princess-header h2{font-family:'Playfair Display',serif;font-size:22px;color:white;margin-bottom:2px}
+  .princess-header p{font-size:12px;color:rgba(255,255,255,.75)}
+  .princess-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(255,255,255,.07);}
+  .princess-item{background:#1a0f2e;padding:11px 14px;transition:background .15s;}
+  .princess-item:hover{background:#2d1a4a;}
+  .princess-name{font-size:13px;font-weight:600;color:white;margin-bottom:2px}
+  .princess-char{font-size:12px;color:#a78bfa}
+  .princess-emoji{font-size:16px;margin-right:4px}
+
+  /* ZODIAC */
+  .zodiac-card{background:#0F2744;border-radius:14px;padding:20px;color:white;margin-bottom:0}
+  .zodiac-title{font-family:'Playfair Display',serif;font-size:22px;color:#E8B422;margin-bottom:4px}
+  .zodiac-sub{font-size:12px;color:rgba(255,255,255,.6);margin-bottom:14px}
+  .gem-row{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.08);border-radius:8px;padding:10px 12px;margin-bottom:8px}
+  .gem-icon{font-size:20px}
+  .gem-label{font-size:11px;color:rgba(255,255,255,.55);text-transform:uppercase;letter-spacing:.06em}
+  .gem-val{font-size:14px;font-weight:600;color:white}
+
+  /* BIRTHDAYS */
+  .bday-row{display:flex;align-items:center;justify-content:space-between;padding:9px 0;border-bottom:1px solid #EDF0F5;font-size:13px}
+  .bday-row:last-child{border-bottom:none}
+  .bday-date{background:#FDF5DC;color:#854D0E;font-size:11px;font-weight:600;padding:3px 8px;border-radius:20px}
+
+  /* FAMOUS BDAYS */
+  .pop-chip{display:inline-flex;align-items:center;gap:6px;background:#EEF3FB;color:#1A3A5C;font-size:12px;font-weight:500;padding:5px 12px;border-radius:20px;margin:3px}
+
+  /* DAYS/FACTS */
+  .fact-item{display:flex;align-items:flex-start;gap:8px;padding:6px 0;font-size:13px;border-bottom:1px solid #EDF0F5}
+  .fact-item:last-child{border-bottom:none}
+  .fact-dot{width:6px;height:6px;border-radius:50%;background:#f97316;flex-shrink:0;margin-top:6px}
+
+  /* TRIVIA */
+  .trivia-box{background:#F0F4F9;border-radius:8px;padding:12px 14px;margin-top:10px;border-left:3px solid #f97316}
+  .trivia-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#f97316;margin-bottom:6px}
+  .trivia-q{font-weight:600;color:#0F2744;font-size:13px;margin-bottom:4px}
+  .trivia-a{font-size:13px;color:#1A2744}
+
+  /* FOOTER */
+  .footer{text-align:center;padding:20px;font-size:12px;color:#6b5a4a;margin-top:8px}
+
+  @media(max-width:600px){
+    .grid2{grid-template-columns:1fr}
+    .pub-title{font-size:36px}
+    .princess-grid{grid-template-columns:1fr 1fr}
+    .okto-facts{grid-template-columns:1fr}
+  }
+</style>
+</head>
+<body>
+
+<!-- MASTHEAD -->
+<div class="masthead">
+  <div class="pub-label">RHC Team Culture</div>
+  <div class="pub-title">Oct<span>ober</span></div>
+  <div class="pub-sub">2026 Monthly Edition</div>
+  <div class="pub-date">Pagosa Springs Rural Health Clinic · Brought to you by your admin team</div>
+  <div class="theme-pills">
+    <span class="theme-pill">🎃 Halloween</span>
+    <span class="theme-pill">🍺 Oktoberfest</span>
+    <span class="theme-pill">🍂 Fall Vibes</span>
+    <span class="theme-pill">👸 Clinic Princesses</span>
+  </div>
+</div>
+
+<!-- HALLOWEEN HERO -->
+<div class="halloween-hero" style="margin-bottom:16px;">
+  <div class="halloween-title">🎃 Happy Halloween Month!</div>
+  <div class="halloween-sub">October is here, and with it comes crisp mountain air, changing leaves, pumpkins on every porch, and the most spirited month of the year. Whether you are a full costume-commit person or more of a candy-bowl-by-the-door person, we hope this month brings you plenty of fun, laughter, and maybe just a little bit of spook. Welcome to October, RHC!</div>
+</div>
+
+<!-- WHIMSICAL HALLOWEEN STORY -->
+<div class="story-card">
+  <div class="story-eyebrow">🕯️ A Halloween Story</div>
+  <div class="story-title">The <em>Haunting</em> of Exam Room Three</div>
+  <div class="story-body">
+    <p>It started on a quiet Tuesday in October, the kind of morning where the mountains wore clouds like hats and the waiting room smelled of coffee and hand sanitizer. Room Three had always been a little odd. The blood pressure cuff inflated on its own sometimes. The paper on the exam table crinkled when no one was sitting on it. And once, the otoscope light flickered three times in the middle of a perfectly normal ear check.</p>
+    <div class="story-divider">🎃 👻 🕷️</div>
+    <p>The staff had a theory. Old Dr. Wellby, who had practiced in the building for thirty years before retiring to Arizona, had left something behind. Not anything frightening, mind you. Just his stethoscope, which had somehow ended up in the third drawer of the supply cart, and his habit of humming softly while charting. Sometimes, late in the afternoon when the clinic grew quiet, you could almost hear it.</p>
+    <p>It was Renee who first noticed that patients in Room Three always seemed to leave a little calmer than when they arrived. Blood pressures that had been elevated in triage read perfectly normal by the time the provider walked in. Anxious patients smiled. Fussy toddlers stopped fussing. "Room Three has good energy," she told anyone who would listen.</p>
+    <div class="story-divider">🍂 🕸️ 🌙</div>
+    <p>So this Halloween, when you walk past Room Three and the paper crinkles for no reason at all, do not be alarmed. That is just Dr. Wellby, making sure the thermostat is set right and the exam light is angled correctly, the way he always did. Some things, it turns out, do not haunt. They simply stay because they love the work.</p>
+    <p style="text-align:right;font-style:italic;font-size:13px;color:rgba(255,255,255,.5);margin-top:6px;">Happy Halloween from your RHC team. 🎃</p>
+  </div>
+</div>
+
+<!-- CLINIC PRINCESSES -->
+<div class="princess-card" style="margin-bottom:24px;">
+  <div class="princess-header">
+    <h2>👸 The Clinic Princess Court</h2>
+    <p>Every great clinic has its royalty. Here is ours.</p>
+  </div>
+    <div class="princess-grid">
+    <div class="princess-item"><div class="princess-name">Amoria</div><div class="princess-char"><span class="princess-emoji">🍬</span>Vanellope</div></div>
+    <div class="princess-item"><div class="princess-name">Ariana</div><div class="princess-char"><span class="princess-emoji">⭐</span>Wendy (Peter Pan)</div></div>
+    <div class="princess-item"><div class="princess-name">Brandy</div><div class="princess-char"><span class="princess-emoji">❄️</span>Anna (Frozen)</div></div>
+    <div class="princess-item"><div class="princess-name">Bren</div><div class="princess-char"><span class="princess-emoji">🌺</span>Isabela</div></div>
+    <div class="princess-item"><div class="princess-name">Charlene</div><div class="princess-char"><span class="princess-emoji">🧚</span>Tinker Bell</div></div>
+    <div class="princess-item"><div class="princess-name">Corrinne</div><div class="princess-char"><span class="princess-emoji">🐇</span>Alice</div></div>
+    <div class="princess-item"><div class="princess-name">Dakoda</div><div class="princess-char"><span class="princess-emoji">🎈</span>Russell (Up)</div></div>
+    <div class="princess-item"><div class="princess-name">David</div><div class="princess-char"><span class="princess-emoji">🐸</span>Prince Naveen</div></div>
+    <div class="princess-item"><div class="princess-name">Deanna</div><div class="princess-char"><span class="princess-emoji">🏯</span>Mulan</div></div>
+    <div class="princess-item"><div class="princess-name">Hannah</div><div class="princess-char"><span class="princess-emoji">🔥</span>Esmeralda</div></div>
+    <div class="princess-item"><div class="princess-name">Haley</div><div class="princess-char"><span class="princess-emoji">🌽</span>Pocahontas</div></div>
+    <div class="princess-item"><div class="princess-name">Kate</div><div class="princess-char"><span class="princess-emoji">👑</span>Queen Elinor</div></div>
+    <div class="princess-item"><div class="princess-name">Kinsey</div><div class="princess-char"><span class="princess-emoji">📚</span>Belle</div></div>
+    <div class="princess-item"><div class="princess-name">Latia</div><div class="princess-char"><span class="princess-emoji">🍎</span>Snow White</div></div>
+    <div class="princess-item"><div class="princess-name">Laura</div><div class="princess-char"><span class="princess-emoji">🌊</span>Moana</div></div>
+    <div class="princess-item"><div class="princess-name">Leah</div><div class="princess-char"><span class="princess-emoji">🌹</span>Aurora</div></div>
+    <div class="princess-item"><div class="princess-name">Marino</div><div class="princess-char"><span class="princess-emoji">🌻</span>Rapunzel</div></div>
+    <div class="princess-item"><div class="princess-name">Mario</div><div class="princess-char"><span class="princess-emoji">⚔️</span>Li Shang (Mulan)</div></div>
+    <div class="princess-item"><div class="princess-name">Matthew</div><div class="princess-char"><span class="princess-emoji">⚓</span>Sinbad / Bruno</div></div>
+    <div class="princess-item"><div class="princess-name">Megan</div><div class="princess-char"><span class="princess-emoji">💪</span>Megan (Hercules)</div></div>
+    <div class="princess-item"><div class="princess-name">Paula</div><div class="princess-char"><span class="princess-emoji">🌺</span>Lilo</div></div>
+    <div class="princess-item"><div class="princess-name">Pricilla</div><div class="princess-char"><span class="princess-emoji">🪔</span>Jasmine</div></div>
+    <div class="princess-item"><div class="princess-name">Ruth</div><div class="princess-char"><span class="princess-emoji">✨</span>Fairy Godmother</div></div>
+    <div class="princess-item"><div class="princess-name">Ryan</div><div class="princess-char"><span class="princess-emoji">🎈</span>Mr. Frederickson / John Smith</div></div>
+    <div class="princess-item"><div class="princess-name">Tori</div><div class="princess-char"><span class="princess-emoji">👠</span>Cinderella</div></div>
+    <div class="princess-item"><div class="princess-name">Tyler</div><div class="princess-char"><span class="princess-emoji">❄️</span>Elsa</div></div>
+    <div class="princess-item"><div class="princess-name">Veronica</div><div class="princess-char"><span class="princess-emoji">🌿</span>Jane (Tarzan)</div></div>
+  </div>
+</div>
+
+<!-- OKTOBERFEST -->
+<div class="okto-card" style="margin-bottom:24px;">
+  <div class="okto-title">🍺 Prost! It's Oktoberfest!</div>
+  <div class="okto-body">Oktoberfest began in Munich, Germany in 1810 as a celebration of the royal wedding of Crown Prince Ludwig and Princess Therese. What started as a five-day horse race became the world's largest folk festival, drawing over six million visitors each year. The spirit of Oktoberfest is really about community, good food, laughter, and celebrating the season together. Sounds a lot like us!</div>
+  <div class="okto-facts">
+    <div class="okto-fact">
+      <div class="okto-fact-label">Started</div>
+      <div class="okto-fact-val">October 12, 1810 in Munich</div>
+    </div>
+    <div class="okto-fact">
+      <div class="okto-fact-label">Traditional Toast</div>
+      <div class="okto-fact-val">"Prost!" (To your health!)</div>
+    </div>
+    <div class="okto-fact">
+      <div class="okto-fact-label">Classic Foods</div>
+      <div class="okto-fact-val">Pretzels, bratwurst, schnitzel, strudel</div>
+    </div>
+    <div class="okto-fact">
+      <div class="okto-fact-label">Fun Fact</div>
+      <div class="okto-fact-val">Most of Oktoberfest actually runs in September!</div>
+    </div>
+  </div>
+</div>
+
+<!-- ZODIAC + BIRTHDAYS -->
+<div class="grid2">
+  <div class="zodiac-card">
+    <div class="zodiac-title">October Zodiac Signs</div>
+    <div class="zodiac-sub">The stars of October</div>
+    <div style="margin-bottom:10px;font-size:13px;color:rgba(255,255,255,.8)">Libra (Oct 1–22)<br><span style="opacity:.75">Scorpio (Oct 23–31)</span></div>
+    <div class="gem-row"><div class="gem-icon">💎</div><div><div class="gem-label">Birthstone</div><div class="gem-val">Opal &amp; Tourmaline</div></div></div>
+    <div class="gem-row"><div class="gem-icon">🌸</div><div><div class="gem-label">Birth Flower</div><div class="gem-val">Marigold &amp; Cosmos</div></div></div>
+  </div>
+  <div class="card">
+    <div class="card-header"><h2>🎂 October Birthdays</h2><p>4 team members celebrating this month</p></div>
+    <div class="card-body">
+      <div class="bday-row"><div><div style="font-weight:600">CHARLENE CALDWELL</div><div style="font-size:11px;color:#6B7280">MA</div></div><span class="bday-date">Oct 1 🎉</span></div>
+      <div class="bday-row"><div><div style="font-weight:600">ALEC FULBRIGHT</div><div style="font-size:11px;color:#6B7280">MA</div></div><span class="bday-date">Oct 4 🎉</span></div>
+      <div class="bday-row"><div><div style="font-weight:600">VERONICA SHOCKLEY</div><div style="font-size:11px;color:#6B7280">PSR</div></div><span class="bday-date">Oct 18 🎉</span></div>
+      <div class="bday-row"><div><div style="font-weight:600">CORRINNE JOHNSON</div><div style="font-size:11px;color:#6B7280">PA</div></div><span class="bday-date">Oct 27 🎉</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- FAMOUS OCTOBER BIRTHDAYS -->
+<div class="card" style="margin-bottom:16px;margin-top:16px;">
+  <div class="card-header"><h2>🌟 Born in October: Famous Birthdays</h2><p>Some well-known faces who share your birth month</p></div>
+  <div class="card-body">
+    <span class="pop-chip">⭐ Bruno Mars</span>
+    <span class="pop-chip">⭐ Cardi B</span>
+    <span class="pop-chip">⭐ Eminem</span>
+    <span class="pop-chip">⭐ Kim Kardashian</span>
+    <span class="pop-chip">⭐ Snoop Dogg</span>
+    <span class="pop-chip">⭐ Zac Efron</span>
+  </div>
+</div>
+
+<!-- DAYS TO CELEBRATE -->
+<div class="card" style="margin-bottom:16px;">
+  <div class="card-header"><h2>📅 Days to Celebrate in October</h2></div>
+  <div class="card-body">
+    <div class="fact-item"><div class="fact-dot"></div><span>🎃 Halloween — October 31</span></div>
+    <div class="fact-item"><div class="fact-dot"></div><span>🏥 World Mental Health Day — October 10</span></div>
+    <div class="fact-item"><div class="fact-dot"></div><span>🩷 Breast Cancer Awareness Month — all October</span></div>
+    <div class="fact-item"><div class="fact-dot"></div><span>👩‍⚕️ National Physician Assistant Week — October 6–12</span></div>
+    <div class="fact-item"><div class="fact-dot"></div><span>🧠 World Stroke Day — October 29</span></div>
+    <div class="fact-item"><div class="fact-dot"></div><span>🌍 World Food Day — October 16</span></div>
+  </div>
+</div>
+
+<!-- DID YOU KNOW -->
+<div class="card" style="margin-bottom:16px;">
+  <div class="card-header"><h2>🎃 October: Did You Know?</h2></div>
+  <div class="card-body">
+    <p style="font-size:13px;color:#1A2744;line-height:1.6;margin-bottom:12px;">October is the tenth month of the year, but like September, its name comes from the Latin word "octo," meaning eight — a leftover from the ancient Roman calendar when the year started in March.</p>
+    <div class="fact-item"><div class="fact-dot"></div><span>🎃 The tradition of carving jack-o'-lanterns originated in Ireland, where people carved turnips and potatoes to ward off evil spirits.</span></div>
+    <div class="fact-item"><div class="fact-dot"></div><span>🍬 Americans spend over $3 billion on Halloween candy each year — making it the second largest commercial holiday after Christmas.</span></div>
+    <div class="fact-item"><div class="fact-dot"></div><span>🦇 Bats are a classic Halloween symbol partly because in the Middle Ages, large bonfires lit to ward off spirits attracted insects — and insects attracted bats.</span></div>
+    <div class="fact-item"><div class="fact-dot"></div><span>🍂 October is the peak month for fall foliage in Colorado, making it one of the most beautiful months to live and work in Pagosa Springs.</span></div>
+    <div class="trivia-box">
+      <div class="trivia-label">October Trivia</div>
+      <div class="trivia-q">What was the original name for Halloween?</div>
+      <div class="trivia-a">Answer: Samhain, an ancient Celtic festival marking the end of harvest season and the beginning of winter.</div>
+    </div>
+  </div>
+</div>
+
+<div class="footer">RHC Team Culture Page · October 2026 · 🎃 Happy Halloween from your admin team 👻</div>
+
+</body>
+</html>
