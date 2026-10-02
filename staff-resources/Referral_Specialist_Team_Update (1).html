@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Referral Specialist Team Update</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=Public+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy-deep: #0E1C38;
+    --navy: #17305C;
+    --blue: #3A6BA5;
+    --blue-wash: #EAF1F9;
+    --gold: #C9A24A;
+    --gold-soft: #F6EED9;
+    --ink: #1D2633;
+    --muted: #4F5B6B;
+    --white: #FFFFFF;
+    --serif: "Source Serif 4", Georgia, "Times New Roman", serif;
+    --sans: "Public Sans", "Segoe UI", Arial, sans-serif;
+    box-sizing: border-box;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  *, *::before, *::after { box-sizing: inherit; }
+  html { scroll-padding-top: env(safe-area-inset-top, 0px); }
+  body {
+    margin: 0;
+    background: #DCE5F0;
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 17px;
+    line-height: 1.6;
+  }
+
+  .sheet {
+    max-width: 860px;
+    margin: 40px auto;
+    background: var(--white);
+    box-shadow: 0 18px 50px rgba(14, 28, 56, 0.18);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  /* Header */
+  .masthead {
+    background: var(--navy-deep);
+    background-image:
+      radial-gradient(circle at 92% 0%, rgba(58, 107, 165, 0.55) 0, rgba(58, 107, 165, 0) 55%);
+    color: var(--white);
+    padding: 52px 56px 44px;
+    position: relative;
+  }
+  .masthead::after {
+    content: "";
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    height: 6px;
+    background: linear-gradient(90deg, var(--gold) 0 70%, var(--blue) 70% 100%);
+  }
+  .kicker {
+    font-size: 15px;
+    color: var(--gold);
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    margin: 0 0 14px;
+  }
+  h1 {
+    font-family: var(--serif);
+    font-weight: 700;
+    font-size: clamp(34px, 5.4vw, 52px);
+    line-height: 1.08;
+    margin: 0 0 18px;
+    max-width: 14ch;
+  }
+  .meta {
+    margin: 0;
+    color: #C6D3E6;
+    font-size: 15px;
+  }
+
+  /* Lede */
+  .lede {
+    padding: 40px 56px 8px;
+  }
+  .lede p {
+    font-family: var(--serif);
+    font-size: 21px;
+    line-height: 1.55;
+    color: var(--navy);
+    margin: 0;
+    max-width: 62ch;
+  }
+
+  section { padding: 36px 56px; }
+  h2 {
+    font-family: var(--serif);
+    font-size: 28px;
+    font-weight: 600;
+    color: var(--navy);
+    margin: 0 0 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  h2::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, var(--gold), rgba(201, 162, 74, 0));
+  }
+
+  /* Specialists */
+  .people {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+    gap: 24px;
+  }
+  .person {
+    border: 1px solid #D5DFEC;
+    border-top: 4px solid var(--navy);
+    border-radius: 4px;
+    padding: 26px 26px 24px;
+    background: var(--white);
+  }
+  .person:nth-child(2) { border-top-color: var(--blue); }
+  .person-head {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+  .monogram {
+    flex: none;
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
+    background: var(--navy);
+    color: var(--gold);
+    border: 2px solid var(--gold);
+    font-family: var(--serif);
+    font-weight: 700;
+    font-size: 21px;
+    display: grid;
+    place-items: center;
+  }
+  .person:nth-child(2) .monogram { background: var(--blue); color: var(--white); }
+  .person h3 {
+    font-family: var(--serif);
+    font-size: 23px;
+    font-weight: 600;
+    color: var(--navy-deep);
+    margin: 0;
+    line-height: 1.2;
+  }
+  .role {
+    margin: 2px 0 0;
+    font-size: 14px;
+    color: var(--blue);
+    font-weight: 600;
+  }
+  .person p.bio {
+    margin: 0;
+    color: var(--muted);
+    font-size: 16px;
+  }
+
+  /* Transition */
+  .transition {
+    background: var(--blue-wash);
+    border-top: 1px solid #D5DFEC;
+    border-bottom: 1px solid #D5DFEC;
+  }
+  .updates {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 20px;
+    margin-bottom: 22px;
+  }
+  .update {
+    background: var(--white);
+    border-left: 4px solid var(--gold);
+    padding: 18px 20px;
+    border-radius: 0 4px 4px 0;
+  }
+  .update strong {
+    display: block;
+    font-family: var(--serif);
+    font-size: 20px;
+    color: var(--navy);
+    margin-bottom: 4px;
+  }
+  .update span { color: var(--muted); font-size: 16px; }
+  .transition p.support {
+    margin: 0;
+    max-width: 68ch;
+  }
+
+  /* Thanks */
+  .thanks {
+    padding-top: 40px;
+    padding-bottom: 40px;
+  }
+  .thanks blockquote {
+    margin: 0;
+    padding: 26px 30px;
+    background: var(--gold-soft);
+    border-radius: 4px;
+    font-family: var(--serif);
+    font-size: 21px;
+    line-height: 1.5;
+    color: var(--navy-deep);
+    position: relative;
+  }
+  .thanks blockquote::before {
+    content: "";
+    position: absolute;
+    left: 0; top: 18px; bottom: 18px;
+    width: 4px;
+    background: var(--gold);
+  }
+
+  /* Footer */
+  footer {
+    background: var(--navy);
+    color: var(--white);
+    padding: 30px 56px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px 30px;
+  }
+  footer p { margin: 0; }
+  .contact-q { font-family: var(--serif); font-size: 20px; }
+  .contact-who {
+    color: var(--gold);
+    font-weight: 600;
+    font-size: 16px;
+  }
+
+  @media (max-width: 640px) {
+    .sheet { margin: 0; border-radius: 0; }
+    .masthead { padding: 38px 24px 34px; }
+    .lede { padding: 30px 24px 4px; }
+    section { padding: 28px 24px; }
+    footer { padding: 26px 24px; }
+    .lede p, .thanks blockquote { font-size: 19px; }
+  }
+
+  @media print {
+    body { background: var(--white); }
+    .sheet { box-shadow: none; margin: 0; max-width: none; }
+    * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  }
+</style>
+</head>
+<body>
+  <main class="sheet">
+    <header class="masthead">
+      <p class="kicker">Staffing notice</p>
+      <h1>Referral Specialist Team Update</h1>
+      <p class="meta">Pagosa Springs Medical Center | October 2, 2026</p>
+    </header>
+
+    <div class="lede">
+      <p>Two new referral specialists have accepted offers to join our team. HR requirements are underway, and start dates are pending.</p>
+    </div>
+
+    <section>
+      <h2>Meet Our Incoming Full Time Referral Specialists</h2>
+      <div class="people">
+        <article class="person">
+          <div class="person-head">
+            <div class="monogram" aria-hidden="true">CC</div>
+            <div>
+              <h3>Cassandra R. Cabrera</h3>
+              <p class="role">Referral Specialist</p>
+            </div>
+          </div>
+          <p class="bio">Cassandra previously worked at PSMC as a Patient Care Coordinator and Diagnostic Imaging Lead Scheduler. Her background includes coordinating complex referrals, reviewing referral documentation and insurance eligibility, and working with providers and specialty teams. She also brings experience helping patients navigate healthcare services.</p>
+        </article>
+
+        <article class="person">
+          <div class="person-head">
+            <div class="monogram" aria-hidden="true">AD</div>
+            <div>
+              <h3>Amada De Vera</h3>
+              <p class="role">Referral Specialist</p>
+            </div>
+          </div>
+          <p class="bio">Amada brings more than 15 years of clinical and administrative experience, including referral coordination, prior authorizations, and surgical scheduling. Her background includes tracking authorizations, coordinating denial follow-up and appeals, and communicating with patients, providers, and outside facilities.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="transition">
+      <h2>Supporting the Transition</h2>
+      <div class="updates">
+        <div class="update">
+          <strong>Vickie Perales</strong>
+          <span>Has accepted a position with another organization and will continue with PSMC on a PRN basis.</span>
+        </div>
+        <div class="update">
+          <strong>Deb Calavan</strong>
+          <span>Will transfer to EMS full time. Her transfer date is pending.</span>
+        </div>
+      </div>
+      <p class="support">Both Deb and Vickie will remain available to assist with referral processing and help train our new referral specialists. Jo is also working with the specialty team nurses to support continuity during the transition.</p>
+    </section>
+
+    <section class="thanks">
+      <blockquote>Thank you, Deb and Vickie, for your dedication to our patients and for helping welcome and prepare our new team members.</blockquote>
+    </section>
+
+    <footer>
+      <p class="contact-q">Questions or referral concerns?</p>
+      <p class="contact-who">Please contact Jo Blaise, Manager: Clinic</p>
+    </footer>
+  </main>
+</body>
+</html>
