@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>PSR Work Activity Dashboard — Primary Care Clinic</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root{
+    --navy:#122A4E; --navy-2:#1C3D6E; --gold:#C6992E; --gold-2:#E3C169; --teal:#2C7A73;
+    --paper:#F6F7F9; --card:#FFFFFF; --ink:#182236; --muted:#5B6577; --line:#E3E6EC;
+    --good:#2C7A73; --warn:#B4552F; --radius:10px;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){ --paper:#0E1420; --card:#151D2C; --ink:#EAEDF3; --muted:#9AA4B8; --line:#28324A; }
+  }
+  :root[data-theme="dark"]{ --paper:#0E1420; --card:#151D2C; --ink:#EAEDF3; --muted:#9AA4B8; --line:#28324A; }
+  *{box-sizing:border-box;}
+  html{scroll-padding-top:env(safe-area-inset-top,0px);}
+  body{
+    margin:0; background:var(--paper); color:var(--ink);
+    font-family:"Inter",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit;}
+
+  header.top{
+    background:linear-gradient(135deg,var(--navy) 0%,var(--navy-2) 100%); color:#fff;
+    padding:28px clamp(16px,4vw,48px) 22px; position:relative;
+    padding-top:calc(28px + env(safe-area-inset-top,0px));
+  }
+  header.top::after{ content:""; position:absolute; left:0; right:0; bottom:0; height:4px;
+    background:linear-gradient(90deg,var(--gold) 0%, var(--gold-2) 60%, transparent 100%); }
+  .clinic-name{font-size:13px; letter-spacing:.02em; color:var(--gold-2); font-weight:600;}
+  .top h1{margin:8px 0 4px; font-size:clamp(22px,3vw,30px); font-weight:800; letter-spacing:-0.01em;}
+  .top p.sub{margin:0; color:#C9D2E6; font-size:14px;}
+
+  nav.tabs{ display:flex; gap:6px; padding:0 clamp(16px,4vw,48px); margin-top:18px; border-bottom:1px solid rgba(255,255,255,.14); }
+  nav.tabs button{
+    background:transparent; border:none; color:#C9D2E6; font-family:inherit; font-size:14.5px; font-weight:600;
+    padding:10px 16px; cursor:pointer; border-bottom:3px solid transparent; margin-bottom:-1px;
+    transition:color .15s ease, border-color .15s ease;
+  }
+  nav.tabs button:hover{color:#fff;}
+  nav.tabs button.active{color:#fff; border-bottom-color:var(--gold);}
+
+  main{max-width:1180px; margin:0 auto; padding:28px clamp(16px,4vw,32px) 60px;}
+  .panel{display:none;}
+  .panel.active{display:block;}
+
+  .section-head{display:flex; align-items:baseline; justify-content:space-between; gap:12px; margin:34px 0 14px;}
+  .section-head:first-child{margin-top:0;}
+  .section-head h2{font-size:18px; margin:0; font-weight:700;}
+  .section-head .hint{font-size:12.5px; color:var(--muted);}
+
+  .callout{
+    background:var(--card); border:1px solid var(--line); border-left:4px solid var(--gold);
+    border-radius:var(--radius); padding:14px 18px; font-size:13.8px; color:var(--muted); line-height:1.55;
+  }
+  .callout strong{color:var(--ink);}
+  .callout.warn{border-left-color:var(--warn);}
+
+  .kpi-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(190px,1fr)); gap:14px;}
+  .kpi{ background:var(--card); border:1px solid var(--line); border-radius:var(--radius); padding:16px 18px; position:relative; overflow:hidden; text-align:center; }
+  .kpi::before{content:""; position:absolute; top:0; left:0; width:3px; height:100%; background:var(--navy-2);}
+  .kpi.gold::before{background:var(--gold);}
+  .kpi.teal::before{background:var(--teal);}
+  .kpi .label{font-size:12px; color:var(--muted); font-weight:600; margin-bottom:6px;}
+  .kpi .value{font-size:26px; font-weight:800; letter-spacing:-0.01em;}
+  .kpi .delta{font-size:12.5px; margin-top:4px; font-weight:600;}
+  .delta.up{color:var(--good);} .delta.down{color:var(--warn);} .delta.flat{color:var(--muted);}
+
+  .chart-grid{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:14px;}
+  @media (max-width:820px){.chart-grid{grid-template-columns:1fr;}}
+  .chart-card{ background:var(--card); border:1px solid var(--line); border-radius:var(--radius); padding:16px 18px 10px; }
+  .chart-card h3{margin:0 0 2px; font-size:14px; font-weight:700;}
+  .chart-card .cap{font-size:12px; color:var(--muted); margin-bottom:8px;}
+  .chart-wrap{position:relative; height:230px;}
+  .chart-wrap.tall{height:270px;}
+
+  table.mix{width:100%; border-collapse:collapse; font-size:13px;}
+  table.mix th, table.mix td{text-align:left; padding:7px 6px; border-bottom:1px solid var(--line);}
+  table.mix th{color:var(--muted); font-weight:600; font-size:11.5px; text-transform:uppercase; letter-spacing:.03em;}
+  table.mix td.num{text-align:right; font-variant-numeric:tabular-nums;}
+  table.mix tr:last-child td{border-bottom:none;}
+  #verifyLeaderboard th:not(:first-child), #verifyLeaderboard td:not(:first-child){text-align:center;}
+
+  .picker-row{ display:flex; align-items:center; gap:14px; flex-wrap:wrap; margin-bottom:6px; }
+  .picker-row label{font-size:12.5px; font-weight:600; color:var(--muted);}
+  select#psrSelect{
+    font-family:inherit; font-size:14.5px; font-weight:600; color:var(--ink);
+    background:var(--card); border:1.5px solid var(--line); border-radius:8px;
+    padding:9px 34px 9px 12px; cursor:pointer; appearance:none;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%235B6577' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>");
+    background-repeat:no-repeat; background-position:right 12px center; min-width:220px;
+  }
+  select#psrSelect:focus-visible{outline:2px solid var(--gold); outline-offset:1px;}
+  .badge{ display:inline-block; font-size:11.5px; font-weight:700; padding:3px 9px; border-radius:20px; background:rgba(44,122,115,.12); color:var(--teal); letter-spacing:.02em; }
+  .print-btn{
+    margin-left:auto; display:inline-flex; align-items:center; gap:7px; background:var(--navy); color:#fff; border:none;
+    border-radius:8px; font-family:inherit; font-size:13.5px; font-weight:600; padding:9px 16px; cursor:pointer;
+  }
+  .print-btn:hover{background:var(--navy-2);}
+  .print-btn svg{width:15px; height:15px;}
+
+  .psr-header{ display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:14px; margin:22px 0 8px; }
+  .psr-header h2{margin:0; font-size:21px; font-weight:800;}
+  .psr-header .period{font-size:13px; color:var(--muted);}
+
+  .empty-state{ background:var(--card); border:1px dashed var(--line); border-radius:var(--radius); padding:40px 24px; text-align:center; color:var(--muted); font-size:14px; line-height:1.6; }
+  .empty-state strong{display:block; color:var(--ink); font-size:16px; margin-bottom:6px; font-weight:700;}
+
+  footer.foot{ text-align:center; color:var(--muted); font-size:11.5px; padding:20px 16px 40px; }
+
+  #printMeta{display:none;}
+  @media print{
+    @page{ size: landscape; margin: 0.4in; }
+    header.top nav.tabs, .print-btn, .picker-row label, #teamPanel { display:none !important; }
+    header.top{ background:var(--navy) !important; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+    body{background:#fff;} main{padding:0; max-width:100%;}
+    .chart-card, .kpi{ break-inside:avoid; }
+    #printMeta{display:block; text-align:right; font-size:11px; color:var(--muted); margin:4px 0 0;}
+    select#psrSelect{display:none;} .picker-row{margin-bottom:0;}
+  }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div>
+    <div class="clinic-name">PRIMARY CARE CLINIC · PATIENT SERVICE REPRESENTATIVES</div>
+    <h1>PSR Work Activity Dashboard</h1>
+    <p class="sub">Registration &amp; pre-registration activity, insurance verification, and encounter mix — January – August 2026</p>
+  </div>
+  <nav class="tabs">
+    <button class="tab-btn active" data-tab="team">Team Overview</button>
+    <button class="tab-btn" data-tab="individual">Individual PSR Trends</button>
+  </nav>
+</header>
+
+<main>
+
+  <!-- ===================== TEAM OVERVIEW ===================== -->
+  <section class="panel active" id="teamPanel">
+
+    <div class="callout" id="teamCallout"></div>
+
+    <div class="section-head"><h2>Team KPIs — Latest Month vs. Prior Month</h2></div>
+    <div class="kpi-grid" id="teamKpis"></div>
+
+    <div class="chart-grid">
+      <div class="chart-card">
+        <h3>Total Activity by PSR, by Month</h3>
+        <div class="cap">Registrations + pre-registrations combined</div>
+        <div class="chart-wrap"><canvas id="chartTeamTotals"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <h3>Registrations vs. Pre-Registrations</h3>
+        <div class="cap">Team combined, by month</div>
+        <div class="chart-wrap"><canvas id="chartRegSplit"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <h3>Primary Insurance Verification Rate</h3>
+        <div class="cap">Share of primary plans confirmed as Verified, team combined</div>
+        <div class="chart-wrap"><canvas id="chartVerifyRate"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <h3>Team Encounter Mix</h3>
+        <div class="cap">Share of activity by encounter type, Jan–Aug combined</div>
+        <div class="chart-wrap"><canvas id="chartEncounterMix"></canvas></div>
+      </div>
+    </div>
+
+    <div class="section-head">
+      <h2>Top 10 Insurers</h2>
+      <div class="hint">By primary plan volume, team combined · Jan–Aug</div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-wrap tall"><canvas id="chartTopInsurers"></canvas></div>
+    </div>
+
+    <div class="section-head">
+      <h2>Verification &amp; Efficiency Snapshot</h2>
+      <div class="hint">Rate-based, so it stays fair across different volumes and schedules</div>
+    </div>
+    <div class="callout" style="margin-bottom:14px;">
+      These are all <strong>rates or per-day averages</strong>, not raw counts, so PSRs with fewer total activities, or fewer months on the team, aren't penalized. MSP verification is measured only against Medicare-primary encounters, since that's the only population where it applies. Each PSR's average is taken across their own active months only.
+    </div>
+    <div class="chart-card" style="padding-bottom:16px;">
+      <table class="mix" id="verifyLeaderboard"></table>
+    </div>
+
+    <div class="section-head">
+      <h2>Need to Verify</h2>
+      <div class="hint">Encounters outside the standard PSR encounter types</div>
+    </div>
+    <div class="callout warn" style="margin-bottom:14px;">
+      PSRs register Clinic Outpatient, Outpatient, and Nurse Visit encounters. The row(s) below fall outside that pattern and are worth a second look to confirm they were registered correctly.
+    </div>
+    <div class="chart-card" style="padding-bottom:16px;">
+      <table class="mix" id="needToVerify"></table>
+    </div>
+
+  </section>
+
+  <!-- ===================== INDIVIDUAL PSR ===================== -->
+  <section class="panel" id="individualPanel">
+
+    <div class="picker-row">
+      <label for="psrSelect">Select PSR</label>
+      <select id="psrSelect"></select>
+      <button class="print-btn" id="printBtn" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+        Print this report
+      </button>
+    </div>
+
+    <div id="individualContent"></div>
+
+  </section>
+
+</main>
+
+<footer class="foot">Primary Care Clinic — PSR Work Activity Dashboard · Data source: PSMC Scheduler Volume reports, Jan–Aug 2026</footer>
+
+<script id="psr-data" type="application/json">{"Sara Marino": {"2026-01": {"registrations": 121, "pre_registrations": 308, "total": 429, "primary_verified": 419, "primary_pending": 5, "primary_na": 5, "primary_total": 429, "primary_verify_rate": 97.7, "secondary_present": 166, "secondary_verified": 163, "secondary_verify_rate": 98.2, "tertiary_present": 0, "encounter_type": {"Outpatient": 103, "Clinic Outpatient": 308, "Nurse Visit": 18}, "medical_service": {"Clinic": 301, "Laboratory": 80, "PC Nurse Visit": 24, "X-Ray": 22, "Laboratory / DAT": 1, "Behavioral Health": 1}, "nurse_unit": {"PSMC MO": 4, "PSMC LAB": 76, "PSMC RAD": 22, "PSMC DAT": 1, "PSMC Clinic": 325, "PSMC BH": 1}, "active_days": 21, "activities_per_day": 20.4, "medicare_total": 250, "medicare_msp_documented": 159, "msp_documentation_rate": 63.6, "top_insurers": {"MCR Medicare PART A&B": 159, "MCD Medicaid": 40, "BCBS Colorado": 29, "MCR Aetna Medicare Advantage": 29, "MCR Humana": 21}}, "2026-02": {"registrations": 198, "pre_registrations": 319, "total": 517, "primary_verified": 505, "primary_pending": 5, "primary_na": 7, "primary_total": 517, "primary_verify_rate": 97.7, "secondary_present": 185, "secondary_verified": 183, "secondary_verify_rate": 98.9, "tertiary_present": 0, "encounter_type": {"Outpatient": 149, "Clinic Outpatient": 353, "Nurse Visit": 15}, "medical_service": {"Clinic": 341, "Laboratory": 118, "X-Ray": 31, "PC Nurse Visit": 27}, "nurse_unit": {"PSMC LAB": 107, "PSMC RAD": 31, "PSMC MO": 11, "PSMC Clinic": 366, "PSMC Spec Clin PCC": 2}, "active_days": 20, "activities_per_day": 25.9, "medicare_total": 296, "medicare_msp_documented": 177, "msp_documentation_rate": 59.8, "top_insurers": {"MCR Medicare PART A&B": 177, "MCD Medicaid": 46, "MCR Humana": 42, "MCR Aetna Medicare Advantage": 40, "BCBS Colorado": 27}}, "2026-03": {"registrations": 195, "pre_registrations": 341, "total": 536, "primary_verified": 524, "primary_pending": 2, "primary_na": 10, "primary_total": 536, "primary_verify_rate": 97.8, "secondary_present": 194, "secondary_verified": 190, "secondary_verify_rate": 97.9, "tertiary_present": 0, "encounter_type": {"Outpatient": 140, "Clinic Outpatient": 387, "Nurse Visit": 9}, "medical_service": {"Clinic": 379, "Laboratory": 112, "X-Ray": 28, "PC Nurse Visit": 16, "Behavioral Health": 1}, "nurse_unit": {"PSMC LAB": 108, "PSMC RAD": 28, "PSMC MO": 3, "PSMC Clinic Lab 1": 1, "PSMC Clinic": 392, "PSMC BH": 1, "PSMC Spec Clin PCC": 3}, "active_days": 22, "activities_per_day": 24.4, "medicare_total": 291, "medicare_msp_documented": 192, "msp_documentation_rate": 66.0, "top_insurers": {"MCR Medicare PART A&B": 190, "MCD Medicaid": 57, "BCBS Colorado": 41, "MCR Aetna Medicare Advantage": 32, "MCR Humana": 26}}, "2026-04": {"registrations": 155, "pre_registrations": 377, "total": 532, "primary_verified": 512, "primary_pending": 4, "primary_na": 16, "primary_total": 532, "primary_verify_rate": 96.2, "secondary_present": 214, "secondary_verified": 205, "secondary_verify_rate": 95.8, "tertiary_present": 1, "encounter_type": {"Outpatient": 108, "Clinic Outpatient": 412, "Nurse Visit": 12}, "medical_service": {"Clinic": 406, "Laboratory": 83, "X-Ray": 25, "PC Nurse Visit": 17, "Phone Visit": 1}, "nurse_unit": {"PSMC LAB": 78, "PSMC RAD": 25, "PSMC MO": 5, "PSMC Clinic": 423, "PSMC Spec Clin PCC": 1}, "active_days": 22, "activities_per_day": 24.2, "medicare_total": 304, "medicare_msp_documented": 208, "msp_documentation_rate": 68.4, "top_insurers": {"MCR Medicare PART A&B": 208, "BCBS Colorado": 42, "MCD Medicaid": 40, "MCR Aetna Medicare Advantage": 33, "MCR Humana": 28}}, "2026-05": {"registrations": 117, "pre_registrations": 251, "total": 368, "primary_verified": 364, "primary_pending": 2, "primary_na": 2, "primary_total": 368, "primary_verify_rate": 98.9, "secondary_present": 168, "secondary_verified": 164, "secondary_verify_rate": 97.6, "tertiary_present": 0, "encounter_type": {"Outpatient": 96, "Clinic Outpatient": 267, "Nurse Visit": 5}, "medical_service": {"Clinic": 258, "Laboratory": 67, "X-Ray": 28, "PC Nurse Visit": 14, "CT": 1}, "nurse_unit": {"PSMC RAD": 29, "PSMC LAB": 61, "PSMC MO": 6, "PSMC Clinic": 272}, "active_days": 20, "activities_per_day": 18.4, "medicare_total": 235, "medicare_msp_documented": 153, "msp_documentation_rate": 65.1, "top_insurers": {"MCR Medicare PART A&B": 152, "MCR Aetna Medicare Advantage": 33, "BCBS Colorado": 28, "MCD Medicaid": 18, "MCR Humana": 17}}, "2026-06": {"registrations": 183, "pre_registrations": 298, "total": 481, "primary_verified": 462, "primary_pending": 4, "primary_na": 15, "primary_total": 481, "primary_verify_rate": 96.0, "secondary_present": 203, "secondary_verified": 200, "secondary_verify_rate": 98.5, "tertiary_present": 2, "encounter_type": {"Outpatient": 130, "Clinic Outpatient": 334, "Nurse Visit": 17}, "medical_service": {"Clinic": 327, "Laboratory": 103, "X-Ray": 26, "PC Nurse Visit": 16, "Integrated Health": 3, "Phone Visit": 2, "Behavioral Health": 2, "Ultrasound": 1, "Chronic Care Management": 1}, "nurse_unit": {"PSMC LAB": 95, "PSMC RAD": 26, "PSMC MO": 9, "PSMC Clinic": 349, "PSMC BH": 2}, "active_days": 22, "activities_per_day": 21.9, "medicare_total": 267, "medicare_msp_documented": 187, "msp_documentation_rate": 70.0, "top_insurers": {"MCR Medicare PART A&B": 185, "MCD Medicaid": 41, "MCR Aetna Medicare Advantage": 29, "BCBS Colorado": 25, "BCBS Tribal": 23}}, "2026-07": {"registrations": 226, "pre_registrations": 455, "total": 681, "primary_verified": 650, "primary_pending": 3, "primary_na": 28, "primary_total": 681, "primary_verify_rate": 95.4, "secondary_present": 255, "secondary_verified": 248, "secondary_verify_rate": 97.3, "tertiary_present": 1, "encounter_type": {"Outpatient": 153, "Clinic Outpatient": 508, "Nurse Visit": 20}, "medical_service": {"Clinic": 447, "Laboratory": 129, "Behavioral Health": 40, "X-Ray": 23, "Integrated Health": 22, "PC Nurse Visit": 18, "Ultrasound": 1, "Sports Physical": 1}, "nurse_unit": {"PSMC LAB": 120, "PSMC RAD": 24, "PSMC MO": 9, "PSMC Clinic": 422, "PSMC BH": 40, "PSMC Spec Clin PCC": 66}, "active_days": 23, "activities_per_day": 29.6, "medicare_total": 356, "medicare_msp_documented": 231, "msp_documentation_rate": 64.9, "top_insurers": {"MCR Medicare PART A&B": 229, "BCBS Colorado": 54, "MCD Medicaid": 47, "MCR Humana": 42, "MCR Aetna Medicare Advantage": 32}}, "2026-08": {"registrations": 110, "pre_registrations": 329, "total": 439, "primary_verified": 423, "primary_pending": 0, "primary_na": 16, "primary_total": 439, "primary_verify_rate": 96.4, "secondary_present": 193, "secondary_verified": 189, "secondary_verify_rate": 97.9, "tertiary_present": 1, "encounter_type": {"Outpatient": 91, "Clinic Outpatient": 341, "Nurse Visit": 7}, "medical_service": {"Clinic": 320, "Laboratory": 77, "X-Ray": 14, "Behavioral Health": 11, "Integrated Health": 9, "PC Nurse Visit": 7, "Chronic Care Management": 1}, "nurse_unit": {"PSMC LAB": 72, "PSMC MO": 5, "PSMC RAD": 14, "PSMC Clinic": 318, "PSMC BH": 11, "PSMC Spec Clin PCC": 19}, "active_days": 21, "activities_per_day": 20.9, "medicare_total": 274, "medicare_msp_documented": 185, "msp_documentation_rate": 67.5, "top_insurers": {"MCR Medicare PART A&B": 184, "MCD Medicaid": 34, "MCR Humana": 31, "MCR Aetna Medicare Advantage": 23, "BCBS Colorado": 22}}}, "Paula Quintana": {"2026-01": {"registrations": 92, "pre_registrations": 229, "total": 321, "primary_verified": 308, "primary_pending": 1, "primary_na": 10, "primary_total": 319, "primary_verify_rate": 96.6, "secondary_present": 96, "secondary_verified": 95, "secondary_verify_rate": 99.0, "tertiary_present": 1, "encounter_type": {"Outpatient": 62, "Clinic Outpatient": 254, "Nurse Visit": 5}, "medical_service": {"Clinic": 249, "Laboratory": 34, "X-Ray": 24, "PC Nurse Visit": 8, "Industrial Billing": 2, "Sports Physical": 2, "CT": 1, "Ultrasound": 1}, "nurse_unit": {"PSMC LAB": 36, "PSMC RAD": 17, "PSMC MO": 9, "PSMC Clinic": 259}, "active_days": 20, "activities_per_day": 16.1, "medicare_total": 137, "medicare_msp_documented": 81, "msp_documentation_rate": 59.1, "top_insurers": {"MCR Medicare PART A&B": 81, "MCD Medicaid": 35, "BCBS Colorado": 23, "MCR Aetna Medicare Advantage": 23, "BCBS Out of State": 20}}, "2026-02": {"registrations": 123, "pre_registrations": 199, "total": 322, "primary_verified": 305, "primary_pending": 0, "primary_na": 16, "primary_total": 321, "primary_verify_rate": 95.0, "secondary_present": 99, "secondary_verified": 97, "secondary_verify_rate": 98.0, "tertiary_present": 1, "encounter_type": {"Outpatient": 67, "Clinic Outpatient": 249, "Nurse Visit": 6}, "medical_service": {"Clinic": 243, "Laboratory": 43, "X-Ray": 21, "PC Nurse Visit": 12, "Industrial Billing": 1, "CT": 1, "Infusion": 1}, "nurse_unit": {"PSMC LAB": 44, "PSMC RAD": 17, "PSMC MO": 5, "PSMC Clinic": 255, "PSMC Infusion": 1}, "active_days": 20, "activities_per_day": 16.1, "medicare_total": 145, "medicare_msp_documented": 87, "msp_documentation_rate": 60.0, "top_insurers": {"MCR Medicare PART A&B": 86, "MCD Medicaid": 35, "BCBS Colorado": 22, "MCR Aetna Medicare Advantage": 18, "BCBS Out of State": 16}}, "2026-03": {"registrations": 162, "pre_registrations": 215, "total": 377, "primary_verified": 358, "primary_pending": 5, "primary_na": 14, "primary_total": 377, "primary_verify_rate": 95.0, "secondary_present": 108, "secondary_verified": 106, "secondary_verify_rate": 98.1, "tertiary_present": 0, "encounter_type": {"Outpatient": 80, "Clinic Outpatient": 294, "Nurse Visit": 3}, "medical_service": {"Clinic": 291, "Laboratory": 41, "X-Ray": 34, "PC Nurse Visit": 5, "CT": 2, "MRI": 1, "Infusion": 1, "Mammogram": 1, "COVID vaccine": 1}, "nurse_unit": {"PSMC RAD": 32, "PSMC LAB": 41, "PSMC MO": 6, "PSMC Clinic": 297, "PSMC Infusion": 1}, "active_days": 22, "activities_per_day": 17.1, "medicare_total": 157, "medicare_msp_documented": 102, "msp_documentation_rate": 65.0, "top_insurers": {"MCR Medicare PART A&B": 102, "MCD Medicaid": 56, "BCBS Out of State": 27, "BCBS Colorado": 21, "UMRPSMCHD 39026": 18}}, "2026-04": {"registrations": 197, "pre_registrations": 297, "total": 494, "primary_verified": 467, "primary_pending": 6, "primary_na": 21, "primary_total": 494, "primary_verify_rate": 94.5, "secondary_present": 153, "secondary_verified": 152, "secondary_verify_rate": 99.3, "tertiary_present": 1, "encounter_type": {"Outpatient": 57, "Clinic Outpatient": 428, "Nurse Visit": 9}, "medical_service": {"Clinic": 419, "Laboratory": 44, "PC Nurse Visit": 14, "X-Ray": 11, "Phone Visit": 2, "CT": 1, "Infusion": 1, "Chronic Care Management": 1, "Behavioral Health": 1}, "nurse_unit": {"PSMC LAB": 44, "PSMC RAD": 11, "PSMC MO": 1, "PSMC Clinic": 436, "PSMC Infusion": 1, "PSMC BH": 1}, "active_days": 22, "activities_per_day": 22.5, "medicare_total": 229, "medicare_msp_documented": 148, "msp_documentation_rate": 64.6, "top_insurers": {"MCR Medicare PART A&B": 148, "MCD Medicaid": 82, "BCBS Colorado": 43, "MCR Humana": 26, "MCR Aetna Medicare Advantage": 25}}, "2026-05": {"registrations": 101, "pre_registrations": 224, "total": 325, "primary_verified": 312, "primary_pending": 2, "primary_na": 11, "primary_total": 325, "primary_verify_rate": 96.0, "secondary_present": 115, "secondary_verified": 113, "secondary_verify_rate": 98.3, "tertiary_present": 0, "encounter_type": {"Outpatient": 42, "Clinic Outpatient": 277, "Nurse Visit": 6}, "medical_service": {"Clinic": 268, "Laboratory": 26, "PC Nurse Visit": 12, "X-Ray": 11, "CT": 3, "Ultrasound": 2, "Phone Visit": 2, "Integrated Health": 1}, "nurse_unit": {"PSMC MO": 4, "PSMC LAB": 25, "PSMC RAD": 13, "PSMC Clinic": 283}, "active_days": 20, "activities_per_day": 16.2, "medicare_total": 167, "medicare_msp_documented": 110, "msp_documentation_rate": 65.9, "top_insurers": {"MCR Medicare PART A&B": 109, "MCD Medicaid": 42, "BCBS Colorado": 22, "MCR Humana": 21, "United Health Care (87726)": 12}}, "2026-06": {"registrations": 266, "pre_registrations": 325, "total": 591, "primary_verified": 555, "primary_pending": 5, "primary_na": 31, "primary_total": 591, "primary_verify_rate": 93.9, "secondary_present": 198, "secondary_verified": 194, "secondary_verify_rate": 98.0, "tertiary_present": 0, "encounter_type": {"Outpatient": 71, "Nurse Visit": 23, "Clinic Outpatient": 496, "Day Surgery": 1}, "medical_service": {"Clinic": 496, "Laboratory": 42, "X-Ray": 25, "PC Nurse Visit": 21, "CT": 2, "Infusion": 2, "Integrated Health": 1, "Behavioral Health": 1, "OP Surg General": 1}, "nurse_unit": {"PSMC MO": 8, "PSMC RAD": 20, "PSMC LAB": 41, "PSMC Clinic": 518, "PSMC Infusion": 2, "PSMC BH": 1, "PSMC SURG": 1}, "active_days": 22, "activities_per_day": 26.9, "medicare_total": 290, "medicare_msp_documented": 187, "msp_documentation_rate": 64.5, "top_insurers": {"MCR Medicare PART A&B": 186, "MCD Medicaid": 43, "MCR Aetna Medicare Advantage": 37, "BCBS Colorado": 35, "CIGNA (62308)": 33}}, "2026-07": {"registrations": 323, "pre_registrations": 384, "total": 707, "primary_verified": 652, "primary_pending": 7, "primary_na": 47, "primary_total": 706, "primary_verify_rate": 92.4, "secondary_present": 269, "secondary_verified": 259, "secondary_verify_rate": 96.3, "tertiary_present": 4, "encounter_type": {"Outpatient": 95, "Clinic Outpatient": 597, "Nurse Visit": 15}, "medical_service": {"Clinic": 594, "Laboratory": 65, "X-Ray": 29, "PC Nurse Visit": 15, "Behavioral Health": 2, "Industrial Billing": 1, "Chronic Care Management": 1}, "nurse_unit": {"PSMC LAB": 66, "PSMC RAD": 22, "PSMC BH": 2, "PSMC MO": 7, "PSMC Clinic": 610}, "active_days": 23, "activities_per_day": 30.7, "medicare_total": 364, "medicare_msp_documented": 260, "msp_documentation_rate": 71.4, "top_insurers": {"MCR Medicare PART A&B": 258, "MCD Medicaid": 75, "BCBS Colorado": 52, "Self Pay": 27, "United Health Care (87726)": 24}}, "2026-08": {"registrations": 175, "pre_registrations": 242, "total": 417, "primary_verified": 372, "primary_pending": 8, "primary_na": 36, "primary_total": 416, "primary_verify_rate": 89.4, "secondary_present": 138, "secondary_verified": 136, "secondary_verify_rate": 98.6, "tertiary_present": 3, "encounter_type": {"Outpatient": 57, "Nurse Visit": 18, "Clinic Outpatient": 342}, "medical_service": {"Clinic": 340, "Laboratory": 39, "X-Ray": 17, "PC Nurse Visit": 17, "Chronic Care Management": 2, "Mass Vaccine": 1, "Industrial Billing": 1}, "nurse_unit": {"PSMC LAB": 40, "PSMC MO": 4, "PSMC RAD": 13, "PSMC Clinic": 360}, "active_days": 21, "activities_per_day": 19.9, "medicare_total": 198, "medicare_msp_documented": 144, "msp_documentation_rate": 72.7, "top_insurers": {"MCR Medicare PART A&B": 142, "MCD Medicaid": 52, "Self Pay": 32, "BCBS Colorado": 26, "MCR Humana": 18}}}, "Dakoda Morris": {"2026-04": {"registrations": 45, "pre_registrations": 27, "total": 72, "primary_verified": 72, "primary_pending": 0, "primary_na": 0, "primary_total": 72, "primary_verify_rate": 100.0, "secondary_present": 21, "secondary_verified": 21, "secondary_verify_rate": 100.0, "tertiary_present": 0, "encounter_type": {"Outpatient": 8, "Clinic Outpatient": 61, "Nurse Visit": 3}, "medical_service": {"Clinic": 59, "Laboratory": 6, "PC Nurse Visit": 5, "X-Ray": 2}, "nurse_unit": {"PSMC LAB": 6, "PSMC RAD": 2, "PSMC Clinic": 47, "PSMC Spec Clin PCC": 17}, "active_days": 9, "activities_per_day": 8.0, "medicare_total": 33, "medicare_msp_documented": 21, "msp_documentation_rate": 63.6, "top_insurers": {"MCR Medicare PART A&B": 21, "MCD Medicaid": 17, "MCR Humana": 4, "BCBS Colorado": 3, "MCR UHC MEDICARE DUAL COMPLETE (87726)": 3}}, "2026-05": {"registrations": 183, "pre_registrations": 202, "total": 385, "primary_verified": 371, "primary_pending": 1, "primary_na": 13, "primary_total": 385, "primary_verify_rate": 96.4, "secondary_present": 116, "secondary_verified": 112, "secondary_verify_rate": 96.6, "tertiary_present": 0, "encounter_type": {"Clinic Outpatient": 355, "Outpatient": 15, "Nurse Visit": 15}, "medical_service": {"Clinic": 351, "PC Nurse Visit": 18, "Laboratory": 13, "X-Ray": 2, "Integrated Health": 1}, "nurse_unit": {"PSMC Clinic": 365, "PSMC LAB": 13, "PSMC RAD": 2, "PSMC Spec Clin PCC": 5}, "active_days": 19, "activities_per_day": 20.3, "medicare_total": 191, "medicare_msp_documented": 120, "msp_documentation_rate": 62.8, "top_insurers": {"MCR Medicare PART A&B": 120, "MCD Medicaid": 48, "BCBS Colorado": 38, "MCR Humana": 24, "MCR Aetna Medicare Advantage": 21}}, "2026-06": {"registrations": 268, "pre_registrations": 265, "total": 533, "primary_verified": 499, "primary_pending": 5, "primary_na": 29, "primary_total": 533, "primary_verify_rate": 93.6, "secondary_present": 162, "secondary_verified": 147, "secondary_verify_rate": 90.7, "tertiary_present": 0, "encounter_type": {"Outpatient": 40, "Clinic Outpatient": 477, "Nurse Visit": 16}, "medical_service": {"Clinic": 469, "Laboratory": 29, "PC Nurse Visit": 20, "X-Ray": 11, "Integrated Health": 2, "Phone Visit": 1, "Telehealth": 1}, "nurse_unit": {"PSMC RAD": 10, "PSMC LAB": 29, "PSMC Clinic": 492, "PSMC MO": 1, "PSMC Spec Clin PCC": 1}, "active_days": 22, "activities_per_day": 24.2, "medicare_total": 236, "medicare_msp_documented": 161, "msp_documentation_rate": 68.2, "top_insurers": {"MCR Medicare PART A&B": 161, "MCD Medicaid": 45, "BCBS Colorado": 32, "BCBS Out of State": 32, "Self Pay": 27}}, "2026-07": {"registrations": 290, "pre_registrations": 334, "total": 624, "primary_verified": 599, "primary_pending": 5, "primary_na": 20, "primary_total": 624, "primary_verify_rate": 96.0, "secondary_present": 248, "secondary_verified": 236, "secondary_verify_rate": 95.2, "tertiary_present": 3, "encounter_type": {"Outpatient": 39, "Clinic Outpatient": 558, "Nurse Visit": 27}, "medical_service": {"Clinic": 554, "PC Nurse Visit": 25, "Laboratory": 24, "X-Ray": 15, "Behavioral Health": 3, "Phone Visit": 2, "Integrated Health": 1}, "nurse_unit": {"PSMC LAB": 22, "PSMC MO": 5, "PSMC RAD": 12, "PSMC Clinic": 567, "PSMC BH": 3, "PSMC Spec Clin PCC": 15}, "active_days": 23, "activities_per_day": 27.1, "medicare_total": 346, "medicare_msp_documented": 235, "msp_documentation_rate": 67.9, "top_insurers": {"MCR Medicare PART A&B": 234, "MCD Medicaid": 73, "BCBS Colorado": 51, "MCR Aetna Medicare Advantage": 37, "MCR Humana": 34}}, "2026-08": {"registrations": 307, "pre_registrations": 327, "total": 634, "primary_verified": 586, "primary_pending": 14, "primary_na": 34, "primary_total": 634, "primary_verify_rate": 92.4, "secondary_present": 209, "secondary_verified": 208, "secondary_verify_rate": 99.5, "tertiary_present": 0, "encounter_type": {"Outpatient": 72, "Clinic Outpatient": 524, "Nurse Visit": 38}, "medical_service": {"Clinic": 516, "Laboratory": 54, "PC Nurse Visit": 38, "X-Ray": 18, "Behavioral Health": 6, "Chronic Care Management": 2}, "nurse_unit": {"PSMC RAD": 18, "PSMC LAB": 47, "PSMC MO": 7, "PSMC Clinic": 556, "PSMC BH": 6}, "active_days": 21, "activities_per_day": 30.2, "medicare_total": 306, "medicare_msp_documented": 200, "msp_documentation_rate": 65.4, "top_insurers": {"MCR Medicare PART A&B": 199, "MCD Medicaid": 66, "BCBS Colorado": 64, "CIGNA (62308)": 28, "MCR Humana": 27}}}, "Veronica Shockley": {"2026-08": {"registrations": 125, "pre_registrations": 164, "total": 289, "primary_verified": 282, "primary_pending": 2, "primary_na": 5, "primary_total": 289, "primary_verify_rate": 97.6, "secondary_present": 118, "secondary_verified": 117, "secondary_verify_rate": 99.2, "tertiary_present": 0, "encounter_type": {"Outpatient": 40, "Clinic Outpatient": 244, "Nurse Visit": 5}, "medical_service": {"Clinic": 193, "Behavioral Health": 37, "Laboratory": 33, "Integrated Health": 10, "X-Ray": 6, "PC Nurse Visit": 5, "Chronic Care Management": 4, "Industrial Billing": 1}, "nurse_unit": {"PSMC LAB": 34, "PSMC RAD": 6, "PSMC Clinic": 151, "PSMC Spec Clin PCC": 61, "PSMC BH": 37}, "active_days": 21, "activities_per_day": 13.8, "medicare_total": 157, "medicare_msp_documented": 99, "msp_documentation_rate": 63.1, "top_insurers": {"MCR Medicare PART A&B": 98, "MCD Medicaid": 25, "BCBS Colorado": 22, "MCR Aetna Medicare Advantage": 22, "MCD RAE Rocky Mountain Health Plan (87726)": 15}}}}</script>
+<script id="psr-roster" type="application/json">[{"name": "Paula Quintana", "short": "Paula", "hired": "2022", "hasData": true}, {"name": "Sara Marino", "short": "Marino", "hired": "2025", "hasData": true}, {"name": "Dakoda Morris", "short": "Dakoda", "hired": "April 2026", "hasData": true}, {"name": "Veronica Shockley", "short": "Veronica", "hired": "July 2026", "hasData": true}]</script>
+<script id="team-insurers" type="application/json">[["MCR Medicare PART A&B", 3429], ["MCD Medicaid", 1017], ["BCBS Colorado", 722], ["MCR Aetna Medicare Advantage", 543], ["MCR Humana", 502], ["BCBS Out of State", 346], ["CIGNA (62308)", 332], ["United Health Care (87726)", 320], ["Self Pay", 315], ["BCBS Tribal", 308]]</script>
+<script id="flagged-encounters" type="application/json">[{"Report_Month": "2026-06", "Employee": "Paula Quintana", "Activity_Type": "Registration", "Encounter_Type": "Day Surgery", "Medical_Service": "OP Surg General", "Nurse_Unit": "PSMC SURG", "FIN": 1480393}]</script>
+
+<script>
+(function(){
+  const DATA = JSON.parse(document.getElementById('psr-data').textContent);
+  const ROSTER = JSON.parse(document.getElementById('psr-roster').textContent);
+  const TEAM_INSURERS = JSON.parse(document.getElementById('team-insurers').textContent);
+  const FLAGGED = JSON.parse(document.getElementById('flagged-encounters').textContent);
+
+  const ALL_MONTHS = ['2026-01','2026-02','2026-03','2026-04','2026-05','2026-06','2026-07','2026-08'];
+  const MONTH_SHORT = {'2026-01':'Jan','2026-02':'Feb','2026-03':'Mar','2026-04':'Apr','2026-05':'May','2026-06':'Jun','2026-07':'Jul','2026-08':'Aug'};
+  const MONTH_LABEL = {'2026-01':'January 2026','2026-02':'February 2026','2026-03':'March 2026','2026-04':'April 2026','2026-05':'May 2026','2026-06':'June 2026','2026-07':'July 2026','2026-08':'August 2026'};
+  const COLORS = {navy:'#122A4E', navy2:'#1C3D6E', gold:'#C6992E', gold2:'#E3C169', teal:'#2C7A73', muted:'#5B6577', purple:'#8A5FA8'};
+  const PSR_COLOR = {'Paula Quintana': COLORS.navy2, 'Sara Marino': COLORS.gold, 'Dakoda Morris': COLORS.teal, 'Veronica Shockley': COLORS.purple};
+
+  const CHART_OK = (typeof Chart !== 'undefined');
+  if (CHART_OK) {
+    Chart.defaults.font.family = "'Inter', system-ui, sans-serif";
+    Chart.defaults.color = COLORS.muted;
+    Chart.defaults.font.size = 12;
+  }
+  function chartFallback(canvasId, msg){
+    const c = document.getElementById(canvasId);
+    if (c && c.parentNode) {
+      c.parentNode.innerHTML = `<div style="display:flex;align-items:center;justify-content:center;height:100%;color:var(--muted);font-size:12.5px;text-align:center;padding:0 12px;">${msg}</div>`;
+    }
+  }
+
+  function fmtPct(n){ return (n===null || n===undefined) ? '—' : n.toFixed(1) + '%'; }
+  const dataNames = Object.keys(DATA);
+  function monthsFor(name){ return ALL_MONTHS.filter(m => DATA[name] && DATA[name][m]); }
+  function sum(names, month, field){
+    return names.reduce((acc,n)=> acc + ((DATA[n] && DATA[n][month]) ? DATA[n][month][field] : 0), 0);
+  }
+  function teamActiveMonths(){ return ALL_MONTHS.filter(m => dataNames.some(n => DATA[n][m])); }
+
+  /* ---------------- Tabs ---------------- */
+  document.querySelectorAll('.tab-btn').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+      document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById(btn.dataset.tab + 'Panel').classList.add('active');
+    });
+  });
+
+  /* ================= TEAM OVERVIEW ================= */
+  function buildTeamCallout(){
+    const hireNotes = ROSTER.map(p=>`${p.name.split(' ')[0]} (${p.hired==='2022'||p.hired==='2025' ? 'on team since '+p.hired : 'hired '+p.hired})`).join(', ');
+    document.getElementById('teamCallout').innerHTML = `
+      <strong>About this view.</strong> Paula and Marino have data for all eight months. Dakoda joined the team in April and Veronica in July, so their trend lines start when their activity begins rather than at zero. Because start dates differ (${hireNotes}), the figures below reflect combined team output, not a comparison between staff. Each PSR's own trend lives on the <strong>Individual PSR Trends</strong> tab.`;
+  }
+
+  function buildTeamKpis(){
+    const active = teamActiveMonths();
+    const latest = active[active.length-1];
+    const prior = active[active.length-2];
+
+    function totals(month){
+      if(!month) return null;
+      return {
+        total: sum(dataNames,month,'total'),
+        reg: sum(dataNames,month,'registrations'),
+        pre: sum(dataNames,month,'pre_registrations'),
+        pv: sum(dataNames,month,'primary_verified'),
+        pt: sum(dataNames,month,'primary_total'),
+      };
+    }
+    const L = totals(latest), P = totals(prior);
+    const Lrate = L.pt ? L.pv/L.pt*100 : null;
+    const Prate = P && P.pt ? P.pv/P.pt*100 : null;
+
+    function deltaTag(a,b,isPct){
+      if(a===null||a===undefined||b===null||b===undefined) return '';
+      const diff = isPct ? +(b-a).toFixed(1) : b-a;
+      const cls = diff>0?'up':(diff<0?'down':'flat');
+      const arrow = diff>0?'▲':(diff<0?'▼':'—');
+      const txt = isPct ? (diff>=0?'+':'') + diff + ' pts' : (diff>=0?'+':'') + diff;
+      return `<div class="delta ${cls}">${arrow} ${txt} vs. ${MONTH_SHORT[prior]}</div>`;
+    }
+
+    const cards = [
+      {label:`Total activity (${MONTH_SHORT[latest]})`, value: L.total.toLocaleString(), cls:'', delta: P?deltaTag(P.total,L.total):''},
+      {label:`Registrations (${MONTH_SHORT[latest]})`, value: L.reg.toLocaleString(), cls:'gold', delta: P?deltaTag(P.reg,L.reg):''},
+      {label:`Pre-registrations (${MONTH_SHORT[latest]})`, value: L.pre.toLocaleString(), cls:'teal', delta: P?deltaTag(P.pre,L.pre):''},
+      {label:`Primary verification rate (${MONTH_SHORT[latest]})`, value: fmtPct(Lrate), cls:'', delta: P?deltaTag(Prate,Lrate,true):''},
+    ];
+    document.getElementById('teamKpis').innerHTML = cards.map(c=>`
+      <div class="kpi ${c.cls}"><div class="label">${c.label}</div><div class="value">${c.value}</div>${c.delta}</div>`).join('');
+  }
+
+  function buildTeamCharts(){
+    const active = teamActiveMonths();
+    if (!CHART_OK) {
+      ['chartTeamTotals','chartRegSplit','chartVerifyRate','chartEncounterMix'].forEach(id=>chartFallback(id, 'Chart library unavailable — figures are in the tables below.'));
+      return;
+    }
+
+    new Chart(document.getElementById('chartTeamTotals'), {
+      type:'bar',
+      data:{
+        labels: active.map(m=>MONTH_SHORT[m]),
+        datasets: dataNames.map(n=>({
+          label:n, backgroundColor: PSR_COLOR[n],
+          data: active.map(m=> (DATA[n][m]? DATA[n][m].total : 0)),
+          borderRadius:4, maxBarThickness:36,
+        }))
+      },
+      options:{
+        responsive:true, maintainAspectRatio:false,
+        plugins:{legend:{position:'bottom', labels:{boxWidth:10, padding:14}}},
+        scales:{ x:{stacked:true, grid:{display:false}}, y:{stacked:true, grid:{color:'#E3E6EC'}, beginAtZero:true} }
+      }
+    });
+
+    new Chart(document.getElementById('chartRegSplit'), {
+      type:'bar',
+      data:{
+        labels: active.map(m=>MONTH_SHORT[m]),
+        datasets:[
+          {label:'Registrations', backgroundColor:COLORS.navy2, data: active.map(m=>sum(dataNames,m,'registrations')), borderRadius:4, maxBarThickness:32},
+          {label:'Pre-registrations', backgroundColor:COLORS.gold, data: active.map(m=>sum(dataNames,m,'pre_registrations')), borderRadius:4, maxBarThickness:32},
+        ]
+      },
+      options:{
+        responsive:true, maintainAspectRatio:false,
+        plugins:{legend:{position:'bottom', labels:{boxWidth:10, padding:14}}},
+        scales:{ x:{grid:{display:false}}, y:{grid:{color:'#E3E6EC'}, beginAtZero:true} }
+      }
+    });
+
+    new Chart(document.getElementById('chartVerifyRate'), {
+      type:'line',
+      data:{
+        labels: active.map(m=>MONTH_SHORT[m]),
+        datasets:[{
+          label:'Primary verification rate',
+          data: active.map(m=>{ const t=sum(dataNames,m,'primary_total'); const v=sum(dataNames,m,'primary_verified'); return t? +(v/t*100).toFixed(1):null; }),
+          borderColor:COLORS.teal, backgroundColor:'rgba(44,122,115,.12)', fill:true, tension:.3, pointRadius:3, pointBackgroundColor:COLORS.teal,
+        }]
+      },
+      options:{
+        responsive:true, maintainAspectRatio:false,
+        plugins:{legend:{display:false}},
+        scales:{ x:{grid:{display:false}}, y:{min:80, max:100, grid:{color:'#E3E6EC'}, ticks:{callback:v=>v+'%'}} }
+      }
+    });
+
+    const mixTotals = {};
+    dataNames.forEach(n=> Object.keys(DATA[n]).forEach(m=>{
+      const et = DATA[n][m].encounter_type || {};
+      Object.entries(et).forEach(([k,v])=>{ mixTotals[k]=(mixTotals[k]||0)+v; });
+    }));
+    const mixLabels = Object.keys(mixTotals);
+    new Chart(document.getElementById('chartEncounterMix'), {
+      type:'doughnut',
+      data:{ labels: mixLabels, datasets:[{ data: mixLabels.map(l=>mixTotals[l]), backgroundColor:[COLORS.navy2, COLORS.gold, COLORS.teal, COLORS.purple, '#C97B4A'], borderWidth:0 }] },
+      options:{ responsive:true, maintainAspectRatio:false, cutout:'62%', plugins:{legend:{position:'bottom', labels:{boxWidth:10, padding:12}}} }
+    });
+  }
+
+  function buildTopInsurers(){
+    if (!CHART_OK) { chartFallback('chartTopInsurers', 'Chart library unavailable — see the verification table below.'); return; }
+    const labels = TEAM_INSURERS.map(x=>x[0]);
+    const counts = TEAM_INSURERS.map(x=>x[1]);
+    new Chart(document.getElementById('chartTopInsurers'), {
+      type:'bar',
+      data:{ labels, datasets:[{ data: counts, backgroundColor:COLORS.navy2, borderRadius:4, maxBarThickness:22 }] },
+      options:{
+        indexAxis:'y', responsive:true, maintainAspectRatio:false,
+        plugins:{legend:{display:false}, tooltip:{callbacks:{label:c=>c.parsed.x+' primary-plan encounters'}}},
+        scales:{ x:{grid:{color:'#E3E6EC'}, beginAtZero:true}, y:{grid:{display:false}} }
+      }
+    });
+  }
+
+  function buildVerifyLeaderboard(){
+    const metrics = [
+      {key:'primary_verify_rate', label:'Primary verification rate', fmt:v=>fmtPct(v)},
+      {key:'secondary_verify_rate', label:'Secondary verification rate', fmt:v=>fmtPct(v)},
+      {key:'msp_documentation_rate', label:'MSP verification rate (Medicare encounters)', fmt:v=>fmtPct(v)},
+      {key:'activities_per_day', label:'Avg. activities per working day', fmt:v=>(v===null?'—':v.toFixed(1))},
+    ];
+    function avgAcrossMonths(name, key){
+      const vals = monthsFor(name).map(m=> DATA[name][m][key]).filter(v=>v!==null && v!==undefined);
+      if(!vals.length) return null;
+      return vals.reduce((a,b)=>a+b,0)/vals.length;
+    }
+    const names = dataNames;
+    let rows = `<thead><tr><th>Metric</th>${names.map(n=>`<th class="num">${n.split(' ')[0]} ${n.split(' ').slice(-1)[0][0]}.</th>`).join('')}</tr></thead><tbody>`;
+    metrics.forEach(m=>{
+      const vals = names.map(n=>avgAcrossMonths(n, m.key));
+      const validVals = vals.filter(v=>v!==null);
+      const best = validVals.length ? Math.max(...validVals) : null;
+      rows += `<tr><td>${m.label}</td>${vals.map(v=>{
+        const isBest = v!==null && v===best && vals.filter(x=>x===best).length===1;
+        return `<td class="num" style="${isBest?'font-weight:700;color:var(--teal);':''}">${m.fmt(v)}${isBest?' ✓':''}</td>`;
+      }).join('')}</tr>`;
+    });
+    rows += '</tbody>';
+    document.getElementById('verifyLeaderboard').innerHTML = rows;
+  }
+
+  function buildNeedToVerify(){
+    const el = document.getElementById('needToVerify');
+    if (!FLAGGED.length) {
+      el.innerHTML = `<tbody><tr><td style="color:var(--muted);">No flagged encounters found — everything on file matches the standard PSR encounter types.</td></tr></tbody>`;
+      return;
+    }
+    let rows = `<thead><tr><th>Month</th><th>PSR</th><th>Encounter Type</th><th>Medical Service</th><th>Nurse Unit</th><th class="num">FIN</th></tr></thead><tbody>`;
+    FLAGGED.forEach(f=>{
+      rows += `<tr><td>${MONTH_LABEL[f.Report_Month]||f.Report_Month}</td><td>${f.Employee}</td><td>${f.Encounter_Type}</td><td>${f.Medical_Service||'—'}</td><td>${f.Nurse_Unit||'—'}</td><td class="num">${f.FIN}</td></tr>`;
+    });
+    rows += '</tbody>';
+    el.innerHTML = rows;
+  }
+
+  /* ================= INDIVIDUAL PSR ================= */
+  const select = document.getElementById('psrSelect');
+  ROSTER.forEach(p=>{
+    const opt = document.createElement('option');
+    opt.value = p.name;
+    opt.textContent = p.name;
+    select.appendChild(opt);
+  });
+
+  let charts = [];
+  function destroyCharts(){ charts.forEach(c=>c.destroy()); charts = []; }
+
+  function renderIndividual(name){
+    destroyCharts();
+    const person = ROSTER.find(p=>p.name===name);
+    const container = document.getElementById('individualContent');
+    const today = new Date();
+    const genDate = today.toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'});
+    const months = monthsFor(name);
+
+    if (!months.length || !DATA[name]) {
+      container.innerHTML = `
+        <div class="psr-header"><div><h2>${name}</h2><div class="period">Hired: ${person.hired}</div></div></div>
+        <div id="printMeta">Generated ${genDate} · Primary Care Clinic</div>
+        <div class="empty-state">
+          <strong>No activity data yet</strong>
+          ${name} joined the PSR team in ${person.hired} and has no recorded registration activity in the reporting window on file.
+          Individual trends will begin populating once monthly activity data becomes available.
+        </div>`;
+      return;
+    }
+
+    const d = DATA[name];
+    const latest = months[months.length-1];
+    const prior = months.length>1 ? months[months.length-2] : null;
+    const latestT = d[latest], priorT = prior ? d[prior] : null;
+    const coverageNote = months.length === 8
+      ? 'January – August 2026'
+      : `${MONTH_LABEL[months[0]]} – ${MONTH_LABEL[months[months.length-1]]}`;
+
+    function delta(a,b){
+      if(a===null||a===undefined) return '';
+      const diff=b-a; const cls=diff>0?'up':(diff<0?'down':'flat'); const arrow=diff>0?'▲':(diff<0?'▼':'—');
+      return `<div class="delta ${cls}">${arrow} ${(diff>=0?'+':'')+diff} vs. ${MONTH_SHORT[prior]}</div>`;
+    }
+    function deltaPct(a,b){
+      if(a===null||a===undefined||b===null||b===undefined) return '';
+      const diff=+(b-a).toFixed(1); const cls=diff>0?'up':(diff<0?'down':'flat'); const arrow=diff>0?'▲':(diff<0?'▼':'—');
+      return `<div class="delta ${cls}">${arrow} ${(diff>=0?'+':'')+diff} pts vs. ${MONTH_SHORT[prior]}</div>`;
+    }
+
+    const kpis = [
+      {label:`Total activity (${MONTH_SHORT[latest]})`, value: latestT.total.toLocaleString(), cls:'', d: priorT?delta(priorT.total, latestT.total):''},
+      {label:`Registrations (${MONTH_SHORT[latest]})`, value: latestT.registrations.toLocaleString(), cls:'gold', d: priorT?delta(priorT.registrations, latestT.registrations):''},
+      {label:`Pre-registrations (${MONTH_SHORT[latest]})`, value: latestT.pre_registrations.toLocaleString(), cls:'teal', d: priorT?delta(priorT.pre_registrations, latestT.pre_registrations):''},
+      {label:`Primary verification rate (${MONTH_SHORT[latest]})`, value: fmtPct(latestT.primary_verify_rate), cls:'', d: priorT?deltaPct(priorT.primary_verify_rate, latestT.primary_verify_rate):''},
+    ];
+
+    const effKpis = [
+      {label:`Secondary verification rate (${MONTH_SHORT[latest]})`, value: fmtPct(latestT.secondary_verify_rate), cls:'teal', d: priorT?deltaPct(priorT.secondary_verify_rate, latestT.secondary_verify_rate):''},
+      {label:`MSP verification rate (${MONTH_SHORT[latest]})`, value: fmtPct(latestT.msp_documentation_rate), cls:'', d: priorT?deltaPct(priorT.msp_documentation_rate, latestT.msp_documentation_rate):''},
+      {label:`Avg. activities / working day (${MONTH_SHORT[latest]})`, value: latestT.activities_per_day!==null? latestT.activities_per_day.toFixed(1) : '—', cls:'gold', d: priorT?deltaPct(priorT.activities_per_day, latestT.activities_per_day):''},
+      {label:'Active working days (latest month)', value: `${latestT.active_days}`, cls:''},
+    ];
+
+    const medServices = {};
+    months.forEach(m=> Object.entries(d[m].medical_service||{}).forEach(([k,v])=>{ medServices[k]=(medServices[k]||0)+v; }));
+    const medAll = Object.entries(medServices);
+    const medTotal = medAll.reduce((a,[,v])=>a+v,0);
+    const medMain = medAll.filter(([,v])=> (v/medTotal*100) > 0.1).sort((a,b)=>b[1]-a[1]);
+    const medOther = medAll.filter(([,v])=> (v/medTotal*100) <= 0.1).sort((a,b)=>a[0].localeCompare(b[0]));
+    const medOtherShare = medOther.reduce((a,[,v])=>a+v,0) / medTotal * 100;
+
+    const insurerTotals = {};
+    months.forEach(m=> Object.entries(d[m].top_insurers||{}).forEach(([k,v])=>{ insurerTotals[k]=(insurerTotals[k]||0)+v; }));
+    const insurerRows = Object.entries(insurerTotals).sort((a,b)=>b[1]-a[1]).slice(0,5);
+
+    container.innerHTML = `
+      <div class="psr-header">
+        <div><h2>${name}</h2><div class="period">Hired: ${person.hired} · Data on file: ${coverageNote}</div></div>
+        <span class="badge">Data available</span>
+      </div>
+      <div id="printMeta">Generated ${genDate} · Primary Care Clinic</div>
+
+      <div class="kpi-grid">
+        ${kpis.map(c=>`<div class="kpi ${c.cls}"><div class="label">${c.label}</div><div class="value">${c.value}</div>${c.d||''}</div>`).join('')}
+      </div>
+
+      <div class="section-head"><h2 style="font-size:14.5px;">Verification &amp; Efficiency</h2></div>
+      <div class="kpi-grid">
+        ${effKpis.map(c=>`<div class="kpi ${c.cls}"><div class="label">${c.label}</div><div class="value">${c.value}</div>${c.d||''}</div>`).join('')}
+      </div>
+
+      <div class="chart-grid">
+        <div class="chart-card">
+          <h3>Monthly Activity Trend</h3>
+          <div class="cap">Registrations vs. pre-registrations</div>
+          <div class="chart-wrap"><canvas id="ind_trend"></canvas></div>
+        </div>
+        <div class="chart-card">
+          <h3>Primary Insurance Verification Rate</h3>
+          <div class="cap">Share of primary plans confirmed as Verified</div>
+          <div class="chart-wrap"><canvas id="ind_verify"></canvas></div>
+        </div>
+        <div class="chart-card">
+          <h3>Encounter Type Mix</h3>
+          <div class="cap">${coverageNote} combined</div>
+          <div class="chart-wrap"><canvas id="ind_encounter"></canvas></div>
+        </div>
+        <div class="chart-card">
+          <h3>Top Insurers Handled</h3>
+          <div class="cap">By primary plan volume, ${coverageNote} combined</div>
+          <table class="mix">
+            <thead><tr><th>Insurer</th><th class="num">Count</th></tr></thead>
+            <tbody>
+              ${insurerRows.map(([k,v])=>`<tr><td>${k}</td><td class="num">${v}</td></tr>`).join('')}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="chart-card" style="padding-bottom:16px; margin-top:16px;">
+        <h3>Medical Service Mix</h3>
+        <div class="cap">Top services by volume, ${coverageNote} combined</div>
+        <table class="mix">
+          <thead><tr><th>Service</th><th class="num">Count</th><th class="num">Share</th></tr></thead>
+          <tbody>
+            ${medMain.map(([k,v])=>`<tr><td>${k}</td><td class="num">${v}</td><td class="num">${(v/medTotal*100).toFixed(1)}%</td></tr>`).join('')}
+          </tbody>
+        </table>
+        ${medOther.length ? `<div style="font-size:12px; color:var(--muted); margin-top:10px; line-height:1.5;">Other Services: ${medOther.map(([k])=>k).join(', ')} — combined share ${medOtherShare.toFixed(1)}%</div>` : ''}
+      </div>
+    `;
+
+    if (!CHART_OK) {
+      ['ind_trend','ind_verify','ind_encounter'].forEach(id=>chartFallback(id, 'Chart library unavailable — figures are in the tables above.'));
+      return;
+    }
+
+    charts.push(new Chart(document.getElementById('ind_trend'), {
+      type:'bar',
+      data:{
+        labels: months.map(m=>MONTH_SHORT[m]),
+        datasets:[
+          {label:'Registrations', backgroundColor:COLORS.navy2, data: months.map(m=>d[m].registrations), borderRadius:4, maxBarThickness:36},
+          {label:'Pre-registrations', backgroundColor:COLORS.gold, data: months.map(m=>d[m].pre_registrations), borderRadius:4, maxBarThickness:36},
+        ]
+      },
+      options:{ responsive:true, maintainAspectRatio:false,
+        plugins:{legend:{position:'bottom', labels:{boxWidth:10,padding:14}}},
+        scales:{ x:{grid:{display:false}}, y:{grid:{color:'#E3E6EC'}, beginAtZero:true} } }
+    }));
+
+    charts.push(new Chart(document.getElementById('ind_verify'), {
+      type:'line',
+      data:{
+        labels: months.map(m=>MONTH_SHORT[m]),
+        datasets:[{ label:'Verification rate', data: months.map(m=>d[m].primary_verify_rate),
+          borderColor:COLORS.teal, backgroundColor:'rgba(44,122,115,.12)', fill:true, tension:.3, pointRadius:3, pointBackgroundColor:COLORS.teal }]
+      },
+      options:{ responsive:true, maintainAspectRatio:false,
+        plugins:{legend:{display:false}},
+        scales:{ x:{grid:{display:false}}, y:{min:80,max:100, grid:{color:'#E3E6EC'}, ticks:{callback:v=>v+'%'}} } }
+    }));
+
+    const encTotals = {};
+    months.forEach(m=> Object.entries(d[m].encounter_type||{}).forEach(([k,v])=>{ encTotals[k]=(encTotals[k]||0)+v; }));
+    const encLabels = Object.keys(encTotals);
+    charts.push(new Chart(document.getElementById('ind_encounter'), {
+      type:'doughnut',
+      data:{ labels: encLabels, datasets:[{ data: encLabels.map(l=>encTotals[l]), backgroundColor:[COLORS.navy2, COLORS.gold, COLORS.teal, COLORS.purple], borderWidth:0 }] },
+      options:{ responsive:true, maintainAspectRatio:false, cutout:'62%',
+        plugins:{legend:{position:'bottom', labels:{boxWidth:10,padding:12}}} }
+    }));
+  }
+
+  select.addEventListener('change', ()=> renderIndividual(select.value));
+  document.getElementById('printBtn').addEventListener('click', ()=> window.print());
+
+  function safe(fn, label){
+    try { fn(); } catch(e) { console.error('Dashboard section failed:', label, e); }
+  }
+  safe(buildTeamCallout, 'teamCallout');
+  safe(buildTeamKpis, 'teamKpis');
+  safe(buildTeamCharts, 'teamCharts');
+  safe(buildTopInsurers, 'topInsurers');
+  safe(buildVerifyLeaderboard, 'verifyLeaderboard');
+  safe(buildNeedToVerify, 'needToVerify');
+  safe(()=>renderIndividual(select.value), 'individual');
+})();
+</script>
+</body>
+</html>
