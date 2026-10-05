@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>PSR Coaching: HIPAA Communication Forms and Contact Information</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Mulish:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#FBF6EE; --card:#FFFDF8; --ink:#2D2622; --muted:#6B5E55; --line:#E6D8C4;
+  --amber:#C98A1E; --amber-deep:#8C5A0E; --amber-soft:#F6E6C8;
+  --coral:#E2735E; --coral-deep:#A8432F; --coral-soft:#FBE4DD;
+  --ok:#2F7A55; --ok-soft:#E3F1E8;
+  --header:#9A5711; --header-ink:#FFF8EC;
+  --focus:#1F5FA8;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#1D1916; --card:#28221E; --ink:#F2EAE0; --muted:#BDAFA2; --line:#40362E;
+    --amber:#E3A23C; --amber-deep:#F0BE68; --amber-soft:#3A2E1C;
+    --coral:#EE8A74; --coral-deep:#F4A592; --coral-soft:#3C2621;
+    --ok:#83CFA3; --ok-soft:#1E3328;
+    --header:#6E3E0B; --header-ink:#FFF3E0; --focus:#8DB8F0;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#1D1916; --card:#28221E; --ink:#F2EAE0; --muted:#BDAFA2; --line:#40362E;
+  --amber:#E3A23C; --amber-deep:#F0BE68; --amber-soft:#3A2E1C;
+  --coral:#EE8A74; --coral-deep:#F4A592; --coral-soft:#3C2621;
+  --ok:#83CFA3; --ok-soft:#1E3328;
+  --header:#6E3E0B; --header-ink:#FFF3E0; --focus:#8DB8F0;
+}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:"Mulish",system-ui,-apple-system,"Segoe UI",Arial,sans-serif;font-size:17px;line-height:1.6}
+h1,h2,h3{font-family:"Fraunces",Georgia,"Times New Roman",serif;line-height:1.2;margin:0}
+h2{font-size:1.85rem;font-weight:700;margin-bottom:.6rem}
+h3{font-size:1.25rem;font-weight:700;margin:2rem 0 .6rem}
+p{margin:0 0 1rem}
+a{color:var(--coral-deep)}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+img{max-width:100%}
+
+/* Header */
+.masthead{background:var(--header);color:var(--header-ink);border-bottom:6px solid var(--coral)}
+.masthead-inner{max-width:1040px;margin:0 auto;padding:2.2rem 1.4rem 2.4rem;display:grid;grid-template-columns:1.25fr 1fr;gap:2.4rem;align-items:center}
+.brand{font-weight:700;font-size:.95rem;opacity:.9;margin-bottom:.9rem}
+.masthead h1{font-size:clamp(1.9rem,4.2vw,2.9rem);font-weight:700;margin-bottom:1rem}
+.masthead .lede{font-size:1.05rem;max-width:34rem;opacity:.95;margin:0}
+
+/* The memorable piece: an unusable form */
+.formcard{position:relative;background:#FFFDF8;color:#2D2622;border-radius:6px;padding:1.2rem 1.3rem 1.3rem;box-shadow:0 10px 0 rgba(0,0,0,.18);transform:rotate(-1.5deg)}
+.formcard .fc-title{font-family:"Fraunces",Georgia,serif;font-weight:700;font-size:1.02rem;border-bottom:2px solid #2D2622;padding-bottom:.4rem;margin-bottom:.7rem}
+.fc-row{display:grid;grid-template-columns:8.5rem 1fr;gap:.6rem;font-size:.9rem;padding:.32rem 0;border-bottom:1px solid #E6D8C4}
+.fc-row span:first-child{color:#6B5E55;font-weight:600}
+.fc-blank{border-bottom:2px dashed #C2513C;color:#A8432F;font-style:italic}
+.stamp{position:absolute;right:-.6rem;bottom:1.1rem;transform:rotate(-12deg);border:3px solid #C2513C;color:#C2513C;font-family:"Fraunces",Georgia,serif;font-weight:700;font-size:1rem;padding:.3rem .7rem;border-radius:4px;background:rgba(255,253,248,.85);line-height:1.15;text-align:center}
+
+/* Tabs */
+.tabbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--paper);border-bottom:1px solid var(--line)}
+.tabs{max-width:1040px;margin:0 auto;display:flex;gap:.25rem;overflow-x:auto;padding:.6rem 1rem 0}
+.tab{flex:0 0 auto;font:inherit;font-size:.93rem;font-weight:700;color:var(--muted);background:none;border:0;border-bottom:4px solid transparent;padding:.6rem .85rem .7rem;cursor:pointer;display:flex;align-items:center;gap:.45rem}
+.tab:hover{color:var(--ink)}
+.tab[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--amber)}
+.tab .dot{width:1.2rem;height:1.2rem;border-radius:50%;border:2px solid var(--line);display:inline-grid;place-items:center;font-size:.72rem;line-height:1}
+.tab.done .dot{background:var(--ok);border-color:var(--ok);color:var(--paper)}
+.tab.done .dot::after{content:"\2713"}
+.tab.final .dot{border-color:var(--coral)}
+
+/* Panels */
+main{max-width:1040px;margin:0 auto;padding:2.2rem 1.4rem 4rem}
+.panel{max-width:46rem}
+.panel-head{display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;margin-bottom:.4rem}
+.intro{font-size:1.08rem;color:var(--muted)}
+.btn{font:inherit;font-weight:700;font-size:.95rem;border-radius:999px;padding:.6rem 1.15rem;cursor:pointer;border:2px solid var(--amber-deep);background:var(--amber-deep);color:var(--paper)}
+.btn:hover{filter:brightness(1.08)}
+.btn.ghost{background:transparent;color:var(--amber-deep)}
+.btn.small{font-size:.85rem;padding:.4rem .9rem}
+.btn-row{display:flex;flex-wrap:wrap;gap:.7rem;margin-top:1.6rem}
+
+ul.clean{margin:0 0 1rem;padding-left:1.2rem}
+ul.clean li{margin:.25rem 0}
+
+.callout{border-left:5px solid var(--coral);background:var(--coral-soft);padding:1rem 1.2rem;border-radius:0 8px 8px 0;margin:1.4rem 0}
+.callout p:last-child{margin:0}
+.pullquote{font-family:"Fraunces",Georgia,serif;font-size:1.45rem;line-height:1.35;border-top:2px solid var(--amber);border-bottom:2px solid var(--amber);padding:1.1rem 0;margin:1.8rem 0}
+
+.groups{display:grid;grid-template-columns:repeat(auto-fit,minmax(13.5rem,1fr));gap:1rem;margin:1rem 0}
+.group{background:var(--card);border:1px solid var(--line);border-top:4px solid var(--amber);border-radius:6px;padding:1rem 1.1rem}
+.group h4{font-family:"Fraunces",Georgia,serif;font-size:1.05rem;margin:0 0 .4rem}
+.group ul{margin:0;padding-left:1.1rem;font-size:.95rem}
+.group.patients{border-top-color:var(--coral)}
+
+.roles{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:1rem 0}
+.role{background:var(--card);border:1px solid var(--line);border-radius:6px;padding:1rem 1.1rem}
+.role h4{font-family:"Fraunces",Georgia,serif;margin:0 0 .3rem;font-size:1.05rem}
+.role p{margin:0;font-size:.95rem}
+
+ol.chain{list-style:none;counter-reset:c;margin:1rem 0;padding:0}
+ol.chain li{counter-increment:c;position:relative;padding:0 0 1rem 2.6rem}
+ol.chain li::before{content:counter(c);position:absolute;left:0;top:0;width:1.8rem;height:1.8rem;border-radius:50%;background:var(--amber-soft);color:var(--amber-deep);font-weight:700;display:grid;place-items:center;font-size:.9rem}
+ol.chain li:not(:last-child)::after{content:"";position:absolute;left:.88rem;top:1.9rem;bottom:.1rem;width:2px;background:var(--line)}
+ol.chain li.miss::before{background:var(--coral);color:#fff}
+
+ol.steps{counter-reset:s;list-style:none;padding:0;margin:1rem 0}
+ol.steps>li{counter-increment:s;background:var(--card);border:1px solid var(--line);border-radius:6px;padding:1rem 1.1rem 1rem 3.4rem;position:relative;margin-bottom:.8rem}
+ol.steps>li::before{content:counter(s);position:absolute;left:1rem;top:.95rem;font-family:"Fraunces",Georgia,serif;font-size:1.5rem;font-weight:700;color:var(--amber-deep)}
+ol.steps strong{display:block;font-size:1.02rem}
+ol.steps ul{margin:.3rem 0 0;padding-left:1.1rem;font-size:.95rem}
+
+.scripts{display:grid;gap:.7rem;margin:1rem 0}
+.script{background:var(--amber-soft);border-radius:8px;padding:.85rem 1.1rem}
+.script .when{font-size:.85rem;font-weight:700;color:var(--amber-deep);margin-bottom:.15rem}
+.script q{font-family:"Fraunces",Georgia,serif;font-size:1.05rem;quotes:"\201C" "\201D"}
+
+.rules{margin:1rem 0;padding:0;list-style:none}
+.rules li{padding:.8rem 0 .8rem 2.2rem;border-bottom:1px solid var(--line);position:relative}
+.rules li::before{content:"\2715";position:absolute;left:.3rem;top:.75rem;color:var(--coral-deep);font-weight:700}
+
+.compare-wrap{overflow-x:auto;margin:1rem 0}
+table.compare{border-collapse:collapse;width:100%;min-width:34rem;font-size:.95rem;background:var(--card)}
+.compare th,.compare td{text-align:left;padding:.7rem .85rem;border:1px solid var(--line);vertical-align:top}
+.compare th{font-family:"Fraunces",Georgia,serif;font-size:1rem;background:var(--amber-soft)}
+.compare td.weak{color:var(--coral-deep)}
+.compare td.good{color:var(--ok)}
+
+.yourturn{border:2px dashed var(--amber);border-radius:8px;padding:1rem 1.2rem;margin:1.8rem 0;background:var(--card)}
+.yourturn h4{font-family:"Fraunces",Georgia,serif;margin:0 0 .4rem;font-size:1.1rem}
+textarea{width:100%;min-height:6rem;font:inherit;font-size:.98rem;color:var(--ink);background:var(--paper);border:1px solid var(--line);border-radius:6px;padding:.6rem .7rem;resize:vertical}
+input[type="text"],input[type="date"]{font:inherit;font-size:.98rem;color:var(--ink);background:var(--paper);border:1px solid var(--line);border-radius:6px;padding:.5rem .65rem;width:100%}
+
+/* Knowledge checks */
+.kc{margin:2.4rem 0 0;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:1.3rem 1.3rem 1.1rem}
+.kc-head{display:flex;justify-content:space-between;align-items:baseline;gap:1rem;border-bottom:1px solid var(--line);padding-bottom:.6rem;margin-bottom:1rem}
+.kc-head h3{margin:0;font-size:1.2rem}
+.kc-count{font-size:.88rem;color:var(--muted);font-weight:600;white-space:nowrap}
+.kc-q{margin-bottom:1.3rem}
+.kc-q fieldset{border:0;margin:0;padding:0}
+.kc-q legend{font-weight:700;margin-bottom:.55rem;padding:0}
+.opt{display:flex;gap:.65rem;align-items:flex-start;padding:.55rem .75rem;border:1px solid var(--line);border-radius:6px;margin-bottom:.45rem;cursor:pointer;background:var(--paper)}
+.opt:hover{border-color:var(--amber)}
+.opt input{margin-top:.3rem;accent-color:var(--amber-deep)}
+.opt.right{border-color:var(--ok);background:var(--ok-soft)}
+.opt.wrong{border-color:var(--coral);background:var(--coral-soft)}
+.fb{display:none;padding:.65rem .85rem;border-radius:6px;font-size:.95rem;margin-top:.3rem}
+.fb.show{display:block}
+.fb.good{background:var(--ok-soft);color:var(--ink);border-left:4px solid var(--ok)}
+.fb.bad{background:var(--coral-soft);color:var(--ink);border-left:4px solid var(--coral)}
+.kc-done{display:none;align-items:center;gap:1rem;flex-wrap:wrap;padding-top:.4rem}
+.kc-done.show{display:flex}
+.kc-done p{margin:0;font-weight:700;color:var(--ok)}
+
+/* Final questionnaire */
+.fq-id{display:grid;grid-template-columns:2fr 1fr;gap:1rem;margin:1.2rem 0 1.6rem}
+.fq-id label{font-weight:700;font-size:.92rem;display:block;margin-bottom:.25rem}
+.fq-item{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:1.1rem 1.2rem;margin-bottom:1rem}
+.fq-item fieldset{border:0;margin:0;padding:0}
+.fq-item legend,.fq-item .qlabel{font-weight:700;padding:0;margin-bottom:.6rem;display:block}
+.fq-num{font-family:"Fraunces",Georgia,serif;color:var(--amber-deep);margin-right:.35rem}
+.ack{display:flex;gap:.6rem;align-items:flex-start;margin:1.4rem 0 .4rem;font-weight:600}
+.ack input{margin-top:.35rem;accent-color:var(--amber-deep)}
+.notice{display:none;background:var(--coral-soft);border-left:4px solid var(--coral);padding:.75rem 1rem;border-radius:0 6px 6px 0;margin-top:1rem}
+.notice.show{display:block}
+.mgr{border:2px solid var(--line);border-radius:8px;padding:1rem 1.2rem;margin-top:1.6rem}
+.mgr h4{font-family:"Fraunces",Georgia,serif;margin:0 0 .7rem;font-size:1.05rem}
+.lines{display:grid;grid-template-columns:repeat(auto-fit,minmax(12rem,1fr));gap:1.1rem 1.4rem}
+.line{border-bottom:1px solid var(--ink);padding-top:1.5rem;font-size:.82rem;color:var(--muted)}
+.line span{position:relative;top:1.25rem}
+.hint{font-size:.88rem;color:var(--muted);margin-top:.8rem}
+
+.print-only{display:none}
+.vh{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+footer{max-width:1040px;margin:0 auto;padding:0 1.4rem 2.5rem;color:var(--muted);font-size:.85rem}
+
+@media (max-width:760px){
+  .masthead-inner{grid-template-columns:1fr;gap:1.6rem;padding:1.6rem 1.1rem 2rem}
+  .formcard{transform:none;max-width:26rem}
+  .stamp{right:.4rem}
+  .roles,.fq-id{grid-template-columns:1fr}
+  main{padding:1.6rem 1.1rem 3rem}
+  h2{font-size:1.55rem}
+  .panel-head{flex-direction:column}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+
+@media print{
+  :root{--paper:#fff;--card:#fff;--ink:#000;--muted:#333;--line:#999;--amber-soft:#f3f3f3;--coral-soft:#f3f3f3;--ok-soft:#f3f3f3}
+  body{font-size:11.5pt;background:#fff}
+  .masthead{background:#fff;color:#000;border-bottom:3px solid #000}
+  .masthead-inner{display:block;padding:.4rem 0 .6rem}
+  .masthead .lede,.formcard{display:none}
+  .masthead h1{font-size:18pt;margin-bottom:.2rem}
+  .tabbar,.no-print,.btn,.kc-done,.notice{display:none!important}
+  main{padding:1rem 0;max-width:none}
+  .panel{max-width:none}
+  .kc,.fq-item,.group,.role,ol.steps>li,.yourturn{break-inside:avoid}
+  textarea{display:none}
+  .print-only{display:block}
+  .print-answer{border:1px solid #999;border-radius:4px;padding:.5rem .7rem;min-height:3.5rem;white-space:pre-wrap}
+  .print-choice{font-weight:700;margin-top:.3rem}
+  footer{padding:0}
+}
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="masthead-inner">
+    <div>
+      <div class="brand">Primary Care Clinic &nbsp;|&nbsp; PSR Coaching Module</div>
+      <h1>Capturing HIPAA Communication Forms and Contact Information</h1>
+      <p class="lede">If we cannot reach the patient, we cannot coordinate their care. This module walks through what every registration encounter should include and why it matters to the whole team.</p>
+    </div>
+    <div class="formcard" aria-hidden="true">
+      <div class="fc-title">HIPAA Communication Form</div>
+      <div class="fc-row"><span>Patient</span><span>Jane Sample</span></div>
+      <div class="fc-row"><span>Phone</span><span class="fc-blank">not entered</span></div>
+      <div class="fc-row"><span>Authorized contact</span><span>"Mom"</span></div>
+      <div class="fc-row"><span>Contact phone</span><span class="fc-blank">not entered</span></div>
+      <div class="fc-row"><span>Last reviewed</span><span class="fc-blank">6 years ago</span></div>
+      <div class="stamp">Unable to<br>Reach Patient</div>
+    </div>
+  </div>
+</header>
+
+<nav class="tabbar" aria-label="Module sections">
+  <div class="tabs" role="tablist" aria-label="Coaching module sections">
+    <button class="tab" role="tab" id="tab-1" aria-controls="panel-1" aria-selected="true"><span class="dot" aria-hidden="true"></span>Why It Matters<span class="vh state"></span></button>
+    <button class="tab" role="tab" id="tab-2" aria-controls="panel-2" aria-selected="false" tabindex="-1"><span class="dot" aria-hidden="true"></span>Common Issues<span class="vh state"></span></button>
+    <button class="tab" role="tab" id="tab-3" aria-controls="panel-3" aria-selected="false" tabindex="-1"><span class="dot" aria-hidden="true"></span>Who It Affects<span class="vh state"></span></button>
+    <button class="tab" role="tab" id="tab-4" aria-controls="panel-4" aria-selected="false" tabindex="-1"><span class="dot" aria-hidden="true"></span>Every Encounter<span class="vh state"></span></button>
+    <button class="tab" role="tab" id="tab-5" aria-controls="panel-5" aria-selected="false" tabindex="-1"><span class="dot" aria-hidden="true"></span>Do Not Assume<span class="vh state"></span></button>
+    <button class="tab final" role="tab" id="tab-6" aria-controls="panel-6" aria-selected="false" tabindex="-1"><span class="dot" aria-hidden="true"></span>Final Questionnaire</button>
+  </div>
+</nav>
+
+<main>
+
+<!-- PANEL 1 -->
+<section class="panel" role="tabpanel" id="panel-1" aria-labelledby="tab-1" tabindex="0">
+  <div class="panel-head">
+    <h2>Why It Matters</h2>
+    <button class="btn ghost small no-print" data-print>Print This Section</button>
+  </div>
+  <p class="intro">Our teams depend on accurate HIPAA communication forms and contact information to safely reach patients, coordinate care, and follow up on important medical needs.</p>
+  <p>Recent reviews found forms that were incomplete, outdated, declined without clarification, missing contact information, or not updated during registration. These issues showed up across several registration areas. This coaching is here to reinforce one consistent process every time a patient is registered.</p>
+
+  <h3>The Form Is Not a Formality</h3>
+  <p>The HIPAA communication form tells the care team how we can reach the patient and who we are allowed to talk with about their care. Staff use it to:</p>
+  <ul class="clean">
+    <li>Reach patients about test results</li>
+    <li>Share referral updates</li>
+    <li>Explain insurance denials or authorization issues</li>
+    <li>Coordinate follow-up appointments</li>
+    <li>Contact authorized family members or guardians</li>
+    <li>Share information about treatment plans</li>
+    <li>Support continuity of care</li>
+  </ul>
+
+  <div class="pullquote">If we cannot reach the patient, we cannot effectively coordinate their care.</div>
+
+  <h3>How This Module Works</h3>
+  <p>There are five short sections. Each one ends with a quick knowledge check you can retry until you get it right. When all five are complete, finish the Final Questionnaire, then print it and turn it in to the Clinic Manager. Plan for about 20 minutes.</p>
+
+  <div class="kc" data-check="1"></div>
+</section>
+
+<!-- PANEL 2 -->
+<section class="panel" role="tabpanel" id="panel-2" aria-labelledby="tab-2" tabindex="0" hidden>
+  <div class="panel-head">
+    <h2>Common Issues</h2>
+    <button class="btn ghost small no-print" data-print>Print This Section</button>
+  </div>
+  <p class="intro">These are the problems found in recent reviews. Each one looks small at the front desk. Each one becomes a barrier later, when someone needs to reach the patient.</p>
+
+  <div class="groups">
+    <div class="group">
+      <h4>Problems With the Form</h4>
+      <ul>
+        <li>Form not completed</li>
+        <li>Form only partly completed</li>
+        <li>Marked "declined" even though earlier documentation was on file</li>
+        <li>Outdated forms left active for years</li>
+        <li>Inaccurate names or incomplete demographics on the form</li>
+      </ul>
+    </div>
+    <div class="group">
+      <h4>Problems With Contacts</h4>
+      <ul>
+        <li>Missing patient phone numbers</li>
+        <li>Alternate contacts not documented</li>
+        <li>Emergency contacts or authorized contacts entered incorrectly</li>
+      </ul>
+    </div>
+    <div class="group">
+      <h4>Problems at Check-In</h4>
+      <ul>
+        <li>Contact information not reviewed and updated</li>
+        <li>Insurance information not reviewed or updated</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>Two Kinds of Contacts</h3>
+  <p>Mixing these up is one of the most common entry errors. They are different roles, so each belongs in its own place.</p>
+  <div class="roles">
+    <div class="role">
+      <h4>Emergency Contact</h4>
+      <p>The person we call if something urgent happens to the patient.</p>
+    </div>
+    <div class="role">
+      <h4>Authorized Contact</h4>
+      <p>A person the patient has given permission to receive information about their care.</p>
+    </div>
+  </div>
+  <p>One person can be both, but only when the patient tells us so. Ask, then enter each role in the correct place.</p>
+
+  <div class="kc" data-check="2"></div>
+</section>
+
+<!-- PANEL 3 -->
+<section class="panel" role="tabpanel" id="panel-3" aria-labelledby="tab-3" tabindex="0" hidden>
+  <div class="panel-head">
+    <h2>Who It Affects</h2>
+    <button class="btn ghost small no-print" data-print>Print This Section</button>
+  </div>
+  <p class="intro">When a form is incomplete, the work does not disappear. It moves to someone else, usually at a moment when time matters.</p>
+
+  <div class="groups">
+    <div class="group">
+      <h4>Nursing Staff</h4>
+      <ul>
+        <li>Cannot notify patients of abnormal results</li>
+        <li>Cannot explain insurance denials or authorization needs</li>
+        <li>Cannot coordinate added testing</li>
+        <li>Cannot reach guardians or decision-making supports</li>
+        <li>Make repeated unsuccessful calls</li>
+      </ul>
+    </div>
+    <div class="group">
+      <h4>Referral and Care Coordination</h4>
+      <ul>
+        <li>Cannot reach patients about specialist appointments</li>
+        <li>Tests and procedures get scheduled late</li>
+        <li>Referrals may expire before the patient is reached</li>
+      </ul>
+    </div>
+    <div class="group">
+      <h4>Providers</h4>
+      <ul>
+        <li>Follow-up on treatment plans is delayed</li>
+        <li>Harder to confirm recommended care is completed</li>
+        <li>Higher risk of missed communication about clinical decisions</li>
+      </ul>
+    </div>
+    <div class="group">
+      <h4>Registration Staff</h4>
+      <ul>
+        <li>Extra time correcting records later</li>
+        <li>Rework at future appointments</li>
+        <li>More calls and messages from clinical staff asking for fixes</li>
+      </ul>
+    </div>
+    <div class="group patients">
+      <h4>Patients</h4>
+      <ul>
+        <li>Miss important health information</li>
+        <li>Experience delays in care</li>
+        <li>Become frustrated when we cannot reach them</li>
+        <li>May not get timely updates on testing, referrals, or treatment</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>Example: Following One Missed Step</h3>
+  <ol class="chain">
+    <li class="miss"><strong>Monday, at check-in.</strong> The patient says "nothing changed," so the phone number and form are not reviewed. The number on file was disconnected months ago.</li>
+    <li><strong>Wednesday.</strong> A lab result comes back abnormal and the provider wants the patient seen this week.</li>
+    <li><strong>Wednesday afternoon.</strong> The nurse calls and reaches a disconnected line. The HIPAA form has no alternate contact.</li>
+    <li><strong>Thursday and Friday.</strong> The nurse tries again, sends a portal message, and mails a letter.</li>
+    <li><strong>The next week.</strong> The patient finally calls in, a full week later than they could have been seen.</li>
+  </ol>
+  <p>One 30-second read-back at the desk would have prevented every step after the first.</p>
+
+  <div class="kc" data-check="3"></div>
+</section>
+
+<!-- PANEL 4 -->
+<section class="panel" role="tabpanel" id="panel-4" aria-labelledby="tab-4" tabindex="0" hidden>
+  <div class="panel-head">
+    <h2>Every Encounter</h2>
+    <button class="btn ghost small no-print" data-print>Print This Section</button>
+  </div>
+  <p class="intro">Every registration encounter includes these steps, for new and returning patients alike.</p>
+
+  <ol class="steps">
+    <li><strong>Identify the Patient</strong>Use two identifiers: name and date of birth.</li>
+    <li><strong>Verify Demographics</strong>
+      <ul>
+        <li>Confirm phone numbers</li>
+        <li>Confirm address</li>
+        <li>Confirm email address when applicable</li>
+      </ul>
+    </li>
+    <li><strong>Verify Insurance</strong>Review and update insurance information, and scan identification and insurance cards into the record.</li>
+    <li><strong>Review the HIPAA Communication Form</strong>
+      <ul>
+        <li>Make sure all required sections are completed</li>
+        <li>Confirm the patient's wishes about how we communicate and who their authorized contacts are</li>
+        <li>Enter contact names accurately</li>
+        <li>Document a phone number for every contact</li>
+        <li>Ask the patient about any blank or incomplete section</li>
+      </ul>
+    </li>
+    <li><strong>Escalate When Unsure</strong>If you are not sure how to complete the form, ask before the patient leaves. It is much harder to fix later.</li>
+  </ol>
+
+  <h3>What to Say at the Desk</h3>
+  <p>Reading information back to the patient is faster than asking open questions, and it catches errors the patient may not think to mention.</p>
+  <div class="scripts">
+    <div class="script"><div class="when">Confirming the phone number</div><q>I have a phone number ending in 4821. Is that still the best way to reach you?</q></div>
+    <div class="script"><div class="when">Confirming an authorized contact</div><q>Your form lists your son, David, as someone we can talk with about your care. Would you like to keep him on your form?</q></div>
+    <div class="script"><div class="when">A blank contact section</div><q>This section is blank. Is there anyone you would like us to be able to talk with about your care, like a family member?</q></div>
+    <div class="script"><div class="when">A patient in a hurry</div><q>I know you're in a hurry. This will take about 30 seconds and makes sure we can reach you about your results.</q></div>
+  </div>
+
+  <div class="yourturn">
+    <h4>Your Turn</h4>
+    <p>Think about your own check-in routine. Where is the easiest point to add the HIPAA form review so it happens every time? Write it out in a sentence or two.</p>
+    <textarea aria-label="Your Turn response" data-mirror="yt-print"></textarea>
+    <div class="print-only print-answer" id="yt-print"></div>
+  </div>
+
+  <div class="kc" data-check="4"></div>
+</section>
+
+<!-- PANEL 5 -->
+<section class="panel" role="tabpanel" id="panel-5" aria-labelledby="tab-5" tabindex="0" hidden>
+  <div class="panel-head">
+    <h2>Do Not Assume</h2>
+    <button class="btn ghost small no-print" data-print>Print This Section</button>
+  </div>
+  <p class="intro">Most of the issues in our reviews came from a reasonable-sounding assumption. These three rules close those gaps.</p>
+
+  <ul class="rules">
+    <li><strong>Do not assume information from previous years is still correct.</strong> Phone numbers, addresses, and relationships change.</li>
+    <li><strong>Do not assume patients want contacts removed unless they specifically ask.</strong> A blank section today is a reason to ask, not a reason to delete.</li>
+    <li><strong>Do not leave sections incomplete when you can clarify during registration.</strong> The patient is in front of you now. That is the easiest time to ask.</li>
+  </ul>
+
+  <h3>Make Documentation Meaningful</h3>
+  <p>A form that is blank, partly completed, or missing phone numbers gives clinical staff little or nothing to work with later.</p>
+  <div class="compare-wrap">
+    <table class="compare">
+      <thead><tr><th scope="col">Item</th><th scope="col">Not Useful</th><th scope="col">Meaningful</th></tr></thead>
+      <tbody>
+        <tr><th scope="row">Authorized contact</th><td class="weak">"Mom"</td><td class="good">Linda Garcia, mother, (970) 555-0142</td></tr>
+        <tr><th scope="row">Patient phone</th><td class="weak">Number from 2019, never confirmed</td><td class="good">Number read back and confirmed today</td></tr>
+        <tr><th scope="row">Declined status</th><td class="weak">Marked "declined" with an earlier form on file</td><td class="good">Patient asked about the earlier form and their current wishes documented</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Shared Responsibility</h3>
+  <p>Accurate HIPAA forms are a shared responsibility across every registration area. Each encounter is a chance to verify and update information so patients can be reached when important follow-up is needed. A few extra moments at registration reduce delays, avoid repeat work, and make sure patients get timely communication about their care.</p>
+
+  <div class="callout">
+    <p><strong>Going forward, every PSR is expected to:</strong></p>
+    <ul class="clean">
+      <li>Verify contact information at every encounter</li>
+      <li>Review and update the HIPAA communication form as needed</li>
+      <li>Make sure forms are fully completed and accurate</li>
+      <li>Escalate questions when unsure how to complete the form</li>
+      <li>Remember that accurate documentation directly supports patient care and safety</li>
+    </ul>
+  </div>
+
+  <div class="kc" data-check="5"></div>
+</section>
+
+<!-- PANEL 6 -->
+<section class="panel" role="tabpanel" id="panel-6" aria-labelledby="tab-6" tabindex="0" hidden>
+  <div class="panel-head">
+    <h2>Final Questionnaire</h2>
+  </div>
+  <p class="intro">Answer all five questions, check the acknowledgment, then print and turn in to the Clinic Manager. Your answers are scored by the Clinic Manager after you submit.</p>
+
+  <form id="fq" onsubmit="return false">
+    <div class="fq-id">
+      <div><label for="fq-name">Employee Name</label><input type="text" id="fq-name" autocomplete="name" data-print-val></div>
+      <div><label for="fq-date">Date</label><input type="date" id="fq-date" data-print-val></div>
+    </div>
+
+    <div class="fq-item">
+      <fieldset>
+        <legend><span class="fq-num">1.</span>A returning patient says, "Nothing has changed since last year." What is the best response?</legend>
+        <label class="opt"><input type="radio" name="fq1" value="A"> <span>A. Skip the review, since the patient already confirmed</span></label>
+        <label class="opt"><input type="radio" name="fq1" value="B"> <span>B. Read back the phone number, address, and contacts on file, and confirm each one</span></label>
+        <label class="opt"><input type="radio" name="fq1" value="C"> <span>C. Ask the patient to fill out a brand-new form from scratch</span></label>
+        <label class="opt"><input type="radio" name="fq1" value="D"> <span>D. Make a note to review it at the next visit</span></label>
+      </fieldset>
+      <div class="print-only print-choice" data-choice="fq1"></div>
+    </div>
+
+    <div class="fq-item">
+      <fieldset>
+        <legend><span class="fq-num">2.</span>Which authorized contact entry is most useful to the care team?</legend>
+        <label class="opt"><input type="radio" name="fq2" value="A"> <span>A. "Husband"</span></label>
+        <label class="opt"><input type="radio" name="fq2" value="B"> <span>B. "Mike"</span></label>
+        <label class="opt"><input type="radio" name="fq2" value="C"> <span>C. Michael Torres, spouse, with his phone number</span></label>
+        <label class="opt"><input type="radio" name="fq2" value="D"> <span>D. Left blank, since the patient can be reached directly</span></label>
+      </fieldset>
+      <div class="print-only print-choice" data-choice="fq2"></div>
+    </div>
+
+    <div class="fq-item">
+      <fieldset>
+        <legend><span class="fq-num">3.</span>A patient's HIPAA form has been active for several years and has never been reviewed. What should you do?</legend>
+        <label class="opt"><input type="radio" name="fq3" value="A"> <span>A. Leave it as is, since it is still active</span></label>
+        <label class="opt"><input type="radio" name="fq3" value="B"> <span>B. Review it with the patient today and update it to match their current wishes</span></label>
+        <label class="opt"><input type="radio" name="fq3" value="C"> <span>C. Mark it "declined" until the patient asks to update it</span></label>
+        <label class="opt"><input type="radio" name="fq3" value="D"> <span>D. Remove all contacts so the patient can start over next time</span></label>
+      </fieldset>
+      <div class="print-only print-choice" data-choice="fq3"></div>
+    </div>
+
+    <div class="fq-item">
+      <label class="qlabel" for="fq4"><span class="fq-num">4.</span>Name two teams or roles affected when a HIPAA form is incomplete, and describe one way each one is affected.</label>
+      <textarea id="fq4" data-mirror="fq4-print"></textarea>
+      <div class="print-only print-answer" id="fq4-print"></div>
+    </div>
+
+    <div class="fq-item">
+      <label class="qlabel" for="fq5"><span class="fq-num">5.</span>A patient's form is marked "declined," but a completed form from a previous visit is on file. Describe the steps you would take and what you would say to the patient.</label>
+      <textarea id="fq5" data-mirror="fq5-print"></textarea>
+      <div class="print-only print-answer" id="fq5-print"></div>
+    </div>
+
+    <label class="ack"><input type="checkbox" id="fq-ack"> <span>I completed this coaching module and understand the registration expectations for HIPAA communication forms and patient contact information.</span></label>
+
+    <div class="mgr">
+      <h4>Employee and Manager Sign-Off</h4>
+      <div class="lines">
+        <div class="line"><span>Employee Signature</span></div>
+        <div class="line"><span>Date</span></div>
+      </div>
+      <div class="lines" style="margin-top:1.6rem">
+        <div class="line"><span>Score (out of 5)</span></div>
+        <div class="line"><span>Reviewed By</span></div>
+        <div class="line"><span>Date Reviewed</span></div>
+      </div>
+      <div class="lines" style="margin-top:1.6rem">
+        <div class="line"><span>Follow-up Needed (Yes / No) and Notes</span></div>
+      </div>
+    </div>
+
+    <div class="notice" id="fq-notice" role="alert"></div>
+    <div class="btn-row no-print">
+      <button type="button" class="btn" id="fq-print">Print Questionnaire</button>
+      <button type="button" class="btn ghost" id="fq-clear">Clear My Answers</button>
+    </div>
+    <p class="hint no-print">If the print window does not open, use your browser's Print command (Ctrl+P on Windows, Cmd+P on Mac) while this tab is open.</p>
+  </form>
+</section>
+
+</main>
+
+<footer>Primary Care Clinic &nbsp;|&nbsp; PSR Coaching: HIPAA Communication Forms and Contact Information</footer>
+
+<script>
+(function(){
+  // ---------- Knowledge check content ----------
+  var checks = {
+    1: [
+      {q:"Which statement best describes the HIPAA communication form?",
+       o:["A formality to finish before the visit starts",
+          "The tool that tells us how to reach the patient and who we may talk with about their care",
+          "An insurance document used for billing",
+          "A form only new patients need to complete"],
+       a:1,
+       why:"The form is how the whole care team reaches the patient and knows who they are allowed to talk with. Without it, results, referrals, and follow-up stall."}
+    ],
+    2: [
+      {q:"A patient's form lists her son as an authorized contact, but no phone number is entered. Is the form complete?",
+       o:["Yes, the contact's name is listed",
+          "Yes, staff can look up the number later",
+          "No, a contact without a phone number cannot actually be used",
+          "No, sons cannot be authorized contacts"],
+       a:2,
+       why:"A name alone gives the nurse or referral team no way to reach anyone. Every contact needs a phone number."},
+      {q:"A form is marked \"declined,\" but a completed form from a previous visit is on file. What is the best next step?",
+       o:["Leave it marked declined",
+          "Delete the previous form so the record matches",
+          "Ask the patient about the earlier form and document their current wishes",
+          "Copy the old form forward without asking"],
+       a:2,
+       why:"\"Declined\" should never be assumed. Clarify with the patient whether they want to keep, update, or change what is on file, then document their answer."}
+    ],
+    3: [
+      {q:"In the example, which step would have prevented the week-long delay?",
+       o:["The nurse calling more often",
+          "Mailing the letter sooner",
+          "Reading back the phone number and asking about an alternate contact at check-in",
+          "The provider ordering the lab later"],
+       a:2,
+       why:"A quick read-back at registration would have caught the disconnected number and added a backup way to reach the patient."},
+      {q:"The referral team cannot reach a patient. What is one real risk?",
+       o:["The referral may expire before the patient is contacted",
+          "The patient's insurance will be canceled",
+          "The provider will have to repeat the visit",
+          "There is no real risk, the specialist will call"],
+       a:0,
+       why:"Referrals have time limits. If we cannot reach the patient, the referral can expire and the process starts over, delaying care."}
+    ],
+    4: [
+      {q:"When should a PSR confirm the patient's phone number, address, and HIPAA form?",
+       o:["Only for new patients",
+          "Only when the patient says something changed",
+          "Once a year",
+          "At every encounter"],
+       a:3,
+       why:"Every registration encounter is a chance to verify. Patients often do not think to mention a changed number."},
+      {q:"Which two identifiers do we use to identify a patient at registration?",
+       o:["Name and phone number",
+          "Name and date of birth",
+          "Date of birth and insurance ID",
+          "Address and phone number"],
+       a:1,
+       why:"Two identifiers, name and date of birth, are used for every patient before any information is reviewed or updated."}
+    ],
+    5: [
+      {q:"A patient's previous form lists her sister as an authorized contact. Today she leaves that section blank and says nothing about it. What do you do?",
+       o:["Remove the sister, since the section is blank",
+          "Ask whether she would like her sister to stay on the form",
+          "Leave the section blank and move on",
+          "Keep the sister on without mentioning it"],
+       a:1,
+       why:"Do not assume a patient wants a contact removed. A blank section is a reason to ask."},
+      {q:"A patient says, \"Please take my ex-husband off my form.\" What do you do?",
+       o:["Explain that contacts cannot be changed at check-in",
+          "Remove him as requested and ask whether there is anyone they would like to add",
+          "Leave him on until the next annual review",
+          "Ask the patient to call back later"],
+       a:1,
+       why:"This is a specific request, so honor it right away. Then check whether the patient wants someone else listed so the form stays useful."}
+    ]
+  };
+
+  var letters = ["A","B","C","D","E"];
+  var done = {};
+
+  function renderCheck(el){
+    var id = el.getAttribute("data-check");
+    var qs = checks[id];
+    var html = '<div class="kc-head"><h3>Knowledge Check</h3><span class="kc-count" id="kc'+id+'-count">0 of '+qs.length+' correct</span></div>';
+    qs.forEach(function(item, qi){
+      var name = "kc"+id+"q"+qi;
+      html += '<div class="kc-q"><fieldset><legend>'+(qs.length>1?(qi+1)+'. ':'')+item.q+'</legend>';
+      item.o.forEach(function(opt, oi){
+        html += '<label class="opt"><input type="radio" name="'+name+'" value="'+oi+'"> <span>'+letters[oi]+'. '+opt+'</span></label>';
+      });
+      html += '</fieldset><div class="fb" id="'+name+'-fb" aria-live="polite"></div></div>';
+    });
+    var nextTab = parseInt(id,10)+1;
+    var nextLabel = document.getElementById("tab-"+nextTab).textContent.trim();
+    html += '<div class="kc-done" id="kc'+id+'-done"><p>Section complete.</p><button type="button" class="btn" data-goto="'+nextTab+'">Continue to '+nextLabel+'</button></div>';
+    el.innerHTML = html;
+
+    el.addEventListener("change", function(e){
+      var t = e.target;
+      if(t.type !== "radio") return;
+      var parts = t.name.match(/^kc(\d+)q(\d+)$/);
+      var item = checks[parts[1]][parseInt(parts[2],10)];
+      var fb = document.getElementById(t.name+"-fb");
+      var labels = el.querySelectorAll('input[name="'+t.name+'"]');
+      labels.forEach(function(r){ r.parentNode.classList.remove("right","wrong"); });
+      if(parseInt(t.value,10) === item.a){
+        t.parentNode.classList.add("right");
+        fb.className = "fb show good";
+        fb.innerHTML = "<strong>Correct.</strong> "+item.why;
+        labels.forEach(function(r){ r.disabled = true; });
+      } else {
+        t.parentNode.classList.add("wrong");
+        fb.className = "fb show bad";
+        fb.innerHTML = "<strong>Not quite.</strong> Review the section above and try another answer.";
+      }
+      updateCheck(id, el);
+    });
+  }
+
+  function updateCheck(id, el){
+    var qs = checks[id], correct = 0;
+    qs.forEach(function(item, qi){
+      var sel = el.querySelector('input[name="kc'+id+'q'+qi+'"]:checked');
+      if(sel && parseInt(sel.value,10) === item.a) correct++;
+    });
+    document.getElementById("kc"+id+"-count").textContent = correct+" of "+qs.length+" correct";
+    if(correct === qs.length){
+      done[id] = true;
+      document.getElementById("kc"+id+"-done").classList.add("show");
+      var tab = document.getElementById("tab-"+id);
+      tab.classList.add("done");
+      tab.querySelector(".state").textContent = " (completed)";
+    }
+  }
+
+  document.querySelectorAll("[data-check]").forEach(renderCheck);
+
+  // ---------- Tabs ----------
+  var tabs = Array.prototype.slice.call(document.querySelectorAll('[role="tab"]'));
+  function activate(tab, focus){
+    tabs.forEach(function(t){
+      var on = t === tab;
+      t.setAttribute("aria-selected", on ? "true" : "false");
+      t.tabIndex = on ? 0 : -1;
+      document.getElementById(t.getAttribute("aria-controls")).hidden = !on;
+    });
+    if(focus) tab.focus();
+    tab.scrollIntoView({block:"nearest", inline:"nearest"});
+    window.scrollTo({top: document.querySelector(".tabbar").offsetTop, behavior: "auto"});
+  }
+  tabs.forEach(function(t, i){
+    t.addEventListener("click", function(){ activate(t, false); });
+    t.addEventListener("keydown", function(e){
+      var n = null;
+      if(e.key === "ArrowRight") n = tabs[(i+1)%tabs.length];
+      if(e.key === "ArrowLeft") n = tabs[(i-1+tabs.length)%tabs.length];
+      if(e.key === "Home") n = tabs[0];
+      if(e.key === "End") n = tabs[tabs.length-1];
+      if(n){ e.preventDefault(); activate(n, true); }
+    });
+  });
+  document.addEventListener("click", function(e){
+    var g = e.target.closest("[data-goto]");
+    if(g){ activate(document.getElementById("tab-"+g.getAttribute("data-goto")), true); }
+    var p = e.target.closest("[data-print]");
+    if(p){ try{ window.print(); }catch(err){} }
+  });
+
+  // ---------- Mirrors for print ----------
+  document.querySelectorAll("textarea[data-mirror]").forEach(function(ta){
+    var target = document.getElementById(ta.getAttribute("data-mirror"));
+    var sync = function(){ target.textContent = ta.value; };
+    ta.addEventListener("input", sync); sync();
+  });
+  var fq = document.getElementById("fq");
+  fq.addEventListener("change", function(e){
+    var t = e.target;
+    if(t.type === "radio" && /^fq\d$/.test(t.name)){
+      var box = fq.querySelector('[data-choice="'+t.name+'"]');
+      box.textContent = "Selected answer: " + t.value;
+    }
+  });
+
+  // ---------- Print questionnaire ----------
+  var notice = document.getElementById("fq-notice");
+  document.getElementById("fq-print").addEventListener("click", function(){
+    var missing = [];
+    if(!document.getElementById("fq-name").value.trim()) missing.push("your name");
+    if(!document.getElementById("fq-date").value) missing.push("the date");
+    ["fq1","fq2","fq3"].forEach(function(n, i){
+      if(!fq.querySelector('input[name="'+n+'"]:checked')) missing.push("Question "+(i+1));
+    });
+    if(!document.getElementById("fq4").value.trim()) missing.push("Question 4");
+    if(!document.getElementById("fq5").value.trim()) missing.push("Question 5");
+    if(!document.getElementById("fq-ack").checked) missing.push("the acknowledgment checkbox");
+    if(missing.length){
+      notice.innerHTML = "<strong>Complete these before printing:</strong> " + missing.join(", ") + ".";
+      notice.classList.add("show");
+      return;
+    }
+    notice.classList.remove("show");
+    try{ window.print(); }catch(err){}
+  });
+
+  document.getElementById("fq-clear").addEventListener("click", function(){
+    fq.reset();
+    fq.querySelectorAll("[data-choice]").forEach(function(b){ b.textContent = ""; });
+    fq.querySelectorAll("textarea[data-mirror]").forEach(function(ta){
+      document.getElementById(ta.getAttribute("data-mirror")).textContent = "";
+    });
+    notice.classList.remove("show");
+  });
+})();
+</script>
+</body>
+</html>
