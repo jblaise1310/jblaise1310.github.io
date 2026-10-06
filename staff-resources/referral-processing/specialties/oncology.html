@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Oncology Referrals | Primary Care Clinic</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --navy:#0D2B45; --navy-mid:#163D5F; --teal:#028090; --teal-light:#E1F5F7;
+      --teal-dim:#01606D; --gold:#C9982A; --gold-light:#FDF6E3; --gold-dim:#A87C1E;
+      --slate:#546E7A; --slate-light:#ECEFF1; --bg:#F8FAFB; --white:#FFFFFF;
+      --border:#D5DDE2; --text:#1A2E3B; --text-mid:#3D5363; --sidebar-w:272px;
+      --accent:#A04000; --accent-light:#FBE9E7; --accent-dim:#7D3100;
+      --c-bh:#7C5CBF; --c-cardio:#C0392B; --c-gen-surg:#1A6B3C; --c-neuro:#2471A3;
+      --c-onco:#A04000; --c-ortho:#117A8B; --c-pain:#6E2F6E; --c-pt-ot:#1E7B5E; --c-pulm:#1D6FA4;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; }
+    .topbar { background: var(--navy); color: var(--white); display: flex; align-items: center; justify-content: space-between; padding: 0 28px; height: 56px; position: sticky; top: 0; z-index: 100; border-bottom: 3px solid var(--teal); flex-shrink: 0; }
+    .topbar-left { display: flex; align-items: center; gap: 14px; }
+    .topbar-logo { font-family: 'DM Serif Display', serif; font-size: 1.15rem; color: var(--white); }
+    .topbar-logo span { color: var(--teal); }
+    .topbar-badge { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; background: var(--teal); color: var(--white); padding: 2px 9px; border-radius: 20px; }
+    .topbar-back { font-size: 0.8rem; color: #7AAFC8; text-decoration: none; }
+    .topbar-back:hover { color: var(--white); }
+    .layout { display: flex; flex: 1; min-height: 0; }
+    .sidebar { width: var(--sidebar-w); background: var(--navy-mid); flex-shrink: 0; display: flex; flex-direction: column; position: sticky; top: 56px; height: calc(100vh - 56px); overflow-y: auto; }
+    .sidebar::-webkit-scrollbar { width: 4px; }
+    .sidebar::-webkit-scrollbar-thumb { background: #2E5471; border-radius: 4px; }
+    .sidebar-section { padding: 20px 0 8px; }
+    .sidebar-label { font-size: 0.63rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #7AAFC8; padding: 0 20px 8px; display: block; }
+    .nav-link { display: flex; align-items: center; gap: 10px; padding: 9px 20px 9px 16px; text-decoration: none; font-size: 0.84rem; font-weight: 500; color: #C8DDE8; border-left: 3px solid transparent; transition: background 0.15s, color 0.15s, border-color 0.15s; }
+    .nav-link:hover { background: rgba(255,255,255,0.07); color: var(--white); }
+    .nav-link.active { background: rgba(255,255,255,0.07); color: var(--white); font-weight: 600; }
+    .nav-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+    .sidebar-divider { margin: 8px 20px; border: none; border-top: 1px solid rgba(255,255,255,0.08); }
+    .nav-link.special { color: #F0D98A; }
+    .nav-link.special:hover { background: rgba(201,152,42,0.12); color: var(--gold); }
+    .page-nav { padding: 12px 0 8px; }
+    .page-nav-label { font-size: 0.6rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #4A7A96; padding: 0 20px 6px; display: block; }
+    .page-nav-link { display: block; padding: 6px 20px 6px 26px; font-size: 0.78rem; color: #90B8CC; text-decoration: none; border-left: 3px solid transparent; transition: color 0.15s, border-color 0.15s; }
+    .page-nav-link:hover { color: var(--white); border-left-color: var(--accent); }
+    .main { flex: 1; padding: 40px 48px 80px; max-width: 940px; }
+    .breadcrumb { font-size: 0.75rem; color: var(--slate); margin-bottom: 24px; display: flex; align-items: center; gap: 6px; }
+    .breadcrumb a { color: var(--teal-dim); text-decoration: none; }
+    .breadcrumb a:hover { text-decoration: underline; }
+    .spec-header { display: flex; align-items: flex-start; gap: 20px; background: linear-gradient(135deg, var(--accent-dim) 0%, var(--accent) 100%); border-radius: 12px; padding: 32px 36px; margin-bottom: 36px; color: var(--white); }
+    .spec-icon { font-size: 2.8rem; flex-shrink: 0; }
+    .spec-eyebrow { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.6); margin-bottom: 6px; }
+    .spec-title { font-family: 'DM Serif Display', serif; font-size: 2rem; font-weight: 400; color: var(--white); margin-bottom: 6px; }
+    .spec-subtitle { font-size: 0.88rem; color: rgba(255,255,255,0.75); line-height: 1.6; }
+    .spec-contact { margin-top: 14px; display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.15); border-radius: 8px; padding: 8px 14px; font-size: 0.82rem; color: var(--white); font-weight: 500; }
+    .section-heading { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.13em; text-transform: uppercase; color: var(--slate); margin-bottom: 16px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+    .callout { border-radius: 8px; padding: 16px 20px; margin-bottom: 24px; border-left: 4px solid var(--accent); background: var(--accent-light); font-size: 0.85rem; line-height: 1.65; color: var(--text); }
+    .callout.warn { border-left-color: var(--gold); background: var(--gold-light); }
+    .callout.warn strong { color: var(--gold-dim); }
+    .callout strong { color: var(--accent-dim); }
+    .placeholder-card { background: var(--white); border: 2px dashed var(--border); border-radius: 10px; padding: 28px 30px; margin-bottom: 20px; text-align: center; }
+    .placeholder-card p { font-size: 0.85rem; color: var(--slate); line-height: 1.65; }
+    .placeholder-card strong { color: var(--text); display: block; font-size: 0.9rem; margin-bottom: 6px; }
+    .info-card { background: var(--white); border: 1px solid var(--border); border-radius: 10px; padding: 22px 26px; margin-bottom: 20px; }
+    .info-card h3 { font-size: 0.92rem; font-weight: 700; color: var(--text); margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+    .info-card p, .info-card li { font-size: 0.85rem; color: var(--text-mid); line-height: 1.65; }
+    .info-card ul { padding-left: 20px; display: flex; flex-direction: column; gap: 6px; margin-top: 6px; }
+    .worklist-strip { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 10px; margin-bottom: 32px; }
+    .wl-card { background: var(--white); border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; border-top: 3px solid var(--accent); }
+    .wl-card-stage { font-size: 0.62rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--slate); margin-bottom: 4px; }
+    .wl-card-name { font-size: 0.88rem; font-weight: 600; color: var(--text); }
+    .site-footer { background: var(--navy); color: #7AAFC8; text-align: center; padding: 18px 28px; font-size: 0.75rem; border-top: 2px solid var(--teal); }
+    .site-footer a { color: var(--teal); text-decoration: none; }
+    @media (max-width: 768px) {
+      .layout { flex-direction: column; }
+      .sidebar { width: 100%; height: auto; position: static; flex-direction: row; overflow-x: auto; overflow-y: hidden; padding: 8px 0; }
+      .sidebar-section { padding: 0; display: flex; align-items: center; }
+      .sidebar-label, .page-nav-label, .page-nav { display: none; }
+      .nav-link { white-space: nowrap; border-left: none; border-bottom: 3px solid transparent; padding: 8px 14px; }
+      .nav-link.active { border-bottom-color: var(--accent); border-left-color: transparent; }
+      .sidebar-divider { display: none; }
+      .main { padding: 24px 20px 60px; }
+      .spec-header { flex-direction: column; padding: 24px 22px; }
+      .worklist-strip { grid-template-columns: 1fr 1fr; }
+    }
+
+    /* ── Dual worklist tables ── */
+    .worklist-block { margin-bottom: 32px; }
+    .worklist-track-label { display: flex; align-items: center; gap: 10px; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 10px; }
+    .worklist-track-label .track-badge { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+    .track-badge.internal { background: var(--teal-light); color: var(--teal-dim); }
+    .track-badge.external { background: var(--gold-light); color: var(--gold-dim); }
+    .worklist-strip { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 20px; }
+    .wl-card { background: var(--white); border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px; border-top: 3px solid var(--accent); }
+    .wl-card.external-card { border-top-color: var(--gold); }
+    .wl-card-stage { font-size: 0.62rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--slate); margin-bottom: 4px; }
+    .wl-card-name { font-size: 0.86rem; font-weight: 600; color: var(--text); }
+    .wl-card-name.pending { color: var(--slate); font-style: italic; font-weight: 400; }
+    @media (max-width: 700px) { .worklist-strip { grid-template-columns: 1fr 1fr; } }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-left">
+      <span class="topbar-logo">Primary Care <span>Referral Management</span></span>
+      <span class="topbar-badge">Staff Resource</span>
+    </div>
+    <div class="topbar-right"><a class="topbar-back" href="../index.html">&#8592; All Specialties</a></div>
+  </header>
+  <div class="layout">
+    <nav class="sidebar" aria-label="Specialty navigation">
+      <div class="sidebar-section">
+        <span class="sidebar-label">Specialties</span>
+        <a class="nav-link" href="bh.html"><span class="nav-dot" style="background:var(--c-bh)"></span>Behavioral Health</a>
+        <a class="nav-link" href="cardiology.html"><span class="nav-dot" style="background:var(--c-cardio)"></span>Cardiology</a>
+        <a class="nav-link" href="general-surgery.html"><span class="nav-dot" style="background:var(--c-gen-surg)"></span>General Surgery</a>
+        <a class="nav-link" href="neurology.html"><span class="nav-dot" style="background:var(--c-neuro)"></span>Neurology</a>
+        <a class="nav-link active" href="oncology.html" style="border-left-color:var(--c-onco)"><span class="nav-dot" style="background:var(--c-onco)"></span>Oncology</a>
+        <a class="nav-link" href="orthopedics.html"><span class="nav-dot" style="background:var(--c-ortho)"></span>Orthopedics</a>
+        <a class="nav-link" href="pain.html"><span class="nav-dot" style="background:var(--c-pain)"></span>Pain Management</a>
+        <a class="nav-link" href="pt-ot.html"><span class="nav-dot" style="background:var(--c-pt-ot)"></span>PT / OT</a>
+        <a class="nav-link" href="pulmonary.html"><span class="nav-dot" style="background:var(--c-pulm)"></span>Pulmonary</a>
+      </div>
+      <hr class="sidebar-divider" />
+      <div class="sidebar-section">
+        <span class="sidebar-label">Special Processing</span>
+        <a class="nav-link special" href="../special/va.html"><span class="nav-dot" style="background:var(--gold)"></span>VA Referrals</a>
+        <a class="nav-link special" href="../special/workers-comp.html"><span class="nav-dot" style="background:var(--gold)"></span>Workers&rsquo; Comp</a>
+      </div>
+      <hr class="sidebar-divider" />
+      <div class="sidebar-section">
+        <span class="sidebar-label">Resources</span>
+        <a class="nav-link" href="../workflow.html"><span class="nav-dot" style="background:var(--teal)"></span>Workflow Overview</a>
+        <a class="nav-link" href="../inbound-referrals.html"><span class="nav-dot" style="background:var(--teal)"></span>Inbound Referrals</a>
+        <a class="nav-link" href="../daily-fax-report.html"><span class="nav-dot" style="background:var(--teal)"></span>Daily Fax Report</a>
+        <a class="nav-link" href="../report-request.html"><span class="nav-dot" style="background:var(--teal)"></span>Report Request</a>
+        <a class="nav-link" href="../job-aid.html"><span class="nav-dot" style="background:var(--teal)"></span>Job Aid</a>
+      </div>
+      <hr class="sidebar-divider" />
+      <div class="page-nav">
+        <span class="page-nav-label">On this page</span>
+        <a class="page-nav-link" href="#worklist">Worklist</a>
+        <a class="page-nav-link" href="#reasons">Common Reasons</a>
+        <a class="page-nav-link" href="#requirements">Requirements</a>
+        <a class="page-nav-link" href="#docs">Documents</a>
+        <a class="page-nav-link" href="#notes">Notes</a>
+        <a class="page-nav-link" href="#contact">Contact</a>
+      </div>
+    </nav>
+    <main class="main">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="../index.html">Referral Management</a>
+        <span style="color:var(--border)">&#8250;</span>
+        <span>Oncology</span>
+      </nav>
+      <div class="spec-header">
+        <div class="spec-icon">🔴</div>
+        <div>
+          <div class="spec-eyebrow">Specialty Referral Guidelines</div>
+          <div class="spec-title">Oncology</div>
+          <div class="spec-subtitle">Medical oncology and hematology referrals. ONC MA manages all stages of oncology and hematology referral processing.</div>
+          <div class="spec-contact">&#128222; Contact information to be confirmed</div>
+        </div>
+      </div>
+
+      <div class="callout warn">
+        <strong>Content in progress:</strong> This page is a working draft. Referral requirements, pre-visit orders, and contact details will be updated as guidelines are confirmed with each specialty. Verify current requirements with the specialty team before submitting.
+      </div>
+
+            <section id="worklist">
+        <p class="section-heading">Worklist Assignments</p>
+        <div class="worklist-block">
+          <div class="worklist-track-label">
+            <span class="track-badge internal">RHC Provider or Specialist &rarr; PSMC Specialist</span>
+            <span style="color:var(--slate);font-weight:400;text-transform:none;letter-spacing:0;font-size:0.78rem;">Internal referrals only</span>
+          </div>
+          <div class="worklist-strip">
+            <div class="wl-card"><div class="wl-card-stage">Review &mdash; Stage 1</div><div class="wl-card-name">ONC MA</div></div>
+            <div class="wl-card"><div class="wl-card-stage">Process &mdash; Stage 2</div><div class="wl-card-name">ONC MA</div></div>
+            <div class="wl-card"><div class="wl-card-stage">Schedule &mdash; 3A</div><div class="wl-card-name">ONC MA</div></div>
+            <div class="wl-card"><div class="wl-card-stage">Complete &mdash; 3B</div><div class="wl-card-name">ONC MA</div></div>
+          </div>
+        </div>
+        <div class="worklist-block">
+          <div class="worklist-track-label">
+            <span class="track-badge external">RHC Provider or Specialist &rarr; External Facility</span>
+            <span style="color:var(--slate);font-weight:400;text-transform:none;letter-spacing:0;font-size:0.78rem;">External referrals</span>
+          </div>
+          <div class="worklist-strip">
+            <div class="wl-card external-card"><div class="wl-card-stage">Review &mdash; Stage 1</div><div class="wl-card-name">Referral Specialist</div></div>
+            <div class="wl-card external-card"><div class="wl-card-stage">Process &mdash; Stage 2</div><div class="wl-card-name">Referral Specialist</div></div>
+            <div class="wl-card external-card"><div class="wl-card-stage">Schedule &mdash; 3A</div><div class="wl-card-name">External Facility w/ Patient</div></div>
+            <div class="wl-card external-card"><div class="wl-card-stage">Complete &mdash; 3B</div><div class="wl-card-name">Referral Specialist</div></div>
+          </div>
+          <p style="font-size:0.78rem;color:var(--slate);margin-top:4px;">Hematology and Medical Oncology both route through ONC MA for all stages, internal and external.</p>
+        </div>
+      </section>
+
+      <section id="reasons">
+        <p class="section-heading">Common Referral Reasons</p>
+        <div class="info-card">
+          <h3>&#128203; Typical Reasons for Referral</h3>
+          <ul><li>New cancer diagnosis requiring oncology consultation</li><li>Hematology referral for blood disorder (anemia, thrombocytopenia, clotting disorder)</li><li>Surveillance follow-up after prior cancer treatment</li><li>Suspicious lab finding requiring hematology evaluation</li><li>Chemotherapy management or second opinion</li><li>Lymphoma or leukemia evaluation</li></ul>
+        </div>
+      </section>
+
+      <section id="requirements">
+        <p class="section-heading">Referral Requirements</p>
+        <div class="placeholder-card">
+          <strong>Requirements to be confirmed</strong>
+          <p>Pre-visit testing, required documents, and validity windows for this specialty have not yet been finalized. This section will be updated once guidelines are received from the specialty provider.</p>
+        </div>
+      </section>
+
+            <section id="docs">
+        <p class="section-heading">Commonly Attached Documents</p>
+        <div class="info-card">
+          <h3>&#128196; Documents to Gather</h3>
+          <ul><li>Office visit note</li><li>Lab results</li><li>Pathology reports if available</li><li>Imaging reports if available</li></ul>
+        </div>
+      </section>
+
+      <section id="notes">
+        <p class="section-heading">Processing Notes</p>
+        <div class="info-card">
+          <h3>&#9998; Notes &amp; Reminders</h3>
+          <ul><li>ONC MA manages all four worklist stages for both Oncology and Hematology referrals</li><li>Do not route oncology referrals through the standard Referral Specialist worklist</li><li>Oncology referrals may require insurance prior authorization — confirm before submitting</li><li>For hematology, include CBC with differential and a brief clinical summary in the referral</li><li>Urgency should be marked appropriately; new cancer diagnoses often warrant expedited processing</li></ul>
+        </div>
+      </section>
+
+      <section id="contact">
+        <p class="section-heading">Contact</p>
+        <div class="placeholder-card">
+          <strong>Contact information to be added</strong>
+          <p>Specialty team contact details, fax numbers, and scheduling phone numbers will be added here once confirmed.</p>
+        </div>
+      </section>
+
+    </main>
+  </div>
+  <footer class="site-footer">
+    Primary Care Clinic &mdash; Pagosa Springs Medical Center &nbsp;|&nbsp;
+    Referral Management Resource &nbsp;|&nbsp;
+    <a href="https://jblaise1310.github.io/rhc-today">RHC Today</a>
+  </footer>
+</body>
+</html>
