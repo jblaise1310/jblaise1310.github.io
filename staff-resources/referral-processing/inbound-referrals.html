@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Inbound Referrals | Referral Management</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --navy:#0D2B45; --navy-mid:#163D5F; --teal:#028090; --teal-light:#E1F5F7;
+      --teal-dim:#01606D; --gold:#C9982A; --gold-light:#FDF6E3; --gold-dim:#A87C1E;
+      --slate:#546E7A; --slate-light:#ECEFF1; --bg:#F8FAFB; --white:#FFFFFF;
+      --border:#D5DDE2; --text:#1A2E3B; --text-mid:#3D5363;
+      --purple:#5B4DB0; --purple-light:#EEEDFE;
+      --green:#1A6B3C; --green-light:#E8F5E9;
+      --sidebar-w:272px;
+      --c-bh:#7C5CBF; --c-cardio:#C0392B; --c-gen-surg:#1A6B3C; --c-neuro:#2471A3;
+      --c-onco:#A04000; --c-ortho:#117A8B; --c-pain:#6E2F6E; --c-pt-ot:#1E7B5E; --c-pulm:#1D6FA4;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; }
+    .topbar { background: var(--navy); color: var(--white); display: flex; align-items: center; justify-content: space-between; padding: 0 28px; height: 56px; position: sticky; top: 0; z-index: 100; border-bottom: 3px solid var(--teal); flex-shrink: 0; }
+    .topbar-left { display: flex; align-items: center; gap: 14px; }
+    .topbar-logo { font-family: 'DM Serif Display', serif; font-size: 1.15rem; color: var(--white); }
+    .topbar-logo span { color: var(--teal); }
+    .topbar-badge { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; background: var(--teal); color: var(--white); padding: 2px 9px; border-radius: 20px; }
+    .topbar-back { font-size: 0.8rem; color: #7AAFC8; text-decoration: none; }
+    .topbar-back:hover { color: var(--white); }
+    .layout { display: flex; flex: 1; min-height: 0; }
+    .sidebar { width: var(--sidebar-w); background: var(--navy-mid); flex-shrink: 0; display: flex; flex-direction: column; position: sticky; top: 56px; height: calc(100vh - 56px); overflow-y: auto; }
+    .sidebar::-webkit-scrollbar { width: 4px; }
+    .sidebar::-webkit-scrollbar-thumb { background: #2E5471; border-radius: 4px; }
+    .sidebar-section { padding: 20px 0 8px; }
+    .sidebar-label { font-size: 0.63rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #7AAFC8; padding: 0 20px 8px; display: block; }
+    .nav-link { display: flex; align-items: center; gap: 10px; padding: 9px 20px 9px 16px; text-decoration: none; font-size: 0.84rem; font-weight: 500; color: #C8DDE8; border-left: 3px solid transparent; transition: background 0.15s, color 0.15s; }
+    .nav-link:hover { background: rgba(255,255,255,0.07); color: var(--white); }
+    .nav-link.active { background: rgba(255,255,255,0.07); color: var(--white); font-weight: 600; border-left-color: var(--teal); }
+    .nav-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+    .sidebar-divider { margin: 8px 20px; border: none; border-top: 1px solid rgba(255,255,255,0.08); }
+    .nav-link.special { color: #F0D98A; }
+    .nav-link.special:hover { background: rgba(201,152,42,0.12); color: var(--gold); }
+    .page-nav { padding: 12px 0 8px; }
+    .page-nav-label { font-size: 0.6rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #4A7A96; padding: 0 20px 6px; display: block; }
+    .page-nav-link { display: block; padding: 6px 20px 6px 26px; font-size: 0.78rem; color: #90B8CC; text-decoration: none; border-left: 3px solid transparent; transition: color 0.15s, border-color 0.15s; }
+    .page-nav-link:hover { color: var(--white); border-left-color: var(--teal); }
+    .main { flex: 1; padding: 40px 48px 80px; max-width: 920px; }
+    .breadcrumb { font-size: 0.75rem; color: var(--slate); margin-bottom: 24px; display: flex; align-items: center; gap: 6px; }
+    .breadcrumb a { color: var(--teal-dim); text-decoration: none; }
+    .breadcrumb a:hover { text-decoration: underline; }
+    .page-header { background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 100%); border-radius: 12px; padding: 32px 38px; margin-bottom: 32px; color: var(--white); }
+    .page-eyebrow { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--teal); margin-bottom: 8px; }
+    .page-header h1 { font-family: 'DM Serif Display', serif; font-size: 1.9rem; font-weight: 400; color: var(--white); margin-bottom: 8px; }
+    .page-header p { font-size: 0.88rem; color: #9BBDD0; line-height: 1.65; max-width: 580px; }
+    .section-heading { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.13em; text-transform: uppercase; color: var(--slate); margin-bottom: 16px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+    .callout { border-radius: 8px; padding: 14px 18px; margin-bottom: 24px; font-size: 0.84rem; line-height: 1.65; }
+    .callout.info { border-left: 4px solid var(--teal); background: var(--teal-light); }
+    .callout.warn { border-left: 4px solid var(--gold); background: var(--gold-light); }
+    .callout.purple { border-left: 4px solid var(--purple); background: var(--purple-light); }
+    .callout strong { color: var(--teal-dim); }
+    .callout.warn strong { color: var(--gold-dim); }
+    .callout.purple strong { color: var(--purple); }
+
+    /* Flow decision box */
+    .decision-box { border-radius: 10px; border: 2px solid var(--border); background: var(--white); padding: 20px 24px; margin-bottom: 28px; }
+    .decision-box-title { font-size: 0.78rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--slate); margin-bottom: 14px; display: flex; align-items: center; gap: 7px; }
+    .decision-paths { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .decision-path { border-radius: 8px; padding: 14px 16px; }
+    .decision-path.existing { background: var(--teal-light); border: 1px solid #A0D8DE; }
+    .decision-path.new-pt { background: #FFF8E1; border: 1px solid #FFD54F; }
+    .decision-path-label { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 6px; }
+    .decision-path.existing .decision-path-label { color: var(--teal-dim); }
+    .decision-path.new-pt .decision-path-label { color: var(--gold-dim); }
+    .decision-path p { font-size: 0.82rem; color: var(--text-mid); line-height: 1.55; }
+
+    /* Step cards */
+    .step-card { background: var(--white); border: 1px solid var(--border); border-radius: 10px; margin-bottom: 20px; overflow: hidden; }
+    .step-card-header { display: flex; align-items: center; gap: 14px; padding: 16px 22px; border-bottom: 1px solid var(--border); background: var(--slate-light); }
+    .step-card-num { width: 34px; height: 34px; border-radius: 50%; background: var(--navy); color: var(--white); font-size: 0.88rem; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .step-card-title { font-size: 0.96rem; font-weight: 700; color: var(--text); }
+    .step-card-subtitle { font-size: 0.75rem; color: var(--slate); margin-top: 1px; }
+    .step-card-body { padding: 18px 22px; }
+    .step-card-body p { font-size: 0.84rem; color: var(--text-mid); line-height: 1.68; margin-bottom: 10px; }
+    .step-card-body p:last-child { margin-bottom: 0; }
+    .step-card-body ul { padding-left: 20px; display: flex; flex-direction: column; gap: 6px; margin: 8px 0; }
+    .step-card-body li { font-size: 0.84rem; color: var(--text-mid); line-height: 1.6; }
+    .step-card-body li strong { color: var(--text); }
+    .step-card .tag { display: inline-block; font-size: 0.68rem; font-weight: 700; padding: 2px 8px; border-radius: 4px; margin-left: 6px; vertical-align: middle; }
+    .tag-glitch { background: #FFF3E0; color: #E65100; border: 1px solid #FFB74D; }
+
+    /* Sub-section within a step */
+    .sub-section { border-radius: 8px; padding: 14px 16px; margin: 14px 0; }
+    .sub-section.existing { background: var(--teal-light); border-left: 3px solid var(--teal); }
+    .sub-section.new-pt { background: #FFF8E1; border-left: 3px solid var(--gold); }
+    .sub-section-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 8px; }
+    .sub-section.existing .sub-section-label { color: var(--teal-dim); }
+    .sub-section.new-pt .sub-section-label { color: var(--gold-dim); }
+    .sub-section ul { padding-left: 18px; display: flex; flex-direction: column; gap: 5px; }
+    .sub-section li { font-size: 0.82rem; color: var(--text-mid); line-height: 1.55; }
+    .sub-section li strong { color: var(--text); }
+
+    /* Specialty finish grid */
+    .finish-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; margin: 14px 0; }
+    .finish-card { border-radius: 8px; padding: 14px 16px; border: 1px solid var(--border); background: var(--white); }
+    .finish-card-specialty { font-size: 0.8rem; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+    .finish-card-steps { font-size: 0.76rem; color: var(--slate); line-height: 1.5; }
+    .finish-card.done { border-left: 3px solid var(--green); }
+    .finish-card.extra { border-left: 3px solid var(--gold); }
+
+    .field-ref { display: inline-block; background: #FFFDE7; border: 1px solid #F9A825; color: #5D4037; font-size: 0.77rem; font-weight: 600; padding: 1px 7px; border-radius: 4px; font-family: monospace; }
+
+    /* Screenshot */
+    .screenshot-wrap { margin: 14px 0 4px; }
+    .screenshot-label { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--slate); margin-bottom: 6px; }
+    .screenshot { border: 1px solid var(--border); border-radius: 8px; overflow: hidden; display: inline-block; background: var(--white); box-shadow: 0 2px 8px rgba(13,43,69,0.08); max-width: 100%; }
+    .screenshot img { display: block; max-width: 100%; height: auto; }
+    .screenshot-caption { font-size: 0.72rem; color: var(--slate); margin-top: 6px; font-style: italic; }
+
+    /* QR card */
+    .qr-card { background: var(--white); border: 1px solid var(--border); border-radius: 10px; padding: 22px 26px; margin-bottom: 20px; }
+    .qr-card h3 { font-size: 0.9rem; font-weight: 700; color: var(--text); margin-bottom: 10px; }
+    .qr-card ul { padding-left: 18px; display: flex; flex-direction: column; gap: 6px; }
+    .qr-card li { font-size: 0.84rem; color: var(--text-mid); line-height: 1.65; }
+
+    .site-footer { background: var(--navy); color: #7AAFC8; text-align: center; padding: 18px 28px; font-size: 0.75rem; border-top: 2px solid var(--teal); }
+    .site-footer a { color: var(--teal); text-decoration: none; }
+
+    @media (max-width: 768px) {
+      .layout { flex-direction: column; }
+      .sidebar { width: 100%; height: auto; position: static; flex-direction: row; overflow-x: auto; overflow-y: hidden; padding: 8px 0; }
+      .sidebar-section { padding: 0; display: flex; align-items: center; }
+      .sidebar-label, .page-nav-label, .page-nav { display: none; }
+      .nav-link { white-space: nowrap; border-left: none; border-bottom: 3px solid transparent; padding: 8px 14px; }
+      .nav-link.active { border-bottom-color: var(--teal); border-left-color: transparent; }
+      .sidebar-divider { display: none; }
+      .main { padding: 24px 20px 60px; }
+      .decision-paths { grid-template-columns: 1fr; }
+      .finish-grid { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="topbar">
+    <div class="topbar-left">
+      <span class="topbar-logo">Primary Care <span>Referral Management</span></span>
+      <span class="topbar-badge">Staff Resource</span>
+    </div>
+    <div class="topbar-right">
+      <a class="topbar-back" href="index.html">&#8592; Home</a>
+    </div>
+  </header>
+
+  <div class="layout">
+    <nav class="sidebar" aria-label="Site navigation">
+      <div class="sidebar-section">
+        <span class="sidebar-label">Specialties</span>
+        <a class="nav-link" href="specialties/bh.html"><span class="nav-dot" style="background:var(--c-bh)"></span>Behavioral Health</a>
+        <a class="nav-link" href="specialties/cardiology.html"><span class="nav-dot" style="background:var(--c-cardio)"></span>Cardiology</a>
+        <a class="nav-link" href="specialties/general-surgery.html"><span class="nav-dot" style="background:var(--c-gen-surg)"></span>General Surgery</a>
+        <a class="nav-link" href="specialties/neurology.html"><span class="nav-dot" style="background:var(--c-neuro)"></span>Neurology</a>
+        <a class="nav-link" href="specialties/oncology.html"><span class="nav-dot" style="background:var(--c-onco)"></span>Oncology</a>
+        <a class="nav-link" href="specialties/orthopedics.html"><span class="nav-dot" style="background:var(--c-ortho)"></span>Orthopedics</a>
+        <a class="nav-link" href="specialties/pain.html"><span class="nav-dot" style="background:var(--c-pain)"></span>Pain Management</a>
+        <a class="nav-link" href="specialties/pt-ot.html"><span class="nav-dot" style="background:var(--c-pt-ot)"></span>PT / OT</a>
+        <a class="nav-link" href="specialties/pulmonary.html"><span class="nav-dot" style="background:var(--c-pulm)"></span>Pulmonary</a>
+      </div>
+      <hr class="sidebar-divider" />
+      <div class="sidebar-section">
+        <span class="sidebar-label">Special Processing</span>
+        <a class="nav-link special" href="special/va.html"><span class="nav-dot" style="background:var(--gold)"></span>VA Referrals</a>
+        <a class="nav-link special" href="special/workers-comp.html"><span class="nav-dot" style="background:var(--gold)"></span>Workers' Comp</a>
+      </div>
+      <hr class="sidebar-divider" />
+      <div class="sidebar-section">
+        <span class="sidebar-label">Resources</span>
+        <a class="nav-link" href="workflow.html"><span class="nav-dot" style="background:var(--teal)"></span>Workflow Overview</a>
+        <a class="nav-link active" href="inbound-referrals.html"><span class="nav-dot" style="background:var(--teal)"></span>Inbound Referrals</a>
+        <a class="nav-link" href="daily-fax-report.html"><span class="nav-dot" style="background:var(--teal)"></span>Daily Fax Report</a>
+        <a class="nav-link" href="report-request.html"><span class="nav-dot" style="background:var(--teal)"></span>Report Request</a>
+        <a class="nav-link" href="job-aid.html"><span class="nav-dot" style="background:var(--teal)"></span>Job Aid</a>
+      </div>
+      <hr class="sidebar-divider" />
+      <div class="page-nav">
+        <span class="page-nav-label">On this page</span>
+        <a class="page-nav-link" href="#overview">Overview</a>
+        <a class="page-nav-link" href="#step1">Step 1 &mdash; Look Up Patient</a>
+        <a class="page-nav-link" href="#step2">Step 2 &mdash; New Patient Build</a>
+        <a class="page-nav-link" href="#step3">Step 3 &mdash; Build Referral</a>
+        <a class="page-nav-link" href="#step4">Step 4 &mdash; Scheduling</a>
+        <a class="page-nav-link" href="#step5">Step 5 &mdash; Finalize</a>
+        <a class="page-nav-link" href="#quickref">Quick Reference</a>
+      </div>
+    </nav>
+
+    <main class="main">
+
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="index.html">Referral Management</a>
+        <span style="color:var(--border)">&#8250;</span>
+        <span>Inbound Referrals</span>
+      </nav>
+
+      <div class="page-header">
+        <div class="page-eyebrow">Referral Specialist Workflow</div>
+        <h1>Inbound Referrals</h1>
+        <p>For referrals received from outside providers to Primary Care Clinic. Inbound referral faxes are found in the <strong style="color:#B2EBF2">Specialist Referrals Fax Folder</strong> on the Z: Shared Drive.</p>
+      </div>
+
+      <div class="callout info" id="overview">
+        <strong>Where to find inbound referrals:</strong> External referrals from outside providers are faxed to us and appear in the <strong>Specialist Referrals Fax Folder</strong> on the <strong>Z: Shared Drive.</strong> Work from this folder to complete each step below.
+      </div>
+
+      <!-- Step 1 -->
+      <div class="step-card" id="step1">
+        <div class="step-card-header">
+          <div class="step-card-num">1</div>
+          <div>
+            <div class="step-card-title">Search for the Patient in PowerChart</div>
+            <div class="step-card-subtitle">Determine if the patient is already established at PSMC</div>
+          </div>
+        </div>
+        <div class="step-card-body">
+          <p>From the <strong>taskbar</strong>, click <strong>Patient</strong> then click <strong>Search.</strong> Enter the patient's <strong>date of birth (DOB)</strong> to search.</p>
+          <div class="screenshot-wrap">
+            <div class="screenshot-label">PowerChart Taskbar</div>
+            <div class="screenshot">
+              <img src="data:image/png;base64,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" alt="PowerChart taskbar showing Patient menu highlighted" style="max-width:500px;" />
+            </div>
+            <div class="screenshot-caption">Click Patient in the taskbar, then Search. Enter the patient's DOB.</div>
+          </div>
+
+          <div class="decision-box" style="margin-top:20px;">
+            <div class="decision-box-title">&#9660; Based on your search result, follow the correct path:</div>
+            <div class="decision-paths">
+              <div class="decision-path existing">
+                <div class="decision-path-label">&#10003; Patient Found (Established)</div>
+                <p>Open the patient's chart by selecting an encounter and clicking <strong>OK.</strong> Select <strong>Chart Review</strong> and click <strong>OK.</strong></p>
+                <p style="margin-top:8px;">Then scan the referral into the chart:</p>
+                <ul style="padding-left:16px;margin-top:6px;display:flex;flex-direction:column;gap:4px;">
+                  <li style="font-size:0.8rem;color:var(--text-mid);">Click <strong>Patient</strong> from the taskbar &rarr; <strong>View Images</strong></li>
+                  <li style="font-size:0.8rem;color:var(--text-mid);">Click <strong>NEW</strong> at the bottom</li>
+                  <li style="font-size:0.8rem;color:var(--text-mid);">Image Type = <strong>Provider Orders</strong></li>
+                  <li style="font-size:0.8rem;color:var(--text-mid);">Date of Referral = <strong>date faxed to us</strong></li>
+                  <li style="font-size:0.8rem;color:var(--text-mid);">Image Title = <strong>(Specialty) Referral</strong> &mdash; e.g., Orthopedic Referral or Dr. Webb Referral</li>
+                  <li style="font-size:0.8rem;color:var(--text-mid);">Click <strong>Import</strong> &rarr; find referral in fax folder &rarr; double-click to attach</li>
+                  <li style="font-size:0.8rem;color:var(--text-mid);">Click <strong>Sign</strong> and close the box</li>
+                </ul>
+                <p style="margin-top:10px;font-size:0.8rem;font-weight:600;color:var(--teal-dim);">Referral is now scanned in. Proceed to Step 3.</p>
+              </div>
+              <div class="decision-path new-pt">
+                <div class="decision-path-label">&#9888; Patient Not Found (New)</div>
+                <p>The patient will need a new profile built before you can scan in the referral.</p>
+                <p style="margin-top:8px;font-size:0.8rem;font-weight:600;color:var(--gold-dim);">Proceed to Step 2 to build the patient profile first.</p>
+                <p style="margin-top:8px;font-size:0.78rem;color:var(--slate);font-style:italic;">Note: You will not be able to scan the referral into the chart until after the referral is built for new patients.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 2 -->
+      <div class="step-card" id="step2">
+        <div class="step-card-header">
+          <div class="step-card-num">2</div>
+          <div>
+            <div class="step-card-title">Build a New Patient Profile</div>
+            <div class="step-card-subtitle">New patients only &mdash; skip to Step 3 if the patient already exists</div>
+          </div>
+        </div>
+        <div class="step-card-body">
+          <p>From the taskbar, click <strong>PM Conversation</strong> and choose <strong>Add/Modify Person.</strong></p>
+          <div class="screenshot-wrap">
+            <div class="screenshot-label">PM Conversation Menu</div>
+            <div class="screenshot" style="padding:10px;">
+              <img src="data:image/png;base64,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" alt="PM Conversation button in taskbar" style="max-width:220px;" />
+            </div>
+            <div class="screenshot-caption">Click PM Conversation in the taskbar, then Add/Modify Person.</div>
+          </div>
+          <p style="margin-top:14px;">Complete all required fields (highlighted in <span class="field-ref">yellow</span>), then:</p>
+          <ul>
+            <li>Scroll down in the Patient Information tab to select a <strong>Primary Care Provider</strong> (not yellow but required)</li>
+            <li>Add <strong>primary and secondary insurance</strong> information</li>
+            <li>Select the appropriate <strong>Patient Relationship to Subscriber</strong> (generally <em>Self</em>)</li>
+            <li>Select <strong>Employment Status</strong> if applicable or required</li>
+            <li>Click <strong>Search for Health Plan</strong> &rarr; search <strong>By Plan Name</strong></li>
+            <li>Set <strong>Verified Status = Pending</strong></li>
+          </ul>
+          <div class="callout warn" style="margin-top:16px;margin-bottom:0;">
+            <strong>Insurance shortcuts:</strong> Medicare = MCR &nbsp;|&nbsp; Medicaid = MCD &nbsp;|&nbsp; Blue Cross Blue Shield = BCBS &nbsp;|&nbsp; Self Pay = SELF PAY. If unsure which plan is correct, select your best guess &mdash; it will be verified and updated at Registration.
+          </div>
+          <p style="margin-top:14px;">Click <strong>Complete</strong> when done. Then return to Step 1 to scan the referral into the patient's newly created chart before proceeding to Step 3.</p>
+        </div>
+      </div>
+
+      <!-- Step 3 -->
+      <div class="step-card" id="step3">
+        <div class="step-card-header">
+          <div class="step-card-num">3</div>
+          <div>
+            <div class="step-card-title">Build the Referral in Referral Management</div>
+            <div class="step-card-subtitle">Complete Case Details for the inbound referral</div>
+          </div>
+        </div>
+        <div class="step-card-body">
+          <p>From the Referral Management screen, click <strong>Add Inbound Referral</strong> in the top right corner. Enter the patient's <strong>DOB</strong> to find them, select the patient, then click <strong>OK.</strong></p>
+          <div class="screenshot-wrap">
+            <div class="screenshot-label">Add Inbound Referral Button</div>
+            <div class="screenshot" style="padding:10px;">
+              <img src="data:image/png;base64,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" alt="Add Inbound Referral button" style="max-width:200px;" />
+            </div>
+            <div class="screenshot-caption">Use the Add Inbound Referral button in the top right of the RM screen.</div>
+          </div>
+
+          <p style="margin-top:16px;">If this is an <strong>existing patient</strong>, add the scanned referral document from the <strong>Documents</strong> field. Skip this if it was a new patient build.</p>
+
+          <p style="margin-top:14px;">Complete the <strong>Case Details</strong> fields:</p>
+          <ul>
+            <li><strong>Medical Service:</strong> Select <span class="field-ref">RM (Specialty)</span> <span class="tag tag-glitch">&#9888; Known Glitch</span> &mdash; you will need to do this step twice due to a system glitch</li>
+            <li><strong>Referral Reason:</strong> Found on the referral document</li>
+            <li><strong>Codified Reason:</strong> Enter the ICD-10 code and select the data</li>
+            <li><strong>Referred From:</strong> Outside provider &mdash; most often not in the system; leave blank or use the magnifying glass to search by last name</li>
+            <li><strong>Referral Written Date:</strong> Date the referral was faxed to us</li>
+            <li><strong>Refer To:</strong> Click the magnifying glass, find the provider, and select</li>
+            <li><strong>Priority:</strong> Routine unless otherwise specified on the referral</li>
+            <li><strong>Instructions to Staff:</strong> Use for any pertinent routing information &mdash; e.g., <em>"Referrals from Jicarilla (Dulce Clinic) request a phone call from Registration once patient is scheduled"</em></li>
+            <li><strong>Comments:</strong> If the referring provider is not found in the system, add their name, facility, phone number, and fax number here</li>
+          </ul>
+
+          <div class="callout warn" style="margin-top:16px;margin-bottom:0;">
+            <strong>Known system glitch:</strong> After completing Case Details, click <strong>Next</strong> at the bottom right, then click <strong>Previous</strong>, then click <strong>Next</strong> again. This is required to advance the referral correctly.
+          </div>
+
+          <p style="margin-top:14px;">Review the Referral Details. If everything looks correct, click <strong>Submit.</strong> If corrections are needed, click <strong>Previous,</strong> make edits, then return to review and submit.</p>
+        </div>
+      </div>
+
+      <!-- Step 4 -->
+      <div class="step-card" id="step4">
+        <div class="step-card-header">
+          <div class="step-card-num">4</div>
+          <div>
+            <div class="step-card-title">Scheduling / Attach an Appointment</div>
+            <div class="step-card-subtitle">Check for an existing appointment and attach if found</div>
+          </div>
+        </div>
+        <div class="step-card-body">
+          <ul>
+            <li>Go to the <strong>Provider Process</strong> screen</li>
+            <li>Find the patient you just built the referral for and open the referral</li>
+            <li>Go to the <strong>Scheduling tab</strong></li>
+            <li>Check whether the patient already has an appointment scheduled for this specialty</li>
+          </ul>
+          <div class="decision-box" style="margin-top:16px;margin-bottom:0;">
+            <div class="decision-box-title">&#9660; Does the patient have an existing appointment?</div>
+            <div class="decision-paths">
+              <div class="decision-path existing">
+                <div class="decision-path-label">&#10003; Appointment Exists</div>
+                <p>Attach the appointment to the referral. Status will change to <strong>Scheduled.</strong></p>
+              </div>
+              <div class="decision-path new-pt">
+                <div class="decision-path-label">&#9472; No Appointment Yet</div>
+                <p>Leave the status as-is. The referral remains in queue for scheduling.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 5 -->
+      <div class="step-card" id="step5">
+        <div class="step-card-header">
+          <div class="step-card-num">5</div>
+          <div>
+            <div class="step-card-title">Finalize the Referral</div>
+            <div class="step-card-subtitle">Final steps vary by patient type and specialty</div>
+          </div>
+        </div>
+        <div class="step-card-body">
+
+          <div class="sub-section existing">
+            <div class="sub-section-label">Existing Patient &mdash; These specialties: Neurology, Pulmonology, General Surgery / Dr. Gazenko</div>
+            <p style="font-size:0.84rem;color:var(--text-mid);line-height:1.6;">If the patient was already established, the referral was already scanned into their chart in Step 1, and you have submitted the referral in Step 3. <strong>You are done.</strong></p>
+          </div>
+
+          <div class="sub-section extra" style="background:#FFF8E1;border-left:3px solid var(--gold);margin-top:12px;">
+            <div class="sub-section-label" style="color:var(--gold-dim);">Existing Patient &mdash; Orthopedics</div>
+            <ul>
+              <li>Go to the <strong>Provider Process</strong> screen and find the patient</li>
+              <li>Status will show <strong>Pending Acceptance</strong></li>
+              <li>Open the referral and click <strong>Accept</strong> in the top right</li>
+              <li>In the yellow dropdown, select <strong>Preadmit</strong></li>
+              <li>Click <strong>Edit</strong> under where it says &ldquo;Accepted&rdquo;</li>
+              <li>Click <strong>Call Patient to Schedule</strong></li>
+              <li><strong>You are done.</strong></li>
+            </ul>
+          </div>
+
+          <div class="sub-section new-pt" style="margin-top:12px;">
+            <div class="sub-section-label">New Patient &mdash; All Specialties</div>
+            <p style="font-size:0.84rem;color:var(--text-mid);line-height:1.6;margin-bottom:10px;">You still need to scan the referral into the chart (it could not be done before the profile was built). Follow these steps:</p>
+            <ul>
+              <li>Go to the <strong>Provider Process</strong> tab and open the referral</li>
+              <li>Click <strong>Accept</strong> in the top right, then click <strong>Pre-Admit</strong></li>
+              <li>Close out of the referral and click on the <strong>patient's name</strong></li>
+              <li>Click <strong>Chart Review</strong></li>
+              <li>Scan the referral into the chart using the same steps as Step 1 (Patient &rarr; View Images &rarr; New &rarr; Provider Orders, etc.)</li>
+            </ul>
+
+            <div class="screenshot-wrap" style="margin-top:12px;">
+              <div class="screenshot-label">Preadmit Encounter Dialog</div>
+              <div class="screenshot">
+                <img src="data:image/png;base64,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" alt="Encounter Information dialog with Type set to Preadmit and Location set to PSMC Clinic" style="max-width:440px;" />
+              </div>
+              <div class="screenshot-caption">Set Type to Preadmit and Location to PSMC Clinic, then click Submit.</div>
+            </div>
+
+            <ul style="margin-top:14px;">
+              <li>Go back to the <strong>Provider Process</strong> screen and open the referral</li>
+              <li>Change the status from <strong>Accepted</strong> back to <strong>Pending Acceptance</strong> and click Submit</li>
+              <li>Click on the <strong>Documents tab</strong> in the referral and add the scanned referral document</li>
+              <li>Close the referral</li>
+              <li><strong>Delete</strong> the inbound referral document from the Specialist Referral Folder on the Z: Drive</li>
+              <li><strong>You are done.</strong></li>
+            </ul>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Quick Reference -->
+      <p class="section-heading" id="quickref">Quick Reference</p>
+      <div class="qr-card">
+        <h3>&#9997; Inbound Referral Checklist</h3>
+        <ul>
+          <li>Locate referral in <strong>Specialist Referrals Fax Folder</strong> on Z: Drive</li>
+          <li><strong>Step 1:</strong> Search patient by DOB in PowerChart (Patient &rarr; Search)</li>
+          <li><strong>If found:</strong> Scan referral into chart (Patient &rarr; View Images &rarr; New &rarr; Provider Orders) &rarr; go to Step 3</li>
+          <li><strong>If not found:</strong> Build patient profile in Step 2 first, then return to scan after referral is built</li>
+          <li><strong>Step 2 (new patients):</strong> PM Conversation &rarr; Add/Modify Person &rarr; complete required fields including PCP and insurance</li>
+          <li><strong>Step 3:</strong> Add Inbound Referral in RM &rarr; enter DOB &rarr; complete Case Details &rarr; Next &rarr; Previous &rarr; Next (glitch workaround) &rarr; Submit</li>
+          <li><strong>Step 4:</strong> Provider Process &rarr; check Scheduling tab &rarr; attach existing appointment if found</li>
+          <li><strong>Step 5:</strong> Finalize per specialty / patient type (see table above)</li>
+          <li><strong>Last step for new patients:</strong> Delete referral from Z: Drive Specialist Referral Folder</li>
+        </ul>
+      </div>
+
+      <div class="callout warn">
+        <strong>Known system glitch reminder:</strong> When building a new referral in Step 3, after completing Case Details you must click <strong>Next &rarr; Previous &rarr; Next</strong> to advance correctly. Skipping this will cause issues with submission.
+      </div>
+
+    </main>
+  </div>
+
+  <footer class="site-footer">
+    Primary Care Clinic &mdash; Pagosa Springs Medical Center &nbsp;|&nbsp;
+    Referral Management Resource &nbsp;|&nbsp;
+    <a href="https://jblaise1310.github.io/rhc-today">RHC Today</a>
+  </footer>
+
+</body>
+</html>
