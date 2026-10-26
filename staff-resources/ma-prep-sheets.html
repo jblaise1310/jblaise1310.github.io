@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>MA Patient Preparation Sheets | Primary Care Clinic</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: #1F3A5F;
+  --navy-deep: #152A46;
+  --gold: #C9A227;
+  --gold-soft: #F6EDCF;
+  --bg: #F7F8FA;
+  --surface: #FFFFFF;
+  --ink: #1B2430;
+  --muted: #5A6675;
+  --line: #D9DEE5;
+  --header-ink: #FFFFFF;
+  --chip-bg: #E8EDF4;
+  --chip-ink: #1F3A5F;
+  --callout-bg: #F6EDCF;
+  --callout-ink: #3D3210;
+  color-scheme: light;
+  box-sizing: border-box;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0F1724;
+    --surface: #182233;
+    --ink: #E7ECF3;
+    --muted: #A3AEBD;
+    --line: #2B3950;
+    --navy: #1A3152;
+    --navy-deep: #122440;
+    --chip-bg: #24324A;
+    --chip-ink: #DCE5F2;
+    --callout-bg: #3A3216;
+    --callout-ink: #F3E6BC;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0F1724; --surface: #182233; --ink: #E7ECF3; --muted: #A3AEBD; --line: #2B3950;
+  --navy: #1A3152; --navy-deep: #122440; --chip-bg: #24324A; --chip-ink: #DCE5F2;
+  --callout-bg: #3A3216; --callout-ink: #F3E6BC; color-scheme: dark;
+}
+*, *::before, *::after { box-sizing: inherit; }
+html { scroll-padding-top: env(safe-area-inset-top, 0px); }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: "Atkinson Hyperlegible", "Segoe UI", Arial, sans-serif;
+  font-size: 17px;
+  line-height: 1.5;
+}
+a { color: inherit; }
+button { font: inherit; cursor: pointer; }
+:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
+
+/* Header + search */
+.top {
+  background: var(--navy);
+  color: var(--header-ink);
+  padding: 28px 20px 32px;
+  border-bottom: 5px solid var(--gold);
+}
+.top-inner { max-width: 960px; margin: 0 auto; }
+.brand { font-size: 15px; opacity: .85; margin: 0 0 4px; }
+.top h1 { margin: 0 0 18px; font-size: clamp(26px, 4.5vw, 36px); line-height: 1.15; letter-spacing: -.01em; }
+.search-wrap { position: relative; }
+.search-wrap label { display: block; font-size: 15px; margin-bottom: 6px; opacity: .9; }
+#q {
+  width: 100%;
+  font: inherit;
+  font-size: 20px;
+  padding: 14px 16px;
+  border-radius: 6px;
+  border: 2px solid transparent;
+  background: #FFFFFF;
+  color: #1B2430;
+}
+#q:focus { border-color: var(--gold); outline: none; }
+.hint { font-size: 14px; margin: 8px 0 0; opacity: .8; }
+
+main { max-width: 960px; margin: 0 auto; padding: 24px 20px 48px; }
+
+/* Results list */
+.toolbar { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 12px; }
+.count { color: var(--muted); font-size: 15px; margin: 0; }
+.btn {
+  border: 2px solid var(--navy);
+  background: var(--surface);
+  color: var(--ink);
+  padding: 8px 14px;
+  border-radius: 6px;
+  font-size: 15px;
+}
+.btn.primary { background: var(--navy); color: #FFFFFF; }
+.btn.gold { background: var(--gold); border-color: var(--gold); color: #1B2430; font-weight: 700; }
+.results { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
+.results li { border-bottom: 1px solid var(--line); }
+.result {
+  display: block; width: 100%; text-align: left;
+  background: none; border: 0; color: var(--ink);
+  padding: 16px 8px 16px 14px;
+  border-left: 5px solid transparent;
+}
+.result:hover, .result:focus-visible { background: var(--surface); border-left-color: var(--gold); }
+.result-title { font-size: 20px; font-weight: 700; display: block; }
+.result-sub { color: var(--muted); font-size: 15px; display: block; margin-top: 2px; }
+.match { display: inline-block; margin-top: 6px; font-size: 13px; background: var(--chip-bg); color: var(--chip-ink); padding: 2px 8px; border-radius: 3px; }
+.empty { padding: 24px; background: var(--surface); border: 1px solid var(--line); border-left: 5px solid var(--gold); border-radius: 4px; }
+.empty h2 { margin: 0 0 6px; font-size: 20px; }
+.empty p { margin: 0; }
+
+/* Sheet */
+.sheet { background: var(--surface); border: 1px solid var(--line); border-radius: 6px; overflow: hidden; }
+.sheet + .sheet { margin-top: 24px; }
+.sheet-head { padding: 20px 24px 16px; border-bottom: 3px solid var(--gold); }
+.sheet-kicker { color: var(--muted); font-size: 14px; margin: 0; }
+.sheet-head h2 { margin: 2px 0 6px; font-size: 28px; line-height: 1.2; color: var(--ink); }
+.aka { margin: 0; font-size: 14px; color: var(--muted); }
+.sheet-body { padding: 8px 24px 24px; }
+.grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 32px; }
+@media (max-width: 720px) { .grid { grid-template-columns: 1fr; } }
+.sheet h3 {
+  font-size: 18px; margin: 20px 0 8px; padding-bottom: 4px;
+  border-bottom: 1px solid var(--line); color: var(--ink);
+}
+.sheet h4 { font-size: 16px; margin: 14px 0 6px; color: var(--ink); }
+.cond { font-weight: 400; color: var(--muted); }
+ul.check { list-style: none; margin: 0; padding: 0; }
+ul.check li { position: relative; padding-left: 28px; margin: 5px 0; }
+ul.check li::before {
+  content: ""; position: absolute; left: 2px; top: .3em;
+  width: 15px; height: 15px; border: 2px solid var(--muted); border-radius: 2px;
+}
+ol.steps { margin: 0; padding-left: 22px; }
+ol.steps li { margin: 5px 0; padding-left: 4px; }
+.callout {
+  margin: 22px 0 0; padding: 12px 16px;
+  background: var(--callout-bg); color: var(--callout-ink);
+  border-left: 5px solid var(--gold); border-radius: 3px;
+}
+.callout strong { display: block; margin-bottom: 2px; }
+.about p { margin: 0; max-width: 72ch; }
+.every { margin-top: 22px; border: 1px solid var(--line); border-radius: 4px; }
+.every summary { padding: 10px 14px; font-weight: 700; cursor: pointer; }
+.every .inner { padding: 0 16px 12px; }
+.every ul { margin: 0; padding-left: 20px; }
+.every li { margin: 4px 0; }
+.handoff { margin-top: 22px; padding: 14px 16px; border: 2px dashed var(--navy); border-radius: 4px; }
+:root[data-theme="dark"] .handoff { border-color: var(--muted); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .handoff { border-color: var(--muted); } }
+.handoff h3 { border: 0; margin: 0 0 6px; padding: 0; }
+.handoff p { margin: 0; font-size: 17px; }
+.sheet-foot { padding: 10px 24px; font-size: 13px; color: var(--muted); border-top: 1px solid var(--line); display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+
+.sheet-actions { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 14px; }
+.hidden { display: none !important; }
+#printAll { display: none; }
+
+/* Print */
+@media print {
+  :root { --bg:#fff; --surface:#fff; --ink:#000; --muted:#444; --line:#bbb; --callout-bg:#F6EDCF; --callout-ink:#000; color-scheme: light; padding: 0; }
+  body { font-size: 11.5pt; background: #fff; }
+  .top, .toolbar, .results, .sheet-actions, .empty, #list { display: none !important; }
+  main { padding: 0; max-width: none; }
+  .sheet { border: 0; border-radius: 0; break-after: page; }
+  .sheet:last-child { break-after: auto; }
+  .sheet-head { padding: 0 0 8px; border-bottom: 3px solid #C9A227; }
+  .sheet-head h2 { font-size: 20pt; }
+  .sheet-body { padding: 0; }
+  .grid { grid-template-columns: 1fr 1fr; }
+  .sheet h3 { margin-top: 12px; }
+  .every { break-inside: avoid; }
+  .every summary { list-style: none; }
+  .every summary::-webkit-details-marker { display: none; }
+  .callout, .handoff { break-inside: avoid; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .sheet-foot { padding: 8px 0 0; }
+  body.print-all #view { display: none !important; }
+  body.print-all #printAll { display: block !important; }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="top-inner">
+    <p class="brand">Primary Care Clinic</p>
+    <h1>MA patient preparation sheets</h1>
+    <div class="search-wrap">
+      <label for="q">Search by reason for visit</label>
+      <input id="q" type="search" autocomplete="off" placeholder="Try “dizzy”, “strep”, “cut lip”, “ringworm”">
+      <p class="hint">Search the patient’s own words. Each sheet lists common ways patients describe the problem.</p>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section id="list">
+    <div class="toolbar">
+      <p class="count" id="count" aria-live="polite"></p>
+      <button class="btn" id="btnPrintAll" type="button">Print all sheets</button>
+    </div>
+    <ul class="results" id="results"></ul>
+    <div class="empty hidden" id="empty">
+      <h2>No sheet matches that reason for visit</h2>
+      <p>Complete standard intake, notify the RN of the stated complaint, and ask which supplies the provider wants ready. Try a different word, such as the body part or symptom.</p>
+    </div>
+  </section>
+
+  <section id="view" class="hidden">
+    <div class="sheet-actions">
+      <button class="btn" id="btnBack" type="button">Back to all sheets</button>
+      <button class="btn gold" id="btnPrint" type="button">Print this sheet</button>
+    </div>
+    <div id="sheetHost"></div>
+  </section>
+
+  <section id="printAll"></section>
+</main>
+
+<script>
+/* =========================================================
+   SHEET LIBRARY
+   To add a new reason for visit, copy one object below and edit it.
+   - id: short, no spaces (used in the link, e.g. #dizziness)
+   - keywords: words patients and staff might type
+   - additional: one block per "if ordered" scenario
+   ========================================================= */
+var EVERY_VISIT = [
+  "Verify two patient identifiers.",
+  "Confirm the patient’s stated reason for the visit.",
+  "Complete standard clinic intake: vital signs, pain score, medication list, allergies, and required screenings.",
+  "Prepare the patient, room, and supplies as outlined on this sheet.",
+  "Relay concerns the patient reports or the MA observes to the RN/provider. Do not continue routine rooming when the patient appears distressed; obtain help immediately.",
+  "Perform tests or procedures only under an order or approved protocol and within documented competency."
+];
+
+var HANDOFF = "“Patient is here for [stated complaint]. Routine intake is [complete/incomplete]. Vitals are [results]. The patient is [positioned/gowned], and [supplies] are ready. The patient also reported, or I observed, [concern].”";
+
+var SHEETS = [
+  {
+    id: "scalp-rash",
+    title: "Scalp rash / reported “ringworm”",
+    category: "Skin",
+    keywords: ["ringworm","tinea","tinea capitis","scalp","rash","fungal","fungus","itchy scalp","hair loss","bald spot","patchy","flaky scalp","scaly","dandruff","koh","fungal culture","skin"],
+    prepare: [
+      "Seat the patient with the scalp accessible.",
+      "Ask the patient to remove their hat and loosen hair accessories as comfortable.",
+      "Position the examination light.",
+      "Leave the affected area undisturbed for the provider’s examination."
+    ],
+    routine: ["Nonsterile gloves","Examination light","Disposable protective pad, if needed"],
+    additional: [
+      { when: "specimen collection is ordered", items: [
+        "Laboratory-approved fungal collection kit or specimen container",
+        "Sterile forceps for provider use, if requested",
+        "Skin-scraping instrument for provider use, if requested",
+        "Other collection materials specified by the laboratory",
+        "Specimen labels",
+        "Laboratory requisition, if required",
+        "Biohazard transport bag"
+      ]}
+    ],
+    reminder: "Follow the laboratory’s collection instructions. Do not substitute a routine bacterial swab or collect a specimen without authorization."
+  },
+  {
+    id: "lip-injury",
+    title: "Split lip / lip injury",
+    category: "Injury",
+    keywords: ["split lip","lip","cut lip","lip laceration","laceration","busted lip","fat lip","swollen lip","bleeding lip","mouth injury","mouth","face injury","facial","fall","hit","stitches","sutures","wound","injury"],
+    prepare: [
+      "Seat the patient comfortably with the mouth accessible.",
+      "Position the examination light.",
+      "Place a protective pad as needed.",
+      "If bleeding is present, notify the RN/provider and assist with gauze pressure according to clinic protocol.",
+      "Do not probe, scrub, or manipulate the wound."
+    ],
+    routine: ["Nonsterile gloves","Mask and eye protection when splashing is anticipated","Examination light","Gauze","Disposable protective pad","Emesis basin","Wrapped cold pack, if directed"],
+    additional: [
+      { when: "wound care or repair is ordered", items: [
+        "Sterile saline",
+        "Irrigation syringe and splash shield",
+        "Sterile gauze",
+        "Wound-care or repair tray",
+        "Sterile gloves and drape",
+        "Provider-selected suture material",
+        "Ordered anesthetic and administration supplies",
+        "Provider-selected dressing",
+        "Sharps container within reach"
+      ]}
+    ],
+    reminder: "Keep sterile supplies packaged until the provider confirms what is needed. The RN/provider assesses the injury and determines treatment."
+  },
+  {
+    id: "dizziness",
+    title: "Dizziness",
+    category: "Neuro / general",
+    keywords: ["dizzy","dizziness","lightheaded","light headed","vertigo","spinning","room spinning","woozy","faint","fainting","nearly fainted","passed out","off balance","unsteady","balance","blood sugar","low sugar","glucose"],
+    prepare: [
+      "Assist the patient to a safe seated or lying position.",
+      "Avoid unassisted walking or standing for a weight.",
+      "Notify the RN that the patient reports dizziness.",
+      "Obtain routine vital signs in a safe position.",
+      "Keep assistance within reach."
+    ],
+    routine: ["Blood pressure monitor with correctly sized cuff","Pulse oximeter","Thermometer","Wheelchair, if needed","Emesis bag or basin"],
+    additional: [
+      { when: "a glucose check is ordered or authorized", items: [
+        "Nonsterile gloves",
+        "Clinic-approved glucose meter",
+        "Compatible test strip",
+        "Single-use safety lancet",
+        "Alcohol prep pad",
+        "Gauze and bandage",
+        "Sharps container"
+      ]},
+      { when: "an ECG is ordered or authorized", items: [
+        "ECG machine and lead cables",
+        "Disposable electrodes",
+        "Gown and drape",
+        "Approved skin-preparation supplies",
+        "Clippers, if needed and permitted by clinic procedure"
+      ]}
+    ],
+    reminder: "The RN/provider determines whether orthostatic vital signs or other assessment is appropriate. Do not independently stand the patient for additional testing."
+  },
+  {
+    id: "sore-throat-cough",
+    title: "Sore throat / cough",
+    category: "Respiratory",
+    keywords: ["sore throat","throat","strep","strep throat","pharyngitis","tonsils","swollen glands","cough","coughing","cold","uri","congestion","flu","influenza","covid","rsv","respiratory","fever","chest cold","bronchitis","hoarse"],
+    prepare: [
+      "Offer a mask when appropriate and tolerated.",
+      "Follow clinic respiratory precautions.",
+      "Provide tissues and access to hand hygiene.",
+      "Obtain routine vital signs, including temperature, respiratory rate, and oxygen saturation.",
+      "Provide a gown if needed for the examination."
+    ],
+    routine: ["Patient mask","Staff PPE required by clinic precautions","Tissues and waste receptacle","Thermometer and probe cover","Pulse oximeter","Examination light","Tongue depressor for provider use","Gown and drape, if needed"],
+    additional: [
+      { when: "throat testing is ordered", items: [
+        "Test-specific throat swab",
+        "Rapid-test kit and manufacturer-required processing supplies, if testing onsite",
+        "Timer, if required",
+        "Laboratory-approved culture swab and transport medium, if ordered",
+        "Specimen labels",
+        "Laboratory requisition, if required",
+        "Biohazard transport bag"
+      ]},
+      { when: "respiratory testing is ordered", items: [
+        "Test-specific collection swab",
+        "Correct test cartridge or transport tube",
+        "Manufacturer-required processing supplies",
+        "Specimen labels and transport bag, as applicable"
+      ]}
+    ],
+    reminder: "Follow the order or approved testing protocol. The MA does not select which test the patient needs."
+  },
+  {
+    id: "upper-arm-shoulder-pain",
+    title: "Upper arm / shoulder pain",
+    category: "Pain",
+    keywords: ["upper arm","shoulder pain","armpit","underarm","axilla","axillary","left arm","arm pain","shoulder","upper body","upper body pain","lump","lump under arm","swollen lymph node","lymph node","boil","abscess","bump","pain"],
+    prepare: [
+      "Notify the RN of the stated complaint before proceeding with routine preparation.",
+      "Keep the patient resting comfortably.",
+      "Obtain routine vital signs as directed without delaying RN/provider assessment.",
+      "Provide a gown and drape for access to the affected area.",
+      "Maintain privacy and follow clinic chaperone policy."
+    ],
+    routine: ["Blood pressure monitor with correctly sized cuff","Pulse oximeter","Thermometer","Gown and drape","Nonsterile gloves","Examination light"],
+    additional: [
+      { when: "an ECG is ordered or authorized", items: [
+        "ECG machine and lead cables",
+        "Disposable electrodes",
+        "Approved skin-preparation supplies",
+        "Clippers, if needed and permitted by clinic procedure"
+      ]},
+      { when: "skin or wound care is ordered", items: [
+        "Gauze",
+        "Disposable protective pad",
+        "Provider-selected dressing",
+        "Laboratory-approved specimen collection kit, if ordered",
+        "Specimen labels",
+        "Laboratory requisition, if required",
+        "Biohazard transport bag"
+      ]}
+    ],
+    reminder: "The RN/provider determines the assessment and next steps. Do not manipulate a lump or assume the cause of the pain."
+  },
+  {
+    id: "eye-irritation",
+    title: "Eye irritation or eyelid rash",
+    category: "Eye",
+    about: "Irritation may involve the eye surface or the skin around the eye. This sheet applies to one or both eyes. The provider will examine the area and determine the cause.",
+    keywords: ["eye","eyes","red eye","pink eye","conjunctivitis","itchy eye","watery eye","eye irritation","something in my eye","eyelid","eyelid rash","swollen eyelid","stye","eye discharge","crusty eye","eye pain","vision","blurry vision","chemical in eye","splash"],
+    prepare: [
+      "Confirm which eye or surrounding area the patient reports is affected.",
+      "Seat the patient comfortably with the face accessible. Move hair away from the eyes with permission.",
+      "Keep the patient’s glasses available for vision screening. Do not apply creams, eye drops, or an eye patch before evaluation unless directed.",
+      "Complete visual acuity screening if included in the approved rooming protocol; record each eye separately and whether corrective lenses were used."
+    ],
+    routine: ["Nonsterile gloves and tissues","Penlight or examination light","Visual acuity chart and clean eye occluder for authorized screening"],
+    additional: [
+      { when: "the provider requests", items: [
+        "Fluorescein strips, sterile ophthalmic saline, and blue examination light for provider use",
+        "Ordered ophthalmic drops",
+        "Laboratory-approved eye specimen swab, transport container, labels, requisition if required, and biohazard bag",
+        "Sterile eye-irrigation supplies only when directed or required by an emergency protocol"
+      ]}
+    ],
+    reminder: "Reported vision loss, severe eye pain, or chemical exposure requires immediate help. For chemical exposure, follow the emergency eye-irrigation protocol without waiting for routine provider entry."
+  },
+  {
+    id: "elbow-injury",
+    title: "Elbow injury",
+    category: "Injury",
+    about: "An elbow injury may involve bone, joint, or surrounding soft tissue. The same basic preparation applies to either elbow; the provider determines the examination and treatment needed.",
+    keywords: ["elbow","elbow injury","elbow pain","hurt elbow","fell on arm","fall","arm injury","swollen elbow","broken arm","fracture","sprain","bumped elbow","tennis elbow","cant bend arm","splint","sling","injury"],
+    prepare: [
+      "Confirm the affected side and provide privacy to expose the elbow and nearby arm.",
+      "Offer a gown if a sleeve cannot be moved comfortably. Do not pull tight clothing over the injury.",
+      "Support the arm in the patient’s position of comfort with a pillow or folded towel.",
+      "Do not force bending or straightening, remove an existing splint, or attempt to reposition a visibly deformed arm."
+    ],
+    routine: ["Gown and drape, if needed","Pillow or folded towel with clean cover","Nonsterile gloves","Gauze and protective pad if there is an open area"],
+    additional: [
+      { when: "the provider requests", items: [
+        "Cold pack and protective cover",
+        "Provider-selected sling",
+        "Provider-selected splint, stockinette, padding, elastic wrap, and bandage scissors",
+        "Sterile saline, gauze, and nonadherent dressing for ordered wound care"
+      ]}
+    ],
+    reminder: "The provider selects any immobilization device. Apply only as directed and within competency. Report a visibly deformed arm or a patient report of numbness or a cold hand promptly."
+  },
+  {
+    id: "ingrown-toenail",
+    title: "Ingrown toenail",
+    category: "Skin / foot",
+    about: "An ingrown toenail occurs when a nail edge presses or grows into nearby skin. This sheet applies to any toe on either foot. The provider determines whether a procedure is needed.",
+    keywords: ["ingrown toenail","ingrown","toenail","toe","toe pain","big toe","infected toe","red toe","swollen toe","nail","foot","paronychia","nail removal","wedge resection"],
+    prepare: [
+      "Confirm the affected foot and toe. The broad sheet title does not replace identifying the correct site.",
+      "Provide a seat and assist with removing the shoe and sock as needed.",
+      "Position the foot on a clean protective pad where the provider can examine it without the patient balancing or standing.",
+      "Leave the nail and surrounding skin undisturbed. Do not trim, dig under, soak, or apply products before evaluation unless directed."
+    ],
+    routine: ["Nonsterile gloves","Examination light","Disposable protective pad and towel","Gauze"],
+    additional: [
+      { when: "the provider requests", items: [
+        "Sterile gloves, drape, and gauze",
+        "Provider-selected nail procedure instruments: nail elevator, nail splitter or nail scissors, and hemostat",
+        "Ordered skin antiseptic and applicators",
+        "Ordered local anesthetic, syringe, needles, and sharps container",
+        "Nonadherent dressing, rolled gauze, and tape or provider-selected wrap"
+      ]}
+    ],
+    reminder: "Keep procedure supplies packaged until requested. Treatment and instruments depend on the provider’s plan. Any procedural site verification and consent must follow clinic policy."
+  },
+  {
+    id: "earache",
+    title: "Earache",
+    category: "Ear",
+    about: "Earache may involve the ear canal, eardrum, or nearby structures. Prepare access to both ears so the provider can examine them. Use the Sore throat / cough sheet when those symptoms are also reported.",
+    keywords: ["earache","ear ache","ear pain","ear","ear infection","otitis","swimmers ear","plugged ear","clogged ear","ear wax","earwax","cerumen","ear drainage","cant hear","hearing","hearing aid","ear irrigation","ear lavage"],
+    prepare: [
+      "Confirm which ear the patient reports is affected.",
+      "Seat the patient upright with the head supported as needed and both ears accessible.",
+      "Ask the patient to move hair or headwear away from the ears as comfortable.",
+      "If a hearing aid blocks access, have the patient remove it immediately before examination and keep it in a labeled container. Maintain communication support."
+    ],
+    routine: ["Working otoscope with charged handle or power connection","Disposable otoscope specula in appropriate sizes","Nonsterile gloves","Tissues and gauze","Clean labeled container for a hearing aid, if needed"],
+    additional: [
+      { when: "the provider requests", items: [
+        "Provider-selected ear curette or removal instrument for provider use",
+        "Ear irrigation device, ordered solution, collection basin, towel, and protective pad only after provider authorization",
+        "Laboratory-approved specimen swab, transport container, labels, requisition if required, and biohazard bag"
+      ]}
+    ],
+    reminder: "Do not insert cotton swabs, remove material, instill drops, or irrigate before the provider evaluates the ear and authorizes the task. Earache does not automatically require irrigation."
+  }
+];
+
+var REVIEW_STATUS = "Draft for clinic review | October 2026";
+
+/* ========================================================= */
+function esc(s){ return String(s).replace(/[&<>"]/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c]; }); }
+function norm(s){ return String(s).toLowerCase().replace(/[’']/g,"").replace(/[^a-z0-9 ]+/g," ").replace(/\s+/g," ").trim(); }
+
+function score(sheet, q){
+  if (!q) return { s: 1, hit: "" };
+  var terms = q.split(" ");
+  var title = norm(sheet.title);
+  var best = 0, hit = "";
+  // whole phrase
+  if (title.indexOf(q) > -1) { best += 100; hit = ""; }
+  sheet.keywords.forEach(function(k){
+    var nk = norm(k);
+    if (nk === q) { best += 80; hit = hit || k; }
+    else if (nk.indexOf(q) === 0) { best += 50; hit = hit || k; }
+    else if (nk.indexOf(q) > -1 || (q.length > 3 && q.indexOf(nk) > -1)) { best += 30; hit = hit || k; }
+  });
+  // every term somewhere
+  var hay = title + " " + sheet.keywords.map(norm).join(" ") + " " + norm(sheet.category);
+  var all = terms.every(function(t){ return hay.indexOf(t) > -1; });
+  if (all) best += 20 * terms.length;
+  if (!best) {
+    var body = norm((sheet.about || "") + " " + sheet.prepare.join(" ") + " " + sheet.routine.join(" ") + " " + sheet.additional.map(function(a){ return a.when + " " + a.items.join(" "); }).join(" "));
+    if (terms.every(function(t){ return body.indexOf(t) > -1; })) { best = 5; hit = "found in sheet contents"; }
+  }
+  return { s: best, hit: hit };
+}
+
+function renderList(){
+  var q = norm(document.getElementById("q").value);
+  var rows = SHEETS.map(function(sh){ var r = score(sh, q); return { sh: sh, s: r.s, hit: r.hit }; })
+    .filter(function(r){ return r.s > 0; })
+    .sort(function(a,b){ return q ? b.s - a.s : a.sh.title.localeCompare(b.sh.title); });
+  var ul = document.getElementById("results");
+  ul.innerHTML = rows.map(function(r){
+    var m = (q && r.hit) ? '<span class="match">Matched: ' + esc(r.hit) + '</span>' : '';
+    return '<li><button class="result" type="button" data-id="' + esc(r.sh.id) + '">' +
+      '<span class="result-title">' + esc(r.sh.title) + '</span>' +
+      '<span class="result-sub">' + esc(r.sh.category) + ' | ' + r.sh.additional.length + ' “if ordered” supply set' + (r.sh.additional.length === 1 ? '' : 's') + '</span>' + m +
+      '</button></li>';
+  }).join("");
+  document.getElementById("empty").classList.toggle("hidden", rows.length > 0);
+  document.getElementById("count").textContent = q
+    ? rows.length + (rows.length === 1 ? " sheet matches" : " sheets match")
+    : SHEETS.length + " sheets in the library";
+}
+
+function sheetHTML(sh){
+  var prep = '<ol class="steps">' + sh.prepare.map(function(p){ return '<li>' + esc(p) + '</li>'; }).join("") + '</ol>';
+  var routine = '<ul class="check">' + sh.routine.map(function(p){ return '<li>' + esc(p) + '</li>'; }).join("") + '</ul>';
+  var add = sh.additional.map(function(a){
+    return '<h4>If ' + esc(a.when) + '</h4><ul class="check">' + a.items.map(function(i){ return '<li>' + esc(i) + '</li>'; }).join("") + '</ul>';
+  }).join("");
+  var every = '<details class="every" open><summary>For every visit</summary><div class="inner"><ul>' +
+    EVERY_VISIT.map(function(e){ return '<li>' + esc(e) + '</li>'; }).join("") + '</ul></div></details>';
+  return '<article class="sheet" aria-labelledby="h-' + esc(sh.id) + '">' +
+    '<div class="sheet-head"><p class="sheet-kicker">Primary Care Clinic | MA patient preparation | ' + esc(sh.category) + '</p>' +
+    '<h2 id="h-' + esc(sh.id) + '">' + esc(sh.title) + '</h2>' +
+    '<p class="aka">Patients may say: ' + esc(sh.keywords.slice(0,8).join(", ")) + '</p></div>' +
+    '<div class="sheet-body">' +
+      (sh.about ? '<div class="about"><h3>Understanding the reported complaint</h3><p>' + esc(sh.about) + '</p></div>' : '') +
+      '<div class="grid">' +
+        '<div><h3>Prepare the patient</h3>' + prep + '</div>' +
+        '<div><h3>Routine supplies</h3>' + routine + '</div>' +
+      '</div>' +
+      '<h3>Anticipate: have ready if the provider orders</h3>' +
+      '<div class="grid">' + add + '</div>' +
+      '<div class="callout"><strong>MA reminder</strong>' + esc(sh.reminder) + '</div>' +
+      every +
+      '<div class="handoff"><h3>MA handoff to RN/provider</h3><p>' + esc(HANDOFF) + '</p></div>' +
+    '</div>' +
+    '<div class="sheet-foot"><span>' + esc(REVIEW_STATUS) + '</span><span>Follow clinic policy if this sheet and an order differ.</span></div>' +
+  '</article>';
+}
+
+function show(id){
+  var sh = SHEETS.filter(function(s){ return s.id === id; })[0];
+  if (!sh) { showList(); return; }
+  document.getElementById("sheetHost").innerHTML = sheetHTML(sh);
+  document.getElementById("list").classList.add("hidden");
+  document.getElementById("view").classList.remove("hidden");
+  document.title = sh.title.replace(/[“”]/g,"") + " | MA Prep Sheets";
+  window.scrollTo(0,0);
+  document.getElementById("btnBack").focus();
+}
+function showList(){
+  document.getElementById("view").classList.add("hidden");
+  document.getElementById("list").classList.remove("hidden");
+  document.title = "MA Patient Preparation Sheets | Primary Care Clinic";
+  renderList();
+}
+function route(){
+  var id = decodeURIComponent((location.hash || "").replace(/^#/, ""));
+  if (id) show(id); else showList();
+}
+
+document.getElementById("q").addEventListener("input", function(){
+  if (location.hash) { history.pushState(null, "", location.pathname + location.search); }
+  showList();
+});
+document.getElementById("q").addEventListener("keydown", function(e){
+  if (e.key === "Enter") {
+    var first = document.querySelector(".result");
+    if (first) { location.hash = first.getAttribute("data-id"); }
+  }
+});
+document.getElementById("results").addEventListener("click", function(e){
+  var b = e.target.closest(".result");
+  if (b) location.hash = b.getAttribute("data-id");
+});
+document.getElementById("btnBack").addEventListener("click", function(){
+  history.pushState(null, "", location.pathname + location.search);
+  showList();
+  document.getElementById("q").focus();
+});
+document.getElementById("btnPrint").addEventListener("click", function(){
+  document.body.classList.remove("print-all");
+  window.print();
+});
+document.getElementById("btnPrintAll").addEventListener("click", function(){
+  var sorted = SHEETS.slice().sort(function(a,b){ return a.title.localeCompare(b.title); });
+  document.getElementById("printAll").innerHTML = sorted.map(sheetHTML).join("");
+  document.body.classList.add("print-all");
+  window.print();
+});
+window.addEventListener("afterprint", function(){ document.body.classList.remove("print-all"); });
+window.addEventListener("hashchange", route);
+route();
+</script>
+</body>
+</html>
