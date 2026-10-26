@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Surveyor Says | Survey Ready Challenge</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f0e8;
+    --surface: #ffffff;
+    --ink: #0d2340;
+    --muted: #4a5568;
+    --line: #e2e8f0;
+    --teal: #0a8075;
+    --teal-soft: #e6f4f2;
+    --gold: #c8922a;
+    --hero: #0d2340;
+    --ok: #1f7a3a;
+    --ok-soft: #e7f5eb;
+    --bad: #b3261e;
+    --bad-soft: #fcebea;
+    --serif: 'Playfair Display', Georgia, 'Times New Roman', serif;
+    --sans: 'Source Sans 3', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    box-sizing: border-box;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0a1524; --surface: #12233a; --ink: #edf2f8; --muted: #a8b6c7; --line: #233853;
+      --teal: #2bb3a5; --teal-soft: #123a37; --gold: #e0ad4f; --hero: #07101c;
+      --ok: #5cc97c; --ok-soft: #163824; --bad: #f2867e; --bad-soft: #3d1b1a;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #0a1524; --surface: #12233a; --ink: #edf2f8; --muted: #a8b6c7; --line: #233853;
+    --teal: #2bb3a5; --teal-soft: #123a37; --gold: #e0ad4f; --hero: #07101c;
+    --ok: #5cc97c; --ok-soft: #163824; --bad: #f2867e; --bad-soft: #3d1b1a;
+    color-scheme: dark;
+  }
+  html { scroll-padding-top: env(safe-area-inset-top, 0px); }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: var(--sans); background: var(--bg); color: var(--ink); line-height: 1.55; font-size: 17px; }
+  body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 300; background: var(--surface); }
+  button { font: inherit; cursor: pointer; }
+  :focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
+
+  /* Site nav (matches rhc-today) */
+  .rhc-nav { background: var(--surface); border-bottom: 1px solid var(--line); position: sticky; top: env(safe-area-inset-top, 0px); z-index: 200; }
+  .rhc-nav-inner { max-width: 1200px; margin: 0 auto; padding: 0 24px; display: flex; align-items: center; gap: 2px; height: 52px; overflow-x: auto; }
+  .rhc-nav a { font-size: 12.5px; font-weight: 600; padding: 6px 10px; border-radius: 7px; color: var(--muted); text-decoration: none; white-space: nowrap; flex-shrink: 0; }
+  .rhc-nav a:hover { background: var(--teal-soft); color: var(--teal); }
+  .rhc-nav .home { font-family: var(--serif); font-size: 14px; color: var(--ink); border: 1px solid var(--line); margin-right: 8px; }
+  .rhc-nav .active { background: var(--teal-soft); color: var(--teal); }
+
+  /* Header */
+  header { background: var(--hero); color: #fff; padding: 44px 24px 40px; }
+  .head-inner { max-width: 760px; margin: 0 auto; }
+  .series { color: var(--gold); font-weight: 600; font-size: 0.95rem; margin-bottom: 6px; }
+  header h1 { font-family: var(--serif); font-weight: 900; font-size: clamp(2.6rem, 8vw, 4.2rem); line-height: 1; letter-spacing: -0.01em; }
+  header p { color: rgba(255,255,255,0.72); max-width: 54ch; margin-top: 12px; }
+  .stripe { display: flex; height: 8px; margin-top: 26px; border-radius: 4px; overflow: hidden; max-width: 420px; }
+  .stripe span { flex: 1; }
+
+  main { max-width: 760px; margin: 0 auto; padding: 28px 20px 60px; }
+  .panel { background: var(--surface); border-radius: 10px; padding: 28px; border: 1px solid var(--line); }
+  .hidden { display: none !important; }
+
+  /* Start screen */
+  .start h2, .end h2 { font-family: var(--serif); font-size: 1.6rem; line-height: 1.2; margin-bottom: 10px; }
+  .rules { margin: 14px 0 22px; padding-left: 1.2em; color: var(--muted); }
+  .rules li { margin: 6px 0; }
+  .rules strong { color: var(--ink); }
+  label.name { display: block; font-weight: 600; margin-bottom: 6px; }
+  input[type=text] { width: 100%; font: inherit; padding: 12px 14px; border-radius: 8px; border: 2px solid var(--line); background: var(--bg); color: var(--ink); }
+  input[type=text]:focus { border-color: var(--teal); outline: none; }
+  .btn-row { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 20px; }
+  .btn { border: none; border-radius: 8px; padding: 13px 22px; font-weight: 700; font-size: 1rem; }
+  .btn-primary { background: var(--teal); color: #fff; }
+  .btn-primary:hover { filter: brightness(1.08); }
+  .btn-ghost { background: transparent; color: var(--ink); border: 2px solid var(--line); }
+  .btn-ghost:hover { border-color: var(--teal); }
+  .best { margin-top: 14px; font-size: 0.95rem; color: var(--muted); }
+  .error { color: var(--bad); font-size: 0.92rem; margin-top: 6px; }
+
+  .review { margin-top: 22px; display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 8px; }
+  .review div { border-radius: 8px; padding: 10px 14px; font-size: 0.92rem; }
+  .review b { display: block; font-size: 0.98rem; }
+
+  /* Code colors */
+  .c-blue { background: #1a6bb5; color: #fff; }
+  .c-brown { background: #6b3f1a; color: #fff; }
+  .c-green { background: #2a7a3b; color: #fff; }
+  .c-orange { background: #c95a0a; color: #fff; }
+  .c-purple { background: #6b2fa0; color: #fff; }
+  .c-pink { background: #c2185b; color: #fff; }
+  .c-red { background: #b71c1c; color: #fff; }
+  .c-silver { background: #546e7a; color: #fff; }
+  .c-white { background: #f4f4f4; color: #1a1a1a; box-shadow: inset 0 0 0 2px #b5b5b5; }
+  .c-fisher { background: #37474f; color: #fff; }
+  .c-text { background: var(--bg); color: var(--ink); box-shadow: inset 0 0 0 2px var(--line); }
+
+  /* Game screen */
+  .hud { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 10px; font-weight: 600; color: var(--muted); }
+  .hud .score { color: var(--ink); font-size: 1.15rem; }
+  .progress { height: 6px; background: var(--line); border-radius: 3px; overflow: hidden; margin-bottom: 18px; }
+  .progress span { display: block; height: 100%; background: var(--gold); transition: width .3s; }
+  .round-tag { display: inline-block; font-weight: 700; font-size: 0.85rem; color: var(--teal); background: var(--teal-soft); padding: 3px 10px; border-radius: 20px; margin-bottom: 12px; }
+  .scenario { font-family: var(--serif); font-size: clamp(1.3rem, 3.6vw, 1.7rem); line-height: 1.3; font-weight: 700; margin-bottom: 18px; }
+  .timer { height: 10px; border-radius: 5px; background: var(--line); overflow: hidden; margin-bottom: 6px; }
+  .timer span { display: block; height: 100%; background: var(--teal); }
+  .timer-label { font-size: 0.85rem; color: var(--muted); margin-bottom: 18px; }
+  .options { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .options.text { grid-template-columns: 1fr; }
+  .opt { border: none; border-radius: 10px; padding: 20px 16px; font-weight: 700; font-size: 1.1rem; text-align: center; min-height: 70px; transition: transform .12s, opacity .2s; position: relative; }
+  .options.text .opt { text-align: left; font-weight: 600; font-size: 1rem; padding: 16px 18px; min-height: 0; }
+  .opt:hover:not(:disabled) { transform: translateY(-2px); }
+  .opt:disabled { cursor: default; }
+  .opt.dim { opacity: 0.3; }
+  .opt.right { box-shadow: 0 0 0 4px var(--ok); opacity: 1; }
+  .opt.wrong { box-shadow: 0 0 0 4px var(--bad); opacity: 1; }
+  .opt .mark { position: absolute; top: 6px; right: 10px; font-size: 1.1rem; }
+
+  .feedback { margin-top: 18px; border-radius: 10px; padding: 16px 18px; }
+  .feedback.ok { background: var(--ok-soft); }
+  .feedback.no { background: var(--bad-soft); }
+  .feedback strong { display: block; font-size: 1.05rem; margin-bottom: 2px; }
+  .feedback.ok strong { color: var(--ok); }
+  .feedback.no strong { color: var(--bad); }
+  .feedback p { color: var(--ink); }
+  .next-row { display: flex; justify-content: flex-end; margin-top: 16px; }
+
+  /* End screen */
+  .card-final { border-top: 8px solid var(--gold); }
+  .final-name { font-size: 1.05rem; color: var(--muted); }
+  .final-score { font-family: var(--serif); font-weight: 900; font-size: clamp(3.4rem, 12vw, 5rem); line-height: 1; margin: 6px 0 4px; }
+  .final-meta { color: var(--muted); }
+  .rank { display: inline-block; margin-top: 14px; background: var(--hero); color: var(--gold); font-weight: 700; padding: 8px 16px; border-radius: 8px; }
+  .rank-msg { margin-top: 12px; }
+  .shot { margin-top: 22px; background: var(--teal-soft); border-radius: 8px; padding: 14px 16px; font-size: 0.95rem; }
+  .missed { margin-top: 24px; }
+  .missed h3 { font-family: var(--serif); font-size: 1.15rem; margin-bottom: 8px; }
+  .missed li { list-style: none; padding: 10px 0; border-top: 1px solid var(--line); font-size: 0.95rem; }
+  .missed li b { display: block; }
+  .tip { margin-top: 24px; border-left: 4px solid var(--gold); padding: 6px 0 6px 16px; color: var(--muted); font-size: 0.95rem; }
+  .tip em { color: var(--ink); }
+
+  footer { text-align: center; color: var(--muted); font-size: 0.85rem; padding: 0 20px 30px; }
+
+  @media (max-width: 520px) {
+    .panel { padding: 22px 18px; }
+    .options { grid-template-columns: 1fr; }
+    .opt { min-height: 56px; padding: 16px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; }
+  }
+
+  .review div.rv { background: var(--bg); border-left: 4px solid var(--teal); border-radius: 0 8px 8px 0; color: var(--ink); }
+  .review div.rv span { color: var(--muted); }
+  .options.binary { grid-template-columns: 1fr 1fr; }
+  .b-a { background: #1c3a63; color: #fff; }
+  .options.binary .opt.right { box-shadow: 0 0 0 3px var(--surface), 0 0 0 7px var(--ok); }
+  .options.binary .opt.wrong { box-shadow: 0 0 0 3px var(--surface), 0 0 0 7px var(--bad); }
+  .b-b { background: #0a8075; color: #fff; }
+  .options.binary .opt { min-height: 84px; font-size: 1.2rem; }
+  .stripe span.s1 { background: var(--gold); } .stripe span.s2 { background: #2bb3a5; } .stripe span.s3 { background: #ffffff; opacity: .5; }
+</style>
+</head>
+<body>
+<nav class="rhc-nav">
+  <div class="rhc-nav-inner">
+    <a href="https://psmedcenter.sharepoint.com/sites/RHCTeamSpace/SitePages/Home.aspx" class="home">&#127968; RHC Today</a>
+    <a href="https://jblaise1310.github.io/rhc-today/clinic-operations.html">Clinic Operations</a>
+    <a href="https://jblaise1310.github.io/rhc-today/communication.html">Communication</a>
+    <a href="https://jblaise1310.github.io/rhc-today/goals-kpis.html">Goals &amp; KPIs</a>
+    <a href="https://jblaise1310.github.io/rhc-today/quick-reference.html">Quick Reference</a>
+    <a href="https://jblaise1310.github.io/rhc-today/survey-readiness.html" class="active">Survey Readiness</a>
+    <a href="https://jblaise1310.github.io/rhc-today/training-resources.html">Training</a>
+    <a href="https://jblaise1310.github.io/rhc-today/workflows-policy.html">Workflows &amp; Policy</a>
+  </div>
+</nav>
+
+<header>
+  <div class="head-inner">
+    <div class="series">Survey Ready Challenge, Game 6 of 6</div>
+    <h1>Surveyor Says</h1>
+    <p>The final round. Questions a surveyor could ask you, covering everything from the last five weeks.</p>
+    <div class="stripe" aria-hidden="true"><span class="s1"></span><span class="s2"></span><span class="s3"></span></div>
+  </div>
+</header>
+<main>
+  <section id="start" class="panel start">
+    <h2>How to play</h2>
+    <ol class="rules"><li>A surveyor asks the question. You pick the best answer.</li><li>You have <strong>15 seconds</strong> per question. Correct answers earn <strong>100 points</strong>, plus up to <strong>50 bonus points</strong> for speed.</li><li>The last question is a bonus round on what to say when you don’t know.</li><li>Play as many times as you like. The questions shuffle every round.</li></ol>
+    <label class="name" for="player">Your name (optional)</label>
+    <input type="text" id="player" autocomplete="name" placeholder="First name or nickname">
+    <div class="btn-row">
+      <button class="btn btn-primary" id="startBtn">Start the game</button>
+      <button class="btn btn-ghost" id="reviewBtn" aria-expanded="false">Review everything first</button>
+    </div>
+    <div id="best" class="best hidden"></div>
+    <div id="review" class="review hidden"></div>
+  </section>
+  <section id="game" class="panel hidden" aria-live="polite">
+    <div class="hud"><span id="qCount"></span><span class="score" id="scoreLive">0 pts</span></div>
+    <div class="progress"><span id="progressBar" style="width:0%"></span></div>
+    <div id="roundTag" class="round-tag"></div>
+    <h2 class="scenario" id="scenario"></h2>
+    <div class="timer" aria-hidden="true"><span id="timerBar" style="width:100%"></span></div>
+    <div class="timer-label" id="timerLabel"></div>
+    <div class="options" id="options"></div>
+    <div id="feedback" class="feedback hidden"></div>
+    <div class="next-row"><button class="btn btn-primary hidden" id="nextBtn">Next question</button></div>
+  </section>
+  <section id="end" class="panel end card-final hidden">
+    <div class="final-name" id="finalName"></div>
+    <div class="final-score" id="finalScore">0</div>
+    <div class="final-meta" id="finalMeta"></div>
+    <div class="rank" id="rank"></div>
+    <p class="rank-msg" id="rankMsg"></p>
+    <div class="shot">&#128257; Think you can beat it? Play again. The questions shuffle every round.</div>
+    <div class="missed hidden" id="missedWrap"><h3>Worth another look</h3><ul id="missedList"></ul></div>
+    <p class="tip">Remember: if a surveyor asks something you are unsure about, say <em>“I don’t know the specific details off the top of my head, but I can find that in our HealthStream Policy Manager.”</em></p>
+    <p class="tip"><em>Your survey ready check for today:</em> The mock survey is the week of December 7, but surveyors can come any day. Keep these habits going long after the games end.</p>
+    <div class="btn-row"><button class="btn btn-primary" id="againBtn">Play again</button></div>
+  </section>
+</main>
+<footer>Survey Ready Challenge for the Primary Care Clinic team. Full policy details are in HealthStream Policy Manager.</footer>
+<script>
+
+const CFG = {"n": 6, "title": "Surveyor Says", "key": "surveyReady.surveyorSays.best", "seconds": 15, "reviewBtn": "Review everything first", "roundLabel": "Surveyor says", "bonusLabel": "Bonus round: when you don’t know", "review": [{"h": "Emergency codes", "t": "Blue: medical emergency. Brown: severe weather. Green: Emergency Operations Plan. Orange: hazardous spill. Purple: pandemic exposure. Pink: infant or child abduction. Red: fire or smoke. Silver: active shooter. White: evacuation. Dr. Mary Fisher: combative person."}, {"h": "Environment of care", "t": "Badges visible. No open drinks at nurse stations. Exits clear. No bagged linen in hallways. 18 inches from sprinkler heads. Nothing under sinks."}, {"h": "Infection control", "t": "Solid shelving off the floor. No expired items. Clean linen covered. Biohazard covered. Sharps not overfilled. Chemicals labeled. Eyewash weekly. Cylinders secured and labeled."}, {"h": "Privacy and speaking up", "t": "Lock screens. Paper out of sight. Report concerns to Clinic Leadership. Know where SDS are. Policy details are in HealthStream Policy Manager."}], "questions": [{"type": "mc", "q": "“What would you do if you saw an overfilled sharps container?”", "opts": ["Report it", "Push the sharps down to make room", "Keep using it until it’s emptied", "Ignore it if it isn’t mine"], "why": "Overfilled sharps containers always get reported.", "bonus": false}, {"type": "mc", "q": "“How far must items be kept from sprinkler heads?”", "opts": ["18 inches", "6 inches", "12 inches", "There’s no rule"], "why": "Nothing is stored within 18 inches of sprinkler heads.", "bonus": false}, {"type": "mc", "q": "“What does Code Red mean?”", "opts": ["Fire or smoke", "Severe weather", "Hazardous spill", "Active shooter"], "why": "Code Red means fire or smoke.", "bonus": false}, {"type": "mc", "q": "“If you heard ‘Dr. Mary Fisher’ called, what would that mean?”", "opts": ["A combative person", "A doctor is needed at the front desk", "Infant or child abduction", "Hospital evacuation"], "why": "Dr. Mary Fisher is the call for a combative person.", "bonus": false}, {"type": "mc", "q": "“What do you do before stepping away from your computer?”", "opts": ["Lock the screen", "Turn off the monitor", "Close only the patient chart", "Nothing if you’ll be right back"], "why": "Lock your screen every time you step away.", "bonus": false}, {"type": "mc", "q": "“How often are eyewash stations inspected?”", "opts": ["Weekly", "Monthly", "Yearly", "Only when used"], "why": "Eyewash stations are inspected weekly.", "bonus": false}, {"type": "mc", "q": "“How should compressed gas cylinders be stored?”", "opts": ["Chained or in approved carts, and labeled", "Lying flat on the floor", "Leaning in a corner", "Anywhere, if they’re empty"], "why": "Cylinders are chained or in approved carts, labeled “In Use,” “Full,” or “Empty.”", "bonus": false}, {"type": "mc", "q": "“Where is clean linen stored?”", "opts": ["In covered containers or closed cabinets", "On open hallway shelves", "On the exam table", "Bagged in the hallway"], "why": "Clean linen is stored covered or in closed cabinets.", "bonus": false}, {"type": "mc", "q": "“Can you store anything under the sinks?”", "opts": ["No. Nothing is stored under sinks.", "Yes, cleaning supplies", "Yes, if it’s in a bin", "Yes, extra paper towels"], "why": "Nothing is stored under sinks.", "bonus": false}, {"type": "mc", "q": "“What does Code Pink mean?”", "opts": ["Infant or child abduction", "Potential pandemic exposure", "Cardiac arrest", "Hospital evacuation"], "why": "Code Pink means an infant or child abduction.", "bonus": false}, {"type": "mc", "q": "“What is a Red Z kit used for?”", "opts": ["Cleaning up a hazardous spill", "Restocking exam rooms", "Treating minor cuts", "Putting out a fire"], "why": "Red Z kits are spill kits and should be available and visible.", "bonus": false}, {"type": "mc", "q": "“Can bagged linen be left in the hallway?”", "opts": ["No, never", "Yes, until pickup", "Yes, if it’s against the wall", "Yes, on weekends"], "why": "Bagged linen is never stored in hallways.", "bonus": false}, {"type": "mc", "q": "“What do you do if a hand sanitizer dispenser is empty?”", "opts": ["Report it to Facilities right away", "Wait for someone else to notice", "Tape a note on it", "Nothing"], "why": "Empty or broken dispensers go to Facilities immediately.", "bonus": false}, {"type": "mc", "q": "“Where would you find our full policy on emergency codes?”", "opts": ["HealthStream Policy Manager", "A coworker’s notes", "An internet search", "It isn’t written down"], "why": "Policy details live in HealthStream Policy Manager.", "bonus": false}, {"type": "mc", "q": "A surveyor asks something and you don’t know the answer. What do you say?", "opts": ["“I don’t know the specific details off the top of my head, but I can find that in our HealthStream Policy Manager.”", "Make up an answer that sounds right", "Say nothing and look away", "“That’s not my department.”"], "why": "Never guess. Honesty and knowing where to find the answer is exactly what surveyors respect.", "bonus": true}], "ranks": [["Survey Ready Superstar", "A perfect final round. Bring on the surveyors."], ["Survey Ready", "Great work. You know your stuff."], ["Almost There", "Good effort. Review what you missed and play again."], ["Keep Practicing", "Every round helps. Review and give it another go."]]};
+const $ = id => document.getElementById(id);
+let deck = [], idx = 0, score = 0, correct = 0, missed = [], timer = null, startedAt = 0, answered = false, player = "";
+function shuffle(a) { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+function readBest() { try { return JSON.parse(localStorage.getItem(CFG.key)); } catch (e) { return null; } }
+function writeBest(o) { try { localStorage.setItem(CFG.key, JSON.stringify(o)); } catch (e) {} }
+function total() { return CFG.questions.length; }
+function showBest() {
+  const b = readBest(), el = $("best");
+  if (b && typeof b.score === "number") {
+    el.textContent = "Your best score on this device: " + b.score + " points (" + b.correct + " of " + total() + " correct).";
+    el.classList.remove("hidden");
+    if (b.name && !$("player").value) $("player").value = b.name;
+  }
+}
+function buildReview() {
+  const w = $("review"); w.innerHTML = "";
+  CFG.review.forEach(r => {
+    const d = document.createElement("div"); d.className = "rv";
+    const b = document.createElement("b"); b.textContent = r.h;
+    const s = document.createElement("span"); s.textContent = r.t;
+    d.appendChild(b); d.appendChild(s); w.appendChild(d);
+  });
+}
+function buildDeck() {
+  const main = shuffle(CFG.questions.filter(q => !q.bonus)), bonus = CFG.questions.filter(q => q.bonus);
+  return main.concat(bonus).map(q => {
+    if (q.type === "binary") {
+      const opts = [{ t: CFG.binary.a, cls: "b-a", ok: q.ans === "a" }, { t: CFG.binary.b, cls: "b-b", ok: q.ans === "b" }];
+      return { kind: "binary", q: q.q, why: q.why, bonus: q.bonus, answer: q.ans === "a" ? CFG.binary.a : CFG.binary.b, options: opts };
+    }
+    const opts = q.opts.map((t, i) => ({ t, cls: "c-text", ok: i === 0 }));
+    return { kind: "mc", q: q.q, why: q.why, bonus: q.bonus, answer: q.opts[0], options: shuffle(opts) };
+  });
+}
+function startGame() {
+  player = $("player").value.trim() || "Nice work!";
+  deck = buildDeck(); idx = 0; score = 0; correct = 0; missed = [];
+  $("start").classList.add("hidden"); $("end").classList.add("hidden"); $("game").classList.remove("hidden");
+  renderQuestion();
+  window.scrollTo({ top: $("game").offsetTop - 70, behavior: "smooth" });
+}
+function renderQuestion() {
+  const item = deck[idx]; answered = false;
+  $("qCount").textContent = "Question " + (idx + 1) + " of " + deck.length;
+  $("scoreLive").textContent = score + " pts";
+  $("progressBar").style.width = (idx / deck.length * 100) + "%";
+  $("roundTag").textContent = item.bonus ? CFG.bonusLabel : CFG.roundLabel;
+  $("scenario").textContent = item.q;
+  $("feedback").classList.add("hidden"); $("nextBtn").classList.add("hidden");
+  const box = $("options"); box.innerHTML = "";
+  box.className = "options " + (item.kind === "binary" ? "binary" : "text");
+  item.options.forEach(o => {
+    const b = document.createElement("button");
+    b.className = "opt " + o.cls; b.textContent = o.t;
+    b.addEventListener("click", () => choose(o, b));
+    box.appendChild(b);
+  });
+  startTimer();
+}
+function startTimer() {
+  clearInterval(timer); startedAt = Date.now();
+  const bar = $("timerBar"), label = $("timerLabel"), S = CFG.seconds;
+  bar.style.width = "100%";
+  timer = setInterval(() => {
+    const left = Math.max(0, S - (Date.now() - startedAt) / 1000);
+    bar.style.width = (left / S * 100) + "%";
+    bar.style.background = left < 5 ? "var(--bad)" : "var(--teal)";
+    const c = Math.ceil(left);
+    label.textContent = c + (c === 1 ? " second left" : " seconds left");
+    if (left <= 0) { clearInterval(timer); choose(null, null); }
+  }, 100);
+}
+function choose(opt, btn) {
+  if (answered) return; answered = true; clearInterval(timer);
+  const item = deck[idx], S = CFG.seconds;
+  const left = Math.max(0, S - (Date.now() - startedAt) / 1000);
+  Array.from($("options").children).forEach((b, i) => {
+    b.disabled = true; const o = item.options[i];
+    if (o.ok) { b.classList.add("right"); b.insertAdjacentHTML("beforeend", '<span class="mark" aria-hidden="true">&#10003;</span>'); }
+    else if (b === btn) { b.classList.add("wrong"); b.insertAdjacentHTML("beforeend", '<span class="mark" aria-hidden="true">&#10007;</span>'); }
+    else b.classList.add("dim");
+  });
+  const fb = $("feedback"); fb.innerHTML = "";
+  const head = document.createElement("strong"), body = document.createElement("p");
+  if (opt && opt.ok) {
+    const bonus = Math.ceil(left / S * 50); score += 100 + bonus; correct++;
+    head.textContent = "Correct! +" + (100 + bonus) + " points"; fb.className = "feedback ok";
+  } else {
+    head.textContent = opt ? "Not quite." : "Time\u2019s up."; fb.className = "feedback no"; missed.push(item);
+  }
+  body.textContent = item.why; fb.appendChild(head); fb.appendChild(body);
+  $("scoreLive").textContent = score + " pts";
+  $("nextBtn").textContent = idx === deck.length - 1 ? "See my score" : "Next question";
+  $("nextBtn").classList.remove("hidden"); $("nextBtn").focus({ preventScroll: true });
+}
+function next() { idx++; if (idx < deck.length) renderQuestion(); else finish(); }
+function finish() {
+  $("game").classList.add("hidden"); $("end").classList.remove("hidden");
+  const n = deck.length, now = new Date();
+  $("finalName").textContent = player;
+  $("finalScore").textContent = score.toLocaleString() + " pts";
+  $("finalMeta").textContent = correct + " of " + n + " correct, played " + now.toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" });
+  const pct = correct / n;
+  const tier = pct === 1 ? 0 : pct >= 0.8 ? 1 : pct >= 0.6 ? 2 : 3;
+  $("rank").textContent = CFG.ranks[tier][0]; $("rankMsg").textContent = CFG.ranks[tier][1];
+  const list = $("missedList"); list.innerHTML = "";
+  if (missed.length) {
+    missed.forEach(m => {
+      const li = document.createElement("li"), b = document.createElement("b");
+      b.textContent = m.answer; li.appendChild(b); li.appendChild(document.createTextNode(m.q)); list.appendChild(li);
+    });
+    $("missedWrap").classList.remove("hidden");
+  } else $("missedWrap").classList.add("hidden");
+  const best = readBest();
+  if (!best || score > best.score) writeBest({ name: $("player").value.trim(), score, correct });
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+$("startBtn").addEventListener("click", startGame);
+$("player").addEventListener("keydown", e => { if (e.key === "Enter") startGame(); });
+$("nextBtn").addEventListener("click", next);
+$("againBtn").addEventListener("click", () => { $("end").classList.add("hidden"); $("start").classList.remove("hidden"); showBest(); });
+$("reviewBtn").addEventListener("click", () => {
+  const r = $("review"), open = r.classList.toggle("hidden") === false;
+  $("reviewBtn").setAttribute("aria-expanded", open);
+  $("reviewBtn").textContent = open ? "Hide the review" : CFG.reviewBtn;
+});
+buildReview(); showBest();
+
+</script>
+</body>
+</html>

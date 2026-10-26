@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Code Crackers | Survey Ready Challenge</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f0e8;
+    --surface: #ffffff;
+    --ink: #0d2340;
+    --muted: #4a5568;
+    --line: #e2e8f0;
+    --teal: #0a8075;
+    --teal-soft: #e6f4f2;
+    --gold: #c8922a;
+    --hero: #0d2340;
+    --ok: #1f7a3a;
+    --ok-soft: #e7f5eb;
+    --bad: #b3261e;
+    --bad-soft: #fcebea;
+    --serif: 'Playfair Display', Georgia, 'Times New Roman', serif;
+    --sans: 'Source Sans 3', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    box-sizing: border-box;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0a1524; --surface: #12233a; --ink: #edf2f8; --muted: #a8b6c7; --line: #233853;
+      --teal: #2bb3a5; --teal-soft: #123a37; --gold: #e0ad4f; --hero: #07101c;
+      --ok: #5cc97c; --ok-soft: #163824; --bad: #f2867e; --bad-soft: #3d1b1a;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #0a1524; --surface: #12233a; --ink: #edf2f8; --muted: #a8b6c7; --line: #233853;
+    --teal: #2bb3a5; --teal-soft: #123a37; --gold: #e0ad4f; --hero: #07101c;
+    --ok: #5cc97c; --ok-soft: #163824; --bad: #f2867e; --bad-soft: #3d1b1a;
+    color-scheme: dark;
+  }
+  html { scroll-padding-top: env(safe-area-inset-top, 0px); }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: var(--sans); background: var(--bg); color: var(--ink); line-height: 1.55; font-size: 17px; }
+  body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 300; background: var(--surface); }
+  button { font: inherit; cursor: pointer; }
+  :focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
+
+  /* Site nav (matches rhc-today) */
+  .rhc-nav { background: var(--surface); border-bottom: 1px solid var(--line); position: sticky; top: env(safe-area-inset-top, 0px); z-index: 200; }
+  .rhc-nav-inner { max-width: 1200px; margin: 0 auto; padding: 0 24px; display: flex; align-items: center; gap: 2px; height: 52px; overflow-x: auto; }
+  .rhc-nav a { font-size: 12.5px; font-weight: 600; padding: 6px 10px; border-radius: 7px; color: var(--muted); text-decoration: none; white-space: nowrap; flex-shrink: 0; }
+  .rhc-nav a:hover { background: var(--teal-soft); color: var(--teal); }
+  .rhc-nav .home { font-family: var(--serif); font-size: 14px; color: var(--ink); border: 1px solid var(--line); margin-right: 8px; }
+  .rhc-nav .active { background: var(--teal-soft); color: var(--teal); }
+
+  /* Header */
+  header { background: var(--hero); color: #fff; padding: 44px 24px 40px; }
+  .head-inner { max-width: 760px; margin: 0 auto; }
+  .series { color: var(--gold); font-weight: 600; font-size: 0.95rem; margin-bottom: 6px; }
+  header h1 { font-family: var(--serif); font-weight: 900; font-size: clamp(2.6rem, 8vw, 4.2rem); line-height: 1; letter-spacing: -0.01em; }
+  header p { color: rgba(255,255,255,0.72); max-width: 54ch; margin-top: 12px; }
+  .stripe { display: flex; height: 8px; margin-top: 26px; border-radius: 4px; overflow: hidden; max-width: 420px; }
+  .stripe span { flex: 1; }
+
+  main { max-width: 760px; margin: 0 auto; padding: 28px 20px 60px; }
+  .panel { background: var(--surface); border-radius: 10px; padding: 28px; border: 1px solid var(--line); }
+  .hidden { display: none !important; }
+
+  /* Start screen */
+  .start h2, .end h2 { font-family: var(--serif); font-size: 1.6rem; line-height: 1.2; margin-bottom: 10px; }
+  .rules { margin: 14px 0 22px; padding-left: 1.2em; color: var(--muted); }
+  .rules li { margin: 6px 0; }
+  .rules strong { color: var(--ink); }
+  label.name { display: block; font-weight: 600; margin-bottom: 6px; }
+  input[type=text] { width: 100%; font: inherit; padding: 12px 14px; border-radius: 8px; border: 2px solid var(--line); background: var(--bg); color: var(--ink); }
+  input[type=text]:focus { border-color: var(--teal); outline: none; }
+  .btn-row { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 20px; }
+  .btn { border: none; border-radius: 8px; padding: 13px 22px; font-weight: 700; font-size: 1rem; }
+  .btn-primary { background: var(--teal); color: #fff; }
+  .btn-primary:hover { filter: brightness(1.08); }
+  .btn-ghost { background: transparent; color: var(--ink); border: 2px solid var(--line); }
+  .btn-ghost:hover { border-color: var(--teal); }
+  .best { margin-top: 14px; font-size: 0.95rem; color: var(--muted); }
+  .error { color: var(--bad); font-size: 0.92rem; margin-top: 6px; }
+
+  .review { margin-top: 22px; display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 8px; }
+  .review div { border-radius: 8px; padding: 10px 14px; font-size: 0.92rem; }
+  .review b { display: block; font-size: 0.98rem; }
+
+  /* Code colors */
+  .c-blue { background: #1a6bb5; color: #fff; }
+  .c-brown { background: #6b3f1a; color: #fff; }
+  .c-green { background: #2a7a3b; color: #fff; }
+  .c-orange { background: #c95a0a; color: #fff; }
+  .c-purple { background: #6b2fa0; color: #fff; }
+  .c-pink { background: #c2185b; color: #fff; }
+  .c-red { background: #b71c1c; color: #fff; }
+  .c-silver { background: #546e7a; color: #fff; }
+  .c-white { background: #f4f4f4; color: #1a1a1a; box-shadow: inset 0 0 0 2px #b5b5b5; }
+  .c-fisher { background: #37474f; color: #fff; }
+  .c-text { background: var(--bg); color: var(--ink); box-shadow: inset 0 0 0 2px var(--line); }
+
+  /* Game screen */
+  .hud { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 10px; font-weight: 600; color: var(--muted); }
+  .hud .score { color: var(--ink); font-size: 1.15rem; }
+  .progress { height: 6px; background: var(--line); border-radius: 3px; overflow: hidden; margin-bottom: 18px; }
+  .progress span { display: block; height: 100%; background: var(--gold); transition: width .3s; }
+  .round-tag { display: inline-block; font-weight: 700; font-size: 0.85rem; color: var(--teal); background: var(--teal-soft); padding: 3px 10px; border-radius: 20px; margin-bottom: 12px; }
+  .scenario { font-family: var(--serif); font-size: clamp(1.3rem, 3.6vw, 1.7rem); line-height: 1.3; font-weight: 700; margin-bottom: 18px; }
+  .timer { height: 10px; border-radius: 5px; background: var(--line); overflow: hidden; margin-bottom: 6px; }
+  .timer span { display: block; height: 100%; background: var(--teal); }
+  .timer-label { font-size: 0.85rem; color: var(--muted); margin-bottom: 18px; }
+  .options { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .options.text { grid-template-columns: 1fr; }
+  .opt { border: none; border-radius: 10px; padding: 20px 16px; font-weight: 700; font-size: 1.1rem; text-align: center; min-height: 70px; transition: transform .12s, opacity .2s; position: relative; }
+  .options.text .opt { text-align: left; font-weight: 600; font-size: 1rem; padding: 16px 18px; min-height: 0; }
+  .opt:hover:not(:disabled) { transform: translateY(-2px); }
+  .opt:disabled { cursor: default; }
+  .opt.dim { opacity: 0.3; }
+  .opt.right { box-shadow: 0 0 0 4px var(--ok); opacity: 1; }
+  .opt.wrong { box-shadow: 0 0 0 4px var(--bad); opacity: 1; }
+  .opt .mark { position: absolute; top: 6px; right: 10px; font-size: 1.1rem; }
+
+  .feedback { margin-top: 18px; border-radius: 10px; padding: 16px 18px; }
+  .feedback.ok { background: var(--ok-soft); }
+  .feedback.no { background: var(--bad-soft); }
+  .feedback strong { display: block; font-size: 1.05rem; margin-bottom: 2px; }
+  .feedback.ok strong { color: var(--ok); }
+  .feedback.no strong { color: var(--bad); }
+  .feedback p { color: var(--ink); }
+  .next-row { display: flex; justify-content: flex-end; margin-top: 16px; }
+
+  /* End screen */
+  .card-final { border-top: 8px solid var(--gold); }
+  .final-name { font-size: 1.05rem; color: var(--muted); }
+  .final-score { font-family: var(--serif); font-weight: 900; font-size: clamp(3.4rem, 12vw, 5rem); line-height: 1; margin: 6px 0 4px; }
+  .final-meta { color: var(--muted); }
+  .rank { display: inline-block; margin-top: 14px; background: var(--hero); color: var(--gold); font-weight: 700; padding: 8px 16px; border-radius: 8px; }
+  .rank-msg { margin-top: 12px; }
+  .shot { margin-top: 22px; background: var(--teal-soft); border-radius: 8px; padding: 14px 16px; font-size: 0.95rem; }
+  .missed { margin-top: 24px; }
+  .missed h3 { font-family: var(--serif); font-size: 1.15rem; margin-bottom: 8px; }
+  .missed li { list-style: none; padding: 10px 0; border-top: 1px solid var(--line); font-size: 0.95rem; }
+  .missed li b { display: block; }
+  .tip { margin-top: 24px; border-left: 4px solid var(--gold); padding: 6px 0 6px 16px; color: var(--muted); font-size: 0.95rem; }
+  .tip em { color: var(--ink); }
+
+  footer { text-align: center; color: var(--muted); font-size: 0.85rem; padding: 0 20px 30px; }
+
+  @media (max-width: 520px) {
+    .panel { padding: 22px 18px; }
+    .options { grid-template-columns: 1fr; }
+    .opt { min-height: 56px; padding: 16px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; }
+  }
+</style>
+</head>
+<body>
+<nav class="rhc-nav">
+  <div class="rhc-nav-inner">
+    <a href="https://psmedcenter.sharepoint.com/sites/RHCTeamSpace/SitePages/Home.aspx" class="home">&#127968; RHC Today</a>
+    <a href="https://jblaise1310.github.io/rhc-today/clinic-operations.html">Clinic Operations</a>
+    <a href="https://jblaise1310.github.io/rhc-today/communication.html">Communication</a>
+    <a href="https://jblaise1310.github.io/rhc-today/goals-kpis.html">Goals &amp; KPIs</a>
+    <a href="https://jblaise1310.github.io/rhc-today/quick-reference.html">Quick Reference</a>
+    <a href="https://jblaise1310.github.io/rhc-today/survey-readiness.html" class="active">Survey Readiness</a>
+    <a href="https://jblaise1310.github.io/rhc-today/training-resources.html">Training</a>
+    <a href="https://jblaise1310.github.io/rhc-today/workflows-policy.html">Workflows &amp; Policy</a>
+  </div>
+</nav>
+
+<header>
+  <div class="head-inner">
+    <div class="series">Survey Ready Challenge, Game 1 of 6</div>
+    <h1>Code Crackers</h1>
+    <p>Twelve real-life scenarios. Pick the right code before the clock runs out. Faster answers earn bonus points.</p>
+    <div class="stripe" aria-hidden="true">
+      <span class="c-blue"></span><span class="c-brown"></span><span class="c-green"></span><span class="c-orange"></span><span class="c-purple"></span><span class="c-pink"></span><span class="c-red"></span><span class="c-silver"></span><span class="c-white"></span><span class="c-fisher"></span>
+    </div>
+  </div>
+</header>
+
+<main>
+  <!-- START -->
+  <section id="start" class="panel start">
+    <h2>How to play</h2>
+    <ol class="rules">
+      <li>Read each scenario and tap the code you would hear called.</li>
+      <li>You have <strong>15 seconds</strong> per question. Correct answers earn <strong>100 points</strong>, plus up to <strong>50 bonus points</strong> for speed.</li>
+      <li>The last two questions are a bonus round on how to answer a surveyor.</li>
+      <li>Play as many times as you like. Every round is good practice, so see if you can beat your own score.</li>
+    </ol>
+    <label class="name" for="player">Your name (optional)</label>
+    <input type="text" id="player" autocomplete="name" placeholder="First name or nickname">
+    <div class="btn-row">
+      <button class="btn btn-primary" id="startBtn">Start the game</button>
+      <button class="btn btn-ghost" id="reviewBtn" aria-expanded="false">Review the codes first</button>
+    </div>
+    <div id="best" class="best hidden"></div>
+    <div id="review" class="review hidden"></div>
+  </section>
+
+  <!-- GAME -->
+  <section id="game" class="panel hidden" aria-live="polite">
+    <div class="hud"><span id="qCount">Question 1 of 12</span><span class="score" id="scoreLive">0 pts</span></div>
+    <div class="progress"><span id="progressBar" style="width:0%"></span></div>
+    <div id="roundTag" class="round-tag">Name that code</div>
+    <h2 class="scenario" id="scenario"></h2>
+    <div class="timer" aria-hidden="true"><span id="timerBar" style="width:100%"></span></div>
+    <div class="timer-label" id="timerLabel">15 seconds left</div>
+    <div class="options" id="options"></div>
+    <div id="feedback" class="feedback hidden"></div>
+    <div class="next-row"><button class="btn btn-primary hidden" id="nextBtn">Next question</button></div>
+  </section>
+
+  <!-- END -->
+  <section id="end" class="panel end card-final hidden">
+    <div class="final-name" id="finalName"></div>
+    <div class="final-score" id="finalScore">0</div>
+    <div class="final-meta" id="finalMeta"></div>
+    <div class="rank" id="rank"></div>
+    <p class="rank-msg" id="rankMsg"></p>
+    <div class="shot">&#128257; Think you can beat it? Play again. The scenarios shuffle every round.</div>
+    <div class="missed hidden" id="missedWrap">
+      <h3>Worth another look</h3>
+      <ul id="missedList"></ul>
+    </div>
+    <p class="tip">Remember: if a surveyor asks something you are unsure about, say <em>“I don’t know the specific details off the top of my head, but I can find that in our HealthStream Policy Manager.”</em></p>
+    <p class="tip"><em>Your survey ready check for today:</em> Surveyors can walk in any day, without notice. Before you leave your workspace, ask yourself, “If a surveyor walked by right now, would they see anything out of place?”</p>
+    <div class="btn-row">
+      <button class="btn btn-primary" id="againBtn">Play again</button>
+    </div>
+  </section>
+</main>
+
+<footer>Survey Ready Challenge for the Primary Care Clinic team. Full policy details are in HealthStream Policy Manager.</footer>
+
+<script>
+const CODES = {
+  blue:   { name: "Code Blue",       meaning: "Cardiac arrest or medical emergency" },
+  brown:  { name: "Code Brown",      meaning: "Severe weather" },
+  green:  { name: "Code Green",      meaning: "Emergency Operations Plan activation" },
+  orange: { name: "Code Orange",     meaning: "Hazardous spill" },
+  purple: { name: "Code Purple",     meaning: "Potential pandemic exposure" },
+  pink:   { name: "Code Pink",       meaning: "Infant or child abduction" },
+  red:    { name: "Code Red",        meaning: "Fire or smoke" },
+  silver: { name: "Code Silver",     meaning: "Active shooter" },
+  white:  { name: "Code White",      meaning: "Hospital evacuation" },
+  fisher: { name: "Dr. Mary Fisher", meaning: "Combative person" }
+};
+
+const CODE_QUESTIONS = [
+  { code: "blue",   q: "A patient in an exam room suddenly collapses and is not breathing.", why: "Code Blue is called for cardiac arrest or any medical emergency." },
+  { code: "brown",  q: "A severe storm warning is issued and dangerous weather is heading toward the clinic.", why: "Code Brown means severe weather." },
+  { code: "green",  q: "A large emergency in the community means leadership is activating the Emergency Operations Plan.", why: "Code Green means the Emergency Operations Plan has been activated." },
+  { code: "orange", q: "A jug of cleaning chemical breaks and spills across the lab floor.", why: "Code Orange means a hazardous spill. Red Z spill kits should always be available and visible." },
+  { code: "purple", q: "A patient arrives with symptoms of a highly contagious illness that could be part of a pandemic.", why: "Code Purple means a potential pandemic exposure." },
+  { code: "pink",   q: "A parent reports that their young child is missing and may have been taken from the building.", why: "Code Pink means an infant or child abduction." },
+  { code: "red",    q: "You smell smoke and see haze coming from a storage room.", why: "Code Red means fire or smoke. This is one reason hallways and emergency exits must stay clear." },
+  { code: "silver", q: "There are reports of a person with a weapon actively shooting in the building.", why: "Code Silver means an active shooter." },
+  { code: "white",  q: "Leadership announces that everyone must leave the building.", why: "Code White means hospital evacuation." },
+  { code: "fisher", q: "A visitor becomes very angry, starts yelling, and threatens staff at the front desk.", why: "“Dr. Mary Fisher” is the call for a combative person." }
+];
+
+const BONUS = [
+  {
+    q: "A surveyor asks you to explain every step of a code you are not sure about. What is your best response?",
+    options: [
+      { t: "“I don’t know the specific details off the top of my head, but I can find that in our HealthStream Policy Manager.”", ok: true },
+      { t: "Give your best guess so you don’t look unprepared." },
+      { t: "Tell them it isn’t part of your job." },
+      { t: "Change the subject and keep working." }
+    ],
+    why: "Never guess. Being honest and knowing where to find the answer is exactly what surveyors want to see."
+  },
+  {
+    q: "Where can you find the full policy details for any emergency code?",
+    options: [
+      { t: "HealthStream Policy Manager", ok: true },
+      { t: "A coworker’s handwritten notes" },
+      { t: "A quick internet search" },
+      { t: "Nowhere. You need to have it memorized." }
+    ],
+    why: "Policy details live in HealthStream Policy Manager, along with posted protocols. You don’t need to memorize everything."
+  }
+];
+
+const SECONDS = 15;
+const STORE_KEY = "surveyReady.codeCrackers.best";
+const $ = id => document.getElementById(id);
+
+let deck = [], idx = 0, score = 0, correct = 0, missed = [], timer = null, startedAt = 0, answered = false, player = "";
+
+function shuffle(a) { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+
+function readBest() { try { return JSON.parse(localStorage.getItem(STORE_KEY)); } catch (e) { return null; } }
+function writeBest(obj) { try { localStorage.setItem(STORE_KEY, JSON.stringify(obj)); } catch (e) {} }
+
+function showBest() {
+  const b = readBest();
+  const el = $("best");
+  if (b && typeof b.score === "number") {
+    el.textContent = "Your best score on this device: " + b.score + " points (" + b.correct + " of 12 correct).";
+    el.classList.remove("hidden");
+    if (b.name && !$("player").value) $("player").value = b.name;
+  }
+}
+
+function buildReview() {
+  const wrap = $("review");
+  wrap.innerHTML = "";
+  Object.keys(CODES).forEach(k => {
+    const d = document.createElement("div");
+    d.className = "c-" + k;
+    const b = document.createElement("b"); b.textContent = CODES[k].name;
+    d.appendChild(b); d.appendChild(document.createTextNode(CODES[k].meaning));
+    wrap.appendChild(d);
+  });
+}
+
+function buildDeck() {
+  const keys = Object.keys(CODES);
+  const codeQs = shuffle(CODE_QUESTIONS).map(item => {
+    const others = shuffle(keys.filter(k => k !== item.code)).slice(0, 3);
+    return {
+      type: "code", q: item.q, why: item.why, answer: CODES[item.code].name,
+      options: shuffle([item.code].concat(others)).map(k => ({ t: CODES[k].name, cls: "c-" + k, ok: k === item.code }))
+    };
+  });
+  const bonusQs = BONUS.map(b => ({
+    type: "bonus", q: b.q, why: b.why, answer: b.options.find(o => o.ok).t,
+    options: shuffle(b.options).map(o => ({ t: o.t, cls: "c-text", ok: !!o.ok }))
+  }));
+  return codeQs.concat(bonusQs);
+}
+
+function startGame() {
+  player = $("player").value.trim() || "Nice work!";
+  deck = buildDeck(); idx = 0; score = 0; correct = 0; missed = [];
+  $("start").classList.add("hidden"); $("end").classList.add("hidden"); $("game").classList.remove("hidden");
+  renderQuestion();
+  window.scrollTo({ top: $("game").offsetTop - 70, behavior: "smooth" });
+}
+
+function renderQuestion() {
+  const item = deck[idx];
+  answered = false;
+  $("qCount").textContent = "Question " + (idx + 1) + " of " + deck.length;
+  $("scoreLive").textContent = score + " pts";
+  $("progressBar").style.width = (idx / deck.length * 100) + "%";
+  $("roundTag").textContent = item.type === "code" ? "Name that code" : "Bonus round: talking to a surveyor";
+  $("scenario").textContent = item.q;
+  $("feedback").classList.add("hidden");
+  $("nextBtn").classList.add("hidden");
+
+  const box = $("options");
+  box.innerHTML = "";
+  box.className = "options" + (item.type === "bonus" ? " text" : "");
+  item.options.forEach(o => {
+    const b = document.createElement("button");
+    b.className = "opt " + o.cls;
+    b.textContent = o.t;
+    b.addEventListener("click", () => choose(o, b));
+    box.appendChild(b);
+  });
+  startTimer();
+}
+
+function startTimer() {
+  clearInterval(timer);
+  startedAt = Date.now();
+  const bar = $("timerBar"), label = $("timerLabel");
+  bar.style.width = "100%";
+  timer = setInterval(() => {
+    const left = Math.max(0, SECONDS - (Date.now() - startedAt) / 1000);
+    bar.style.width = (left / SECONDS * 100) + "%";
+    bar.style.background = left < 5 ? "var(--bad)" : "var(--teal)";
+    label.textContent = Math.ceil(left) + (Math.ceil(left) === 1 ? " second left" : " seconds left");
+    if (left <= 0) { clearInterval(timer); choose(null, null); }
+  }, 100);
+}
+
+function choose(opt, btn) {
+  if (answered) return;
+  answered = true;
+  clearInterval(timer);
+  const item = deck[idx];
+  const left = Math.max(0, SECONDS - (Date.now() - startedAt) / 1000);
+  const buttons = Array.from($("options").children);
+
+  buttons.forEach((b, i) => {
+    b.disabled = true;
+    const o = item.options[i];
+    if (o.ok) { b.classList.add("right"); b.insertAdjacentHTML("beforeend", '<span class="mark" aria-hidden="true">&#10003;</span>'); }
+    else if (b === btn) { b.classList.add("wrong"); b.insertAdjacentHTML("beforeend", '<span class="mark" aria-hidden="true">&#10007;</span>'); }
+    else b.classList.add("dim");
+  });
+
+  const fb = $("feedback");
+  fb.innerHTML = "";
+  const head = document.createElement("strong");
+  const body = document.createElement("p");
+  if (opt && opt.ok) {
+    const bonus = Math.ceil(left / SECONDS * 50);
+    score += 100 + bonus; correct++;
+    head.textContent = "Correct! +" + (100 + bonus) + " points";
+    fb.className = "feedback ok";
+  } else {
+    head.textContent = opt ? "Not quite." : "Time’s up.";
+    fb.className = "feedback no";
+    missed.push(item);
+  }
+  body.textContent = item.why;
+  fb.appendChild(head); fb.appendChild(body);
+  $("scoreLive").textContent = score + " pts";
+  $("nextBtn").textContent = idx === deck.length - 1 ? "See my score" : "Next question";
+  $("nextBtn").classList.remove("hidden");
+  $("nextBtn").focus({ preventScroll: true });
+}
+
+function next() {
+  idx++;
+  if (idx < deck.length) renderQuestion(); else finish();
+}
+
+function finish() {
+  $("game").classList.add("hidden"); $("end").classList.remove("hidden");
+  const total = deck.length;
+  const now = new Date();
+  $("finalName").textContent = player;
+  $("finalScore").textContent = score.toLocaleString() + " pts";
+  $("finalMeta").textContent = correct + " of " + total + " correct, played " + now.toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" }) + " at " + now.toLocaleTimeString(undefined, { hour: "numeric", minute: "2-digit" });
+
+  let rank, msg;
+  if (correct === total) { rank = "Code Master"; msg = "A perfect round. You are ready for any surveyor question about codes."; }
+  else if (correct >= 10) { rank = "Code Cracker"; msg = "Strong work. Review the one or two you missed and you’ll have it locked in."; }
+  else if (correct >= 7) { rank = "Code Cadet"; msg = "Good start. Look over the codes below and play again to raise your score."; }
+  else { rank = "Code Rookie"; msg = "Every run teaches you something. Review the codes and give it another go."; }
+  $("rank").textContent = rank;
+  $("rankMsg").textContent = msg;
+
+  const list = $("missedList");
+  list.innerHTML = "";
+  if (missed.length) {
+    missed.forEach(m => {
+      const li = document.createElement("li");
+      const b = document.createElement("b"); b.textContent = m.answer;
+      li.appendChild(b); li.appendChild(document.createTextNode(m.q));
+      list.appendChild(li);
+    });
+    $("missedWrap").classList.remove("hidden");
+  } else $("missedWrap").classList.add("hidden");
+
+  const best = readBest();
+  if (!best || score > best.score) writeBest({ name: $("player").value.trim(), score, correct });
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+$("startBtn").addEventListener("click", startGame);
+$("player").addEventListener("keydown", e => { if (e.key === "Enter") startGame(); });
+$("nextBtn").addEventListener("click", next);
+$("againBtn").addEventListener("click", () => { $("end").classList.add("hidden"); $("start").classList.remove("hidden"); showBest(); });
+$("reviewBtn").addEventListener("click", () => {
+  const r = $("review"), open = r.classList.toggle("hidden") === false;
+  $("reviewBtn").setAttribute("aria-expanded", open);
+  $("reviewBtn").textContent = open ? "Hide the codes" : "Review the codes first";
+});
+
+buildReview();
+showBest();
+</script>
+</body>
+</html>
