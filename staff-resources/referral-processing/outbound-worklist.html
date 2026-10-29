@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Outbound Worklist | Referral Management</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --navy:#0D2B45; --navy-mid:#163D5F; --teal:#028090; --teal-light:#E1F5F7;
+      --teal-dim:#01606D; --gold:#C9982A; --gold-light:#FDF6E3; --gold-dim:#A87C1E;
+      --slate:#546E7A; --slate-light:#ECEFF1; --bg:#F8FAFB; --white:#FFFFFF;
+      --border:#D5DDE2; --text:#1A2E3B; --text-mid:#3D5363;
+      --green:#1A6B3C; --green-light:#E8F5E9; --red:#C0392B; --red-light:#FDECEA;
+      --sidebar-w:272px;
+      --c-bh:#7C5CBF; --c-gen-surg:#1A6B3C; --c-neuro:#2471A3;
+      --c-onco:#A04000; --c-ortho:#117A8B; --c-pain:#6E2F6E; --c-pt-ot:#1E7B5E; --c-pulm:#1D6FA4;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; }
+    .topbar { background: var(--navy); color: var(--white); display: flex; align-items: center; justify-content: space-between; padding: 0 28px; height: 56px; position: sticky; top: 0; z-index: 100; border-bottom: 3px solid var(--teal); flex-shrink: 0; }
+    .topbar-left { display: flex; align-items: center; gap: 14px; }
+    .topbar-logo { font-family: 'DM Serif Display', serif; font-size: 1.15rem; color: var(--white); }
+    .topbar-logo span { color: var(--teal); }
+    .topbar-badge { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; background: var(--teal); color: var(--white); padding: 2px 9px; border-radius: 20px; }
+    .topbar-back { font-size: 0.8rem; color: #7AAFC8; text-decoration: none; }
+    .topbar-back:hover { color: var(--white); }
+    .layout { display: flex; flex: 1; min-height: 0; }
+    .sidebar { width: var(--sidebar-w); background: var(--navy-mid); flex-shrink: 0; display: flex; flex-direction: column; position: sticky; top: 56px; height: calc(100vh - 56px); overflow-y: auto; }
+    .sidebar::-webkit-scrollbar { width: 4px; }
+    .sidebar::-webkit-scrollbar-thumb { background: #2E5471; border-radius: 4px; }
+    .sidebar-section { padding: 20px 0 8px; }
+    .sidebar-label { font-size: 0.63rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #7AAFC8; padding: 0 20px 8px; display: block; }
+    .nav-link { display: flex; align-items: center; gap: 10px; padding: 9px 20px 9px 16px; text-decoration: none; font-size: 0.84rem; font-weight: 500; color: #C8DDE8; border-left: 3px solid transparent; transition: background 0.15s, color 0.15s; }
+    .nav-link:hover { background: rgba(255,255,255,0.07); color: var(--white); }
+    .nav-link.active { background: rgba(255,255,255,0.07); color: var(--white); font-weight: 600; border-left-color: var(--teal); }
+    .nav-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+    .sidebar-divider { margin: 8px 20px; border: none; border-top: 1px solid rgba(255,255,255,0.08); }
+    .nav-link.special { color: #F0D98A; }
+    .nav-link.special:hover { background: rgba(201,152,42,0.12); color: var(--gold); }
+    .page-nav { padding: 12px 0 8px; }
+    .page-nav-label { font-size: 0.6rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #4A7A96; padding: 0 20px 6px; display: block; }
+    .page-nav-link { display: block; padding: 6px 20px 6px 26px; font-size: 0.78rem; color: #90B8CC; text-decoration: none; border-left: 3px solid transparent; transition: color 0.15s, border-color 0.15s; }
+    .page-nav-link:hover { color: var(--white); border-left-color: var(--teal); }
+    .main { flex: 1; padding: 40px 48px 80px; max-width: 920px; }
+    .breadcrumb { font-size: 0.75rem; color: var(--slate); margin-bottom: 24px; display: flex; align-items: center; gap: 6px; }
+    .breadcrumb a { color: var(--teal-dim); text-decoration: none; }
+    .breadcrumb a:hover { text-decoration: underline; }
+    .page-header { background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 100%); border-radius: 12px; padding: 32px 38px; margin-bottom: 32px; color: var(--white); }
+    .page-eyebrow { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--teal); margin-bottom: 8px; }
+    .page-header h1 { font-family: 'DM Serif Display', serif; font-size: 1.9rem; font-weight: 400; color: var(--white); margin-bottom: 8px; }
+    .page-header p { font-size: 0.88rem; color: #9BBDD0; line-height: 1.65; max-width: 600px; }
+    .section-heading { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.13em; text-transform: uppercase; color: var(--slate); margin: 8px 0 16px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+    .callout { border-radius: 8px; padding: 14px 18px; margin-bottom: 24px; font-size: 0.84rem; line-height: 1.65; }
+    .callout.info { border-left: 4px solid var(--teal); background: var(--teal-light); }
+    .callout.warn { border-left: 4px solid var(--gold); background: var(--gold-light); }
+    .callout strong { color: var(--teal-dim); }
+    .callout.warn strong { color: var(--gold-dim); }
+    .info-card { background: var(--white); border: 1px solid var(--border); border-radius: 10px; padding: 22px 26px; margin-bottom: 20px; }
+    .info-card h3 { font-size: 0.92rem; font-weight: 700; color: var(--text); margin-bottom: 10px; }
+    .info-card p, .info-card li { font-size: 0.85rem; color: var(--text-mid); line-height: 1.65; }
+    .info-card ul { padding-left: 20px; display: flex; flex-direction: column; gap: 6px; margin-top: 6px; }
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+    .two-col .info-card { margin-bottom: 0; }
+    .info-card.good { border-top: 4px solid var(--green); }
+    .info-card.bad { border-top: 4px solid var(--red); }
+    .chips { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 24px; }
+    .chip { background: var(--teal-light); color: var(--teal-dim); font-size: 0.82rem; font-weight: 600; padding: 7px 16px; border-radius: 20px; border: 1px solid #A0D8DE; }
+    .steps { display: flex; flex-direction: column; margin-bottom: 32px; }
+    .step { display: flex; }
+    .step-left { display: flex; flex-direction: column; align-items: center; width: 52px; flex-shrink: 0; }
+    .step-num { width: 38px; height: 38px; border-radius: 50%; background: var(--navy); color: var(--white); font-size: 0.9rem; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; border: 3px solid var(--bg); }
+    .step-line { width: 2px; background: var(--border); flex: 1; min-height: 16px; }
+    .step:last-child .step-line { display: none; }
+    .step-content { padding: 6px 0 24px 16px; flex: 1; }
+    .step-title { font-size: 0.96rem; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+    .step-body { font-size: 0.84rem; color: var(--text-mid); line-height: 1.68; }
+    .step-group { font-size: 0.8rem; font-weight: 700; color: var(--teal-dim); margin: 6px 0 12px; }
+    .placeholder-card { background: var(--white); border: 2px dashed var(--border); border-radius: 10px; padding: 20px 24px; margin-bottom: 20px; font-size: 0.84rem; color: var(--slate); line-height: 1.6; }
+    .placeholder-card strong { color: var(--text); display: block; margin-bottom: 4px; }
+    .qr-card { background: var(--white); border: 1px solid var(--border); border-radius: 10px; padding: 22px 26px; margin-bottom: 20px; }
+    .qr-card h3 { font-size: 0.9rem; font-weight: 700; color: var(--text); margin-bottom: 10px; }
+    .qr-card ul { padding-left: 18px; display: flex; flex-direction: column; gap: 6px; }
+    .qr-card li { font-size: 0.84rem; color: var(--text-mid); line-height: 1.65; }
+    .search-bar { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; flex-wrap: wrap; }
+    .search-bar input { flex: 1; min-width: 220px; padding: 11px 16px; font-family: inherit; font-size: 0.9rem; border: 1px solid var(--border); border-radius: 8px; background: var(--white); color: var(--text); }
+    .search-bar input:focus { outline: 2px solid var(--teal); outline-offset: 1px; }
+    .result-count { font-size: 0.78rem; color: var(--slate); }
+    .wl-table-wrap { overflow-x: auto; border-radius: 10px; border: 1px solid var(--border); margin-bottom: 28px; }
+    .wl-table { width: 100%; border-collapse: collapse; font-size: 0.84rem; background: var(--white); }
+    .wl-table thead th { background: var(--navy); color: var(--white); padding: 12px 16px; text-align: left; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; position: sticky; top: 0; }
+    .wl-table tbody tr { border-bottom: 1px solid var(--border); }
+    .wl-table tbody tr:last-child { border-bottom: none; }
+    .wl-table tbody tr:hover { background: #F0F6FA; }
+    .wl-table td { padding: 12px 16px; vertical-align: top; color: var(--text-mid); line-height: 1.55; }
+    .wl-table td:first-child { font-weight: 600; color: var(--text); width: 26%; }
+    .wl-table td:first-child a { color: var(--teal-dim); text-decoration: none; border-bottom: 1px dotted var(--teal); }
+    .wl-table td:first-child a:hover { color: var(--navy); }
+    .note-tag { display: inline-block; background: var(--gold-light); color: var(--gold-dim); border: 1px solid #F0D98A; font-size: 0.78rem; line-height: 1.5; padding: 3px 10px; border-radius: 6px; }
+    .no-results { display: none; padding: 24px; text-align: center; color: var(--slate); font-size: 0.85rem; background: var(--white); }
+    .site-footer { background: var(--navy); color: #7AAFC8; text-align: center; padding: 18px 28px; font-size: 0.75rem; border-top: 2px solid var(--teal); }
+    .site-footer a { color: var(--teal); text-decoration: none; }
+    @media (max-width: 768px) {
+      .layout { flex-direction: column; }
+      .sidebar { width: 100%; height: auto; position: static; flex-direction: row; overflow-x: auto; overflow-y: hidden; padding: 8px 0; }
+      .sidebar-section { padding: 0; display: flex; align-items: center; }
+      .sidebar-label, .page-nav-label, .page-nav { display: none; }
+      .nav-link { white-space: nowrap; border-left: none; border-bottom: 3px solid transparent; padding: 8px 14px; }
+      .nav-link.active { border-bottom-color: var(--teal); border-left-color: transparent; }
+      .sidebar-divider { display: none; }
+      .main { padding: 24px 20px 60px; }
+      .two-col { grid-template-columns: 1fr; }
+      .wl-table td:first-child { width: auto; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-left">
+      <span class="topbar-logo">Primary Care <span>Referral Management</span></span>
+      <span class="topbar-badge">Staff Resource</span>
+    </div>
+    <div class="topbar-right"><a class="topbar-back" href="index.html">&#8592; Home</a></div>
+  </header>
+  <div class="layout">
+    <nav class="sidebar" aria-label="Site navigation">
+      <div class="sidebar-section">
+        <span class="sidebar-label">Specialties</span>
+        <a class="nav-link" href="specialties/bh.html"><span class="nav-dot" style="background:var(--c-bh)"></span>Behavioral Health</a>
+        <a class="nav-link" href="specialties/general-surgery.html"><span class="nav-dot" style="background:var(--c-gen-surg)"></span>General Surgery</a>
+        <a class="nav-link" href="specialties/neurology.html"><span class="nav-dot" style="background:var(--c-neuro)"></span>Neurology</a>
+        <a class="nav-link" href="specialties/oncology.html"><span class="nav-dot" style="background:var(--c-onco)"></span>Oncology</a>
+        <a class="nav-link" href="specialties/orthopedics.html"><span class="nav-dot" style="background:var(--c-ortho)"></span>Orthopedics</a>
+        <a class="nav-link" href="specialties/pain.html"><span class="nav-dot" style="background:var(--c-pain)"></span>Pain Management</a>
+        <a class="nav-link" href="specialties/pt-ot.html"><span class="nav-dot" style="background:var(--c-pt-ot)"></span>PT / OT</a>
+        <a class="nav-link" href="specialties/pulmonary.html"><span class="nav-dot" style="background:var(--c-pulm)"></span>Pulmonary</a>
+      </div>
+      <hr class="sidebar-divider" />
+      <div class="sidebar-section">
+        <span class="sidebar-label">Special Processing</span>
+        <a class="nav-link special" href="special/va.html"><span class="nav-dot" style="background:var(--gold)"></span>VA Referrals</a>
+        <a class="nav-link special" href="special/workers-comp.html"><span class="nav-dot" style="background:var(--gold)"></span>Workers&rsquo; Comp</a>
+      </div>
+      <hr class="sidebar-divider" />
+      <div class="sidebar-section">
+        <span class="sidebar-label">Resources</span>
+        <a class="nav-link" href="workflow.html"><span class="nav-dot" style="background:var(--teal)"></span>Workflow Overview</a>
+        <a class="nav-link" href="inbound-referrals.html"><span class="nav-dot" style="background:var(--teal)"></span>Inbound Referrals</a>
+        <a class="nav-link" href="daily-fax-report.html"><span class="nav-dot" style="background:var(--teal)"></span>Daily Fax Report</a>
+        <a class="nav-link" href="report-request.html"><span class="nav-dot" style="background:var(--teal)"></span>Report Request</a>
+        <a class="nav-link active" href="outbound-worklist.html"><span class="nav-dot" style="background:var(--teal)"></span>Outbound Worklist</a>
+        <a class="nav-link" href="home-health.html"><span class="nav-dot" style="background:var(--teal)"></span>Home Health</a>
+        <a class="nav-link" href="job-aid.html"><span class="nav-dot" style="background:var(--teal)"></span>Job Aid</a>
+      </div>
+      <hr class="sidebar-divider" />
+      <div class="page-nav">
+        <span class="page-nav-label">On this page</span>
+        <a class="page-nav-link" href="#search">Find a Specialty</a>
+        <a class="page-nav-link" href="#worklist">Documents by Specialty</a>
+      </div>
+    </nav>
+    <main class="main">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="index.html">Referral Management</a>
+        <span style="color:var(--border)">&#8250;</span>
+        <span>Outbound Worklist</span>
+      </nav>
+      <div class="page-header">
+        <div class="page-eyebrow">Referral Specialist Reference</div>
+        <h1>Outbound Referral Worklist</h1>
+        <p>What to send with a referral going out to each specialty or service. Find the specialty below to see the documents to attach and any special notes.</p>
+      </div>
+      <div class="callout info">
+        <strong>How to use this list:</strong> Items marked &ldquo;if available&rdquo; are sent when they are in the chart. Specialty names that are underlined link to that specialty&rsquo;s page on this site.
+      </div>
+      <p class="section-heading" id="search">Find a Specialty</p>
+      <div class="search-bar">
+        <input type="search" id="q" placeholder="Type a specialty, test, or document (for example: urology, PFT, labs)" aria-label="Search the outbound worklist" />
+        <span class="result-count" id="count"></span>
+      </div>
+      <p class="section-heading" id="worklist">Documents to Send by Specialty</p>
+      <div class="wl-table-wrap">
+        <table class="wl-table">
+          <thead><tr><th>Specialty or Service</th><th>Send with the referral</th><th>Notes</th></tr></thead>
+          <tbody id="rows">
+          <tr data-search="allergy / asthma office visit note, chest x-ray if available "><td>Allergy / Asthma</td><td>Office visit note, chest X-ray if available</td><td></td></tr>
+          <tr data-search="audiology office visit note "><td>Audiology</td><td>Office visit note</td><td></td></tr>
+          <tr data-search="bariatrics office visit note, labs "><td>Bariatrics</td><td>Office visit note, labs</td><td></td></tr>
+          <tr data-search="behavioral health / mental health office visit note "><td><a href="specialties/bh.html">Behavioral Health / Mental Health</a></td><td>Office visit note</td><td></td></tr>
+          <tr data-search="cardiology office visit note, labs, chest x-ray or chest ct, ekgs, holter monitor, any other cardiac testing notes "><td>Cardiology</td><td>Office visit note, labs, chest X-ray or chest CT, EKGs, Holter monitor, any other cardiac testing notes</td><td></td></tr>
+          <tr data-search="dermatology office visit note, pathology reports if available "><td>Dermatology</td><td>Office visit note, pathology reports if available</td><td></td></tr>
+          <tr data-search="diabetic education office visit note, labs, a1cs "><td>Diabetic Education</td><td>Office visit note, labs, A1Cs</td><td></td></tr>
+          <tr data-search="endocrinology office visit note, labs. for thyroid: ultrasounds and any other testing if available "><td>Endocrinology</td><td>Office visit note, labs. For thyroid: ultrasounds and any other testing if available</td><td></td></tr>
+          <tr data-search="ent office visit note, head imaging if available "><td>ENT</td><td>Office visit note, head imaging if available</td><td></td></tr>
+          <tr data-search="eye / optometry office visit note "><td>Eye / Optometry</td><td>Office visit note</td><td></td></tr>
+          <tr data-search="gastroenterology / colonoscopy / egd office visit note, labs, colonoscopy reports if available "><td>Gastroenterology / Colonoscopy / EGD</td><td>Office visit note, labs, colonoscopy reports if available</td><td></td></tr>
+          <tr data-search="general surgery office visit note, labs, imaging if available "><td><a href="specialties/general-surgery.html">General Surgery</a></td><td>Office visit note, labs, imaging if available</td><td></td></tr>
+          <tr data-search="genetics office visit note, labs "><td>Genetics</td><td>Office visit note, labs</td><td></td></tr>
+          <tr data-search="hand / occupational therapy office visit note, imaging if available "><td>Hand / Occupational Therapy</td><td>Office visit note, imaging if available</td><td></td></tr>
+          <tr data-search="home health (mhh) office visit note for the last 90 days signed face to face from the provider is needed once home health accepts the patient."><td><a href="home-health.html">Home Health (MHH)</a></td><td>Office visit note for the last 90 days</td><td><span class="note-tag">Signed Face to Face from the provider is needed once Home Health accepts the patient.</span></td></tr>
+          <tr data-search="hospice (mhh) office visit note for the last 90 days "><td>Hospice (MHH)</td><td>Office visit note for the last 90 days</td><td></td></tr>
+          <tr data-search="infectious disease office visit note, labs, pathology report if available "><td>Infectious Disease</td><td>Office visit note, labs, pathology report if available</td><td></td></tr>
+          <tr data-search="ir / varicose vein clinic office visit note, venous reflux ultrasound venous reflux ultrasound is needed."><td>IR / Varicose Vein Clinic</td><td>Office visit note, venous reflux ultrasound</td><td><span class="note-tag">Venous reflux ultrasound is needed.</span></td></tr>
+          <tr data-search="nephrology office visit note, labs (gfr, creatinine, protein) for 1 year, renal ultrasound if available "><td>Nephrology</td><td>Office visit note, labs (GFR, creatinine, protein) for 1 year, renal ultrasound if available</td><td></td></tr>
+          <tr data-search="neurology office visit note, labs, any imaging "><td><a href="specialties/neurology.html">Neurology</a></td><td>Office visit note, labs, any imaging</td><td></td></tr>
+          <tr data-search="ob/gyn office visit note, labs, pathology, imaging, and pap reports if available "><td>OB/GYN</td><td>Office visit note, labs, pathology, imaging, and pap reports if available</td><td></td></tr>
+          <tr data-search="oncology office visit note, labs, pathology reports, imaging if available "><td><a href="specialties/oncology.html">Oncology</a></td><td>Office visit note, labs, pathology reports, imaging if available</td><td></td></tr>
+          <tr data-search="orthopedics office visit note, imaging reports if available "><td><a href="specialties/orthopedics.html">Orthopedics</a></td><td>Office visit note, imaging reports if available</td><td></td></tr>
+          <tr data-search="osteoarthritis clinic office visit note, labs (vitamin d), dexa scan report, any imaging if available "><td>Osteoarthritis Clinic</td><td>Office visit note, labs (vitamin D), DEXA scan report, any imaging if available</td><td></td></tr>
+          <tr data-search="pain management office visit note, imaging if available no out of state referrals for pain medications."><td><a href="specialties/pain.html">Pain Management</a></td><td>Office visit note, imaging if available</td><td><span class="note-tag">No out of state referrals for pain medications.</span></td></tr>
+          <tr data-search="palliative care (mhh) office visit note for the last 90 days "><td>Palliative Care (MHH)</td><td>Office visit note for the last 90 days</td><td></td></tr>
+          <tr data-search="physical medicine / physiatry office visit note, imaging if available "><td>Physical Medicine / Physiatry</td><td>Office visit note, imaging if available</td><td></td></tr>
+          <tr data-search="physical therapy imaging if available rmpt: do not send a continuity of care document. send the referral only. the patient has to call rmpt. they do not call the patient."><td><a href="specialties/pt-ot.html">Physical Therapy</a></td><td>Imaging if available</td><td><span class="note-tag">RMPT: do not send a Continuity of Care document. Send the referral only. The patient has to call RMPT. They do not call the patient.</span></td></tr>
+          <tr data-search="plastic surgery office visit note, pathology reports if available "><td>Plastic Surgery</td><td>Office visit note, pathology reports if available</td><td></td></tr>
+          <tr data-search="podiatry office visit note, imaging if available "><td>Podiatry</td><td>Office visit note, imaging if available</td><td></td></tr>
+          <tr data-search="pulmonology office visit note, chest x-ray, pfts, sleep study, overnight pulse ox if available "><td><a href="specialties/pulmonary.html">Pulmonology</a></td><td>Office visit note, chest X-ray, PFTs, sleep study, overnight pulse ox if available</td><td></td></tr>
+          <tr data-search="rheumatology / arthrosis office visit note, labs (crp, ana), imaging if available "><td>Rheumatology / Arthrosis</td><td>Office visit note, labs (CRP, ANA), imaging if available</td><td></td></tr>
+          <tr data-search="sleep study / inspire sleep device office visit note, in-home sleep study or overnight pulse ox reports "><td>Sleep Study / Inspire Sleep Device</td><td>Office visit note, in-home sleep study or overnight pulse ox reports</td><td></td></tr>
+          <tr data-search="speech therapy office visit note, modified barium swallow test "><td>Speech Therapy</td><td>Office visit note, modified barium swallow test</td><td></td></tr>
+          <tr data-search="spine clinic office visit note, mri, any other imaging if available "><td>Spine Clinic</td><td>Office visit note, MRI, any other imaging if available</td><td></td></tr>
+          <tr data-search="urology office visit note, labs (psa, ua), imaging if available commonspirit urology does not do vasectomies."><td>Urology</td><td>Office visit note, labs (PSA, UA), imaging if available</td><td><span class="note-tag">CommonSpirit Urology does not do vasectomies.</span></td></tr>
+          <tr data-search="vascular office visit note, labs, imaging if available "><td>Vascular</td><td>Office visit note, labs, imaging if available</td><td></td></tr>
+          <tr data-search="wound care office visit note, labs, pathology reports if available "><td>Wound Care</td><td>Office visit note, labs, pathology reports if available</td><td></td></tr>
+          </tbody>
+        </table>
+        <div class="no-results" id="none">No match found. Try a different word.</div>
+      </div>
+      <div class="callout warn">
+        <strong>Home Health, Hospice, and Palliative Care (MHH):</strong> these three need an office visit note from the last 90 days. For Home Health steps, see the <a href="home-health.html" style="color:var(--gold-dim);font-weight:600;">Home Health workflow</a>.
+      </div>
+    </main>
+  </div>
+  <footer class="site-footer">
+    Primary Care Clinic &nbsp;|&nbsp; Referral Management Resource &nbsp;|&nbsp;
+    <a href="https://jblaise1310.github.io/rhc-today">RHC Today</a>
+  </footer>
+  <script>
+    (function () {
+      var q = document.getElementById('q');
+      var rows = Array.prototype.slice.call(document.querySelectorAll('#rows tr'));
+      var count = document.getElementById('count');
+      var none = document.getElementById('none');
+      function run() {
+        var term = q.value.trim().toLowerCase();
+        var shown = 0;
+        rows.forEach(function (r) {
+          var hit = !term || r.getAttribute('data-search').indexOf(term) !== -1;
+          r.style.display = hit ? '' : 'none';
+          if (hit) shown++;
+        });
+        count.textContent = shown + ' of ' + rows.length + ' shown';
+        none.style.display = shown ? 'none' : 'block';
+      }
+      q.addEventListener('input', run);
+      run();
+    })();
+  </script>
+</body>
+</html>

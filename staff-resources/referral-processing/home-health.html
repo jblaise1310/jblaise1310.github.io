@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Home Health Referrals | Referral Management</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --navy:#0D2B45; --navy-mid:#163D5F; --teal:#028090; --teal-light:#E1F5F7;
+      --teal-dim:#01606D; --gold:#C9982A; --gold-light:#FDF6E3; --gold-dim:#A87C1E;
+      --slate:#546E7A; --slate-light:#ECEFF1; --bg:#F8FAFB; --white:#FFFFFF;
+      --border:#D5DDE2; --text:#1A2E3B; --text-mid:#3D5363;
+      --green:#1A6B3C; --green-light:#E8F5E9; --red:#C0392B; --red-light:#FDECEA;
+      --sidebar-w:272px;
+      --c-bh:#7C5CBF; --c-gen-surg:#1A6B3C; --c-neuro:#2471A3;
+      --c-onco:#A04000; --c-ortho:#117A8B; --c-pain:#6E2F6E; --c-pt-ot:#1E7B5E; --c-pulm:#1D6FA4;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; }
+    .topbar { background: var(--navy); color: var(--white); display: flex; align-items: center; justify-content: space-between; padding: 0 28px; height: 56px; position: sticky; top: 0; z-index: 100; border-bottom: 3px solid var(--teal); flex-shrink: 0; }
+    .topbar-left { display: flex; align-items: center; gap: 14px; }
+    .topbar-logo { font-family: 'DM Serif Display', serif; font-size: 1.15rem; color: var(--white); }
+    .topbar-logo span { color: var(--teal); }
+    .topbar-badge { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; background: var(--teal); color: var(--white); padding: 2px 9px; border-radius: 20px; }
+    .topbar-back { font-size: 0.8rem; color: #7AAFC8; text-decoration: none; }
+    .topbar-back:hover { color: var(--white); }
+    .layout { display: flex; flex: 1; min-height: 0; }
+    .sidebar { width: var(--sidebar-w); background: var(--navy-mid); flex-shrink: 0; display: flex; flex-direction: column; position: sticky; top: 56px; height: calc(100vh - 56px); overflow-y: auto; }
+    .sidebar::-webkit-scrollbar { width: 4px; }
+    .sidebar::-webkit-scrollbar-thumb { background: #2E5471; border-radius: 4px; }
+    .sidebar-section { padding: 20px 0 8px; }
+    .sidebar-label { font-size: 0.63rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #7AAFC8; padding: 0 20px 8px; display: block; }
+    .nav-link { display: flex; align-items: center; gap: 10px; padding: 9px 20px 9px 16px; text-decoration: none; font-size: 0.84rem; font-weight: 500; color: #C8DDE8; border-left: 3px solid transparent; transition: background 0.15s, color 0.15s; }
+    .nav-link:hover { background: rgba(255,255,255,0.07); color: var(--white); }
+    .nav-link.active { background: rgba(255,255,255,0.07); color: var(--white); font-weight: 600; border-left-color: var(--teal); }
+    .nav-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+    .sidebar-divider { margin: 8px 20px; border: none; border-top: 1px solid rgba(255,255,255,0.08); }
+    .nav-link.special { color: #F0D98A; }
+    .nav-link.special:hover { background: rgba(201,152,42,0.12); color: var(--gold); }
+    .page-nav { padding: 12px 0 8px; }
+    .page-nav-label { font-size: 0.6rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #4A7A96; padding: 0 20px 6px; display: block; }
+    .page-nav-link { display: block; padding: 6px 20px 6px 26px; font-size: 0.78rem; color: #90B8CC; text-decoration: none; border-left: 3px solid transparent; transition: color 0.15s, border-color 0.15s; }
+    .page-nav-link:hover { color: var(--white); border-left-color: var(--teal); }
+    .main { flex: 1; padding: 40px 48px 80px; max-width: 920px; }
+    .breadcrumb { font-size: 0.75rem; color: var(--slate); margin-bottom: 24px; display: flex; align-items: center; gap: 6px; }
+    .breadcrumb a { color: var(--teal-dim); text-decoration: none; }
+    .breadcrumb a:hover { text-decoration: underline; }
+    .page-header { background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 100%); border-radius: 12px; padding: 32px 38px; margin-bottom: 32px; color: var(--white); }
+    .page-eyebrow { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--teal); margin-bottom: 8px; }
+    .page-header h1 { font-family: 'DM Serif Display', serif; font-size: 1.9rem; font-weight: 400; color: var(--white); margin-bottom: 8px; }
+    .page-header p { font-size: 0.88rem; color: #9BBDD0; line-height: 1.65; max-width: 600px; }
+    .section-heading { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.13em; text-transform: uppercase; color: var(--slate); margin: 8px 0 16px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+    .callout { border-radius: 8px; padding: 14px 18px; margin-bottom: 24px; font-size: 0.84rem; line-height: 1.65; }
+    .callout.info { border-left: 4px solid var(--teal); background: var(--teal-light); }
+    .callout.warn { border-left: 4px solid var(--gold); background: var(--gold-light); }
+    .callout strong { color: var(--teal-dim); }
+    .callout.warn strong { color: var(--gold-dim); }
+    .info-card { background: var(--white); border: 1px solid var(--border); border-radius: 10px; padding: 22px 26px; margin-bottom: 20px; }
+    .info-card h3 { font-size: 0.92rem; font-weight: 700; color: var(--text); margin-bottom: 10px; }
+    .info-card p, .info-card li { font-size: 0.85rem; color: var(--text-mid); line-height: 1.65; }
+    .info-card ul { padding-left: 20px; display: flex; flex-direction: column; gap: 6px; margin-top: 6px; }
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+    .two-col .info-card { margin-bottom: 0; }
+    .info-card.good { border-top: 4px solid var(--green); }
+    .info-card.bad { border-top: 4px solid var(--red); }
+    .chips { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 24px; }
+    .chip { background: var(--teal-light); color: var(--teal-dim); font-size: 0.82rem; font-weight: 600; padding: 7px 16px; border-radius: 20px; border: 1px solid #A0D8DE; }
+    .steps { display: flex; flex-direction: column; margin-bottom: 32px; }
+    .step { display: flex; }
+    .step-left { display: flex; flex-direction: column; align-items: center; width: 52px; flex-shrink: 0; }
+    .step-num { width: 38px; height: 38px; border-radius: 50%; background: var(--navy); color: var(--white); font-size: 0.9rem; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; border: 3px solid var(--bg); }
+    .step-line { width: 2px; background: var(--border); flex: 1; min-height: 16px; }
+    .step:last-child .step-line { display: none; }
+    .step-content { padding: 6px 0 24px 16px; flex: 1; }
+    .step-title { font-size: 0.96rem; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+    .step-body { font-size: 0.84rem; color: var(--text-mid); line-height: 1.68; }
+    .step-group { font-size: 0.8rem; font-weight: 700; color: var(--teal-dim); margin: 6px 0 12px; }
+    .placeholder-card { background: var(--white); border: 2px dashed var(--border); border-radius: 10px; padding: 20px 24px; margin-bottom: 20px; font-size: 0.84rem; color: var(--slate); line-height: 1.6; }
+    .placeholder-card strong { color: var(--text); display: block; margin-bottom: 4px; }
+    .qr-card { background: var(--white); border: 1px solid var(--border); border-radius: 10px; padding: 22px 26px; margin-bottom: 20px; }
+    .qr-card h3 { font-size: 0.9rem; font-weight: 700; color: var(--text); margin-bottom: 10px; }
+    .qr-card ul { padding-left: 18px; display: flex; flex-direction: column; gap: 6px; }
+    .qr-card li { font-size: 0.84rem; color: var(--text-mid); line-height: 1.65; }
+    .search-bar { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; flex-wrap: wrap; }
+    .search-bar input { flex: 1; min-width: 220px; padding: 11px 16px; font-family: inherit; font-size: 0.9rem; border: 1px solid var(--border); border-radius: 8px; background: var(--white); color: var(--text); }
+    .search-bar input:focus { outline: 2px solid var(--teal); outline-offset: 1px; }
+    .result-count { font-size: 0.78rem; color: var(--slate); }
+    .wl-table-wrap { overflow-x: auto; border-radius: 10px; border: 1px solid var(--border); margin-bottom: 28px; }
+    .wl-table { width: 100%; border-collapse: collapse; font-size: 0.84rem; background: var(--white); }
+    .wl-table thead th { background: var(--navy); color: var(--white); padding: 12px 16px; text-align: left; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; position: sticky; top: 0; }
+    .wl-table tbody tr { border-bottom: 1px solid var(--border); }
+    .wl-table tbody tr:last-child { border-bottom: none; }
+    .wl-table tbody tr:hover { background: #F0F6FA; }
+    .wl-table td { padding: 12px 16px; vertical-align: top; color: var(--text-mid); line-height: 1.55; }
+    .wl-table td:first-child { font-weight: 600; color: var(--text); width: 26%; }
+    .wl-table td:first-child a { color: var(--teal-dim); text-decoration: none; border-bottom: 1px dotted var(--teal); }
+    .wl-table td:first-child a:hover { color: var(--navy); }
+    .note-tag { display: inline-block; background: var(--gold-light); color: var(--gold-dim); border: 1px solid #F0D98A; font-size: 0.78rem; line-height: 1.5; padding: 3px 10px; border-radius: 6px; }
+    .no-results { display: none; padding: 24px; text-align: center; color: var(--slate); font-size: 0.85rem; background: var(--white); }
+    .site-footer { background: var(--navy); color: #7AAFC8; text-align: center; padding: 18px 28px; font-size: 0.75rem; border-top: 2px solid var(--teal); }
+    .site-footer a { color: var(--teal); text-decoration: none; }
+    @media (max-width: 768px) {
+      .layout { flex-direction: column; }
+      .sidebar { width: 100%; height: auto; position: static; flex-direction: row; overflow-x: auto; overflow-y: hidden; padding: 8px 0; }
+      .sidebar-section { padding: 0; display: flex; align-items: center; }
+      .sidebar-label, .page-nav-label, .page-nav { display: none; }
+      .nav-link { white-space: nowrap; border-left: none; border-bottom: 3px solid transparent; padding: 8px 14px; }
+      .nav-link.active { border-bottom-color: var(--teal); border-left-color: transparent; }
+      .sidebar-divider { display: none; }
+      .main { padding: 24px 20px 60px; }
+      .two-col { grid-template-columns: 1fr; }
+      .wl-table td:first-child { width: auto; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-left">
+      <span class="topbar-logo">Primary Care <span>Referral Management</span></span>
+      <span class="topbar-badge">Staff Resource</span>
+    </div>
+    <div class="topbar-right"><a class="topbar-back" href="index.html">&#8592; Home</a></div>
+  </header>
+  <div class="layout">
+    <nav class="sidebar" aria-label="Site navigation">
+      <div class="sidebar-section">
+        <span class="sidebar-label">Specialties</span>
+        <a class="nav-link" href="specialties/bh.html"><span class="nav-dot" style="background:var(--c-bh)"></span>Behavioral Health</a>
+        <a class="nav-link" href="specialties/general-surgery.html"><span class="nav-dot" style="background:var(--c-gen-surg)"></span>General Surgery</a>
+        <a class="nav-link" href="specialties/neurology.html"><span class="nav-dot" style="background:var(--c-neuro)"></span>Neurology</a>
+        <a class="nav-link" href="specialties/oncology.html"><span class="nav-dot" style="background:var(--c-onco)"></span>Oncology</a>
+        <a class="nav-link" href="specialties/orthopedics.html"><span class="nav-dot" style="background:var(--c-ortho)"></span>Orthopedics</a>
+        <a class="nav-link" href="specialties/pain.html"><span class="nav-dot" style="background:var(--c-pain)"></span>Pain Management</a>
+        <a class="nav-link" href="specialties/pt-ot.html"><span class="nav-dot" style="background:var(--c-pt-ot)"></span>PT / OT</a>
+        <a class="nav-link" href="specialties/pulmonary.html"><span class="nav-dot" style="background:var(--c-pulm)"></span>Pulmonary</a>
+      </div>
+      <hr class="sidebar-divider" />
+      <div class="sidebar-section">
+        <span class="sidebar-label">Special Processing</span>
+        <a class="nav-link special" href="special/va.html"><span class="nav-dot" style="background:var(--gold)"></span>VA Referrals</a>
+        <a class="nav-link special" href="special/workers-comp.html"><span class="nav-dot" style="background:var(--gold)"></span>Workers&rsquo; Comp</a>
+      </div>
+      <hr class="sidebar-divider" />
+      <div class="sidebar-section">
+        <span class="sidebar-label">Resources</span>
+        <a class="nav-link" href="workflow.html"><span class="nav-dot" style="background:var(--teal)"></span>Workflow Overview</a>
+        <a class="nav-link" href="inbound-referrals.html"><span class="nav-dot" style="background:var(--teal)"></span>Inbound Referrals</a>
+        <a class="nav-link" href="daily-fax-report.html"><span class="nav-dot" style="background:var(--teal)"></span>Daily Fax Report</a>
+        <a class="nav-link" href="report-request.html"><span class="nav-dot" style="background:var(--teal)"></span>Report Request</a>
+        <a class="nav-link" href="outbound-worklist.html"><span class="nav-dot" style="background:var(--teal)"></span>Outbound Worklist</a>
+        <a class="nav-link active" href="home-health.html"><span class="nav-dot" style="background:var(--teal)"></span>Home Health</a>
+        <a class="nav-link" href="job-aid.html"><span class="nav-dot" style="background:var(--teal)"></span>Job Aid</a>
+      </div>
+      <hr class="sidebar-divider" />
+      <div class="page-nav">
+        <span class="page-nav-label">On this page</span>
+        <a class="page-nav-link" href="#services">Services</a>
+        <a class="page-nav-link" href="#qualify">Qualifications</a>
+        <a class="page-nav-link" href="#conditions">Conditions</a>
+        <a class="page-nav-link" href="#notcovered">Not Covered</a>
+        <a class="page-nav-link" href="#send">Step by Step</a>
+        <a class="page-nav-link" href="#form">Face to Face Form</a>
+        <a class="page-nav-link" href="#checklist">Checklist</a>
+      </div>
+    </nav>
+    <main class="main">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="index.html">Referral Management</a>
+        <span style="color:var(--border)">&#8250;</span>
+        <span>Home Health</span>
+      </nav>
+      <div class="page-header">
+        <div class="page-eyebrow">Referral Specialist Workflow</div>
+        <h1>Home Health Referrals</h1>
+        <p>How to confirm a patient qualifies for home health, send the referral, and complete the Home Health Certification and Face to Face Encounter form.</p>
+      </div>
+
+      <p class="section-heading" id="services">Services a Provider Can Refer For</p>
+      <div class="chips">
+        <span class="chip">Physical Therapy</span>
+        <span class="chip">Occupational Therapy</span>
+        <span class="chip">Skilled Nursing</span>
+        <span class="chip">Speech Therapy</span>
+      </div>
+
+      <p class="section-heading" id="qualify">Home Health Qualifications</p>
+      <div class="info-card">
+        <h3>The patient must meet all of these</h3>
+        <ul><li>Certified homebound: unable to leave the residence due to their condition, or unable to ambulate.</li><li>The same services are not being provided elsewhere (for example, outpatient PT or OT).</li><li>The reason for referral must pass Medicare guidelines for diagnosis codes and medical conditions.</li><li>Clinical findings support the need for skilled nursing and physical therapy.</li><li>The patient was seen face to face in the past 90 days for a condition relevant to the home health referral.</li><li>The patient has a provider for follow-up care who can sign orders.</li></ul>
+      </div>
+
+      <p class="section-heading" id="conditions">Qualifying and Non-Qualifying Conditions</p>
+      <div class="two-col">
+        <div class="info-card good">
+          <h3>Qualifying conditions</h3>
+          <ul><li>Post-surgical recovery, complex wound care, rehab after joint replacement</li><li>Cardiovascular disease, acute or chronic heart failure</li><li>Pulmonary disorders, severe chronic obstructive pulmonary disease</li><li>Neurological incidents, stroke, dementia</li><li>Diabetes</li></ul>
+        </div>
+        <div class="info-card bad">
+          <h3>Non-qualifying conditions</h3>
+          <ul><li>Frail elderly</li><li>Weakness</li><li>Deconditioning</li><li>Fatigue</li></ul>
+        </div>
+      </div>
+
+      <p class="section-heading" id="notcovered">Services Not Covered by Home Health</p>
+      <div class="info-card">
+        <ul><li>Housekeeping</li><li>Meal preparation</li><li>24 hour daily care</li><li>Delivery or errands</li><li>Personal care, like dressing</li></ul>
+      </div>
+
+      <p class="section-heading" id="send">Step by Step</p>
+      <div class="steps">
+        <div class="step-group">Part 1: Send the Home Health Care referral</div>
+        <div class="step"><div class="step-left"><div class="step-num">1</div><div class="step-line"></div></div>
+          <div class="step-content"><div class="step-title">Confirm the qualifying need</div><div class="step-body">Check the patient against the qualifications and conditions above.</div></div></div>
+        <div class="step"><div class="step-left"><div class="step-num">2</div><div class="step-line"></div></div>
+          <div class="step-content"><div class="step-title">Send the referral with the note or notes</div><div class="step-body">Include the office visit note from the last 90 days.</div></div></div>
+        <div class="step"><div class="step-left"><div class="step-num">3</div><div class="step-line"></div></div>
+          <div class="step-content"><div class="step-title">Wait for Home Health to respond</div><div class="step-body">Home Health will advise whether the patient is accepted for care.</div></div></div>
+
+      </div>
+
+      <div class="steps" id="form">
+        <div class="step-group">Part 2: Fill out the Home Health Certification and Face to Face Encounter form</div>
+        <div class="step"><div class="step-left"><div class="step-num">4</div><div class="step-line"></div></div>
+          <div class="step-content"><div class="step-title">Enter patient and provider information</div><div class="step-body">Patient demographics, including the last 4 of the social security number. Add the primary care provider, and the ordering provider if different.</div></div></div>
+        <div class="step"><div class="step-left"><div class="step-num">5</div><div class="step-line"></div></div>
+          <div class="step-content"><div class="step-title">Enter the encounter</div><div class="step-body">Encounter date and reason, taken from the referral and the office visit note.</div></div></div>
+        <div class="step"><div class="step-left"><div class="step-num">6</div><div class="step-line"></div></div>
+          <div class="step-content"><div class="step-title">Check the services needed</div><div class="step-body">Check the box for each service the patient needs.</div></div></div>
+        <div class="step"><div class="step-left"><div class="step-num">7</div><div class="step-line"></div></div>
+          <div class="step-content"><div class="step-title">Complete the clinical sections</div><div class="step-body">Evaluate and treat: choose the relevant items from Potential Examples #1. Clinical findings that support status: choose from Potential Examples #2.</div></div></div>
+        <div class="step"><div class="step-left"><div class="step-num">8</div><div class="step-line"></div></div>
+          <div class="step-content"><div class="step-title">Date the form and send it to the provider to sign</div></div></div>
+        <div class="step"><div class="step-left"><div class="step-num">9</div><div class="step-line"></div></div>
+          <div class="step-content"><div class="step-title">Scan the signed Face to Face into the patient&rsquo;s chart</div></div></div>
+        <div class="step"><div class="step-left"><div class="step-num">10</div><div class="step-line"></div></div>
+          <div class="step-content"><div class="step-title">Send the signed Face to Face to Home Health</div></div></div>
+        <div class="step"><div class="step-left"><div class="step-num">11</div><div class="step-line"></div></div>
+          <div class="step-content"><div class="step-title">Referral completed and closed</div></div></div>
+
+      </div>
+
+      <div class="placeholder-card">
+        <strong>Potential Examples #1 and #2 to be added</strong>
+        Step 7 refers to two lists of example wording (for evaluate and treat, and for clinical findings). Those lists were not included in the source document. Send them over and they can be added here.
+      </div>
+
+      <p class="section-heading" id="checklist">Quick Reference Checklist</p>
+      <div class="qr-card">
+        <h3>&#9997; Home Health Checklist</h3>
+        <ul><li>Patient is homebound and has been seen face to face in the last 90 days</li><li>Condition qualifies (not frail elderly, weakness, deconditioning, or fatigue)</li><li>Send the referral with the office visit note</li><li>After Home Health accepts: complete the Certification and Face to Face form</li><li>Provider signs, then scan into the chart</li><li>Send the signed Face to Face to Home Health and close the referral</li></ul>
+      </div>
+    </main>
+  </div>
+  <footer class="site-footer">
+    Primary Care Clinic &nbsp;|&nbsp; Referral Management Resource &nbsp;|&nbsp;
+    <a href="https://jblaise1310.github.io/rhc-today">RHC Today</a>
+  </footer>
+
+</body>
+</html>
