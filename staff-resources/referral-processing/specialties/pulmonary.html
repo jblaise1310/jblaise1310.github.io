@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pulmonary Referrals | Primary Care Clinic</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy:        #0D2B45;
+      --navy-mid:    #163D5F;
+      --teal:        #028090;
+      --teal-light:  #E1F5F7;
+      --teal-dim:    #01606D;
+      --gold:        #C9982A;
+      --gold-light:  #FDF6E3;
+      --gold-dim:    #A87C1E;
+      --slate:       #546E7A;
+      --slate-light: #ECEFF1;
+      --bg:          #F8FAFB;
+      --white:       #FFFFFF;
+      --border:      #D5DDE2;
+      --text:        #1A2E3B;
+      --text-mid:    #3D5363;
+      --sidebar-w:   272px;
+
+      --accent:      #1D6FA4;
+      --accent-light:#E3F2FD;
+      --accent-dim:  #155A87;
+
+      --c-bh:        #7C5CBF;
+      --c-cardio:    #C0392B;
+      --c-gen-surg:  #1A6B3C;
+      --c-neuro:     #2471A3;
+      --c-onco:      #A04000;
+      --c-ortho:     #117A8B;
+      --c-pain:      #6E2F6E;
+      --c-pt-ot:     #1E7B5E;
+      --c-pulm:      #1D6FA4;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── Top bar ── */
+    .topbar {
+      background: var(--navy);
+      color: var(--white);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 28px;
+      height: 56px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      border-bottom: 3px solid var(--teal);
+      flex-shrink: 0;
+    }
+    .topbar-left { display: flex; align-items: center; gap: 14px; }
+    .topbar-logo { font-family: 'DM Serif Display', serif; font-size: 1.15rem; color: var(--white); }
+    .topbar-logo span { color: var(--teal); }
+    .topbar-badge { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; background: var(--teal); color: var(--white); padding: 2px 9px; border-radius: 20px; }
+    .topbar-right { font-size: 0.75rem; color: #8FAFC0; }
+    .topbar-back { font-size: 0.8rem; color: #7AAFC8; text-decoration: none; display: flex; align-items: center; gap: 5px; }
+    .topbar-back:hover { color: var(--white); }
+
+    /* ── Layout ── */
+    .layout { display: flex; flex: 1; min-height: 0; }
+
+    /* ── Sidebar ── */
+    .sidebar {
+      width: var(--sidebar-w);
+      background: var(--navy-mid);
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      position: sticky;
+      top: 56px;
+      height: calc(100vh - 56px);
+      overflow-y: auto;
+    }
+    .sidebar::-webkit-scrollbar { width: 4px; }
+    .sidebar::-webkit-scrollbar-thumb { background: #2E5471; border-radius: 4px; }
+    .sidebar-section { padding: 20px 0 8px; }
+    .sidebar-label { font-size: 0.63rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #7AAFC8; padding: 0 20px 8px; display: block; }
+    .nav-link {
+      display: flex; align-items: center; gap: 10px;
+      padding: 9px 20px 9px 16px;
+      text-decoration: none; font-size: 0.84rem; font-weight: 500; color: #C8DDE8;
+      border-left: 3px solid transparent;
+      transition: background 0.15s, color 0.15s, border-color 0.15s;
+    }
+    .nav-link:hover { background: rgba(255,255,255,0.07); color: var(--white); }
+    .nav-link.active { background: rgba(255,255,255,0.07); color: var(--white); font-weight: 600; border-left-color: var(--c-pulm); }
+    .nav-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+    .sidebar-divider { margin: 8px 20px; border: none; border-top: 1px solid rgba(255,255,255,0.08); }
+    .nav-link.special { color: #F0D98A; }
+    .nav-link.special:hover { background: rgba(201,152,42,0.12); color: var(--gold); }
+    .nav-link.special .nav-dot { background: var(--gold) !important; }
+
+    /* Page-level anchor nav in sidebar */
+    .page-nav { padding: 12px 0 8px; }
+    .page-nav-label { font-size: 0.6rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #4A7A96; padding: 0 20px 6px; display: block; }
+    .page-nav-link {
+      display: block; padding: 6px 20px 6px 26px;
+      font-size: 0.78rem; color: #90B8CC; text-decoration: none;
+      border-left: 3px solid transparent;
+      transition: color 0.15s, border-color 0.15s;
+    }
+    .page-nav-link:hover { color: var(--white); border-left-color: var(--accent); }
+
+    /* ── Main ── */
+    .main { flex: 1; padding: 40px 48px 80px; max-width: 940px; }
+
+    /* ── Specialty header ── */
+    .spec-header {
+      display: flex; align-items: flex-start; gap: 20px;
+      background: linear-gradient(135deg, var(--accent-dim) 0%, var(--accent) 100%);
+      border-radius: 12px; padding: 32px 36px; margin-bottom: 36px; color: var(--white);
+    }
+    .spec-icon { font-size: 2.8rem; flex-shrink: 0; }
+    .spec-header-body {}
+    .spec-eyebrow { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.6); margin-bottom: 6px; }
+    .spec-title { font-family: 'DM Serif Display', serif; font-size: 2rem; font-weight: 400; color: var(--white); margin-bottom: 6px; }
+    .spec-subtitle { font-size: 0.88rem; color: rgba(255,255,255,0.75); line-height: 1.6; }
+    .spec-contact {
+      margin-top: 14px; display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(255,255,255,0.15); border-radius: 8px; padding: 8px 14px;
+      font-size: 0.82rem; color: var(--white); font-weight: 500;
+    }
+
+    /* ── Section heading ── */
+    .section-heading {
+      font-size: 0.68rem; font-weight: 700; letter-spacing: 0.13em; text-transform: uppercase;
+      color: var(--slate); margin-bottom: 16px; padding-bottom: 8px; border-bottom: 1px solid var(--border);
+    }
+
+    /* ── Alert / callout boxes ── */
+    .callout {
+      border-radius: 8px; padding: 16px 20px; margin-bottom: 24px;
+      border-left: 4px solid var(--accent);
+      background: var(--accent-light);
+      font-size: 0.85rem; line-height: 1.65; color: var(--text);
+    }
+    .callout.warn { border-left-color: var(--gold); background: var(--gold-light); }
+    .callout.warn strong { color: var(--gold-dim); }
+    .callout strong { color: var(--accent-dim); }
+
+    /* ── Referral requirements table ── */
+    .req-table-wrap { overflow-x: auto; margin-bottom: 36px; border-radius: 10px; border: 1px solid var(--border); }
+    .req-table {
+      width: 100%; border-collapse: collapse; font-size: 0.83rem;
+      background: var(--white);
+    }
+    .req-table thead th {
+      background: var(--navy); color: var(--white);
+      padding: 12px 16px; text-align: left; font-size: 0.72rem;
+      font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+      white-space: nowrap;
+    }
+    .req-table thead th:first-child { border-radius: 9px 0 0 0; }
+    .req-table thead th:last-child { border-radius: 0 9px 0 0; }
+    .req-table tbody tr { border-bottom: 1px solid var(--border); }
+    .req-table tbody tr:last-child { border-bottom: none; }
+    .req-table tbody tr:hover { background: #F0F6FA; }
+    .req-table td { padding: 13px 16px; vertical-align: top; line-height: 1.55; color: var(--text-mid); }
+    .req-table td:first-child { font-weight: 600; color: var(--text); white-space: nowrap; }
+
+    /* Status pills in table */
+    .pill {
+      display: inline-flex; align-items: center; gap: 5px;
+      font-size: 0.7rem; font-weight: 700; letter-spacing: 0.04em;
+      padding: 3px 9px; border-radius: 20px;
+    }
+    .pill-required { background: #FDECEA; color: #922B21; }
+    .pill-not-required { background: #E8F5E9; color: #1A6B3C; }
+    .pill-optional { background: #FFF8E1; color: #A87C1E; }
+    .pill-na { background: var(--slate-light); color: var(--slate); }
+
+    .validity-note { font-size: 0.72rem; color: var(--slate); margin-top: 4px; font-style: italic; }
+    .fn-note { font-size: 0.71rem; color: var(--slate); margin-top: 3px; }
+
+    /* ── Validity card grid ── */
+    .validity-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; margin-bottom: 36px; }
+    .validity-card {
+      background: var(--white); border: 1px solid var(--border); border-radius: 10px;
+      border-top: 4px solid var(--accent); padding: 16px 18px;
+    }
+    .validity-card-test { font-size: 0.8rem; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+    .validity-card-window { font-size: 1.1rem; font-weight: 700; color: var(--accent); }
+    .validity-card-note { font-size: 0.72rem; color: var(--slate); margin-top: 4px; line-height: 1.5; }
+
+    /* ── Info cards ── */
+    .info-card {
+      background: var(--white); border: 1px solid var(--border); border-radius: 10px;
+      padding: 22px 26px; margin-bottom: 20px;
+    }
+    .info-card h3 { font-size: 0.92rem; font-weight: 700; color: var(--text); margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+    .info-card p, .info-card li { font-size: 0.85rem; color: var(--text-mid); line-height: 1.65; }
+    .info-card ul { padding-left: 20px; display: flex; flex-direction: column; gap: 6px; margin-top: 6px; }
+
+    /* ── Breadcrumb ── */
+    .breadcrumb { font-size: 0.75rem; color: var(--slate); margin-bottom: 24px; display: flex; align-items: center; gap: 6px; }
+    .breadcrumb a { color: var(--teal-dim); text-decoration: none; }
+    .breadcrumb a:hover { text-decoration: underline; }
+    .breadcrumb-sep { color: var(--border); }
+
+    /* ── Footer ── */
+    .site-footer { background: var(--navy); color: #7AAFC8; text-align: center; padding: 18px 28px; font-size: 0.75rem; border-top: 2px solid var(--teal); }
+    .site-footer a { color: var(--teal); text-decoration: none; }
+
+    /* ── Responsive ── */
+    @media (max-width: 768px) {
+      .layout { flex-direction: column; }
+      .sidebar { width: 100%; height: auto; position: static; flex-direction: row; overflow-x: auto; overflow-y: hidden; padding: 8px 0; }
+      .sidebar-section { padding: 0; display: flex; align-items: center; }
+      .sidebar-label, .page-nav-label, .page-nav { display: none; }
+      .nav-link { white-space: nowrap; border-left: none; border-bottom: 3px solid transparent; padding: 8px 14px; }
+      .nav-link.active { border-bottom-color: var(--accent); border-left-color: transparent; }
+      .sidebar-divider { display: none; }
+      .main { padding: 24px 20px 60px; }
+      .spec-header { flex-direction: column; padding: 24px 22px; }
+      .req-table td:first-child { white-space: normal; }
+    }
+    .track-badge.hospital { background: #E8EAF6; color: #3949AB; }
+    .wl-card.hospital-card { border-top-color: #5C6BC0; }
+    .worklist-block { margin-bottom: 32px; }
+    .worklist-track-label { display: flex; align-items: center; gap: 10px; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 10px; }
+    .worklist-track-label .track-badge { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+    .track-badge.internal { background: var(--teal-light); color: var(--teal-dim); }
+    .track-badge.external { background: var(--gold-light); color: var(--gold-dim); }
+    .track-badge.hospital { background: #E8EAF6; color: #3949AB; }
+    .worklist-strip { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 20px; }
+    .wl-card { background: var(--white); border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px; border-top: 3px solid var(--accent); }
+    .wl-card.external-card { border-top-color: var(--gold); }
+    .wl-card.hospital-card { border-top-color: #5C6BC0; }
+    .wl-card-stage { font-size: 0.62rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--slate); margin-bottom: 4px; }
+    .wl-card-name { font-size: 0.86rem; font-weight: 600; color: var(--text); }
+    .wl-card-name.pending { color: var(--slate); font-style: italic; font-weight: 400; }
+    @media (max-width: 700px) { .worklist-strip { grid-template-columns: 1fr 1fr; } }
+  </style>
+</head>
+<body>
+
+  <!-- Top bar -->
+  <header class="topbar">
+    <div class="topbar-left">
+      <span class="topbar-logo">Primary Care <span>Referral Management</span></span>
+      <span class="topbar-badge">Staff Resource</span>
+    </div>
+    <div class="topbar-right">
+      <a class="topbar-back" href="../index.html">&#8592; All Specialties</a>
+    </div>
+  </header>
+
+  <div class="layout">
+
+    <!-- Sidebar -->
+    <nav class="sidebar" aria-label="Specialty navigation">
+
+      <div class="sidebar-section">
+        <span class="sidebar-label">Specialties</span>
+        <a class="nav-link" href="bh.html"><span class="nav-dot" style="background:var(--c-bh)"></span>Behavioral Health</a>
+        <a class="nav-link" href="general-surgery.html"><span class="nav-dot" style="background:var(--c-gen-surg)"></span>General Surgery</a>
+        <a class="nav-link" href="neurology.html"><span class="nav-dot" style="background:var(--c-neuro)"></span>Neurology</a>
+        <a class="nav-link" href="oncology.html"><span class="nav-dot" style="background:var(--c-onco)"></span>Oncology</a>
+        <a class="nav-link" href="orthopedics.html"><span class="nav-dot" style="background:var(--c-ortho)"></span>Orthopedics</a>
+        <a class="nav-link" href="pain.html"><span class="nav-dot" style="background:var(--c-pain)"></span>Pain Management</a>
+        <a class="nav-link" href="pt-ot.html"><span class="nav-dot" style="background:var(--c-pt-ot)"></span>PT / OT</a>
+        <a class="nav-link active" href="pulmonary.html"><span class="nav-dot" style="background:var(--c-pulm)"></span>Pulmonary</a>
+      </div>
+
+      <hr class="sidebar-divider" />
+
+      <div class="sidebar-section">
+        <span class="sidebar-label">Special Processing</span>
+        <a class="nav-link special" href="../special/va.html"><span class="nav-dot"></span>VA Referrals</a>
+        <a class="nav-link special" href="../special/workers-comp.html"><span class="nav-dot"></span>Workers&rsquo; Comp</a>
+      </div>
+
+      <hr class="sidebar-divider" />
+
+      <div class="sidebar-section">
+        <span class="sidebar-label">Resources</span>
+        <a class="nav-link" href="../workflow.html"><span class="nav-dot" style="background:var(--teal)"></span>Workflow Overview</a>
+        <a class="nav-link" href="../inbound-referrals.html"><span class="nav-dot" style="background:var(--teal)"></span>Inbound Referrals</a>
+        <a class="nav-link" href="../daily-fax-report.html"><span class="nav-dot" style="background:var(--teal)"></span>Daily Fax Report</a>
+        <a class="nav-link" href="../report-request.html"><span class="nav-dot" style="background:var(--teal)"></span>Report Request</a>
+        <a class="nav-link" href="../outbound-worklist.html"><span class="nav-dot" style="background:var(--teal)"></span>Outbound Worklist</a>
+        <a class="nav-link" href="../home-health.html"><span class="nav-dot" style="background:var(--teal)"></span>Home Health</a>
+        <a class="nav-link" href="../job-aid.html"><span class="nav-dot" style="background:var(--teal)"></span>Job Aid</a>
+      </div>
+      <hr class="sidebar-divider" />
+
+      <!-- On-page anchor nav -->
+      <div class="page-nav">
+        <span class="page-nav-label">On this page</span>
+        <a class="page-nav-link" href="#worklist">Worklist Assignments</a>
+        <a class="page-nav-link" href="#requirements">Requirements by Condition</a>
+        <a class="page-nav-link" href="#validity">Testing Validity Windows</a>
+        <a class="page-nav-link" href="#followup">ER / Discharge Follow-Up</a>
+        <a class="page-nav-link" href="#contact">Contact</a>
+      </div>
+
+    </nav>
+
+    <!-- Main -->
+    <main class="main">
+
+      <!-- Breadcrumb -->
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="../index.html">Referral Management</a>
+        <span class="breadcrumb-sep">›</span>
+        <span>Pulmonary</span>
+      </nav>
+
+      <!-- Specialty header -->
+      <div class="spec-header">
+        <div class="spec-icon">🫁</div>
+        <div class="spec-header-body">
+          <div class="spec-eyebrow">Specialty Referral Guidelines</div>
+          <div class="spec-title">Pulmonary</div>
+          <div class="spec-subtitle">
+            Dr. Holcomb, Pulmonology &mdash; Reviewed and approved by Dr. Holcomb.<br>
+            Confirm all required testing is complete and attached before submitting. Incomplete referrals may delay scheduling.
+          </div>
+          <div class="spec-contact">
+            📞 970-731-3700 &nbsp;›&nbsp; Option 2, 2, 2 &nbsp;&mdash;&nbsp; Specialty Team
+          </div>
+        </div>
+      </div>
+
+      <section id="worklist">
+        <p class="section-heading">Worklist Assignments</p>
+
+        <div class="worklist-block">
+          <div class="worklist-track-label">
+            <span class="track-badge internal">RHC Provider or Specialist &rarr; PSMC Specialist</span>
+            <span style="color:var(--slate);font-weight:400;text-transform:none;letter-spacing:0;font-size:0.78rem;">Internal referrals only</span>
+          </div>
+          <div class="worklist-strip">
+            <div class="wl-card"><div class="wl-card-stage">Review &mdash; Stage 1</div><div class="wl-card-name">Referral Specialist</div></div>
+            <div class="wl-card"><div class="wl-card-stage">Process &mdash; Stage 2</div><div class="wl-card-name">Team RN</div></div>
+            <div class="wl-card"><div class="wl-card-stage">Schedule &mdash; 3A</div><div class="wl-card-name">Team RN</div></div>
+            <div class="wl-card"><div class="wl-card-stage">Complete &mdash; 3B</div><div class="wl-card-name">Pulmonary MA</div></div>
+          </div>
+        </div>
+
+        <div class="worklist-block">
+          <div class="worklist-track-label">
+            <span class="track-badge hospital">PSMC ED / IP Provider &rarr; PSMC Specialist</span>
+            <span style="color:var(--slate);font-weight:400;text-transform:none;letter-spacing:0;font-size:0.78rem;">Hospital referrals</span>
+          </div>
+          <div class="worklist-strip">
+            <div class="wl-card hospital-card"><div class="wl-card-stage">Review &mdash; Stage 1</div><div class="wl-card-name">Hospital Social Worker</div></div>
+            <div class="wl-card hospital-card"><div class="wl-card-stage">Process &mdash; Stage 2</div><div class="wl-card-name">Team RN</div></div>
+            <div class="wl-card hospital-card"><div class="wl-card-stage">Schedule &mdash; 3A</div><div class="wl-card-name">Team RN</div></div>
+            <div class="wl-card hospital-card"><div class="wl-card-stage">Complete &mdash; 3B</div><div class="wl-card-name">Pulmonary MA</div></div>
+          </div>
+        </div>
+
+        <div class="worklist-block">
+          <div class="worklist-track-label">
+            <span class="track-badge hospital">Oncology Provider &rarr; PSMC Specialist</span>
+            <span style="color:var(--slate);font-weight:400;text-transform:none;letter-spacing:0;font-size:0.78rem;">Oncology provider referrals</span>
+          </div>
+          <div class="worklist-strip">
+            <div class="wl-card hospital-card"><div class="wl-card-stage">Review &mdash; Stage 1</div><div class="wl-card-name">ONC MA</div></div>
+            <div class="wl-card hospital-card"><div class="wl-card-stage">Process &mdash; Stage 2</div><div class="wl-card-name">Team RN</div></div>
+            <div class="wl-card hospital-card"><div class="wl-card-stage">Schedule &mdash; 3A</div><div class="wl-card-name">Team RN</div></div>
+            <div class="wl-card hospital-card"><div class="wl-card-stage">Complete &mdash; 3B</div><div class="wl-card-name">Pulmonary MA</div></div>
+          </div>
+        </div>
+
+        <div class="worklist-block">
+          <div class="worklist-track-label">
+            <span class="track-badge external">RHC Provider or Specialist &rarr; External Facility</span>
+            <span style="color:var(--slate);font-weight:400;text-transform:none;letter-spacing:0;font-size:0.78rem;">External referrals</span>
+          </div>
+          <div class="worklist-strip">
+            <div class="wl-card external-card"><div class="wl-card-stage">Review &mdash; Stage 1</div><div class="wl-card-name">Referral Specialist</div></div>
+            <div class="wl-card external-card"><div class="wl-card-stage">Process &mdash; Stage 2</div><div class="wl-card-name">Referral Specialist</div></div>
+            <div class="wl-card external-card"><div class="wl-card-stage">Schedule &mdash; 3A</div><div class="wl-card-name">External Facility w/ Patient</div></div>
+            <div class="wl-card external-card"><div class="wl-card-stage">Complete &mdash; 3B</div><div class="wl-card-name">Referral Specialist</div></div>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- Important callout -->
+      <div class="callout warn">
+        <strong>Before submitting any referral:</strong> Confirm all required testing is complete and attached to the referral. Incomplete referrals will require follow-up and may delay scheduling. See the requirements table below for each condition.
+      </div>
+
+      <!-- Requirements by condition -->
+      <section id="requirements">
+        <p class="section-heading">Referral Requirements by Condition</p>
+
+        <div class="req-table-wrap">
+          <table class="req-table">
+            <thead>
+              <tr>
+                <th>Referral Reason</th>
+                <th>PFT Required?</th>
+                <th>Other Required Testing</th>
+                <th>Validity Window</th>
+              </tr>
+            </thead>
+            <tbody>
+
+              <tr>
+                <td>Sleep Apnea</td>
+                <td><span class="pill pill-not-required">✓ Not needed</span></td>
+                <td>
+                  Sleep study required before visit<br>
+                  <span class="fn-note">ONO, HST, or in-lab sleep study</span>
+                </td>
+                <td>
+                  Within past year
+                  <div class="fn-note">Note: patient elevation is not currently factored into this requirement, though it may affect results.</div>
+                </td>
+              </tr>
+
+              <tr>
+                <td>Asthma</td>
+                <td><span class="pill pill-not-required">✓ Not required</span><div class="fn-note">May be ordered after visit at provider's discretion</div></td>
+                <td><span class="pill pill-na">— None required</span></td>
+                <td><span class="pill pill-na">—</span></td>
+              </tr>
+
+              <tr>
+                <td>COPD</td>
+                <td><span class="pill pill-required">⚠ Required before appt.</span></td>
+                <td>
+                  <span class="pill pill-required">⚠ Chest X-ray required</span><br>
+                  <span class="fn-note">Must be completed before appointment</span>
+                </td>
+                <td>Within past 6 months</td>
+              </tr>
+
+              <tr>
+                <td>Pulmonary Hypertension</td>
+                <td><span class="pill pill-required">⚠ Required before appt.</span></td>
+                <td>
+                  Copy of recent ECHO if available
+                  <div class="fn-note">Attach if on file; not a hard requirement</div>
+                </td>
+                <td>Within past 6 months</td>
+              </tr>
+
+              <tr>
+                <td>Interstitial Lung Disease (ILD)</td>
+                <td><span class="pill pill-optional">~ May be done after visit</span><div class="fn-note">Unless otherwise directed</div></td>
+                <td><span class="pill pill-na">— None required</span></td>
+                <td><span class="pill pill-na">—</span></td>
+              </tr>
+
+              <tr>
+                <td>Pulmonary Embolism</td>
+                <td><span class="pill pill-not-required">✓ Not needed before appt.</span></td>
+                <td><span class="pill pill-na">— None required</span></td>
+                <td><span class="pill pill-na">—</span></td>
+              </tr>
+
+              <tr>
+                <td>Bronchiectasis</td>
+                <td><span class="pill pill-not-required">✓ Not required before appt.</span></td>
+                <td><span class="pill pill-na">— None required</span></td>
+                <td><span class="pill pill-na">—</span></td>
+              </tr>
+
+              <tr>
+                <td>Chronic Cough</td>
+                <td><span class="pill pill-required">⚠ Required before appt.</span></td>
+                <td>
+                  <span class="pill pill-required">⚠ Chest X-ray required</span><br>
+                  <span class="fn-note">Must be completed before appointment</span>
+                </td>
+                <td>Within past 6 months</td>
+              </tr>
+
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Pill legend -->
+        <div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:32px;">
+          <span class="pill pill-required">⚠ Required before appointment</span>
+          <span class="pill pill-not-required">✓ Not required</span>
+          <span class="pill pill-optional">~ May be done after visit</span>
+          <span class="pill pill-na">— Not applicable</span>
+        </div>
+      </section>
+
+      <!-- Testing validity -->
+      <section id="validity">
+        <p class="section-heading">Testing Validity Windows</p>
+        <div class="callout">
+          Testing older than the windows below should be <strong>repeated prior to the appointment.</strong> Do not submit a referral with expired test results attached.
+        </div>
+        <div class="validity-grid">
+          <div class="validity-card">
+            <div class="validity-card-test">Chest X-ray (CXR)</div>
+            <div class="validity-card-window">6 months</div>
+            <div class="validity-card-note">Valid within 6 months of scheduled appointment</div>
+          </div>
+          <div class="validity-card">
+            <div class="validity-card-test">Pulmonary Function Testing (PFT)</div>
+            <div class="validity-card-window">6 months</div>
+            <div class="validity-card-note">Valid within 6 months of scheduled appointment</div>
+          </div>
+          <div class="validity-card">
+            <div class="validity-card-test">Overnight Oximetry (ONO)</div>
+            <div class="validity-card-window">1 year</div>
+            <div class="validity-card-note">Valid within 1 year of scheduled appointment</div>
+          </div>
+          <div class="validity-card">
+            <div class="validity-card-test">Home Sleep Test (HST)</div>
+            <div class="validity-card-window">1 year</div>
+            <div class="validity-card-note">Valid within 1 year of scheduled appointment</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ER / discharge follow-up -->
+      <section id="followup">
+        <p class="section-heading">ER / Hospital Discharge Follow-Up Timing</p>
+        <div class="info-card">
+          <h3>⏱ Standard Follow-Up Window</h3>
+          <p>Per Dr. Holcomb, the standard of care is for patients to follow up with the Pulmonary office <strong>2 to 4 weeks</strong> after an ER visit or hospitalization.</p>
+          <ul>
+            <li>Follow-up sooner than 2 weeks is generally <strong>not necessary</strong> and does not affect the patient&rsquo;s plan of care.</li>
+            <li>When scheduling post-discharge referrals, target the 2&ndash;4 week window.</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Operational notes -->
+      <section id="ops">
+        <p class="section-heading">Operational Notes</p>
+        <div class="info-card">
+          <h3>📋 PFT Availability</h3>
+          <p>Patients referred for COPD or Pulmonary Hypertension sometimes struggle to complete PFT quickly due to scheduling availability. Dr. Holcomb has coordinated with Vicki and the RTs to increase PFT capacity. If a patient is unable to complete PFT before the referral appointment window, contact the specialty team to discuss alternatives.</p>
+        </div>
+        <div class="info-card">
+          <h3>📨 Incomplete Referral Response</h3>
+          <p>When a referral is received without required testing, a standard notification is sent back to the referring provider. A formal return form is in development. Until then, contact the specialty team directly if you receive an incomplete referral rejection.</p>
+        </div>
+      </section>
+
+      <!-- Contact -->
+      <section id="contact">
+        <p class="section-heading">Contact</p>
+        <div class="info-card">
+          <h3>📞 Specialty Team</h3>
+          <p style="font-size:1rem; font-weight:600; color:var(--accent);">970-731-3700 &nbsp;&rsaquo;&nbsp; Option 2, 2, 2</p>
+          <ul style="margin-top:10px;">
+            <li>Referral submission questions</li>
+            <li>Incomplete referral follow-up</li>
+            <li>PFT scheduling coordination</li>
+            <li>Appointment scheduling assistance</li>
+          </ul>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <footer class="site-footer">
+    Primary Care Clinic &mdash; Pagosa Springs Medical Center &nbsp;|&nbsp;
+    Referral Management Resource &nbsp;|&nbsp;
+    <a href="https://jblaise1310.github.io/rhc-today">RHC Today</a>
+  </footer>
+
+  <script>
+    // Active nav link
+    const links = document.querySelectorAll('.nav-link');
+    const current = window.location.pathname.split('/').pop();
+    links.forEach(link => {
+      const href = link.getAttribute('href').split('/').pop();
+      if (href === current) link.classList.add('active');
+    });
+  </script>
+
+</body>
+</html>
