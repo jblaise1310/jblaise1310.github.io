@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Clinic Medication List — Provider Reference</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@500;600;700&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#1B365D; --navy2:#24466f; --gold:#B8862F; --gold-soft:#f3ead4;
+  --ink:#23272E; --muted:#5d6470; --line:#dfe3ea; --bg:#ffffff; --zebra:#f7f9fc;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:#eef1f5;color:var(--ink);font-family:"Source Sans 3",system-ui,sans-serif;font-size:14px;line-height:1.5}
+.page{max-width:900px;margin:22px auto;background:var(--bg);border:1px solid var(--line);border-radius:10px;box-shadow:0 10px 30px rgba(27,54,93,.08);overflow:hidden}
+header{background:var(--navy);color:#fff;padding:22px 30px;display:flex;justify-content:space-between;align-items:flex-start;gap:16px;border-bottom:4px solid var(--gold)}
+.brand{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:#cdd7e6;font-weight:700}
+header h1{font-family:"Source Serif 4",serif;font-weight:600;font-size:25px;margin:5px 0 4px;line-height:1.1}
+header p{margin:0;color:#d4dcea;font-size:13px}
+.meta{margin-top:9px;font-size:11.5px;color:#aebcd1}
+.printbtn{flex:0 0 auto;background:var(--gold);color:#2a2000;border:none;border-radius:8px;font-family:inherit;font-weight:700;font-size:13px;padding:10px 16px;cursor:pointer;display:inline-flex;align-items:center;gap:8px}
+.printbtn:hover{background:#caa043}
+.intro{padding:16px 30px 0}
+.legend{display:flex;gap:16px;flex-wrap:wrap;font-size:12px;color:var(--muted);padding:12px 14px;background:var(--zebra);border:1px solid var(--line);border-radius:8px}
+.legend b{color:var(--ink)}
+.controls{display:flex;gap:9px;margin:14px 0 2px}
+.ctl{font-family:inherit;font-size:12.5px;font-weight:600;color:var(--navy);background:#fff;border:1px solid var(--line);
+  border-radius:7px;padding:7px 13px;cursor:pointer}
+.ctl:hover{border-color:var(--navy);background:var(--zebra)}
+.key{display:inline-flex;align-items:center;gap:6px}
+.pa{background:var(--gold);color:#2a2000;font-size:10px;font-weight:700;padding:1px 5px;border-radius:4px;letter-spacing:.03em;vertical-align:1px}
+.vfc{background:#e7eef7;color:var(--navy);font-size:10px;font-weight:700;padding:1px 5px;border-radius:4px;vertical-align:1px}
+.body{padding:8px 30px 10px}
+.cls{margin-top:10px;border:1px solid var(--line);border-radius:8px;overflow:hidden;break-inside:avoid}
+.clshead{width:100%;display:flex;align-items:center;gap:11px;background:#fff;border:none;cursor:pointer;
+  font-family:inherit;text-align:left;padding:13px 15px}
+.clshead:hover{background:var(--zebra)}
+.clshead .clsname{font-family:"Source Serif 4",serif;font-size:16.5px;font-weight:600;color:var(--navy);flex:1}
+.clshead .n{font-size:11px;font-weight:700;color:#fff;background:var(--navy);border-radius:999px;padding:1px 9px}
+.chev{flex:0 0 auto;color:var(--gold);transition:transform .2s}
+.cls.open .chev{transform:rotate(90deg)}
+.cls.open .clshead{background:var(--gold-soft);border-bottom:2px solid var(--gold)}
+.panel{display:none}
+.cls.open .panel{display:block}
+table{width:100%;border-collapse:collapse}
+thead th{text-align:left;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:700;
+  padding:6px 10px;background:var(--gold-soft);border-bottom:1px solid var(--line)}
+tbody td{padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+tbody tr:nth-child(even){background:var(--zebra)}
+.med{width:42%}
+.gn{font-weight:700;color:var(--ink)}
+.bn{display:block;color:var(--muted);font-size:12px;margin-top:1px}
+.sf{width:26%;color:var(--ink)}
+.rt{width:14%;color:var(--muted);font-size:12.5px}
+.lc{width:18%}
+.loc{display:inline-block;font-size:11px;color:var(--navy);background:#eef2f8;border:1px solid #d4def0;border-radius:5px;padding:1px 6px;margin:0 3px 3px 0}
+footer{border-top:1px solid var(--line);margin:18px 30px 0;padding:14px 0 22px;color:var(--muted);font-size:11.5px;line-height:1.6}
+footer .appr{color:#2f5d44;font-weight:600}
+footer .credit{margin-top:6px;color:var(--navy);font-weight:600}
+@media (max-width:620px){
+  header{flex-direction:column} .med,.sf,.rt,.lc{width:auto}
+  .rt,.lc{font-size:11.5px}
+}
+@media print{
+  body{background:#fff} .page{box-shadow:none;border:none;margin:0;max-width:none;border-radius:0}
+  .printbtn{display:none} header{padding:14px 0} .intro,.body,footer{padding-left:0;padding-right:0}
+  header,.intro,.body,footer{margin-left:14px;margin-right:14px}
+  .cls{break-inside:avoid} thead th{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .panel{display:block !important} .chev,.controls{display:none !important}
+  .cls.open .clshead,.clshead{background:#fff} .clshead .clsname{font-size:15px}
+}
+</style>
+</head>
+<body>
+<div class="page">
+  <header>
+    <div>
+      <div class="brand">Primary Care Clinic</div>
+      <h1>Clinic Medication List</h1>
+      <p>Provider quick reference to medications stocked in the clinic Pyxis cabinets.</p>
+      <div class="meta">Grouped by class, alphabetical. 110 medications. Source: Pyxis inventory (run 5/5/2026).</div>
+    </div>
+    <button class="printbtn" onclick="window.print()">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9V2h12v7M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2M6 14h12v8H6z"/></svg>
+      Print
+    </button>
+  </header>
+
+  <div class="intro">
+    <div class="legend">
+      <span class="key"><span class="pa">PA</span> <b>Prior authorization required</b>, confirm before ordering</span>
+      <span class="key"><span class="vfc">VFC</span> Vaccines For Children program stock</span>
+      <span class="key"><b>Location:</b> clinic cabinet that stocks the item</span>
+    </div>
+    <div class="controls">
+      <button class="ctl" onclick="allCls(true)">Expand all</button>
+      <button class="ctl" onclick="allCls(false)">Collapse all</button>
+    </div>
+  </div>
+
+  <div class="body">
+    <section class="cls">
+      <button class="clshead" aria-expanded="false" onclick="toggleCls(this)">
+        <svg class="chev" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="m9 6 6 6-6 6"/></svg>
+        <span class="clsname">Allergy & Antihistamine</span>
+        <span class="n">3</span>
+      </button>
+      <div class="panel">
+        <table>
+          <thead><tr><th>Medication</th><th>Strength / Form</th><th>Route</th><th>Location</th></tr></thead>
+          <tbody><tr>
+          <td class="med"><span class="gn">Diphenhydramine 25 mg (capsule)</span><span class="bn">Benadryl</span></td>
+          <td class="sf">25 mg Capsule</td>
+          <td class="rt">Oral / SL</td>
+          <td class="lc"><span class="loc">Clinic 1</span> <span class="loc">Clinic 2</span></td>
+        </tr><tr>
+          <td class="med"><span class="gn">Diphenhydramine 25 mg/10 mL (elixir)</span><span class="bn">Benadryl</span></td>
+          <td class="sf">25 mg (10 mL) Elixir</td>
+          <td class="rt">Oral liquid</td>
+          <td class="lc"><span class="loc">Clinic 1</span> <span class="loc">Clinic 2</span></td>
+        </tr><tr>
+          <td class="med"><span class="gn">Diphenhydramine 50 mg/mL (injectable)</span><span class="bn">Benadryl</span></td>
+          <td class="sf">50 mg (1 mL) Vial</td>
+          <td class="rt">Injectable</td>
+          <td class="lc"><span class="loc">Clinic 1</span></td>
+        </tr></tbody>
+        </table>
+      </div>
+    </section><section class="cls">
+      <button class="clshead" aria-expanded="false" onclick="toggleCls(this)">
+        <svg class="chev" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="m9 6 6 6-6 6"/></svg>
+        <span class="clsname">Antibiotics</span>
+        <span class="n">3</span>
+      </button>
+      <div class="panel">
+        <table>
+          <thead><tr><th>Medication</th><th>Strength / Form</th><th>Route</th><th>Location</th></tr></thead>
+          <tbody><tr>
+          <td class="med"><span class="gn">Azithromycin 250 mg</span><span class="bn">Zithromax (Z-Pak)</span></td>
+          <td class="sf">250 mg Tab</td>
+          <td class="rt">Oral / SL</td>
+          <td class="lc"><span class="loc">Clinic 1</span> <span class="loc">Clinic 2</span></td>
+        </tr><tr>
+          <td class="med"><span class="gn">Cefazolin 1 g</span><span class="bn">Ancef</span></td>
+          <td class="sf">1 g (1 vial) Vial</td>
+          <td class="rt">Injectable</td>
+          <td class="lc"><span class="loc">Clinic 1</span> <span class="loc">Clinic 2</span></td>
+        </tr><tr>
+          <td class="med"><span class="gn">Ceftriaxone 1 g</span><span class="bn">Rocephin</span></td>
+          <td class="sf">1 g (1 vial) Powder-Inj</td>
+          <td class="rt">Injectable</td>
+          <td class="lc"><span class="loc">Clinic 1</span> <span class="loc">Clinic 2</span></td>
+        </tr></tbody>
+        </table>
+      </div>
+    </section><section class="cls">
+      <button class="clshead" aria-expanded="false" onclick="toggleCls(this)">
+        <svg class="chev" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="m9 6 6 6-6 6"/></svg>
+        <span class="clsname">Antiemetics (Nausea)</span>
+        <span class="n">2</span>
+      </button>
+      <div class="panel">
+        <table>
+          <thead><tr><th>Medication</th><th>Strength / Form</th><th>Route</th><th>Location</th></tr></thead>
+          <tbody><tr>
+          <td class="med"><span class="gn">Ondansetron 4 mg ODT</span><span class="bn">Zofran ODT</span></td>
+          <td class="sf">4 mg (1 tab) Tab-DIS</td>
+          <td class="rt">Oral / SL</td>
+          <td class="lc"><span class="loc">Clinic 1</span> <span class="loc">Clinic 2</span></td>
+        </tr><tr>
+          <td class="med"><span class="gn">Promethazine 25 mg/mL</span><span class="bn">Phenergan</span></td>
+          <td class="sf">25 mg (1 mL) Vial</td>
+          <td class="rt">Injectable</td>
+          <td class="lc"><span class="loc">Clinic 1</span> <span class="loc">Clinic 2</span></td>
+        </tr></tbody>
+        </table>
+      </div>
+    </section><section class="cls">
+      <button class="clshead" aria-expanded="false" onclick="toggleCls(this)">
+        <svg class="chev" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="m9 6 6 6-6 6"/></svg>
+        <span class="clsname">Diagnostics</span>
+        <span class="n">2</span>
+      </button>
+      <div class="panel">
+        <table>
+          <thead><tr><th>Medication</th><th>Strength / Form</th><th>Route</th><th>Location</th></tr></thead>
+          <tbody><tr>
+          <td class="med"><span class="gn">Fluorescein (ophthalmic strip)</span><span class="bn">Ak-Fluor</span></td>
+          <td class="sf">Strip</td>
+          <td class="rt">Ophthalmic</td>
+          <td class="lc"><span class="loc">Clinic 1</span> <span class="loc">Clinic 2</span></td>
+        </tr><tr>
+          <td class="med"><span class="gn">Tuberculin PPD</span><span class="bn">Tubersol</span></td>
+          <td class="sf">50 TU (1 mL) Vial</td>
+          <td class="rt">Injectable</td>
+          <td class="lc"><span class="loc">Clinic 1</span></td>
+        </tr></tbody>
+        </table>
+      </div>
+    </section><section class="cls">
+      <button class="clshead" aria-expanded="false" onclick="toggleCls(this)">
+        <svg class="chev" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="m9 6 6 6-6 6"/></svg>
+        <span class="clsname">Diluents & Solutions</span>
+        <span class="n">8</span>
+      </button>
+      <div class="panel">
+        <table>
+          <thead><tr><th>Medication</th><th>Strength / Form</th><th>Route</th><th>Location</th></tr></thead>
+          <tbody><tr>
+          <td class="med"><span class="gn">MMR Diluent (VFC)</span> <span class="vfc">VFC</span><span class="bn">Diluent (MMR) — VFC</span></td>
+          <td class="sf">Vial</td>
+          <td class="rt">Injectable</td>
+          <td class="lc"><span class="loc">Clinic 1</span> <span class="loc">Clinic 2</span></td>
+        </tr><tr>
+          <td class="med"><span class="gn">ProQuad Diluent</span><span class="bn">Diluent (ProQuad)</span></td>
+          <td class="sf">Vial</td>
+          <td class="rt">Injectable</td>
+          <td class="lc"><span class="loc">Clinic 1</span></td>
+        </tr><tr>
+          <td class="med"><span class="gn">ProQuad Diluent (VFC)</span> <span class="vfc">VFC</span><span class="bn">Diluent (ProQuad) — VFC</span></td>
+          <td class="sf">Vial</td>
+          <td class="rt">Injectable</td>
+          <td class="lc"><span class="loc">Clinic 1</span></td>
+        </tr><tr>
+          <td class="med"><span class="gn">Sodium Chloride 0.9% (10 mL vial)</span><span class="bn">Normal Saline</span></td>
+          <td class="sf">(10 mL) Vial</td>
+          <td class="rt">Injectable</td>
+          <td class="lc"><span class="loc">Clinic 1</span></td>
+        </tr><tr>
+          <td class="med"><span class="gn">Sodium Chloride 0.9% (nebulizer)</span><span class="bn">Saline (Inhalation)</span></td>
+          <td class="sf">(3 mL) Inh Soln</td>
+          <td class="rt">Inhaled</td>
+          <td class="lc"><span class="loc">Clinic 1</span> <span class="loc">Clinic 2</span></td>
+        </tr><tr>
+          <td class="med"><span class="gn">Sterile Water</span><span class="bn">Sterile Water</span></td>
+          <td class="sf">(20 mL) Vial</td>
+          <td class="rt">Injectable</td>
+          <td class="lc"><span class="loc">Clinic 1</span> <span class="loc">Clinic 2</span></td>
+        </tr><tr>
+          <td class="med"><span class="gn">Varicella Diluent</span><span class="bn">Diluent (Varicella)</span></td>
+          <td class="sf">Vial</td>
+          <td class="rt">Injectable</td>
+          <td class="lc"><span class="loc">Clinic 1</span></td>
+        </tr><tr>
+          <td class="med"><span class="gn">Varicella Diluent (VFC)</span> <span class="vfc">VFC</span><span class="bn">Diluent (Varicella) — VFC</span></td>
+          <td class="sf">Vial</td>
+          <td class="rt">Injectable</td>
+          <td class="lc"><span class="loc">Clinic 1</span></td>
+        </tr></tbody>
+        </table>
+      </div>
+    </section><section class="cls">
+      <button class="clshead" aria-expanded="false" onclick="toggleCls(this)">
+        <svg class="chev" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="m9 6 6 6-6 6"/></svg>
+        <span class="clsname">Emergency & Cardiac</span>
+        <span class="n">4</span>
+      </button>
+      <div class="panel">
+        <table>
+          <thead><tr><th>Medication</th><th>Strength / Form</th><th>Route</th><th>Location</th></tr></thead>
+          <tbody><tr>
+          <td class="med"><span class="gn">Epinephrine 0.15 mg (auto-injector)</span><span class="bn">EpiPen Jr</span></td>
+          <td class="sf">0.15 mg Injection</td>
+          <td class="rt">Injectable</td>
+          <td class="lc"><span class="loc">Clinic 1</span> <span class="loc">Clinic 2</span></td>
+        </tr><tr>
+          <td class="med"><span class="gn">Epinephrine 0.3 mg (auto-injector)</span><span class="bn">EpiPen</span></td>
+          <td class="sf">0.3 mg Injection</td>
+          <td class="rt">Injectable</td>
+          <td class="lc"><span class="loc">Clinic 1</span> <span class="loc">Clinic 2</span></td>
+        </tr><tr>
+          <td class="med"><span class="gn">Epinephrine 1 mg/mL (vial)</span><span class="bn">Adrenalin</span></td>
+          <td class="sf">1 mg (1 mL) Vial</td>
+          <td class="rt">Injectable</td>
+          <td class="lc"><span class="loc">Clinic 1</span> <span class="loc">Clinic 2</span></td>
+        </tr><tr>
+          <td class="med"><span class="gn">Nitroglycerin 0.4 mg (SL)</span><span class="bn">NitroStat</span></td>
+          <td class="sf">0.4 mg (1 tab) Tab-DIS</td>
+          <td class="rt">Oral / SL</td>
+          <td class="lc"><span class="loc">Clinic 1</span> <span class="loc">Clinic 2</span></td>
+        </tr></tbody>
+        </table>
+      </div>
+    </section><section class="cls">
+      <button class="clshead" aria-expanded="false" onclick="toggleCls(this)">
+        <svg class="chev" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="m9 6 6 6-6 6"/></svg>
+        <span class="clsname">Joint Injections</span>
+        <span class="n">4</span>
+      </button>
+      <div class="panel">
+        <table>
+          <thead><tr><th>Medication</th><th>Strength / Form</th><th>Route</th><th>Location</th></tr></thead>
+          <tbody><tr>
+          <td class="med"><span class="gn">Durolane (knee)</span> <span class="pa">PA</span><span class="bn">Durolane</span></td>
+          <td class="sf">60 mg/3 mL (3 mL) Injection</td>
+          <td class="rt">Injectable</td>
+          <td class="lc"><span class="loc">Clinic 1</span></td>
+        </tr><tr>
+          <td class="med"><span class="gn">Hyaluronan (knee)</span><span class="bn">OrthoVisc</span></td>
+          <td class="sf">30 mg (2 mL) syringe</td>
+          <td class="rt">Injectable</td>
+          <td class="lc"><span class="loc">Clinic 1</span></td>
+        </tr><tr>
+          <td class="med"><span class="gn">Hyaluronate sodium (knee)</span> <span class="pa">PA</span><span class="bn">Synvisc-One</span></td>
+          <td class="sf">48 mg (6 mL) syringe</td>
+          <td class="rt">Injectable</td>
+          <td class="lc"><span class="loc">Clinic 1</span></td>
+        </tr><tr>
+          <td class="med"><span class="gn">Sodium Hyaluronate (knee)</span> <span class="pa">PA</span><span class="bn">Euflexxa</span></td>
+          <td class="sf">1 %/2 mL Injection</td>
+          <td class="rt">Injectable</td>
+          <td class="lc"><span class="loc">Clinic 1</span></td>
+        </tr></tbody>
+        </table>
+      </div>
+    </section><section class="cls">
+      <button class="clshead" aria-expanded="false" onclick="toggleCls(this)">
+        <svg class="chev" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="m9 6 6 6-6 6"/></svg>
+        <span class="clsname">Local Anesthetics</span>
+        <span class="n">12</span>
+      </button>
+      <div class="panel">
+        <table>
+          <thead><tr><th>Medication</th><th>Strength / Form</th><th>Route</th><th>Location</th></tr></thead>
+          <tbody><tr>
+          <td class="med"><span class="gn">Benzocaine 20% (topical spray)</span><span class="bn">Hurricane</span></td>
+          <td class="sf">Spray</td>
+          <td class="rt">Topical</td>
+          <td class="lc"><span class="loc">Clinic 1</span> <span class="loc">Clinic 2</span></td>
+        </tr><tr>
+          <td class="med"><span class="gn">Bupivacaine 0.25% (preservative-free)</span><span class="bn">Marcaine PF</span></td>
+          <td class="sf">0.25 % (10 mL) Vial</td>
+          <td class="rt">Injectable</td>
+          <td class="lc"><span class="loc">Clinic 1</span> <span class="loc">Clinic 2</span></td>
+        </tr><tr>
+          <td class="med"><span class="gn">Bupivacaine 0.5%</span><span class="bn">Marcaine</span></td>
+          <td class="sf">Soln</td>
+          <td class="rt">Solution</td>
+          <td class="lc"><span class="loc">Clinic 1</span> <span class="loc">Clinic 2</span></td>
+        </tr><tr>
+          <td class="med"><span class="gn">Ethyl Chloride (topical spray)</span><span class="bn">Ethyl Chloride</span></td>
+          <td class="sf">Spray</td>
+          <td class="rt">Topical</td>
+          <td class="lc"><span class="loc">Clinic 1</span></td>
+        </tr><tr>
+          <td class="med"><span class="gn">Lidocaine 1%</span><span class="bn">Xylocaine</span></td>
+          <td class="sf">(5 mL) Vial</td>
+          <td class="rt">Injectable</td>
+          <td class="lc"><span class="loc">Clinic 1</span> <span class="loc">Clinic 2</span></td>
+        </tr><tr>
+          <td class="med"><span class="gn">Lidocaine 1% (preservative-free)</span><span class="bn">Xylocaine PF</span></td>
+          <td class="sf">(2 mL) Vial</td>
+          <td class="rt">Injectable</td>
+          <td class="lc"><span class="loc">Clinic 1</span> <span class="loc">Clinic 2</span></td>
+        </tr><tr>
+          <td class="med"><span class="gn">Lidocaine 1% + Epinephrine</span><span class="bn">Xylocaine w/ Epi</span></td>
+          <td class="sf">(20 mL) Injection</td>
+          <td class="rt">Injectable</td>
+          <td class="lc"><span class="loc">Clinic 1</span> <span class="loc">Clinic 2</span></td>
+        </tr><tr>
+          <td class="med"><span class="gn">Lidocaine 2%</span><span class="bn">Xylocaine</span></td>
+          <td class="sf">20 mg/1 mL (2 mL) Injection</td>
+          <td class="rt">Injectable</td>
+          <td class="lc"><span class="loc">Clinic 1</span> <span class="loc">Clinic 2</span></td>
+        </tr><tr>
+          <td class="med"><span class="gn">Lidocaine 2% + Epinephrine</span><span class="bn">Xylocaine w/ Epi</span></td>
+          <td class="sf">(20 mL) Vial</td>
+          <td class="rt">Injectable</td>
+          <td class="lc"><span class="loc">Clinic 1</span> <span class="loc">Clinic 2</span></td>
+        </tr><tr>
+          <td class="med"><span class="gn">Lidocaine 2% Viscous</span><span class="bn">Lidocaine Viscous</span></td>
+          <td class="sf">(15 mL) Soln</td>
+          <td class="rt">Topical</td>
+          <td class="lc"><span class="loc">Clinic 1</span> <span class="loc">Clinic 2</span></td>
+        </tr><tr>
+          <td class="med"><span class="gn">Lidocaine 5% (ointment)</span><span class="bn">Xylocaine Ointment</span></td>
+          <td class="sf">(1 package) Ointment</td>
+          <td class="rt">Topical</td>
+          <td class="lc"><span class="loc">Clinic 2</span></td>
+        </tr><tr>
+          <td class="med"><span class="gn">Tetracaine 0.5% (ophthalmic)</span><span class="bn">Tetracaine</span></td>
+          <td class="sf">0.5 % (1 bottle) Drops</td>
+          <td class="rt">Ophthalmic</td>
+          <td class="lc"><span class="loc">Clinic 1</span> <span class="loc">Clinic 2</span></td>
+        </tr></tbody>
+        </table>
+      </div>
+    </section><section class="cls">
+      <button class="clshead" aria-expanded="false" onclick="toggleCls(this)">
+        <svg class="chev" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="m9 6 6 6-6 6"/></svg>
+        <span class="clsname">Other</span>
+        <span class="n">5</span>
+      </button>
+      <div class="panel">
+        <table>
+          <thead><tr><th>Medication</th><th>Strength / Form</th><th>Route</th><th>Location</th></tr></thead>
+          <tbody><tr>
+          <td class="med"><span class="gn">Clonidine 0.1 mg</span><span class="bn">Catapres</span></td>
+          <td class="sf">0.1 mg Tab</td>
+          <td class="rt">Oral / SL</td>
+          <td class="lc"><span class="loc">Clinic 1</span> <span class="loc">Clinic 2</span></td>
+        </tr><tr>
+          <td class="med"><span class="gn">Cyanocobalamin (Vitamin B12)</span><span class="bn">Vitamin B12</span></td>
+          <td class="sf">1000 mcg (1 mL) Vial</td>
+          <td class="rt">Injectable</td>
+          <td class="lc"><span class="loc">Clinic 1</span> <span class="loc">Clinic 2</span></td>
+        </tr><tr>
+          <td class="med"><span class="gn">Famotidine 20 mg</span><span class="bn">Pepcid</span></td>
+          <td class="sf">20 mg Tab</td>
+          <td class="rt">Oral / SL</td>
+          <td class="lc"><span class="loc">Clinic 1</span> <span class="loc">Clinic 2</span></td>
+        </tr><tr>
+          <td class="med"><span class="gn">Medroxyprogesterone</span><span class="bn">Depo-Provera</span></td>
+          <td class="sf">150 mg (1 mL) Vial</td>
+          <td class="rt">Injectable</td>
+          <td class="lc"><span class="loc">Clinic 1</span> <span class="loc">Clinic 2</span></td>
+        </tr><tr>
+          <td class="med"><span class="gn">Sodium Bicarbonate 8.4%</span><span class="bn">Sodium Bicarbonate</span></td>
+          <td class="sf">50 mEq (50 mL) Vial</td>
+          <td class="rt">Injectable</td>
+          <td class="lc"><span class="loc">Clinic 2</span></td>
+        </tr></tbody>
+        </table>
+      </div>
+    </section><section class="cls">
+      <button class="clshead" aria-expanded="false" onclick="toggleCls(this)">
+        <svg class="chev" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="m9 6 6 6-6 6"/></svg>
+        <span class="clsname">Pain & Fever</span>
+        <span class="n">8</span>
+      </button>
+      <div class="panel">
+        <table>
+          <thead><tr><th>Medication</th><th>Strength / Form</th><th>Route</th><th>Location</th></tr></thead>
+          <tbody><tr>
+          <td class="med"><span class="gn">Acetaminophen</span><span class="bn">Tylenol</span></td>
+          <td class="sf">325 mg Tablet</td>
+          <td class="rt">Oral / SL</td>
+          <td class="lc"><span class="loc">Clinic 1</span> <span class="loc">Clinic 2</span></td>
+        </tr><tr>
+          <td class="med"><span class="gn">Acetaminophen (infant liquid)</span><span class="bn">Tylenol Infant</span></td>
+          <td class="sf">160 mg/5 mL (59 mL) Bottle</td>
+          <td class="rt">Oral liquid</td>
+          <td class="lc"><span class="loc">Clinic 1</span> <span class="loc">Clinic 2</span></td>
+        </tr><tr>
+          <td class="med"><span class="gn">Acetaminophen (unit-dose cup)</span><span class="bn">Tylenol UD</span></td>
+          <td class="sf">160 mg (5 mL) Liquid</td>
+          <td class="rt">Oral liquid</td>
+          <td class="lc"><span class="loc">Clinic 1</span> <span class="loc">Clinic 2</span></td>
+        </tr><tr>
+          <td class="med"><span class="gn">Aspirin 81 mg (chewable)</span><span class="bn">Ascriptin</span></td>
+          <td class="sf">81 mg (1 tab) Tab-Chew</td>
+          <td class="rt">Oral / SL</td>
+          <td class="lc"><span class="loc">Clinic 1</span> <span class="loc">Clinic 2</span></td>
+        </tr><tr>
+          <td class="med"><span class="gn">Ibuprofen (infant drops)</span><span class="bn">Motrin Infant</span></td>
+          <td class="sf">600 mg (15 mL) Susp</td>
+          <td class="rt">Oral liquid</td>
+          <td class="lc"><span class="loc">Clinic 1</span> <span class="loc">Clinic 2</span></td>
+        </tr><tr>
+          <td class="med"><span class="gn">Ibuprofen 100 mg/5 mL (suspension)</span><span class="bn">Motrin</span></td>
+          <td class="sf">100 mg (5 mL) Susp</td>
+          <td class="rt">Oral liquid</td>
+          <td class="lc"><span class="loc">Clinic 1</span> <span class="loc">Clinic 2</span></td>
+        </tr><tr>
+          <td class="med"><span class="gn">Ibuprofen 200 mg</span><span class="bn">Advil</span></td>
+          <td class="sf">200 mg Tab</td>
+          <td class="rt">Oral / SL</td>
+          <td class="lc"><span class="loc">Clinic 1</span> <span class="loc">Clinic 2</span></td>
+        </tr><tr>
+          <td class="med"><span class="gn">Ketorolac 30 mg/mL</span><span class="bn">Toradol</span></td>
+          <td class="sf">30 mg (1 mL) Vial</td>
+          <td class="rt">Injectable</td>
+          <td class="lc"><span class="loc">Clinic 1</span> <span class="loc">Clinic 2</span></td>
+        </tr></tbody>
+        </table>
+      </div>
+    </section><section class="cls">
+      <button class="clshead" aria-expanded="false" onclick="toggleCls(this)">
+        <svg class="chev" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="m9 6 6 6-6 6"/></svg>
+        <span class="clsname">Respiratory</span>
+        <span class="n">4</span>
+      </button>
+      <div class="panel">
+        <table>
+          <thead><tr><th>Medication</th><th>Strength / Form</th><th>Route</th><th>Location</th></tr></thead>
+          <tbody><tr>
+          <td class="med"><span class="gn">Albuterol (inhaler)</span><span class="bn">Proventil / Ventolin MDI</span></td>
+          <td class="sf">90 mcg/1 puff (200 puff) Inhaler</td>
+          <td class="rt">Inhaled</td>
+          <td class="lc"><span class="loc">Clinic 1</span> <span class="loc">Clinic 2</span></td>
+        </tr><tr>
+          <td class="med"><span class="gn">Albuterol + Ipratropium</span><span class="bn">DuoNeb</span></td>
+          <td class="sf">(3 mL) Inh Soln</td>
+          <td class="rt">Inhaled</td>
+          <td class="lc"><span class="loc">Clinic 1</span> <span class="loc">Clinic 2</span></td>
+        </tr><tr>
+          <td class="med"><span class="gn">Albuterol 0.042% (nebulizer)</span><span class="bn">Proventil / Ventolin</span></td>
+          <td class="sf">1.25 mg (3 mL) Inh Soln</td>
+          <td class="rt">Inhaled</td>
+          <td class="lc"><span class="loc">Clinic 1</span> <span class="loc">Clinic 2</span></td>
+        </tr><tr>
+          <td class="med"><span class="gn">Albuterol 0.083% (nebulizer)</span><span class="bn">Proventil / Ventolin</span></td>
+          <td class="sf">2.5 mg (3 mL) Inh Soln</td>
+          <td class="rt">Inhaled</td>
+          <td class="lc"><span class="loc">Clinic 1</span> <span class="loc">Clinic 2</span></td>
+        </tr></tbody>
+        </table>
+      </div>
+    </section><section class="cls">
+      <button class="clshead" aria-expanded="false" onclick="toggleCls(this)">
+        <svg class="chev" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="m9 6 6 6-6 6"/></svg>
+        <span class="clsname">Steroids</span>
+        <span class="n">7</span>
+      </button>
+      <div class="panel">
+        <table>
+          <thead><tr><th>Medication</th><th>Strength / Form</th><th>Route</th><th>Location</th></tr></thead>
+          <tbody><tr>
+          <td class="med"><span class="gn">Betamethasone</span><span class="bn">Celestone</span></td>
+          <td class="sf">30 mg (5 mL) Vial</td>
+          <td class="rt">Injectable</td>
+          <td class="lc"><span class="loc">Clinic 1</span></td>
+        </tr><tr>
+          <td class="med"><span class="gn">Dexamethasone 10 mg/mL</span><span class="bn">Decadron</span></td>
+          <td class="sf">10 mg (1 mL) Vial</td>
+          <td class="rt">Injectable</td>
+          <td class="lc"><span class="loc">Clinic 1</span> <span class="loc">Clinic 2</span></td>
+        </tr><tr>
+          <td class="med"><span class="gn">Methylprednisolone 125 mg</span><span class="bn">Solu-Medrol</span></td>
+          <td class="sf">125 mg (1 vial) Powder-Inj</td>
+          <td class="rt">Injectable</td>
+          <td class="lc"><span class="loc">Clinic 1</span> <span class="loc">Clinic 2</span></td>
+        </tr><tr>
+          <td class="med"><span class="gn">Methylprednisolone 40 mg</span><span class="bn">Solu-Medrol</span></td>
+          <td class="sf">40 mg (1 vial) Powder-Inj</td>
+          <td class="rt">Injectable</td>
+          <td class="lc"><span class="loc">Clinic 1</span> <span class="loc">Clinic 2</span></td>
+        </tr><tr>
+          <td class="med"><span class="gn">Methylprednisolone Acetate 40 mg</span><span class="bn">Depo-Medrol</span></td>
+          <td class="sf">40 mg (1 mL) Vial</td>
+          <td class="rt">Injectable</td>
+          <td class="lc"><span class="loc">Clinic 1</span> <span class="loc">Clinic 2</span></td>
+        </tr><tr>
+          <td class="med"><span class="gn">Prednisone 10 mg</span><span class="bn">Deltasone</span></td>
+          <td class="sf">10 mg Tab</td>
+          <td class="rt">Oral / SL</td>
+          <td class="lc"><span class="loc">Clinic 1</span> <span class="loc">Clinic 2</span></td>
+        </tr><tr>
+          <td class="med"><span class="gn">Triamcinolone 40 mg/mL</span><span class="bn">Kenalog-40</span></td>
+          <td class="sf">40 mg (1 mL) Vial</td>
+          <td class="rt">Injectable</td>
+          <td class="lc"><span class="loc">Clinic 1</span> <span class="loc">Clinic 2</span></td>
+        </tr></tbody>
+        </table>
+      </div>
+    </section><section class="cls">
+      <button class="clshead" aria-expanded="false" onclick="toggleCls(this)">
+        <svg class="chev" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="m9 6 6 6-6 6"/></svg>
+        <span class="clsname">Topical & Wound Care</span>
+        <span class="n">9</span>
+      </button>
+      <div class="panel">
+        <table>
+          <thead><tr><th>Medication</th><th>Strength / Form</th><th>Route</th><th>Location</th></tr></thead>
+          <tbody><tr>
+          <td class="med"><span class="gn">Aluminum Chloride 20%</span><span class="bn">Drysol</span></td>
+          <td class="sf">20 % (37.5 mL) Topical</td>
+          <td class="rt">Topical</td>
+          <td class="lc"><span class="loc">Clinic 1</span></td>
+        </tr><tr>
+          <td class="med"><span class="gn">Carbamide Peroxide 6.5% (otic)</span><span class="bn">Debrox</span></td>
+          <td class="sf">(1 drop) Drops</td>
+          <td class="rt">Otic</td>
+          <td class="lc"><span class="loc">Clinic 1</span></td>
+        </tr><tr>
+          <td class="med"><span class="gn">Ferric Subsulfate</span><span class="bn">Monsel's Solution</span></td>
+          <td class="sf">(1 APP(S)) Soln</td>
+          <td class="rt">Topical</td>
+          <td class="lc"><span class="loc">Clinic 2</span></td>
+        </tr><tr>
+          <td class="med"><span class="gn">Iodine–Potassium Iodide</span><span class="bn">Lugol's Solution</span></td>
+          <td class="sf">(60 mL) Soln</td>
+          <td class="rt">Solution</td>
+          <td class="lc"><span class="loc">Clinic 2</span></td>
+        </tr><tr>
+          <td class="med"><span class="gn">Oxymetazoline 0.05% (nasal)</span><span class="bn">Afrin</span></td>
+          <td class="sf">Spray</td>
+          <td class="rt">Nasal</td>
+          <td class="lc"><span class="loc">Clinic 1</span> <span class="loc">Clinic 2</span></td>
+        </tr><tr>
+          <td class="med"><span class="gn">Silver Nitrate (applicator)</span><span class="bn">Silver Nitrate</span></td>
+          <td class="sf">(1 APP(S)) Stick</td>
+          <td class="rt">Topical</td>
+          <td class="lc"><span class="loc">Clinic 1</span> <span class="loc">Clinic 2</span></td>
+        </tr><tr>
+          <td class="med"><span class="gn">Silver Sulfadiazine 1%</span><span class="bn">Silvadene</span></td>
+          <td class="sf">(1 APP(S)) Cream</td>
+          <td class="rt">Topical</td>
+          <td class="lc"><span class="loc">Clinic 1</span> <span class="loc">Clinic 2</span></td>
+        </tr><tr>
+          <td class="med"><span class="gn">Skin Adhesive (tissue glue)</span><span class="bn">Dermabond</span></td>
+          <td class="sf">EA</td>
+          <td class="rt">—</td>
+          <td class="lc"><span class="loc">Clinic 1</span> <span class="loc">Clinic 2</span></td>
+        </tr><tr>
+          <td class="med"><span class="gn">White Petrolatum</span><span class="bn">White Petrolatum</span></td>
+          <td class="sf">(1 oz) Ointment</td>
+          <td class="rt">Topical</td>
+          <td class="lc"><span class="loc">Clinic 1</span></td>
+        </tr></tbody>
+        </table>
+      </div>
+    </section><section class="cls">
+      <button class="clshead" aria-expanded="false" onclick="toggleCls(this)">
+        <svg class="chev" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="m9 6 6 6-6 6"/></svg>
+        <span class="clsname">Vaccines & Immunization</span>
+        <span class="n">39</span>
+      </button>
+      <div class="panel">
+        <table>
+          <thead><tr><th>Medication</th><th>Strength / Form</th><th>Route</th><th>Location</th></tr></thead>
+          <tbody><tr>
+          <td class="med"><span class="gn">DTaP</span><span class="bn">Infanrix</span></td>
+          <td class="sf">(Infanrix (DTaP)) (0.5 mL) syringe</td>
+          <td class="rt">Injectable</td>
+          <td class="lc"><span class="loc">Clinic 1</span> <span class="loc">Clinic 2</span></td>
+        </tr><tr>
+          <td class="med"><span class="gn">DTaP (VFC)</span> <span class="vfc">VFC</span><span class="bn">Daptacel — VFC</span></td>
+          <td class="sf">(0.5 mL) Vial</td>
+          <td class="rt">Injectable</td>
+          <td class="lc"><span class="loc">Clinic 1</span> <span class="loc">Clinic 2</span></td>
+        </tr><tr>
+          <td class="med"><span class="gn">DTaP-HepB-IPV</span><span class="bn">Pediarix</span></td>
+          <td class="sf">(0.5 mL) syringe</td>
+          <td class="rt">Injectable</td>
+          <td class="lc"><span class="loc">Clinic 1</span> <span class="loc">Clinic 2</span></td>
+        </tr><tr>
+          <td class="med"><span class="gn">DTaP-HepB-IPV (VFC)</span> <span class="vfc">VFC</span><span class="bn">Pediarix — VFC</span></td>
+          <td class="sf">Injection</td>
+          <td class="rt">Injectable</td>
+          <td class="lc"><span class="loc">Clinic 1</span> <span class="loc">Clinic 2</span></td>
+        </tr><tr>
+          <td class="med"><span class="gn">DTaP-IPV</span><span class="bn">Kinrix</span></td>
+          <td class="sf">(0.5 mL) syringe</td>
+          <td class="rt">Injectable</td>
+          <td class="lc"><span class="loc">Clinic 1</span> <span class="loc">Clinic 2</span></td>
+        </tr><tr>
+          <td class="med"><span class="gn">DTaP-IPV (VFC)</span> <span class="vfc">VFC</span><span class="bn">Kinrix — VFC</span></td>
+          <td class="sf">(0.5 mL) Vial</td>
+          <td class="rt">Injectable</td>
+          <td class="lc"><span class="loc">Clinic 1</span></td>
+        </tr><tr>
+          <td class="med"><span class="gn">DTaP-IPV-HepB-Hib</span><span class="bn">Vaxelis</span></td>
+          <td class="sf">(0.5 mL) Injection</td>
+          <td class="rt">Injectable</td>
+          <td class="lc"><span class="loc">Clinic 1</span></td>
+        </tr><tr>
+          <td class="med"><span class="gn">DTaP-IPV-HepB-Hib (VFC)</span> <span class="vfc">VFC</span><span class="bn">Vaxelis — VFC</span></td>
+          <td class="sf">Vial</td>
+          <td class="rt">Injectable</td>
+          <td class="lc"><span class="loc">Clinic 1</span> <span class="loc">Clinic 2</span></td>
+        </tr><tr>
+          <td class="med"><span class="gn">DTaP-IPV/Hib</span><span class="bn">Pentacel</span></td>
+          <td class="sf">(1 vial) Powder-Inj</td>
+          <td class="rt">Injectable</td>
+          <td class="lc"><span class="loc">Clinic 1</span> <span class="loc">Clinic 2</span></td>
+        </tr><tr>
+          <td class="med"><span class="gn">DTaP-IPV/Hib (VFC)</span> <span class="vfc">VFC</span><span class="bn">Pentacel — VFC</span></td>
+          <td class="sf">Injection</td>
+          <td class="rt">Injectable</td>
+          <td class="lc"><span class="loc">Clinic 1</span> <span class="loc">Clinic 2</span></td>
+        </tr><tr>
+          <td class="med"><span class="gn">Hepatitis A (adult)</span><span class="bn">Vaqta</span></td>
+          <td class="sf">50 unit (1 mL) Vial</td>
+          <td class="rt">Injectable</td>
+          <td class="lc"><span class="loc">Clinic 1</span></td>
+        </tr><tr>
+          <td class="med"><span class="gn">Hepatitis A pediatric</span><span class="bn">Vaqta</span></td>
+          <td class="sf">25 unit/0.5 mL (0.5 mL) Injection</td>
+          <td class="rt">Injectable</td>
+          <td class="lc"><span class="loc">Clinic 2</span></td>
+        </tr><tr>
+          <td class="med"><span class="gn">Hepatitis A pediatric (VFC)</span> <span class="vfc">VFC</span><span class="bn">Vaqta — VFC</span></td>
+          <td class="sf">(0.5 mL) Vial</td>
+          <td class="rt">Injectable</td>
+          <td class="lc"><span class="loc">Clinic 2</span></td>
+        </tr><tr>
+          <td class="med"><span class="gn">Hepatitis B (adult)</span><span class="bn">Engerix-B</span></td>
+          <td class="sf">(ENGERIX-B) 20 mcg/1 mL (1 mL) Injection</td>
+          <td class="rt">Injectable</td>
+          <td class="lc"><span class="loc">Clinic 1</span> <span class="loc">Clinic 2</span></td>
+        </tr><tr>
+          <td class="med"><span class="gn">Hepatitis B (pediatric)</span><span class="bn">Engerix-B Peds</span></td>
+          <td class="sf">) 10 mcg (0.5 mL) syringe</td>
+          <td class="rt">Injectable</td>
+          <td class="lc"><span class="loc">Clinic 1</span> <span class="loc">Clinic 2</span></td>
+        </tr><tr>
+          <td class="med"><span class="gn">Hepatitis B pediatric (VFC)</span> <span class="vfc">VFC</span><span class="bn">Recombivax HB — VFC</span></td>
+          <td class="sf">(0.5 mL) Vial</td>
+          <td class="rt">Injectable</td>
+          <td class="lc"><span class="loc">Clinic 1</span> <span class="loc">Clinic 2</span></td>
+        </tr><tr>
+          <td class="med"><span class="gn">Hib (PRP-OMP)</span><span class="bn">PedvaxHib</span></td>
+          <td class="sf">vaccine 7.5 mcg-125 mcg/0.5 mL (PedvaxHib) 7.5 mcg (0.5 mL) Vial</td>
+          <td class="rt">Injectable</td>
+          <td class="lc"><span class="loc">Clinic 1</span> <span class="loc">Clinic 2</span></td>
+        </tr><tr>
+          <td class="med"><span class="gn">Hib (VFC)</span> <span class="vfc">VFC</span><span class="bn">PedvaxHib — VFC</span></td>
+          <td class="sf">(0.5 mL) Vial</td>
+          <td class="rt">Injectable</td>
+          <td class="lc"><span class="loc">Clinic 1</span> <span class="loc">Clinic 2</span></td>
+        </tr><tr>
+          <td class="med"><span class="gn">HPV</span><span class="bn">Gardasil</span></td>
+          <td class="sf">(0.5 mL) Vial</td>
+          <td class="rt">Injectable</td>
+          <td class="lc"><span class="loc">Clinic 1</span> <span class="loc">Clinic 2</span></td>
+        </tr><tr>
+          <td class="med"><span class="gn">HPV 9-valent (VFC)</span> <span class="vfc">VFC</span><span class="bn">Gardasil 9 — VFC</span></td>
+          <td class="sf">(0.5 mL) Vial</td>
+          <td class="rt">Injectable</td>
+          <td class="lc"><span class="loc">Clinic 1</span> <span class="loc">Clinic 2</span></td>
+        </tr><tr>
+          <td class="med"><span class="gn">Influenza (inactivated)</span><span class="bn">Fluarix</span></td>
+          <td class="sf">(0.5 mL) syringe</td>
+          <td class="rt">Injectable</td>
+          <td class="lc"><span class="loc">Clinic 1</span> <span class="loc">Clinic 2</span></td>
+        </tr><tr>
+          <td class="med"><span class="gn">Influenza (VFC, '25–'26)</span> <span class="vfc">VFC</span><span class="bn">Flucelvax — VFC</span></td>
+          <td class="sf">(0.5 mL) syringe</td>
+          <td class="rt">Injectable</td>
+          <td class="lc"><span class="loc">Clinic 1</span> <span class="loc">Clinic 2</span></td>
+        </tr><tr>
+          <td class="med"><span class="gn">Influenza High-Dose (≥65 yr)</span><span class="bn">Fluad</span></td>
+          <td class="sf">(0.5 mL) syringe</td>
+          <td class="rt">Injectable</td>
+          <td class="lc"><span class="loc">Clinic 1</span> <span class="loc">Clinic 2</span></td>
+        </tr><tr>
+          <td class="med"><span class="gn">Meningococcal Conjugate</span><span class="bn">Menveo</span></td>
+          <td class="sf">Vial</td>
+          <td class="rt">Injectable</td>
+          <td class="lc"><span class="loc">Clinic 1</span> <span class="loc">Clinic 2</span></td>
+        </tr><tr>
+          <td class="med"><span class="gn">Meningococcal Conjugate (VFC)</span> <span class="vfc">VFC</span><span class="bn">Menveo — VFC</span></td>
+          <td class="sf">Vial</td>
+          <td class="rt">Injectable</td>
+          <td class="lc"><span class="loc">Clinic 1</span> <span class="loc">Clinic 2</span></td>
+        </tr><tr>
+          <td class="med"><span class="gn">MMR</span><span class="bn">MMR II</span></td>
+          <td class="sf">Powder-Inj</td>
+          <td class="rt">Injectable</td>
+          <td class="lc"><span class="loc">Clinic 1</span> <span class="loc">Clinic 2</span></td>
+        </tr><tr>
+          <td class="med"><span class="gn">MMR (VFC)</span> <span class="vfc">VFC</span><span class="bn">MMR II — VFC</span></td>
+          <td class="sf">Vial</td>
+          <td class="rt">Injectable</td>
+          <td class="lc"><span class="loc">Clinic 1</span> <span class="loc">Clinic 2</span></td>
+        </tr><tr>
+          <td class="med"><span class="gn">Nirsevimab 100 mg (RSV)</span><span class="bn">Beyfortus</span></td>
+          <td class="sf">(Beyfortus) 100 mg/1 mL (1 mL) Injection</td>
+          <td class="rt">Injectable</td>
+          <td class="lc"><span class="loc">Clinic 1</span></td>
+        </tr><tr>
+          <td class="med"><span class="gn">Nirsevimab 100 mg (RSV, VFC)</span> <span class="vfc">VFC</span><span class="bn">Beyfortus — VFC</span></td>
+          <td class="sf">100 mg/1 mL (1 mL) Injection</td>
+          <td class="rt">Injectable</td>
+          <td class="lc"><span class="loc">Clinic 1</span></td>
+        </tr><tr>
+          <td class="med"><span class="gn">Nirsevimab 50 mg (RSV)</span><span class="bn">Beyfortus</span></td>
+          <td class="sf">(Beyfortus) 50 mg/0.5 mL (0.5 mL) Injection</td>
+          <td class="rt">Injectable</td>
+          <td class="lc"><span class="loc">Clinic 1</span></td>
+        </tr><tr>
+          <td class="med"><span class="gn">Nirsevimab 50 mg (RSV, VFC)</span> <span class="vfc">VFC</span><span class="bn">Beyfortus — VFC</span></td>
+          <td class="sf">50 mg/0.5 mL (0.5 mL) Injection</td>
+          <td class="rt">Injectable</td>
+          <td class="lc"><span class="loc">Clinic 1</span></td>
+        </tr><tr>
+          <td class="med"><span class="gn">Pneumococcal 20-valent</span><span class="bn">Prevnar 20</span></td>
+          <td class="sf">(0.5 mL) syringe</td>
+          <td class="rt">Injectable</td>
+          <td class="lc"><span class="loc">Clinic 1</span> <span class="loc">Clinic 2</span></td>
+        </tr><tr>
+          <td class="med"><span class="gn">Pneumococcal 20-valent (VFC)</span> <span class="vfc">VFC</span><span class="bn">Prevnar 20 — VFC</span></td>
+          <td class="sf">(0.5 mL) syringe</td>
+          <td class="rt">Injectable</td>
+          <td class="lc"><span class="loc">Clinic 1</span> <span class="loc">Clinic 2</span></td>
+        </tr><tr>
+          <td class="med"><span class="gn">Polio (inactivated)</span><span class="bn">IPOL</span></td>
+          <td class="sf">(5 mL) Vial</td>
+          <td class="rt">Injectable</td>
+          <td class="lc"><span class="loc">Clinic 1</span></td>
+        </tr><tr>
+          <td class="med"><span class="gn">Polio inactivated (VFC)</span> <span class="vfc">VFC</span><span class="bn">IPOL — VFC</span></td>
+          <td class="sf">(0.5 mL) Vial</td>
+          <td class="rt">Injectable</td>
+          <td class="lc"><span class="loc">Clinic 1</span> <span class="loc">Clinic 2</span></td>
+        </tr><tr>
+          <td class="med"><span class="gn">Rotavirus</span><span class="bn">RotaTeq</span></td>
+          <td class="sf">(2 mL) Vial</td>
+          <td class="rt">Injectable</td>
+          <td class="lc"><span class="loc">Clinic 1</span> <span class="loc">Clinic 2</span></td>
+        </tr><tr>
+          <td class="med"><span class="gn">Rotavirus (VFC)</span> <span class="vfc">VFC</span><span class="bn">RotaTeq — VFC</span></td>
+          <td class="sf">(2 mL) Susp</td>
+          <td class="rt">Oral liquid</td>
+          <td class="lc"><span class="loc">Clinic 1</span> <span class="loc">Clinic 2</span></td>
+        </tr><tr>
+          <td class="med"><span class="gn">Tdap</span><span class="bn">Boostrix</span></td>
+          <td class="sf">(Boostrix) (0.5 mL) Vial</td>
+          <td class="rt">Injectable</td>
+          <td class="lc"><span class="loc">Clinic 1</span> <span class="loc">Clinic 2</span></td>
+        </tr><tr>
+          <td class="med"><span class="gn">Tdap (VFC)</span> <span class="vfc">VFC</span><span class="bn">Boostrix — VFC</span></td>
+          <td class="sf">(0.5 mL) Vial</td>
+          <td class="rt">Injectable</td>
+          <td class="lc"><span class="loc">Clinic 1</span> <span class="loc">Clinic 2</span></td>
+        </tr></tbody>
+        </table>
+      </div>
+    </section>
+  </div>
+
+  <footer>
+    This list reflects current clinic stock and is a quick reference only. Verify dose, route, and indication against the current package insert and clinic protocols before prescribing.<br>
+    <span class="appr">Reviewed and approved by Christina Reeves, Director of Pharmacy, as of 6/3/26.</span>
+    <div class="credit">Primary Care Clinic &middot; Prepared by Jo Blaise, RN-DNP, Clinic Manager</div>
+  </footer>
+</div>
+<script>
+function toggleCls(btn){var s=btn.closest('.cls');var open=s.classList.toggle('open');btn.setAttribute('aria-expanded',open);}
+function allCls(open){document.querySelectorAll('.cls').forEach(function(s){s.classList.toggle('open',open);s.querySelector('.clshead').setAttribute('aria-expanded',open);});}
+</script>
+</body>
+</html>
