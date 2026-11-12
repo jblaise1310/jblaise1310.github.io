@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Recommendations Expectations &amp; Satisfiers | Primary Care Clinic</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1F3A5F;
+    --navy-ink: #ffffff;
+    --gold: #B88A2E;
+    --gold-soft: #F6EEDB;
+    --text: #1E2733;
+    --muted: #5B6573;
+    --bg: #ffffff;
+    --surface: #F3F5F8;
+    --line: #D5DAE1;
+    --row-alt: #F8F9FB;
+    color-scheme: light;
+    box-sizing: border-box;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --navy: #2C4E7A;
+      --navy-ink: #ffffff;
+      --gold: #D9B65E;
+      --gold-soft: #3A3220;
+      --text: #E8ECF2;
+      --muted: #A9B3C1;
+      --bg: #0F1A2A;
+      --surface: #16243A;
+      --line: #2C3B52;
+      --row-alt: #132034;
+      color-scheme: dark;
+    }
+  }
+  *, *::before, *::after { box-sizing: inherit; }
+  html { scroll-padding-top: env(safe-area-inset-top, 0px); }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: "Atkinson Hyperlegible", "Segoe UI", Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+  }
+  .page { max-width: 1040px; margin: 0 auto; padding: 0 1.25rem 3rem; }
+
+  /* Header */
+  .masthead {
+    background: var(--navy);
+    color: var(--navy-ink);
+    border-bottom: 5px solid var(--gold);
+  }
+  .masthead-inner {
+    max-width: 1040px; margin: 0 auto; padding: 1.75rem 1.25rem 1.5rem;
+    display: flex; flex-wrap: wrap; gap: 1rem; align-items: flex-end; justify-content: space-between;
+  }
+  .clinic { margin: 0 0 .35rem; font-size: .95rem; opacity: .85; }
+  h1 { margin: 0; font-size: clamp(1.5rem, 3.5vw, 2.1rem); line-height: 1.2; }
+  .updated { margin: .5rem 0 0; font-size: .9rem; opacity: .85; }
+  .print-btn {
+    font: inherit; font-weight: 700; font-size: .95rem;
+    background: var(--gold); color: #1E2733;
+    border: 0; border-radius: 6px; padding: .65rem 1.2rem; cursor: pointer;
+  }
+  .print-btn:hover { filter: brightness(1.07); }
+  .print-btn:focus-visible, a:focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; }
+
+  /* Key and notices */
+  .key {
+    display: flex; flex-wrap: wrap; gap: .5rem 1.5rem; align-items: center;
+    margin: 1.5rem 0 1rem; font-size: .92rem; color: var(--muted);
+  }
+  .key span { display: inline-flex; align-items: center; gap: .4rem; }
+  .notice {
+    border-left: 5px solid var(--gold);
+    background: var(--gold-soft);
+    padding: .85rem 1rem; border-radius: 0 6px 6px 0;
+    margin: 0 0 1.5rem;
+  }
+  .notice p { margin: 0; }
+
+  h2 {
+    font-size: 1.3rem; margin: 2.25rem 0 .75rem; color: var(--text);
+    padding-bottom: .35rem; border-bottom: 2px solid var(--navy);
+  }
+
+  /* Tables */
+  .table-wrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: .95rem; }
+  thead th {
+    background: var(--navy); color: var(--navy-ink);
+    text-align: left; font-weight: 700; padding: .6rem .75rem;
+    vertical-align: bottom;
+  }
+  tbody td { padding: .65rem .75rem; border-bottom: 1px solid var(--line); vertical-align: top; }
+  tbody tr:nth-child(even) td { background: var(--row-alt); }
+  tbody th {
+    text-align: left; font-weight: 700; padding: .65rem .75rem;
+    border-bottom: 1px solid var(--line); vertical-align: top; width: 20%;
+  }
+  tbody tr:nth-child(even) th { background: var(--row-alt); }
+  .none { color: var(--muted); }
+  table.adult th:nth-child(1) { width: 21%; } table.adult th:nth-child(2) { width: 31%; }
+  table.adult th:nth-child(3) { width: 15%; } table.adult th:nth-child(4) { width: 16%; }
+  table.dm th:nth-child(1) { width: 26%; } table.dm th:nth-child(2) { width: 40%; }
+  .section-ref { font-style: italic; color: var(--muted); }
+
+  .badge {
+    display: inline-block; font-size: .75rem; font-weight: 700; line-height: 1.3;
+    padding: .1rem .45rem; border-radius: 4px; margin-right: .35rem; vertical-align: .08em;
+    white-space: nowrap;
+  }
+  .badge-auto { background: var(--gold); color: #1E2733; }
+  .badge-hm { border: 1.5px solid var(--navy); color: var(--text); text-decoration: none; }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) .badge-hm { border-color: var(--gold); }
+  }
+
+  .footnote { font-size: .92rem; color: var(--muted); margin: .75rem 0 0; }
+
+  /* HM steps */
+  .hm-grid { display: grid; grid-template-columns: 1fr 260px; gap: 1.5rem; align-items: start; }
+  ol.steps { margin: 0; padding-left: 1.4rem; }
+  ol.steps li { margin-bottom: .55rem; padding-left: .25rem; }
+  .menu-demo {
+    background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 1rem;
+    font-size: .88rem;
+  }
+  .menu-demo .demo-label { margin: 0 0 .5rem; color: var(--muted); font-size: .82rem; }
+  .demo-row {
+    background: var(--navy); color: var(--navy-ink); border-radius: 4px;
+    padding: .4rem .6rem; margin-bottom: .6rem; font-weight: 700;
+  }
+  .demo-actions {
+    display: inline-block; border: 1px solid var(--line); background: var(--bg);
+    border-radius: 4px; padding: .2rem .55rem; margin-bottom: .35rem;
+  }
+  .demo-list { list-style: none; margin: 0; padding: .25rem 0; background: var(--bg); border: 1px solid var(--line); border-radius: 4px; }
+  .demo-list li { padding: .2rem .65rem; }
+  .demo-list li.pick { background: var(--gold-soft); border-left: 4px solid var(--gold); font-weight: 700; }
+
+  /* Other rules */
+  .rules { margin: 0; padding-left: 1.2rem; }
+  .rules li { margin-bottom: .45rem; }
+
+  .page-foot {
+    margin-top: 2.5rem; padding-top: .75rem; border-top: 1px solid var(--line);
+    display: flex; flex-wrap: wrap; justify-content: space-between; gap: .5rem;
+    font-size: .85rem; color: var(--muted);
+  }
+
+  /* Phones: stack table rows */
+  @media (max-width: 700px) {
+    .hm-grid { grid-template-columns: 1fr; }
+    table.stack thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+    table.stack, table.stack tbody, table.stack tr, table.stack th, table.stack td { display: block; width: 100%; }
+    table.stack tr { border: 1px solid var(--line); border-radius: 8px; margin-bottom: .75rem; overflow: hidden; }
+    table.stack tbody th { background: var(--surface) !important; border-bottom: 1px solid var(--line); }
+    table.stack td { border-bottom: 0; padding: .35rem .75rem; background: transparent !important; }
+    table.stack td::before { content: attr(data-label); display: block; font-size: .78rem; font-weight: 700; color: var(--muted); }
+    table.stack td:last-child { padding-bottom: .7rem; }
+  }
+
+  /* Print */
+  @page { size: letter portrait; margin: 0.5in; }
+  @media print {
+    :root {
+      --navy: #1F3A5F; --gold: #B88A2E; --gold-soft: #F6EEDB; --text: #1E2733; --muted: #4A5361;
+      --bg: #ffffff; --surface: #F3F5F8; --line: #C9CFD8; --row-alt: #F6F7F9;
+      padding: 0;
+    }
+    * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    body { font-size: 10pt; line-height: 1.35; }
+    .key { margin: .6rem 0 .5rem; font-size: 9pt; }
+    .notice { padding: .45rem .75rem; margin-bottom: .5rem; font-size: 9.5pt; }
+    .page { padding-bottom: 0; }
+    .page-foot { margin-top: 1rem; }
+    .print-btn { display: none; }
+    .masthead-inner, .page { max-width: none; padding-left: 0; padding-right: 0; }
+    .masthead-inner { padding-top: .6rem; padding-bottom: .6rem; padding-left: .75rem; padding-right: .75rem; }
+    h1 { font-size: 17pt; }
+    h2 { margin-top: .8rem; margin-bottom: .45rem; font-size: 12pt; break-after: avoid; }
+    .dm-head { break-before: page; margin-top: 0; }
+    table { font-size: 9pt; }
+    thead th, tbody td, tbody th { padding: .28rem .45rem; }
+    tbody th { width: auto; }
+    tr { break-inside: avoid; }
+    thead { display: table-header-group; }
+    .hm-section { break-inside: avoid; }
+    .hm-grid { grid-template-columns: 1fr 210px; }
+    a { color: inherit; text-decoration: none; }
+  }
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="masthead-inner">
+    <div>
+      <p class="clinic">Primary Care Clinic</p>
+      <h1>Recommendations Expectations &amp; Satisfiers</h1>
+      <p class="updated">Listed alphabetically by expectation &nbsp;|&nbsp; Last updated: November 2026</p>
+    </div>
+    <button class="print-btn" type="button" onclick="window.print()">Print this sheet</button>
+  </div>
+</header>
+
+<main class="page">
+
+  <div class="key" aria-label="Key">
+    <span><span class="badge badge-auto">Auto</span> Updates automatically when done in-house</span>
+    <span><span class="badge badge-hm">Rec form</span> Chart using the form in the Recommendations component (see steps below)</span>
+  </div>
+
+  <div class="notice" role="note">
+    <p><strong>Clean up Recommendations expectations at every annual and new patient visit.</strong></p>
+  </div>
+
+  <h2>Adult Expectations</h2>
+  <div class="table-wrap">
+    <table class="stack adult">
+      <thead>
+        <tr>
+          <th scope="col">Expectation</th>
+          <th scope="col">Satisfied in-house</th>
+          <th scope="col">Satisfied elsewhere</th>
+          <th scope="col">Who</th>
+          <th scope="col">Frequency</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th scope="row">Abdominal Aortic Aneurysm Screen</th>
+          <td data-label="Satisfied in-house"><span class="badge badge-auto">Auto</span>AAA screen done in-house</td>
+          <td data-label="Satisfied elsewhere">Manual update</td>
+          <td data-label="Who">Male, 65+ with history of smoking</td>
+          <td data-label="Frequency">One time only</td>
+        </tr>
+        <tr>
+          <th scope="row">Alcohol Misuse Screen</th>
+          <td data-label="Satisfied in-house"><span class="badge badge-hm">Rec form</span>CAGE Assessment form</td>
+          <td data-label="Satisfied elsewhere"><span class="none">Not applicable</span></td>
+          <td data-label="Who">18 to 75</td>
+          <td data-label="Frequency">Every year</td>
+        </tr>
+        <tr>
+          <th scope="row">Body Mass Index Check</th>
+          <td data-label="Satisfied in-house">Adult Comprehensive Intake Form <span class="section-ref">(Measurements section)</span></td>
+          <td data-label="Satisfied elsewhere"><span class="none">Not applicable</span></td>
+          <td data-label="Who">18+</td>
+          <td data-label="Frequency">Every year</td>
+        </tr>
+        <tr>
+          <th scope="row">Breast Cancer Screen</th>
+          <td data-label="Satisfied in-house"><span class="badge badge-auto">Auto</span>Mammogram done in-house</td>
+          <td data-label="Satisfied elsewhere">Manual update</td>
+          <td data-label="Who">Female, 40 to 74</td>
+          <td data-label="Frequency">Every year</td>
+        </tr>
+        <tr>
+          <th scope="row">Cervical Cancer Screen</th>
+          <td data-label="Satisfied in-house">Orders from the Cervical Cancer Screening Order Set</td>
+          <td data-label="Satisfied elsewhere">Manual update</td>
+          <td data-label="Who">Female, 21 to 65</td>
+          <td data-label="Frequency">Every 3 years</td>
+        </tr>
+        <tr>
+          <th scope="row">Colorectal Cancer Screen (Colonoscopy)</th>
+          <td data-label="Satisfied in-house"><span class="badge badge-auto">Auto</span>Colonoscopy done in-house</td>
+          <td data-label="Satisfied elsewhere">Manual update</td>
+          <td data-label="Who">45 to 75</td>
+          <td data-label="Frequency">Every 10 years</td>
+        </tr>
+        <tr>
+          <th scope="row">Depression Screen</th>
+          <td data-label="Satisfied in-house"><span class="badge badge-hm">Rec form</span>Depression Screening Tool form</td>
+          <td data-label="Satisfied elsewhere"><span class="none">Not applicable</span></td>
+          <td data-label="Who">Over 10</td>
+          <td data-label="Frequency">1 day (screened every visit)</td>
+        </tr>
+        <tr>
+          <th scope="row">Family/Intimate Partner Violence Screen</th>
+          <td data-label="Satisfied in-house"><span class="badge badge-hm">Rec form</span>Domestic Violence Screen form</td>
+          <td data-label="Satisfied elsewhere"><span class="none">Not applicable</span></td>
+          <td data-label="Who">Female, 18 to 50</td>
+          <td data-label="Frequency">Every year</td>
+        </tr>
+        <tr>
+          <th scope="row">High Blood Pressure Screen</th>
+          <td data-label="Satisfied in-house">Adult Comprehensive Intake Form <span class="section-ref">(Vitals section)</span></td>
+          <td data-label="Satisfied elsewhere"><span class="none">Not applicable</span></td>
+          <td data-label="Who">18+</td>
+          <td data-label="Frequency">Every year</td>
+        </tr>
+        <tr>
+          <th scope="row">Lipid Disorders Screen</th>
+          <td data-label="Satisfied in-house"><span class="badge badge-auto">Auto</span>Lab results done in-house</td>
+          <td data-label="Satisfied elsewhere">Manual update</td>
+          <td data-label="Who">Starting at 35</td>
+          <td data-label="Frequency">First test at 35, then per provider recommendation</td>
+        </tr>
+        <tr>
+          <th scope="row">Osteoporosis Screen</th>
+          <td data-label="Satisfied in-house"><span class="badge badge-auto">Auto</span>DEXA scan done in-house</td>
+          <td data-label="Satisfied elsewhere">Manual update</td>
+          <td data-label="Who">Female, 65+</td>
+          <td data-label="Frequency">Every 2 years</td>
+        </tr>
+        <tr>
+          <th scope="row">Tobacco Use Screen</th>
+          <td data-label="Satisfied in-house">Adult Comprehensive Intake Form <span class="section-ref">(full form)</span></td>
+          <td data-label="Satisfied elsewhere"><span class="none">Not applicable</span></td>
+          <td data-label="Who">18+</td>
+          <td data-label="Frequency">Every year</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2 class="dm-head">Diabetes Mellitus Expectations</h2>
+  <div class="table-wrap">
+    <table class="stack dm">
+      <thead>
+        <tr>
+          <th scope="col">Expectation</th>
+          <th scope="col">Satisfied in-house</th>
+          <th scope="col">Satisfied elsewhere</th>
+          <th scope="col">Frequency</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th scope="row">Microalbumin</th>
+          <td data-label="Satisfied in-house"><span class="badge badge-auto">Auto</span>Lab results done in-house</td>
+          <td data-label="Satisfied elsewhere">Manual update</td>
+          <td data-label="Frequency">Every year</td>
+        </tr>
+        <tr>
+          <th scope="row">HgbA1c</th>
+          <td data-label="Satisfied in-house"><span class="badge badge-auto">Auto</span>Lab results done in-house, <strong>or</strong> <span class="badge badge-hm">Rec form</span>Hgb A1c POC form</td>
+          <td data-label="Satisfied elsewhere">Manual update</td>
+          <td data-label="Frequency">Every 3 months</td>
+        </tr>
+        <tr>
+          <th scope="row">Eye Exam</th>
+          <td data-label="Satisfied in-house">Provider completes</td>
+          <td data-label="Satisfied elsewhere">Manual update</td>
+          <td data-label="Frequency">Every year</td>
+        </tr>
+        <tr>
+          <th scope="row">Foot Exam</th>
+          <td data-label="Satisfied in-house">Provider completes</td>
+          <td data-label="Satisfied elsewhere">Manual update</td>
+          <td data-label="Frequency">Every year</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="footnote">Any expectation that is resulted but not listed on this sheet requires manual entry.</p>
+
+  <section class="hm-section" id="hm-steps">
+    <h2>How to chart a form in Recommendations</h2>
+    <div class="hm-grid">
+      <ol class="steps">
+        <li>Open the <strong>Recommendations</strong> component.</li>
+        <li>Click the <strong>row</strong> of the expectation you are documenting.</li>
+        <li>When the side panel opens, click the <strong>Actions</strong> button.</li>
+        <li>Click the <strong>form</strong> in the list (usually the last option) to chart.</li>
+      </ol>
+      <div class="menu-demo" aria-hidden="true">
+        <p class="demo-label">Example: DM HgbA1c</p>
+        <div class="demo-row">DM - HgbA1c</div>
+        <div class="demo-actions">Actions &#9662;</div>
+        <ul class="demo-list">
+          <li>Done</li>
+          <li>Postpone</li>
+          <li>Decline</li>
+          <li>Cancel</li>
+          <li class="pick">Hgb A1c POC [Form]</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <h2>Other Recommendations rules</h2>
+  <ul class="rules">
+    <li><strong>Hepatitis C screening:</strong> the recommendation rule qualifies patients 18 to 79.</li>
+    <li><strong>Annual Wellness Visit:</strong> focused on patients 19 and older.</li>
+    <li><strong>Initial Preventive Physical Examination:</strong> a one-time exam for Medicare patients, focused on patients 65 and older.</li>
+    <li><strong>Adult Wellness Exam (Female and Male):</strong> the order "Annual wellness visit; Initial visit, including a personalized prevention plan of service (PPPS)" satisfies this expectation.</li>
+  </ul>
+
+  <footer class="page-foot">
+    <span>Primary Care Clinic | Recommendations Expectations &amp; Satisfiers</span>
+    <span>Last updated: November 2026</span>
+  </footer>
+</main>
+
+</body>
+</html>
