@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>RHC Team Culture: November 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@400;500;600&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  :root{--teal:#1a7a6e;--teal-light:#e8f5f3;--navy:#1c2d40;--muted:#6b7c85;--border:#dde8e6;--white:#fff;
+        --forest:#1d4a30;--forest-dark:#0f2e1f;--gold:#E8B422;--gold-deep:#C9980A;--cream:#f4f1e8;}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'DM Sans',sans-serif;background:var(--cream);color:#1A2744}
+
+  /* NAV */
+  nav{background:var(--white);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;}
+  .nav-inner{max-width:1200px;margin:0 auto;padding:0 32px;display:flex;align-items:center;gap:4px;height:52px;overflow-x:auto;}
+  .nav-home{font-family:'DM Serif Display',serif;font-size:14px;color:var(--navy);margin-right:8px;white-space:nowrap;flex-shrink:0;text-decoration:none;padding:6px 12px;border-radius:7px;border:1px solid var(--border);transition:background .15s;}
+  .nav-home:hover{background:var(--teal-light);}
+  .nav-link{font-size:13px;font-weight:500;padding:6px 12px;border-radius:7px;color:var(--muted);text-decoration:none;transition:background .15s,color .15s;white-space:nowrap;flex-shrink:0;}
+  .nav-link:hover{background:var(--teal-light);color:var(--teal);}
+  .nav-link.active{background:var(--teal-light);color:var(--teal);font-weight:600;}
+
+  .page{max-width:900px;margin:0 auto;padding:24px 20px 20px}
+
+  /* MASTHEAD */
+  .masthead{background:linear-gradient(135deg,#0f2e1f 0%,#1d4a30 55%,#2f5d3a 100%);border-radius:16px;padding:40px 36px;margin-bottom:24px;color:white;position:relative;overflow:hidden}
+  .masthead::before{content:'🦃';font-size:120px;position:absolute;right:-5px;top:-10px;opacity:.15;transform:rotate(-12deg)}
+  .masthead::after{content:'🍂';font-size:80px;position:absolute;left:10px;bottom:-10px;opacity:.15}
+  .pub-label{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.65);margin-bottom:8px}
+  .pub-title{font-family:'Playfair Display',serif;font-size:52px;font-weight:900;line-height:1;color:white;margin-bottom:4px}
+  .pub-title span{color:var(--gold)}
+  .pub-sub{font-size:13px;color:var(--gold);font-weight:600;letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px}
+  .pub-date{font-size:13px;color:rgba(255,255,255,.6)}
+  .theme-pills{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}
+  .theme-pill{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.22);color:rgba(255,255,255,.9);font-size:12px;font-weight:600;padding:5px 14px;border-radius:20px}
+
+  /* THANKS HERO */
+  .thanks-hero{background:white;border-radius:14px;border-left:5px solid var(--gold);padding:24px 28px;margin-bottom:24px;box-shadow:0 2px 12px rgba(0,0,0,.06)}
+  .thanks-title{font-family:'Playfair Display',serif;font-size:24px;color:var(--forest);margin-bottom:8px}
+  .thanks-text{font-size:14px;color:#3a4a5c;line-height:1.75}
+
+  /* STORY */
+  .story-card{background:linear-gradient(160deg,#2b1a0e,#3d2a14 60%,#1d3a26);border-radius:14px;padding:28px 32px;margin-bottom:24px;color:white;position:relative;overflow:hidden}
+  .story-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--gold),#d97706,var(--gold))}
+  .story-eyebrow{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:12px}
+  .story-title{font-family:'Playfair Display',serif;font-size:26px;color:white;margin-bottom:18px;line-height:1.2}
+  .story-title em{font-style:italic;color:var(--gold)}
+  .story-body p{font-size:14px;color:rgba(255,255,255,.85);line-height:1.85;margin-bottom:14px}
+  .story-body p:last-child{margin-bottom:0}
+  .story-divider{text-align:center;font-size:20px;letter-spacing:8px;margin:16px 0;opacity:.55}
+  .story-note{font-size:12px;font-style:italic;color:rgba(255,255,255,.5);margin-top:16px}
+
+  /* GRID + CARDS */
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+  .card{background:white;border-radius:14px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,.07);margin-bottom:16px}
+  .grid2 .card{margin-bottom:0}
+  .card-header{padding:14px 18px 10px;border-bottom:1px solid #EDF0F5}
+  .card-header h2{font-family:'Playfair Display',serif;font-size:18px;color:#0F2744}
+  .card-header p{font-size:12px;color:#6B7280;margin-top:2px}
+  .card-body{padding:16px 18px}
+
+  .zodiac-card{background:var(--forest-dark);border-radius:14px;padding:20px;color:white}
+  .zodiac-title{font-family:'Playfair Display',serif;font-size:22px;color:var(--gold);margin-bottom:4px}
+  .zodiac-sub{font-size:12px;color:rgba(255,255,255,.6);margin-bottom:14px}
+  .gem-row{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.08);border-radius:8px;padding:10px 12px;margin-bottom:8px}
+  .gem-icon{font-size:20px}
+  .gem-label{font-size:11px;color:rgba(255,255,255,.55);text-transform:uppercase;letter-spacing:.06em}
+  .gem-val{font-size:14px;font-weight:600;color:white}
+
+  .bday-row{display:flex;align-items:center;justify-content:space-between;padding:9px 0;border-bottom:1px solid #EDF0F5;font-size:13px}
+  .bday-row:last-child{border-bottom:none}
+  .bday-date{background:#FDF5DC;color:#854D0E;font-size:11px;font-weight:600;padding:3px 8px;border-radius:20px}
+
+  .pop-chip{display:inline-flex;align-items:center;gap:6px;background:#EEF3FB;color:#1A3A5C;font-size:12px;font-weight:500;padding:5px 12px;border-radius:20px;margin:3px}
+
+  .fact-item{display:flex;align-items:flex-start;gap:8px;padding:6px 0;font-size:13px;border-bottom:1px solid #EDF0F5}
+  .fact-item:last-child{border-bottom:none}
+  .fact-dot{width:6px;height:6px;border-radius:50%;background:var(--gold-deep);flex-shrink:0;margin-top:6px}
+
+  .trivia-box{background:#F0F4F9;border-radius:8px;padding:12px 14px;margin-top:10px;border-left:3px solid var(--gold-deep)}
+  .trivia-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--gold-deep);margin-bottom:6px}
+  .trivia-q{font-weight:600;color:#0F2744;font-size:13px;margin-bottom:4px}
+  .trivia-a{font-size:13px;color:#1A2744}
+
+  .footer{text-align:center;padding:20px;font-size:12px;color:#8a8576;margin-top:8px}
+
+  @media(max-width:600px){
+    .grid2{grid-template-columns:1fr}
+    .pub-title{font-size:36px}
+    .nav-inner{padding:0 16px}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="https://psmedcenter.sharepoint.com/sites/RHCTeamSpace/SitePages/Home.aspx" class="nav-home">&#127968; RHC Today</a>
+    <a href="https://jblaise1310.github.io/rhc-today/clinic-operations.html" class="nav-link">Clinic Operations</a>
+    <a href="https://jblaise1310.github.io/rhc-today/communication.html" class="nav-link">Communication</a>
+    <a href="https://jblaise1310.github.io/rhc-today/goals-kpis.html" class="nav-link">Goals &amp; KPIs</a>
+    <a href="https://jblaise1310.github.io/rhc-today/pto-planning.html" class="nav-link">PTO Planning</a>
+    <a href="https://jblaise1310.github.io/rhc-today/quick-reference.html" class="nav-link">Quick Reference</a>
+    <a href="https://jblaise1310.github.io/rhc-today/staffing-updates.html" class="nav-link">Staffing</a>
+    <a href="https://jblaise1310.github.io/rhc-today/survey-readiness.html" class="nav-link">Survey Readiness</a>
+    <a href="https://jblaise1310.github.io/rhc-today/team_cultures.html" class="nav-link active">Team Culture</a>
+    <a href="https://jblaise1310.github.io/rhc-today/training-resources.html" class="nav-link">Training</a>
+    <a href="https://jblaise1310.github.io/rhc-today/workflows-policy.html" class="nav-link">Workflows &amp; Policy</a>
+  </div>
+</nav>
+
+<div class="page">
+
+<!-- MASTHEAD -->
+<div class="masthead">
+  <div class="pub-label">RHC Team Culture</div>
+  <div class="pub-title">Nov<span>ember</span></div>
+  <div class="pub-sub">2026 Monthly Edition</div>
+  <div class="pub-date">Pagosa Springs Rural Health Clinic · Brought to you by your admin team</div>
+  <div class="theme-pills">
+    <span class="theme-pill">🦃 Thanksgiving</span>
+    <span class="theme-pill">🍂 Gratitude</span>
+    <span class="theme-pill">🍁 Fall Colors</span>
+    <span class="theme-pill">🎂 Birthdays</span>
+  </div>
+</div>
+
+<!-- GRATITUDE -->
+<div class="thanks-hero">
+  <div class="thanks-title">🧡 A Month for Giving Thanks</div>
+  <div class="thanks-text">November is the month we slow down just enough to say thank you. Thank you for the extra shifts, the kind words to a nervous patient, the quick help with a hard task, and the laughs in the hallway. This team is a big reason people feel cared for here. Wishing you and your family a warm, restful, and delicious Thanksgiving.</div>
+</div>
+
+<!-- TURKEY STORY -->
+<div class="story-card">
+  <div class="story-eyebrow">🦃 A November Story</div>
+  <div class="story-title">A Turkey Walks Into the <em>Clinic</em></div>
+  <div class="story-body">
+    <p>It was the Monday before Thanksgiving, and the clinic was humming along. The coffee was hot, the schedule was full, and nobody suspected a thing. Then, at 8:02 AM, the automatic doors slid open and in strutted a very large, very confident wild turkey.</p>
+    <p>The front desk looked up. The turkey looked back. "Do you have an appointment?" someone asked, mostly out of habit. The turkey did not. The turkey did, however, have a plan, and the plan appeared to be a full lap of the building.</p>
+    <div class="story-divider">🦃 🍂 🦃</div>
+    <p>Down the hallway he went, feathers puffed and tail fanned, gobbling at the hand sanitizer dispenser as if it had said something rude. A medical assistant rounded the corner with a vitals cart and froze. The turkey froze. For one long moment, nobody moved. Then the blood pressure cuff on the cart gave a loud hiss, and the turkey bolted straight into Exam Room Two.</p>
+    <p>Within minutes, half the clinic had gathered in the hallway. A nurse offered a graham cracker. A provider suggested a calm and reassuring voice. Someone from the back office quietly started a new patient intake form. Name: Gerald. Reason for visit: "Hiding. Please do not tell the oven." Temperature: 105 degrees, which, it turns out, is perfectly normal for a turkey.</p>
+    <div class="story-divider">🍁 🥧 🍁</div>
+    <p>In the end, it took an open side door, a trail of crackers, and a team that works together better than anyone expected. Gerald was gently guided back outside. He paused at the threshold, gave the whole clinic one last dignified gobble, and strutted off toward the mountains.</p>
+    <p>Gerald never came back for a follow-up, but he left us with a lesson. Everyone pitched in, nobody panicked, and the team handled the unexpected with a sense of humor. Not a bad way to start Thanksgiving week.</p>
+    <div class="story-note">This story is entirely fictional. No turkeys were harmed, and none have requested a refill.</div>
+  </div>
+</div>
+
+<!-- ZODIAC + BIRTHDAYS -->
+<div class="grid2">
+  <div class="zodiac-card">
+    <div class="zodiac-title">November Zodiac Signs</div>
+    <div class="zodiac-sub">The stars of November</div>
+    <div style="margin-bottom:10px;font-size:13px;color:rgba(255,255,255,.85)">Scorpio (Oct 23 to Nov 21)<br><span style="opacity:.75">Sagittarius (Nov 22 to Dec 21)</span></div>
+    <div class="gem-row"><div class="gem-icon">💎</div><div><div class="gem-label">Birthstone</div><div class="gem-val">Topaz &amp; Citrine</div></div></div>
+    <div class="gem-row"><div class="gem-icon">🌼</div><div><div class="gem-label">Birth Flower</div><div class="gem-val">Chrysanthemum</div></div></div>
+  </div>
+  <div class="card">
+    <div class="card-header"><h2>🎂 November Birthdays</h2><p>6 team members celebrating this month</p></div>
+    <div class="card-body">
+      <div class="bday-row"><div><div style="font-weight:600">PAULA</div><div style="font-size:11px;color:#6B7280">Representative: Patient Services · Green Team</div></div><span class="bday-date">Nov 2 🎉</span></div>
+      <div class="bday-row"><div><div style="font-weight:600">TORI</div><div style="font-size:11px;color:#6B7280">RN: Ortho Clinic Coordinator · Ortho Team</div></div><span class="bday-date">Nov 9 🎉</span></div>
+      <div class="bday-row"><div><div style="font-weight:600">HALEY</div><div style="font-size:11px;color:#6B7280">Assistant: Medical · Blue Team</div></div><span class="bday-date">Nov 10 🎉</span></div>
+      <div class="bday-row"><div><div style="font-weight:600">NATALEE</div><div style="font-size:11px;color:#6B7280">Representative: Patient Services · Clinic Team</div></div><span class="bday-date">Nov 13 🎉</span></div>
+      <div class="bday-row"><div><div style="font-weight:600">RUTH</div><div style="font-size:11px;color:#6B7280">LPN/LVN: Clinic · Blue Team</div></div><span class="bday-date">Nov 22 🎉</span></div>
+      <div class="bday-row"><div><div style="font-weight:600">BRANDY</div><div style="font-size:11px;color:#6B7280">Assistant: Medical · Specialty Team</div></div><span class="bday-date">Nov 23 🎉</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- FAMOUS BIRTHDAYS -->
+<div class="card" style="margin-top:16px">
+  <div class="card-header"><h2>🌟 Born in November: Famous Birthdays</h2><p>Some well-known faces who share your birth month</p></div>
+  <div class="card-body">
+    <span class="pop-chip">⭐ Matthew McConaughey</span>
+    <span class="pop-chip">⭐ Emma Stone</span>
+    <span class="pop-chip">⭐ Leonardo DiCaprio</span>
+    <span class="pop-chip">⭐ Ryan Gosling</span>
+    <span class="pop-chip">⭐ Scarlett Johansson</span>
+    <span class="pop-chip">⭐ Miley Cyrus</span>
+  </div>
+</div>
+
+<!-- DAYS TO CELEBRATE -->
+<div class="card">
+  <div class="card-header"><h2>📅 Days to Celebrate in November</h2></div>
+  <div class="card-body">
+    <div class="fact-item"><div class="fact-dot"></div><span>🪶 Native American Heritage Month: all November</span></div>
+    <div class="fact-item"><div class="fact-dot"></div><span>🩸 American Diabetes Month: all November</span></div>
+    <div class="fact-item"><div class="fact-dot"></div><span>🎖️ Veterans Day: Wednesday, November 11</span></div>
+    <div class="fact-item"><div class="fact-dot"></div><span>💛 World Kindness Day: Friday, November 13</span></div>
+    <div class="fact-item"><div class="fact-dot"></div><span>🔵 World Diabetes Day: Saturday, November 14</span></div>
+    <div class="fact-item"><div class="fact-dot"></div><span>🚭 Great American Smokeout: Thursday, November 19</span></div>
+    <div class="fact-item"><div class="fact-dot"></div><span>🦃 Thanksgiving Day: Thursday, November 26</span></div>
+  </div>
+</div>
+
+<!-- DID YOU KNOW -->
+<div class="card">
+  <div class="card-header"><h2>🍂 November: Did You Know?</h2></div>
+  <div class="card-body">
+    <p style="font-size:13px;color:#1A2744;line-height:1.6;margin-bottom:12px;">November comes from the Latin word "novem," meaning nine. It was the ninth month of the ancient Roman calendar, back when the year began in March.</p>
+    <div class="fact-item"><div class="fact-dot"></div><span>🦃 Wild turkeys can run up to about 25 miles per hour and can fly short distances at around 55 miles per hour.</span></div>
+    <div class="fact-item"><div class="fact-dot"></div><span>🌡️ A turkey's normal body temperature is around 105 degrees Fahrenheit, which is a few degrees warmer than ours.</span></div>
+    <div class="fact-item"><div class="fact-dot"></div><span>🥧 Thanksgiving became an official national holiday in 1863, when President Abraham Lincoln proclaimed a national day of thanks.</span></div>
+    <div class="fact-item"><div class="fact-dot"></div><span>🏔️ By November, the high country around Pagosa Springs is often getting its first lasting snow, so winter driving season is just around the corner.</span></div>
+    <div class="trivia-box">
+      <div class="trivia-label">November Trivia</div>
+      <div class="trivia-q">Which US president proclaimed Thanksgiving a national holiday in 1863?</div>
+      <div class="trivia-a">Answer: Abraham Lincoln, in the middle of the Civil War.</div>
+    </div>
+  </div>
+</div>
+
+<div class="footer">RHC Team Culture Page · November 2026 · 🦃 Happy Thanksgiving from your admin team 🍂</div>
+
+</div>
+</body>
+</html>
