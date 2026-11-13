@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RHTP Care Team Workflow</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#14284B; --navy-2:#24447A; --gold:#C99A2E; --gold-soft:#F6ECD2;
+  --teal:#1C6E70; --teal-soft:#E1F0EF;
+  --ink:#1C2333; --muted:#566074; --line:#D6DDE7; --surface:#FFFFFF; --page:#F4F6F9;
+  --dim:.22;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-padding-top:120px}
+body{margin:0;background:var(--page);color:var(--ink);font-family:"Public Sans",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;font-size:16px;line-height:1.5}
+:focus-visible{outline:3px solid var(--gold);outline-offset:2px;border-radius:4px}
+.wrap{max-width:1240px;margin:0 auto;padding:0 24px}
+
+/* Masthead */
+.mast{background:var(--navy);color:#fff;border-bottom:4px solid var(--gold)}
+.mast .wrap{padding-top:30px;padding-bottom:26px;display:flex;flex-wrap:wrap;gap:12px 40px;align-items:flex-end;justify-content:space-between}
+.mast .org{margin:0 0 6px;color:#C9D3E6;font-size:.9rem;font-weight:600}
+.mast h1{margin:0;font-size:clamp(1.7rem,3.4vw,2.5rem);font-weight:800;line-height:1.08;letter-spacing:-.01em}
+.mast p.lede{margin:10px 0 0;color:#DCE3F0;max-width:64ch}
+.draft{display:inline-block;background:var(--gold);color:var(--navy);font-weight:800;font-size:.8rem;border-radius:4px;padding:3px 10px;white-space:nowrap}
+
+/* Role filter */
+.filter{position:sticky;top:0;z-index:20;background:rgba(244,246,249,.96);backdrop-filter:blur(4px);border-bottom:1px solid var(--line)}
+.filter .wrap{padding-top:12px;padding-bottom:12px;display:flex;flex-wrap:wrap;gap:8px 10px;align-items:center}
+.filter .lbl{font-weight:700;font-size:.88rem;margin-right:4px}
+.rb{border:1.5px solid var(--line);background:var(--surface);border-radius:999px;padding:5px 12px;font:inherit;font-size:.84rem;font-weight:600;cursor:pointer;color:var(--ink);display:inline-flex;align-items:center;gap:7px}
+.rb i{width:9px;height:9px;border-radius:50%;flex:none}
+.rb[aria-pressed="true"]{background:var(--navy);border-color:var(--navy);color:#fff}
+.rb.clear{border-style:dashed}
+.filter .hint{font-size:.82rem;color:var(--muted);margin-left:auto}
+
+/* Key */
+.key{display:flex;flex-wrap:wrap;gap:10px 26px;margin:24px 0 6px;font-size:.88rem;color:var(--muted)}
+.key span{display:inline-flex;align-items:center;gap:8px}
+.sw{width:22px;height:14px;border-radius:3px;display:inline-block}
+.sw.rhc{background:var(--navy)} .sw.anc{background:var(--teal)} .sw.part{border:2px dashed var(--gold);background:var(--surface)} .sw.prov{border:2px solid var(--ink);background:var(--surface)}
+
+/* Chips */
+.chip{display:inline-block;font-size:.74rem;font-weight:700;line-height:1.3;padding:2px 8px;border-radius:4px;margin:2px 4px 2px 0;white-space:nowrap}
+.c-rhc{background:var(--navy);color:#fff}
+.c-anc{background:var(--teal);color:#fff}
+.c-part{border:1.5px dashed var(--gold);color:var(--ink);background:var(--surface)}
+.c-prov{border:1.5px solid var(--ink);color:var(--ink);background:var(--surface)}
+
+/* Flow */
+.flow{margin:18px 0 10px}
+.stage{display:grid;grid-template-columns:150px minmax(0,1fr);gap:0 22px;position:relative}
+.stage-lbl{padding-top:14px}
+.stage-lbl .n{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:50%;background:var(--gold);color:var(--navy);font-weight:800;font-size:1rem}
+.stage-lbl h2{margin:8px 0 2px;font-size:1.02rem;font-weight:800;color:var(--navy);line-height:1.2}
+.stage-lbl p{margin:0;font-size:.82rem;color:var(--muted)}
+.stage-body{padding:4px 0}
+.row{display:grid;gap:14px}
+.r1{grid-template-columns:1fr} .r2{grid-template-columns:repeat(2,minmax(0,1fr))} .r3{grid-template-columns:repeat(3,minmax(0,1fr))} .r4{grid-template-columns:repeat(4,minmax(0,1fr))} .r5{grid-template-columns:repeat(5,minmax(0,1fr))}
+
+.node{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px 15px;transition:opacity .2s,box-shadow .2s}
+.node h3{margin:0 0 4px;font-size:.98rem;font-weight:800;line-height:1.25;color:var(--navy)}
+.node p{margin:4px 0 0;font-size:.86rem;color:var(--ink)}
+.node ul{margin:6px 0 0;padding-left:18px;font-size:.84rem}
+.node li{margin-bottom:3px}
+.node .who{margin-top:8px}
+.node.anc{border-top:4px solid var(--teal)}
+.node.rhc{border-top:4px solid var(--navy)}
+.node.part{border:1.5px dashed var(--gold)}
+.node.prov{border:1.5px solid var(--ink)}
+
+/* hub */
+.hub{background:var(--navy);color:#fff;border:0;border-bottom:4px solid var(--gold);padding:20px 22px;text-align:center}
+.hub h3{color:#fff;font-size:1.3rem}
+.hub p{color:#DCE3F0;max-width:70ch;margin-left:auto;margin-right:auto}
+.hub .who .chip{background:var(--gold);color:var(--navy)}
+
+/* decision */
+.decide{display:flex;justify-content:center;margin:14px 0 4px}
+.diamond{background:var(--gold-soft);border:2px solid var(--gold);border-radius:8px;padding:10px 18px;font-weight:800;color:var(--navy);text-align:center;position:relative;max-width:520px}
+.diamond small{display:block;font-weight:600;color:var(--muted);font-size:.8rem}
+
+/* connectors */
+.down{height:26px;width:3px;background:var(--gold);margin:0 auto}
+.stage + .stage .stage-body::before{content:"";display:block;width:3px;height:22px;background:var(--gold);margin:0 auto 4px}
+.fan{position:relative;height:24px;margin:0 calc(10% - 8px)}
+.fan::before{content:"";position:absolute;left:0;right:0;top:0;height:22px;border:3px solid var(--gold);border-bottom:0;border-radius:10px 10px 0 0}
+.fan::after{content:"";position:absolute;left:50%;top:-10px;width:3px;height:10px;background:var(--gold)}
+
+/* branch inside a node */
+.branch{margin-top:10px;border-top:1px dashed var(--line);padding-top:8px}
+.branch .q{font-size:.8rem;font-weight:800;color:var(--navy);background:var(--gold-soft);border-radius:4px;padding:3px 7px;display:inline-block}
+.branch .opt{display:flex;flex-direction:column;gap:2px;font-size:.82rem;margin-top:8px}
+.branch .opt b{font-size:.76rem;border-radius:4px;padding:1px 6px;align-self:flex-start}
+.chip{white-space:normal}
+.yes{background:#E3F1EA;color:#1E5A3E}
+.no{background:#F7E4E2;color:#8A2A22}
+
+/* report-back */
+.back{background:var(--gold-soft);border:2px solid var(--gold);border-radius:10px;padding:16px 18px;text-align:center}
+.back h3{color:var(--navy)}
+.back p{max-width:80ch;margin-left:auto;margin-right:auto}
+
+/* Lower half */
+.two{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:20px;margin:30px 0}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:18px 20px}
+.card h2{margin:0 0 4px;font-size:1.12rem;font-weight:800;color:var(--navy)}
+.card .sub{margin:0 0 12px;color:var(--muted);font-size:.88rem}
+.esc{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:0;font-size:.88rem}
+.esc div{padding:9px 0;border-top:1px solid var(--line)}
+.esc div:nth-child(odd){padding-right:14px;font-weight:700}
+.esc div:nth-child(-n+2){border-top:0}
+.rules{margin:0;padding-left:20px;font-size:.9rem}
+.rules li{margin-bottom:8px}
+
+/* Who's who */
+.who-sec{margin:10px 0 40px}
+.who-sec > h2{font-size:1.3rem;font-weight:800;color:var(--navy);margin:0 0 4px}
+.who-sec > p{margin:0 0 14px;color:var(--muted)}
+.grp{margin:18px 0 8px;font-size:.95rem;font-weight:800;color:var(--muted)}
+.roles{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:14px}
+.role{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:6px;transition:opacity .2s,box-shadow .2s}
+.role.rhc{border-top:5px solid var(--navy)} .role.anc{border-top:5px solid var(--teal)} .role.prov{border:1.5px solid var(--ink)} .role.part{border:1.5px dashed var(--gold)}
+.role h3{margin:0;font-size:1rem;line-height:1.25;color:var(--navy)}
+.role .dept{font-size:.8rem;color:var(--muted)}
+.role .lane{font-size:.86rem;margin:2px 0 0}
+.role dl{margin:4px 0 0;font-size:.84rem}
+.role dt{font-weight:800;color:var(--navy);margin-top:6px;font-size:.78rem}
+.role dd{margin:0}
+.pending{font-size:.76rem;font-weight:700;color:#8A5A00;background:var(--gold-soft);border-radius:4px;padding:1px 6px;align-self:flex-start}
+
+footer{border-top:1px solid var(--line);padding:18px 0 36px;font-size:.84rem;color:var(--muted)}
+
+/* Highlight */
+body.filtering .node:not(.on), body.filtering .role:not(.on){opacity:var(--dim)}
+body.filtering .node.on, body.filtering .role.on{box-shadow:0 0 0 3px var(--gold)}
+body.filtering .hub.on{box-shadow:0 0 0 4px var(--gold)}
+
+@media (max-width:980px){
+  .r4,.r5{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .fan{display:none}
+}
+@media (max-width:760px){
+  .wrap{padding:0 14px}
+  .stage{grid-template-columns:1fr}
+  .stage-lbl{display:flex;align-items:center;gap:10px;padding-top:6px}
+  .stage-lbl h2{margin:0}
+  .stage-lbl p{display:none}
+  .r2,.r3,.r4,.r5,.two{grid-template-columns:1fr}
+  .filter .hint{display:none}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+@media print{
+  .filter{display:none}
+  body{background:#fff}
+  .node,.role,.card{break-inside:avoid}
+  body.filtering .node,body.filtering .role{opacity:1!important;box-shadow:none!important}
+}
+</style>
+</head>
+<body>
+
+<header class="mast"><div class="wrap">
+  <div>
+    <p class="org">Primary Care Clinic &middot; Rural Health Clinic &middot; Rural Health Transformation Program</p>
+    <h1>RHTP Care Team Workflow</h1>
+    <p class="lede">How a patient moves from a registry list to the right service, who does each step, and how every result comes back to one accountable nurse.</p>
+  </div>
+  <span class="draft">Draft for team review &middot; November 2026</span>
+</div></header>
+
+<nav class="filter" aria-label="Highlight a role"><div class="wrap" id="filter">
+  <span class="lbl">Show my part:</span>
+  <!-- buttons built by script -->
+</div></nav>
+
+<main class="wrap">
+
+<div class="key" aria-label="Key">
+  <span><i class="sw rhc"></i>RHC care team</span>
+  <span><i class="sw anc"></i>Ancillary RHTP roles (Informatics and QAPI)</span>
+  <span><i class="sw prov"></i>Providers and Medical Director</span>
+  <span><i class="sw part"></i>Community partners and vendors</span>
+</div>
+
+<section class="flow" aria-label="Master workflow">
+
+  <!-- Stage 1 -->
+  <div class="stage">
+    <div class="stage-lbl"><span class="n">1</span><h2>Build the foundation</h2><p>Behind the scenes, before and during patient work</p></div>
+    <div class="stage-body"><div class="row r3">
+      <div class="node anc" data-r="analyst">
+        <h3>Risk lists and registries</h3>
+        <p>Builds and maintains the risk stratification, care-gap and outreach lists in Oracle. Validates data and keeps the measure dictionary.</p>
+        <div class="who"><span class="chip c-anc">Clinical Informatics &amp; Population Health Analyst</span></div>
+      </div>
+      <div class="node anc" data-r="systems">
+        <h3>Systems set up and support</h3>
+        <p>Configures Oracle Care Coordination and RPM connections, sets up user access, trains staff and supports go-live.</p>
+        <div class="who"><span class="chip c-anc">Informatics Systems Implementation &amp; Support Specialist</span><span class="chip c-part" data-r="vendors">Validic &middot; Oracle Health</span></div>
+      </div>
+      <div class="node prov" data-r="providers">
+        <h3>Clinical approval</h3>
+        <p>Approves routing criteria, RPM protocol orders and escalation pathways before staff start routing patients.</p>
+        <div class="who"><span class="chip c-prov">RHC providers &amp; Medical Director</span></div>
+      </div>
+    </div></div>
+  </div>
+
+  <!-- Stage 2 -->
+  <div class="stage">
+    <div class="stage-lbl"><span class="n">2</span><h2>Find patients</h2><p>Where patients enter the flow</p></div>
+    <div class="stage-body"><div class="row r4">
+      <div class="node rhc" data-r="coord analyst">
+        <h3>Registry and DA2 lists</h3>
+        <p>Pulls and cleans the lists, then sends them to the RN PHCC. Reports data problems to the Analyst instead of changing clinical data.</p>
+        <div class="who"><span class="chip c-rhc">Coordinator</span></div>
+      </div>
+      <div class="node rhc" data-r="rncm phcc">
+        <h3>ED, inpatient and observation discharges</h3>
+        <p>The RN Care Manager leads care transitions. The RN PHCC assists and adds the patient to her panel.</p>
+        <div class="who"><span class="chip c-rhc">RN Care Manager</span><span class="chip c-rhc">RN PHCC</span></div>
+      </div>
+      <div class="node prov" data-r="providers phcc">
+        <h3>Provider referrals and RPM orders</h3>
+        <p>Providers refer patients or order RPM. Referrals go to the RN PHCC.</p>
+        <div class="who"><span class="chip c-prov">RHC providers</span></div>
+      </div>
+      <div class="node rhc" data-r="cdp phcc">
+        <h3>Gap-closure lists</h3>
+        <p>The CDP RN works her own registry list. A high-risk patient she finds is reported to the RN PHCC and joins her panel.</p>
+        <div class="who"><span class="chip c-rhc">CDP RN</span></div>
+      </div>
+    </div></div>
+  </div>
+
+  <!-- Stage 3 -->
+  <div class="stage">
+    <div class="stage-lbl"><span class="n">3</span><h2>Risk-stratify and route</h2><p>One front door for every patient</p></div>
+    <div class="stage-body">
+      <div class="node hub" data-r="phcc">
+        <h3>RN: Population Health &amp; Connected Care (RN PHCC)</h3>
+        <p>Reviews the lists, risk-stratifies patients with two or more chronic conditions, completes a short intake call and tells the patient about any referral. She keeps every patient she routes on her panel.</p>
+        <div class="who"><span class="chip">Accountable for every routed patient</span></div>
+      </div>
+      <div class="decide"><div class="diamond">What does this patient need most?<small>Routing criteria are a draft until approved by the providers and Medical Director</small></div></div>
+    </div>
+  </div>
+
+  <!-- Stage 4 -->
+  <div class="stage">
+    <div class="stage-lbl"><span class="n">4</span><h2>Deliver the service</h2><p>Each service lead makes their own first call</p></div>
+    <div class="stage-body">
+      <div class="fan" aria-hidden="true"></div>
+      <div class="row r5">
+        <div class="node rhc" data-r="rncm cdp phcc">
+          <h3>Care management (CCM)</h3>
+          <p><b>High risk, 2+ chronic conditions.</b> The RN Care Manager calls, explains CCM and the monthly cost-share, and enrolls patients who agree.</p>
+          <div class="branch">
+            <span class="q">Declines, not eligible, can’t afford, or not reached in 7 to 10 days?</span>
+            <div class="opt"><b class="yes">Heart or metabolic risk</b><span>Refer to the CDP RN</span></div>
+            <div class="opt"><b class="no">No such risk</b><span>Stays with the RN PHCC. Offer CCM again at the next visit or in 6 months.</span></div>
+          </div>
+          <div class="who"><span class="chip c-rhc">RN Care Manager</span></div>
+        </div>
+        <div class="node rhc" data-r="cdp">
+          <h3>Chronic-risk prevention</h3>
+          <p><b>Rising risk:</b> blood pressure, A1c, lipids, tobacco or weight not at goal, or an abnormal or coronary artery calcium result.</p>
+          <ul><li>Education with teach-back</li><li>Goal setting and gap closure</li><li>Abnormal results followed within 60 days</li><li>Covers RN Care Manager duties when needed</li></ul>
+          <div class="who"><span class="chip c-rhc">CDP RN</span></div>
+        </div>
+        <div class="node rhc" data-r="phcc coord vendors">
+          <h3>Remote patient monitoring (RPM)</h3>
+          <p><b>Hypertension or diabetes not at goal</b>, able to use a home device.</p>
+          <ul><li>RN PHCC: screens, gets the order, consent, baseline and teaching</li><li>Coordinator: paperwork, device delivery, inventory, nonclinical fixes</li><li>RN PHCC: daily monitoring and escalation to the provider</li></ul>
+          <div class="who"><span class="chip c-rhc">RN PHCC</span><span class="chip c-rhc">Coordinator</span></div>
+        </div>
+        <div class="node anc" data-r="nav partners">
+          <h3>Social needs (SDOH)</h3>
+          <p><b>Any tier:</b> transportation, food, housing, caregiver, benefits, veteran or aging services.</p>
+          <p>Closed-loop referrals through community partners. Clinical follow-up stays with the patient’s RN.</p>
+          <div class="who"><span class="chip c-anc">Navigator (QAPI)</span><span class="chip c-part">Unite Us &middot; ACPHD CHW Hub</span></div>
+        </div>
+        <div class="node rhc" data-r="coord">
+          <h3>Care gaps and scheduling</h3>
+          <p><b>Lower risk:</b> Annual Wellness Visits, screenings and immunizations due.</p>
+          <ul><li>Scheduling, reminders and recall</li><li>Schedules visits for RN-identified needs</li><li>Routes any clinical question to an RN</li></ul>
+          <div class="who"><span class="chip c-rhc">Coordinator</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stage 5 -->
+  <div class="stage">
+    <div class="stage-lbl"><span class="n">5</span><h2>Report back</h2><p>The loop closes with one nurse</p></div>
+    <div class="stage-body">
+      <div class="back node" data-r="phcc rncm cdp coord nav">
+        <h3>Every service lead reports back to the RN PHCC</h3>
+        <p>The patient never leaves her panel. Status goes in one place in the EHR, and routing and caseloads are reviewed at the monthly huddle.</p>
+        <div class="who"><span class="chip c-rhc">RN Care Manager</span><span class="chip c-rhc">CDP RN</span><span class="chip c-rhc">Coordinator</span><span class="chip c-anc">Navigator</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stage 6 -->
+  <div class="stage">
+    <div class="stage-lbl"><span class="n">6</span><h2>Measure and improve</h2><p>Monthly and quarterly</p></div>
+    <div class="stage-body"><div class="row r3">
+      <div class="node rhc" data-r="phcc coord">
+        <h3>Program dashboards</h3>
+        <p>The RN PHCC maintains the risk stratification and RPM dashboards. The Coordinator submits outreach reports to feed them.</p>
+        <div class="who"><span class="chip c-rhc">RN PHCC</span><span class="chip c-rhc">Coordinator</span></div>
+      </div>
+      <div class="node anc" data-r="analyst">
+        <h3>Data validation</h3>
+        <p>Checks measures against source records and flags known limits before results are shared.</p>
+        <div class="who"><span class="chip c-anc">Clinical Informatics &amp; Population Health Analyst</span></div>
+      </div>
+      <div class="node anc" data-r="qtvbc">
+        <h3>Performance reviews and grant reporting</h3>
+        <p>Sets measure owners, runs performance reviews and PDSA cycles, and prepares RHTP reports.</p>
+        <div class="who"><span class="chip c-anc">Q&amp;T / VBC Supervisor</span><span class="chip c-anc">BI Analyst</span></div>
+      </div>
+    </div></div>
+  </div>
+
+</section>
+
+<div class="two">
+  <section class="card" aria-labelledby="esc-h">
+    <h2 id="esc-h">When to escalate</h2>
+    <p class="sub">Non-RN roles escalate. RNs triage within approved protocols.</p>
+    <div class="esc">
+      <div>Question about a reading, symptom or treatment</div><div>Coordinator or Navigator routes it to the patient’s RN. RPM questions go to the RN PHCC.</div>
+      <div>Urgent symptom or abnormal finding</div><div>RN triages under approved protocols and notifies the provider.</div>
+      <div>Safety, abuse, neglect or crisis concern</div><div>Escalate right away under policy. Do not wait for report-back.</div>
+      <div>Emergency</div><div>Call 911, then notify the patient’s RN and provider.</div>
+      <div>Data or system problem</div><div>Report to the Analyst or Informatics. Do not change clinical data to fix a list.</div>
+    </div>
+  </section>
+  <section class="card" aria-labelledby="gr-h">
+    <h2 id="gr-h">Ground rules</h2>
+    <p class="sub">What keeps the team from doubling up.</p>
+    <ol class="rules">
+      <li><b>One accountable nurse.</b> The RN PHCC holds every patient she routes. Everyone else is a service lead who reports back.</li>
+      <li><b>The right first call.</b> The RN PHCC makes a short intake call and names the referral. Each service lead then makes their own first call.</li>
+      <li><b>One outreach log.</b> Every contact attempt goes in the same place in the EHR, so no patient gets several calls for the same reason.</li>
+      <li><b>Patients can change their minds.</b> A patient who opts into CCM later moves to the RN Care Manager, and the RN PHCC is notified.</li>
+      <li><b>One funded category.</b> A patient can count toward more than one program, but staff time is charged to only one.</li>
+    </ol>
+  </section>
+</div>
+
+<section class="who-sec" aria-labelledby="who-h">
+  <h2 id="who-h">Who’s who</h2>
+  <p>Each role’s lane in this workflow and who they hand off to.</p>
+  <div id="roles"></div>
+</section>
+
+</main>
+
+<footer><div class="wrap">Primary Care Clinic &middot; RHTP Care Team Workflow &middot; Draft for team review. Routing criteria, escalation pathways and Oracle documentation locations are pending approval. Abbreviations: CCM chronic care management; CDP RN RN: Chronic Disease Prevention; RN PHCC RN: Population Health &amp; Connected Care; RPM remote patient monitoring; SDOH social determinants of health; QAPI Quality Assessment and Performance Improvement; Q&amp;T / VBC Quality, Transformation &amp; Value-Based Care; PDSA Plan-Do-Study-Act.</div></footer>
+
+<script>
+(function(){
+  var ROLES=[
+    {k:"phcc",g:"rhc",short:"RN PHCC",t:"RN: Population Health & Connected Care",dept:"Rural Health Clinic · Reports to Director of Clinic Operations",
+     lane:"The front door and accountable nurse for every routed patient.",
+     does:["Risk-stratifies and routes patients","Assists the RN Care Manager with care transitions","Owns RPM consent, teaching and daily monitoring","Maintains risk stratification and RPM dashboards"],
+     hands:"RN Care Manager, CDP RN, Coordinator, Navigator. All report back to her."},
+    {k:"cdp",g:"rhc",short:"CDP RN",t:"RN: Chronic Disease Prevention",dept:"Rural Health Clinic · Reports to Manager of Clinic",
+     lane:"Prevention and follow-up for heart and metabolic risk.",
+     does:["Works her own registry and gap-closure list","Education, teach-back and goal setting","Abnormal results and coronary artery calcium follow-up","Cross-trained to cover RN Care Manager duties"],
+     hands:"Reports back to the RN PHCC. Sends high-risk finds to the RN PHCC."},
+    {k:"coord",g:"rhc",short:"Coordinator",t:"Coordinator: Population Health Engagement",dept:"Rural Health Clinic · Reports to Director of Clinic Operations",
+     lane:"Nonclinical outreach, scheduling and RPM logistics.",
+     does:["Pulls and cleans registry and DA2 lists","Scheduling, reminders and recall","RPM paperwork, devices and inventory","Submits outreach reports for dashboards"],
+     hands:"Clinical questions to the patient’s RN. RPM readings to the RN PHCC."},
+    {k:"rncm",g:"rhc",short:"RN Care Manager",t:"RN Care Manager (existing role)",dept:"Rural Health Clinic · Reports to Manager of Clinic",
+     lane:"Chronic care management and care transitions.",
+     does:["Offers CCM, explains the cost-share and enrolls","Leads ED, inpatient and observation follow-up","Keeps the CCM care plan and monthly contacts"],
+     hands:"Decliners with heart or metabolic risk to the CDP RN. Reports back to the RN PHCC."},
+    {k:"nav",g:"anc",short:"Navigator",t:"Navigator: Community Health, Veterans & Older Adults",dept:"QAPI department",
+     lane:"Nonclinical barriers and closed-loop community referrals.",
+     does:["Benefits, transportation, caregiver and veteran support","Referrals through Unite Us and the ACPHD CHW Hub","Keeps the shared resource directory"],
+     hands:"Clinical concerns to the patient’s RN. Reports back to the RN PHCC.",pending:true},
+    {k:"analyst",g:"anc",short:"Analyst",t:"Clinical Informatics & Population Health Analyst",dept:"Informatics · Reports to Director of Informatics and Ancillary Services",
+     lane:"The data behind risk stratification.",
+     does:["Builds risk, care-gap and outreach lists","Validates data and keeps the measure dictionary","Creates tip sheets and workflow diagrams"],
+     hands:"Lists to the Coordinator and RN PHCC. Measures to the Q&T / VBC Supervisor."},
+    {k:"systems",g:"anc",short:"Systems Specialist",t:"Informatics Systems Implementation & Support Specialist",dept:"Informatics · Reports to Director of Informatics and Ancillary Services",
+     lane:"Systems, access and training.",
+     does:["Configures Oracle and RPM connections","Sets up user access and trains staff","Go-live and at-the-elbow support"],
+     hands:"Vendor issues to Validic and Oracle Health. Data questions to the Analyst."},
+    {k:"qtvbc",g:"anc",short:"Q&T / VBC Supervisor",t:"Quality, Transformation & Value-Based Care Supervisor",dept:"QAPI · Supervises the Business Intelligence Analyst",
+     lane:"Governance, measures and RHTP reporting.",
+     does:["Sets measure owners and review cadence","Runs performance reviews and PDSA cycles","Prepares grant deliverable evidence"],
+     hands:"Findings back to clinic leaders and the RN PHCC."},
+    {k:"providers",g:"prov",short:"Providers",t:"RHC providers & Medical Director",dept:"Rural Health Clinic",
+     lane:"Clinical decisions and approvals.",
+     does:["Approve routing criteria and RPM protocols","Refer patients and order RPM","Receive escalations from the RNs"],
+     hands:"Referrals to the RN PHCC."},
+    {k:"partners",g:"part",short:"Community partners",t:"Community partners",dept:"Outside organizations",
+     lane:"Receive referrals and close the loop.",
+     does:["Unite Us","ACPHD CHW Hub","Veteran services","Area Agency on Aging"],
+     hands:"Outcomes back to the Navigator."},
+    {k:"vendors",g:"part",short:"Vendors",t:"Technology vendors",dept:"Reached through Informatics",
+     lane:"Device data and the EHR platform.",
+     does:["Validic: RPM device data","Oracle Health: Care Coordination and Clinical Intelligence"],
+     hands:"Issues through the Systems Specialist."},
+    {k:"ems",g:"part",short:"EMS (future)",t:"EMS community paramedicine",dept:"Potential partner · Year 2",
+     lane:"Possible home-based follow-up once mobile integrated health launches.",
+     does:["Home visits after discharge","Treat-in-place for known patients"],
+     hands:"Would report to the patient’s RN. Not part of Year 1 workflows.",pending:true}
+  ];
+  var COLOR={rhc:"var(--navy)",anc:"var(--teal)",prov:"var(--ink)",part:"var(--gold)"};
+  var GROUPS=[["rhc","RHC care team"],["anc","Ancillary RHTP roles"],["prov","Providers"],["part","Partners and vendors"]];
+
+  function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+
+  // Who's who cards
+  var h="";
+  GROUPS.forEach(function(g){
+    var list=ROLES.filter(function(r){return r.g===g[0]});
+    h+='<div class="grp">'+g[1]+'</div><div class="roles">';
+    list.forEach(function(r){
+      h+='<article class="role '+r.g+'" data-r="'+r.k+'"><h3>'+esc(r.t)+'</h3><span class="dept">'+esc(r.dept)+'</span>'+(r.pending?'<span class="pending">'+(r.k==="ems"?"Potential role":"Workflow details owned by QAPI")+'</span>':'')+'<p class="lane">'+esc(r.lane)+'</p><dl><dt>In this workflow</dt>'+r.does.map(function(d){return '<dd>'+esc(d)+'</dd>'}).join("")+'<dt>Hands off to</dt><dd>'+esc(r.hands)+'</dd></dl></article>';
+    });
+    h+='</div>';
+  });
+  document.getElementById("roles").innerHTML=h;
+
+  // Filter buttons
+  var f=document.getElementById("filter");
+  var bh='<span class="lbl">Show my part:</span>';
+  ROLES.forEach(function(r){bh+='<button type="button" class="rb" data-k="'+r.k+'" aria-pressed="false"><i style="background:'+COLOR[r.g]+'"></i>'+esc(r.short)+'</button>'});
+  bh+='<button type="button" class="rb clear" data-k="" aria-pressed="true">Show everyone</button><span class="hint">Pick a role to highlight every step it touches.</span>';
+  f.innerHTML=bh;
+
+  var active="";
+  function apply(){
+    document.body.classList.toggle("filtering",!!active);
+    document.querySelectorAll("[data-r]").forEach(function(el){
+      if(!el.classList.contains("node")&&!el.classList.contains("role"))return;
+      var keys=(el.getAttribute("data-r")||"").split(/\s+/);
+      var inner=Array.prototype.some.call(el.querySelectorAll("[data-r]"),function(c){return c.getAttribute("data-r").split(/\s+/).indexOf(active)>-1});
+      el.classList.toggle("on",!!active&&(keys.indexOf(active)>-1||inner));
+    });
+    f.querySelectorAll(".rb").forEach(function(b){b.setAttribute("aria-pressed",String(b.getAttribute("data-k")===active))});
+    try{active?history.replaceState(null,"","#"+active):history.replaceState(null,"",location.pathname+location.search)}catch(e){}
+  }
+  f.addEventListener("click",function(e){var b=e.target.closest(".rb");if(!b)return;var k=b.getAttribute("data-k");active=(k===active?"":k);apply()});
+  var start=(location.hash||"").replace("#","");
+  if(ROLES.some(function(r){return r.k===start}))active=start;
+  apply();
+  window.addEventListener("hashchange",function(){var k=(location.hash||"").replace("#","");if(k!==active&&(k===""||ROLES.some(function(r){return r.k===k}))){active=k;apply()}});
+})();
+</script>
+</body>
+</html>
