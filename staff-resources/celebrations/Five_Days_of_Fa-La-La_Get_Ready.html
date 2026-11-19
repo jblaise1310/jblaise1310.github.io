@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Get Ready for Five Days of Fa-La-La | Primary Care Clinic</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600;1,700&family=Great+Vibes&family=Lato:wght@400;700&display=swap">
+<style>
+  :root{
+    --green:#1F4D3A; --deep:#163A2B; --leaf:#2E6B4F; --red:#9E1B32; --berry:#B8283F;
+    --gold:#C9A227; --goldlt:#E9C85A; --cream:#FBF7EE; --tan:#F6F0E0; --ink:#1E2B24; --muted:#4A5A52; --rule:#E3D8BC;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--cream);color:var(--ink);font-family:Lato,Calibri,Arial,sans-serif;font-size:17px;line-height:1.55}
+  h1,h2,h3{font-family:"Playfair Display",Georgia,serif;margin:0}
+  .script{font-family:"Great Vibes","Brush Script MT",cursive;font-weight:400}
+  .wrap{max-width:1040px;margin:0 auto;padding:0 24px}
+  .stripe{height:12px;background:repeating-linear-gradient(90deg,var(--red) 0 28px,var(--cream) 28px 36px,var(--green) 36px 64px,var(--cream) 64px 72px)}
+
+  /* Hero */
+  .hero{position:relative;overflow:hidden;background:var(--green);color:var(--cream);text-align:center;padding:72px 24px 64px;border-bottom:6px solid var(--gold)}
+  .hero .eyebrow{letter-spacing:5px;text-transform:uppercase;font-weight:700;font-size:14px;color:#E9D9A6}
+  .hero h1{font-size:clamp(34px,5vw,52px);margin-top:14px;line-height:1.1}
+  .hero .falala{font-size:clamp(84px,14vw,150px);line-height:.95;color:var(--goldlt);display:block;margin-top:2px}
+  .hero .dates{font-family:"Playfair Display",Georgia,serif;font-style:italic;font-size:22px;margin-top:10px}
+  .holly{position:absolute;width:150px;height:126px}
+  .holly.tl{left:10px;top:10px}.holly.tr{right:10px;top:10px;transform:scaleX(-1)}
+  .snow{position:absolute;inset:0;pointer-events:none}
+  .flake{position:absolute;top:-24px;color:#fff;opacity:.75;animation:fall linear infinite}
+  @keyframes fall{to{transform:translateY(560px) rotate(240deg)}}
+  @media (prefers-reduced-motion:reduce){.flake{animation:none;display:none}}
+
+  .countdown{display:inline-flex;gap:14px;margin-top:30px;flex-wrap:wrap;justify-content:center}
+  .count{background:rgba(255,255,255,.08);border:2px solid var(--gold);border-radius:14px;min-width:96px;padding:12px 10px}
+  .count b{display:block;font-family:"Playfair Display",Georgia,serif;font-size:40px;line-height:1;color:var(--goldlt)}
+  .count span{font-size:12px;letter-spacing:2px;text-transform:uppercase}
+  .count-note{margin-top:14px;font-size:15px;color:#E9D9A6}
+
+  /* Intro */
+  .intro{text-align:center;padding:52px 24px 8px}
+  .intro p{max-width:720px;margin:14px auto 0;font-size:19px}
+  .ornament{display:flex;align-items:center;justify-content:center;gap:14px;margin:26px auto 0;max-width:360px}
+  .ornament i{flex:1;height:1px;background:var(--gold)}
+
+  section{padding:40px 0}
+  .sec-title{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;margin-bottom:22px}
+  .sec-title h2{font-size:34px;color:var(--green)}
+  .sec-title .script{font-size:40px;color:var(--red)}
+
+  /* Day cards */
+  .days{display:grid;gap:20px}
+  .day{display:grid;grid-template-columns:110px 1fr;background:#fff;border:1px solid var(--rule);border-radius:18px;overflow:hidden;box-shadow:0 6px 18px rgba(31,77,58,.07)}
+  .badge{display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--cream);border-right:5px solid var(--gold);padding:16px 6px}
+  .badge.r{background:var(--red)}.badge.g{background:var(--green)}
+  .badge small{letter-spacing:3px;font-weight:700;font-size:13px}
+  .badge b{font-family:"Playfair Display",Georgia,serif;font-size:42px;line-height:1;color:var(--goldlt)}
+  .day-body{padding:20px 24px}
+  .day-body h3{font-size:26px;color:var(--green);font-style:italic}
+  .grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin-top:12px}
+  .grid3 h4{margin:0 0 4px;font-size:13px;letter-spacing:2px;text-transform:uppercase;color:var(--red)}
+  .grid3 p{margin:0;font-size:16px}
+  .tip{margin-top:14px;background:var(--tan);border-radius:10px;padding:10px 14px;font-size:15.5px;display:flex;gap:10px;align-items:flex-start}
+  .tip svg{flex:0 0 20px;margin-top:2px}
+
+  /* Checklist */
+  .two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px}
+  .panel{background:#fff;border:1px solid var(--rule);border-radius:18px;padding:24px 26px}
+  .panel.green{background:var(--green);color:var(--cream);border:3px solid var(--gold)}
+  .panel h3{font-size:24px;color:var(--green);margin-bottom:12px}
+  .panel.green h3{color:var(--cream)}
+  .check{display:flex;align-items:center;gap:12px;padding:9px 0;border-bottom:1px dashed var(--rule);cursor:pointer;font-size:16.5px}
+  .check:last-of-type{border-bottom:0}
+  .check input{appearance:none;width:24px;height:24px;border:2px solid var(--green);border-radius:6px;display:grid;place-content:center;cursor:pointer;flex:0 0 24px;margin:0}
+  .check input:checked{background:var(--red);border-color:var(--red)}
+  .check input:checked::after{content:"";width:6px;height:12px;border:solid #fff;border-width:0 3px 3px 0;transform:rotate(45deg) translate(-1px,-1px)}
+  .check input:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+  .check input:checked + span{text-decoration:line-through;color:var(--muted)}
+  .progress{margin-top:12px;font-weight:700;color:var(--red)}
+  .panel ul{margin:0;padding-left:0;list-style:none}
+  .panel li{display:flex;gap:10px;margin:0 0 10px;font-size:16.5px}
+  .panel li svg{flex:0 0 18px;margin-top:4px}
+
+  .help{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+  .help .panel{text-align:center}
+  .help .panel h3{font-size:21px}
+  .help .icon{width:56px;height:56px;border-radius:50%;background:var(--tan);display:grid;place-items:center;margin:0 auto 10px;border:2px solid var(--gold)}
+  a{color:var(--red);font-weight:700}
+  a:hover{color:var(--green)}
+
+  .ss{background:var(--green);color:var(--cream);border:3px solid var(--gold);border-radius:22px;padding:34px 34px 30px;position:relative;overflow:hidden}
+  .ss .sec-title h2{color:var(--cream)}
+  .ss .sec-title .script{color:var(--goldlt)}
+  .ss .lead{font-size:18px;max-width:760px;margin:0 0 24px}
+  .steps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;list-style:none;margin:0;padding:0}
+  .steps li{background:rgba(255,255,255,.07);border:1px solid rgba(233,200,90,.55);border-radius:14px;padding:16px}
+  .steps .n{display:inline-grid;place-items:center;width:34px;height:34px;border-radius:50%;background:var(--red);border:2px solid var(--gold);font-family:"Playfair Display",Georgia,serif;font-weight:700;color:var(--cream);margin-bottom:8px}
+  .steps h3{font-size:19px;color:var(--goldlt);margin-bottom:4px}
+  .steps p{margin:0;font-size:15.5px}
+  .ideas{margin-top:22px;background:var(--cream);color:var(--ink);border-radius:14px;padding:18px 22px}
+  .ideas h3{font-size:20px;color:var(--green);margin-bottom:8px}
+  .chips{display:flex;flex-wrap:wrap;gap:8px}
+  .chips span{background:#fff;border:1px solid var(--rule);border-radius:999px;padding:6px 14px;font-size:15px}
+  .budget{position:absolute;right:26px;top:26px;width:110px;height:110px;border-radius:50%;background:var(--red);border:3px solid var(--gold);display:grid;place-content:center;text-align:center;transform:rotate(8deg)}
+  .budget b{font-family:"Playfair Display",Georgia,serif;font-size:34px;line-height:1;color:var(--goldlt)}
+  .budget span{font-size:12px;letter-spacing:2px;text-transform:uppercase}
+  @media (max-width:760px){.steps{grid-template-columns:1fr 1fr}.budget{position:static;margin:0 0 16px;transform:none}}
+  @media (max-width:480px){.steps{grid-template-columns:1fr}}
+
+  footer{background:var(--green);color:var(--cream);text-align:center;padding:44px 24px 40px;margin-top:30px;border-top:6px solid var(--gold)}
+  footer .script{font-size:52px;color:var(--goldlt);display:block;line-height:1.1}
+  footer p{margin:8px 0 0;color:#E9D9A6}
+
+  @media (max-width:760px){
+    .grid3,.two,.help{grid-template-columns:1fr}
+    .day{grid-template-columns:78px 1fr}
+    .badge b{font-size:32px}
+    .holly{width:90px;height:76px}
+  }
+  @media print{.snow,.countdown,.count-note{display:none}.day,.panel{break-inside:avoid;box-shadow:none}}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="snow" id="snow" aria-hidden="true"></div>
+  <svg class="holly tl" viewBox="0 0 120 100" aria-hidden="true"><path d="M8 58 C 20 34, 46 26, 66 40 C 58 44, 58 52, 50 54 C 46 64, 30 66, 22 60 C 18 66, 10 64, 8 58 Z" fill="#2E6B4F"/><path d="M44 20 C 66 12, 90 22, 98 44 C 90 42, 84 48, 78 46 C 70 54, 56 50, 52 42 C 46 42, 42 34, 44 20 Z" fill="#3E8A64"/><circle cx="62" cy="50" r="7" fill="#B8283F"/><circle cx="74" cy="56" r="6" fill="#D03A52"/><circle cx="66" cy="62" r="5.5" fill="#B8283F"/></svg>
+  <svg class="holly tr" viewBox="0 0 120 100" aria-hidden="true"><path d="M8 58 C 20 34, 46 26, 66 40 C 58 44, 58 52, 50 54 C 46 64, 30 66, 22 60 C 18 66, 10 64, 8 58 Z" fill="#2E6B4F"/><path d="M44 20 C 66 12, 90 22, 98 44 C 90 42, 84 48, 78 46 C 70 54, 56 50, 52 42 C 46 42, 42 34, 44 20 Z" fill="#3E8A64"/><circle cx="62" cy="50" r="7" fill="#B8283F"/><circle cx="74" cy="56" r="6" fill="#D03A52"/><circle cx="66" cy="62" r="5.5" fill="#B8283F"/></svg>
+
+  <div class="eyebrow">The Primary Care Clinic presents</div>
+  <h1>Get ready for Five Days of</h1>
+  <span class="script falala">Fa-La-La</span>
+  <div class="dates">Monday, December 14 through Friday, December 18</div>
+
+  <div class="countdown" id="countdown" aria-live="polite">
+    <div class="count"><b id="cd-days">--</b><span>Days</span></div>
+    <div class="count"><b id="cd-hours">--</b><span>Hours</span></div>
+    <div class="count"><b id="cd-mins">--</b><span>Minutes</span></div>
+  </div>
+  <div class="count-note" id="count-note">until the fa-la-la begins</div>
+</header>
+<div class="stripe"></div>
+
+<div class="intro wrap">
+  <h2 style="font-size:30px;color:var(--green)">A week of cheer, made for you</h2>
+  <p>To thank you for an amazing year, we are celebrating with five days of festive dress, daily treats in the breakroom, and quick ways to connect with each other. Here is everything you need to plan ahead. Everything is optional, so join in as much or as little as you like!</p>
+  <div class="ornament" aria-hidden="true"><i></i><svg width="22" height="22" viewBox="0 0 24 24"><path d="M12 2l2.9 6.6 7.1.6-5.4 4.7 1.6 7-6.2-3.7-6.2 3.7 1.6-7L2 9.2l7.1-.6z" fill="#C9A227"/></svg><i></i></div>
+</div>
+
+<section class="wrap" aria-labelledby="week">
+  <div class="sec-title"><h2 id="week">Your festive week</h2><span class="script">day by day</span></div>
+  <div class="days">
+
+    <article class="day">
+      <div class="badge r"><small>MON</small><b>14</b></div>
+      <div class="day-body">
+        <h3>Sock It To Me Monday</h3>
+        <div class="grid3">
+          <div><h4>Wear</h4><p>Your favorite Christmas socks</p></div>
+          <div><h4>Treat</h4><p>Christmas donuts and donut holes</p></div>
+          <div><h4>Join in</h4><p>Show off those socks, grab a donut, and go!</p></div>
+        </div>
+        <div class="tip"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l2.9 6.6 7.1.6-5.4 4.7 1.6 7-6.2-3.7-6.2 3.7 1.6-7L2 9.2l7.1-.6z" fill="#C9A227"/></svg><span><b>Get ready:</b> Dig out your most festive pair now. Stripes, snowmen, reindeer, the louder the better.</span></div>
+      </div>
+    </article>
+
+    <article class="day">
+      <div class="badge g"><small>TUE</small><b>15</b></div>
+      <div class="day-body">
+        <h3>North Pole Picture Day</h3>
+        <div class="grid3">
+          <div><h4>Wear</h4><p>Winter or Christmas scrubs with festive accessories</p></div>
+          <div><h4>Treat</h4><p>Hot cocoa and coffee bar with all the toppings</p></div>
+          <div><h4>Join in</h4><p>Step into the Christmas Box Photo Booth for team and individual photos</p></div>
+        </div>
+        <div class="tip"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l2.9 6.6 7.1.6-5.4 4.7 1.6 7-6.2-3.7-6.2 3.7 1.6-7L2 9.2l7.1-.6z" fill="#C9A227"/></svg><span><b>Get ready:</b> Plan a fun look or pose with your coworkers and stop by the booth anytime. Have fun with it, and share your pictures with <a href="mailto:jo.blaise@psmedicalcenter.org">Jo</a> so she can share them with the whole team!</span></div>
+      </div>
+    </article>
+
+    <article class="day">
+      <div class="badge r"><small>WED</small><b>16</b></div>
+      <div class="day-body">
+        <h3>Santa Hat Wednesday</h3>
+        <div class="grid3">
+          <div><h4>Wear</h4><p>A Santa hat with your holiday scrubs</p></div>
+          <div><h4>Treat</h4><p>Santa's Cookie Shop: cookies and chocolate-dipped pretzels</p></div>
+          <div><h4>Join in</h4><p>Sweet Notes: draw a coworker's name from Santa's hat and deliver their treat with a thank-you</p></div>
+        </div>
+        <div class="tip"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l2.9 6.6 7.1.6-5.4 4.7 1.6 7-6.2-3.7-6.2 3.7 1.6-7L2 9.2l7.1-.6z" fill="#C9A227"/></svg><span><b>Get ready:</b> Find a Santa hat. Gift tags and pens will be provided, so just bring your kind words.</span></div>
+      </div>
+    </article>
+
+    <article class="day">
+      <div class="badge g"><small>THU</small><b>17</b></div>
+      <div class="day-body">
+        <h3>Cozy Comfort Thursday</h3>
+        <div class="grid3">
+          <div><h4>Wear</h4><p>Christmas-colored or cozy winter-themed scrub tops</p></div>
+          <div><h4>Treat</h4><p>Christmas soup and bread bar for lunch</p></div>
+          <div><h4>Join in</h4><p>Secret Santa gift exchange, plus the Gratitude Garland: write a thank-you on a paper ornament and hang it in the breakroom</p></div>
+        </div>
+        <div class="tip"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l2.9 6.6 7.1.6-5.4 4.7 1.6 7-6.2-3.7-6.2 3.7 1.6-7L2 9.2l7.1-.6z" fill="#C9A227"/></svg><span><b>Get ready:</b> Bring your wrapped <a href="#secret-santa">Secret Santa</a> gift, and think about who made your year better for the Gratitude Garland.</span></div>
+      </div>
+    </article>
+
+    <article class="day">
+      <div class="badge r"><small>FRI</small><b>18</b></div>
+      <div class="day-body">
+        <h3>Reindeer Games Friday</h3>
+        <div class="grid3">
+          <div><h4>Wear</h4><p>Reindeer antlers or ears with your favorite festive scrubs</p></div>
+          <div><h4>Treat</h4><p>Rudolph's Snack Mix to take home</p></div>
+          <div><h4>Join in</h4><p>Guess how many M&amp;M's are in the jar and try the holiday trivia sheet</p></div>
+        </div>
+        <div class="tip"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l2.9 6.6 7.1.6-5.4 4.7 1.6 7-6.2-3.7-6.2 3.7 1.6-7L2 9.2l7.1-.6z" fill="#C9A227"/></svg><span><b>Get ready:</b> Grab some antlers and brush up on your holiday movie and song trivia. Winners are announced at end of day.</span></div>
+      </div>
+    </article>
+
+  </div>
+</section>
+
+<section class="wrap" id="secret-santa" aria-labelledby="ss-title">
+  <div class="ss">
+    <div class="budget" aria-hidden="true"><span>Up to</span><b>$50</b></div>
+    <div class="sec-title"><h2 id="ss-title">Secret Santa: Shop Pagosa</h2><span class="script">gifts with heart</span></div>
+    <p class="lead">This year our Secret Santa gives back to the community we serve. Every gift comes from a Pagosa Springs business, so our holiday cheer helps our neighbors too. It is completely optional, so sign up only if you would like to play.</p>
+    <ol class="steps">
+      <li><span class="n">1</span><h3>Fill out the form</h3><p>Complete the Secret Santa form. <b>See Megan</b> to get one.</p></li>
+      <li><span class="n">2</span><h3>Pull a name</h3><p>Pull your Secret Santa name by <b>Tuesday, Dec 1</b>. Keep your person a secret!</p></li>
+      <li><span class="n">3</span><h3>Shop local</h3><p>Pick a gift from a Pagosa Springs business. <b>$50 maximum.</b></p></li>
+      <li><span class="n">4</span><h3>Exchange</h3><p>Bring your wrapped gift on <b>Thursday, Dec 17</b> for the exchange at the soup bar.</p></li>
+    </ol>
+    <div class="ideas">
+      <h3>Local gift ideas</h3>
+      <div class="chips">
+        <span>Gift card to a local restaurant</span><span>Coffee shop or bakery treats</span><span>Hot springs soak pass</span><span>Local bookstore find</span><span>Handmade art or pottery</span><span>Local market goodies</span><span>Gear from a Pagosa outfitter</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="wrap" aria-labelledby="prep">
+  <div class="sec-title"><h2 id="prep">Plan ahead</h2><span class="script">make a list, check it twice</span></div>
+  <div class="two">
+    <div class="panel">
+      <h3>My Fa-La-La checklist</h3>
+      <label class="check"><input type="checkbox"><span>Favorite Christmas socks (Mon)</span></label>
+      <label class="check"><input type="checkbox"><span>Winter or Christmas scrubs (Tue)</span></label>
+      <label class="check"><input type="checkbox"><span>Santa hat (Wed)</span></label>
+      <label class="check"><input type="checkbox"><span>Cozy winter scrub top (Thu)</span></label>
+      <label class="check"><input type="checkbox"><span>Wrapped Secret Santa gift from a local shop (Thu)</span></label>
+      <label class="check"><input type="checkbox"><span>Reindeer antlers or ears (Fri)</span></label>
+      <div class="progress" id="progress" aria-live="polite">0 of 6 ready</div>
+    </div>
+    <div class="panel green">
+      <h3>Keep it patient-ready</h3>
+      <ul>
+        <li><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l2.9 6.6 7.1.6-5.4 4.7 1.6 7-6.2-3.7-6.2 3.7 1.6-7L2 9.2l7.1-.6z" fill="#E9C85A"/></svg><span>Festive scrubs should be clean, professional, and comfortable for a full day of care.</span></li>
+        <li><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l2.9 6.6 7.1.6-5.4 4.7 1.6 7-6.2-3.7-6.2 3.7 1.6-7L2 9.2l7.1-.6z" fill="#E9C85A"/></svg><span>Hats and antlers come off for procedures or any time they get in the way.</span></li>
+        <li><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l2.9 6.6 7.1.6-5.4 4.7 1.6 7-6.2-3.7-6.2 3.7 1.6-7L2 9.2l7.1-.6z" fill="#E9C85A"/></svg><span>Treats are grab-and-go in the breakroom all week.</span></li>
+        <li><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l2.9 6.6 7.1.6-5.4 4.7 1.6 7-6.2-3.7-6.2 3.7 1.6-7L2 9.2l7.1-.6z" fill="#E9C85A"/></svg><span>Save your ugly sweater for HR's facility-wide event. This week is all about socks, hats, and antlers!</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="wrap" aria-labelledby="help">
+  <div class="sec-title"><h2 id="help">Good to know</h2><span class="script">elves wanted</span></div>
+  <div class="help">
+    <div class="panel">
+      <div class="icon" aria-hidden="true"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#9E1B32" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18M3 12h18M5.6 5.6l12.8 12.8M18.4 5.6 5.6 18.4"/></svg></div>
+      <h3>Labeled for you</h3>
+      <p>Every food and treat will be labeled with common allergens, so you can pick what works for you.</p>
+    </div>
+    <div class="panel">
+      <div class="icon" aria-hidden="true"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#1F4D3A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10h16v6a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4z"/><path d="M2 10h20M9 6V4M15 6V4"/></svg></div>
+      <h3>Have a slow cooker?</h3>
+      <p>We need a few for Thursday's soup bar. If you can lend one, let Jo know.</p>
+    </div>
+    <div class="panel">
+      <div class="icon" aria-hidden="true"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#C9A227" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.9 6.6 7.1.6-5.4 4.7 1.6 7-6.2-3.7-6.2 3.7 1.6-7L2 9.2l7.1-.6z"/></svg></div>
+      <h3>Want to help?</h3>
+      <p>Extra elves are always welcome for setup and treat packaging. Reach out to <a href="mailto:jo.blaise@psmedicalcenter.org">Jo Blaise</a>.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span class="script">Thank you for all you do!</span>
+  <p>Five Days of Fa-La-La, courtesy of Vicki &amp; Jo</p>
+</footer>
+<div class="stripe"></div>
+
+<script>
+  // Countdown to Monday, Dec 14, 2026 at 8:00 AM Mountain
+  (function(){
+    var target = new Date('2026-12-14T08:00:00-07:00').getTime();
+    var end = new Date('2026-12-18T17:00:00-07:00').getTime();
+    function tick(){
+      var now = Date.now(), d = target - now;
+      var note = document.getElementById('count-note');
+      if (d <= 0){
+        document.getElementById('countdown').style.display = 'none';
+        note.textContent = now < end ? 'The fa-la-la is happening now! Check the breakroom.' : 'Thank you for a fa-la-la-bulous week!';
+        return;
+      }
+      document.getElementById('cd-days').textContent = Math.floor(d / 864e5);
+      document.getElementById('cd-hours').textContent = Math.floor(d % 864e5 / 36e5);
+      document.getElementById('cd-mins').textContent = Math.floor(d % 36e5 / 6e4);
+    }
+    tick(); setInterval(tick, 30000);
+
+    // Checklist progress (kept in memory)
+    var boxes = document.querySelectorAll('.check input');
+    function upd(){ var n = 0; boxes.forEach(function(b){ if (b.checked) n++; });
+      document.getElementById('progress').textContent = n === boxes.length ? 'All set. You are Fa-La-La ready!' : n + ' of ' + boxes.length + ' ready'; }
+    boxes.forEach(function(b){ b.addEventListener('change', upd); });
+
+    // Gentle snowfall
+    var snow = document.getElementById('snow');
+    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+      for (var i = 0; i < 28; i++){
+        var f = document.createElement('span');
+        f.className = 'flake'; f.textContent = '❄︎';
+        f.style.left = Math.random() * 100 + '%';
+        f.style.fontSize = (10 + Math.random() * 16) + 'px';
+        f.style.animationDuration = (8 + Math.random() * 10) + 's';
+        f.style.animationDelay = (-Math.random() * 18) + 's';
+        snow.appendChild(f);
+      }
+    }
+  })();
+</script>
+</body>
+</html>
