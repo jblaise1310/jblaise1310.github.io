@@ -1,0 +1,339 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1"><style>:root{color-scheme:light}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sommer & Hayve - Mobile Bar Comparison</title>
+<link href="https://fonts.googleapis.com/css2?family=Pinyon+Script&family=Abril+Fatface&family=Lora:ital,wght@0,400;0,500;1,400&family=Nunito:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #fdf9f6;
+    --ink: #1e1428;
+    --muted: #6e5e78;
+    --border: rgba(30,20,40,0.09);
+    --rose: #d4607a;
+    --rose-light: #fbe8ed;
+    --rose-mid: #f2b8c6;
+    --sage: #5a8f6a;
+    --sage-light: #eaf4ec;
+    --sage-mid: #a8d0b0;
+    --sky: #5878b8;
+    --sky-light: #eaeefc;
+    --gold: #c8903a;
+    --gold-light: #fdf2dc;
+    --gold-mid: #e8c870;
+    --lav: #8870b8;
+    --lav-light: #f0ecf8;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); font-family: 'Nunito', sans-serif; color: var(--ink); }
+  body::before {
+    content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 0;
+    background:
+      radial-gradient(ellipse 55% 45% at 5% 5%, rgba(212,96,122,0.09) 0%, transparent 55%),
+      radial-gradient(ellipse 45% 55% at 95% 95%, rgba(90,143,106,0.09) 0%, transparent 55%),
+      radial-gradient(ellipse 40% 35% at 90% 5%, rgba(242,184,198,0.1) 0%, transparent 50%),
+      radial-gradient(ellipse 35% 40% at 5% 95%, rgba(168,208,176,0.09) 0%, transparent 50%);
+  }
+  .page { position: relative; z-index: 1; max-width: 980px; margin: 0 auto; padding: 0 24px 80px; }
+
+  /* HERO */
+  .hero { text-align: center; padding: 56px 0 36px; }
+  .petals { font-size: 1.1rem; letter-spacing: 6px; opacity: 0.5; margin-bottom: 14px; }
+  .eyebrow {
+    display: inline-block; background: var(--rose); color: white; font-size: 0.65rem; font-weight: 600;
+    letter-spacing: 0.26em; text-transform: uppercase; padding: 6px 20px; border-radius: 30px; margin-bottom: 14px;
+  }
+  .names { font-family: 'Pinyon Script', cursive; font-size: clamp(3.4rem, 9vw, 6rem); color: var(--rose); line-height: 1; }
+  .title { font-family: 'Abril Fatface', serif; font-size: clamp(1.1rem, 3vw, 1.6rem); letter-spacing: 0.05em; margin: 4px 0 12px; }
+  .meta { font-family: 'Lora', serif; font-style: italic; color: var(--muted); font-size: 0.95rem; }
+
+  /* VENDOR HEADERS */
+  .vendors { display: grid; grid-template-columns: 170px 1fr 1fr; gap: 12px; margin: 10px 0 14px; position: sticky; top: 0; z-index: 5; padding: 10px 0; background: linear-gradient(180deg, var(--bg) 80%, rgba(253,249,246,0)); }
+  .vendor-card { border-radius: 16px; padding: 16px 18px; color: white; }
+  .vendor-card.boozy { background: linear-gradient(135deg, #6b8fcb, var(--sky)); }
+  .vendor-card.oasis { background: linear-gradient(135deg, #e07a92, var(--rose)); }
+  .vendor-name { font-family: 'Abril Fatface', serif; font-size: 1.2rem; line-height: 1.1; }
+  .vendor-pkg { font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.92; margin-top: 4px; }
+  .vendor-total { margin-top: 10px; font-family: 'Abril Fatface', serif; font-size: 1.45rem; }
+  .vendor-total small { display: block; font-family: 'Nunito', sans-serif; font-size: 0.64rem; letter-spacing: 0.12em; text-transform: uppercase; opacity: 0.9; margin-bottom: 1px; }
+
+  /* TABLE */
+  .group { margin-top: 26px; }
+  .group-title {
+    display: flex; align-items: center; gap: 10px; font-family: 'Abril Fatface', serif; font-size: 1.2rem; margin-bottom: 10px;
+  }
+  .group-icon { width: 34px; height: 34px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.05rem; }
+  .row {
+    display: grid; grid-template-columns: 170px 1fr 1fr; gap: 12px; margin-bottom: 8px;
+  }
+  .cell { background: white; border: 1px solid var(--border); border-radius: 12px; padding: 12px 14px; font-size: 0.86rem; line-height: 1.5; box-shadow: 0 1px 6px rgba(30,20,40,0.04); }
+  .cell.label { background: transparent; border: none; box-shadow: none; font-weight: 700; font-size: 0.74rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); display: flex; align-items: center; padding-left: 4px; }
+  .cell strong { font-weight: 700; }
+  .cell.win { border-color: var(--sage-mid); background: var(--sage-light); }
+  .cell.warn { border-color: var(--gold-mid); background: var(--gold-light); }
+  .cell.total { font-family: 'Abril Fatface', serif; font-size: 1.15rem; }
+  .tag { display: inline-block; font-size: 0.6rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; padding: 2px 8px; border-radius: 20px; margin-left: 6px; vertical-align: middle; }
+  .tag.good { background: #e0f2e0; color: #2a6a2a; }
+  .tag.ask { background: var(--gold-light); color: #8a6010; border: 1px solid var(--gold-mid); }
+  .sub { display: block; font-size: 0.74rem; color: var(--muted); margin-top: 3px; }
+
+  /* NOTE / TAKE */
+  .callout { background: var(--gold-light); border-left: 4px solid var(--gold); border-radius: 0 14px 14px 0; padding: 16px 20px; margin-top: 26px; font-family: 'Lora', serif; font-size: 0.92rem; line-height: 1.65; color: var(--muted); }
+  .callout strong { color: var(--ink); font-style: normal; }
+  .take-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 14px; }
+  .take { background: white; border: 1px solid var(--border); border-radius: 16px; padding: 18px 20px; font-size: 0.86rem; line-height: 1.6; }
+  .take h3 { font-family: 'Abril Fatface', serif; font-size: 1.05rem; margin-bottom: 8px; }
+  .take.b h3 { color: var(--sky); } .take.o h3 { color: var(--rose); }
+  .take ul { padding-left: 18px; color: var(--muted); }
+  .take li { margin-bottom: 4px; }
+
+  .open-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 10px; }
+  .open { background: white; border: 1px solid var(--border); border-radius: 16px; padding: 16px 20px; font-size: 0.84rem; line-height: 1.6; }
+  .open h4 { font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 8px; }
+  .open.b h4 { color: var(--sky); } .open.o h4 { color: var(--rose); }
+  .open ul { padding-left: 18px; color: var(--muted); }
+
+  .footer { text-align: center; padding-top: 30px; margin-top: 44px; border-top: 1px solid var(--border); }
+  .footer-title { font-family: 'Abril Fatface', serif; font-size: 1.6rem; color: var(--rose); margin-bottom: 4px; }
+  .footer-sub { font-family: 'Lora', serif; font-style: italic; font-size: 0.88rem; color: var(--muted); }
+  .fine { margin-top: 12px; font-size: 0.64rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); opacity: 0.6; }
+
+  @media print { body::before { display: none; } .vendors { position: static; } }
+  @media (max-width: 720px) {
+    .vendors, .row { grid-template-columns: 1fr 1fr; }
+    .vendors > .spacer { display: none; }
+    .cell.label { grid-column: 1 / -1; padding: 8px 0 0; }
+    .take-grid, .open-grid { grid-template-columns: 1fr; }
+    .page { padding: 0 14px 60px; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="hero">
+    <div class="petals">🌸 🌿 🥂 🌼 🌿 🌸</div>
+    <div class="eyebrow">Mobile Bar Comparison</div>
+    <div class="names">Sommer & Hayve</div>
+    <div class="title">Boozy Bar Trailers vs. The Oasis Mobile Bar</div>
+    <div class="meta">Friday, March 12, 2027 &middot; The Boho Space, Phoenix &middot; 50 guests &middot; Bar service 5 to 10 pm</div>
+  </div>
+
+  <div class="vendors">
+    <div class="spacer"></div>
+    <div class="vendor-card boozy">
+      <div class="vendor-name">Boozy Bar Trailers</div>
+      <div class="vendor-pkg">Premium Open Bar &middot; Portable bar</div>
+      <div class="vendor-total"><small>Estimated total with alcohol</small>$2,710 to $2,910</div>
+    </div>
+    <div class="vendor-card oasis">
+      <div class="vendor-name">The Oasis Mobile Bar</div>
+      <div class="vendor-pkg">Premium Oasis Package</div>
+      <div class="vendor-total"><small>Estimated total with alcohol</small>$2,450 to $2,800</div>
+    </div>
+  </div>
+
+  <!-- COST -->
+  <div class="group">
+    <div class="group-title"><div class="group-icon" style="background:var(--gold-light)">💰</div>The Numbers</div>
+    <div class="row">
+      <div class="cell label">Service price</div>
+      <div class="cell">$1,650 package ($33 x 50) + $200 service fee + $75 trip charge = <strong>$1,925</strong></div>
+      <div class="cell win"><strong>$2,000</strong> flat<span class="sub">Travel included. 2026 rate can be locked in when you book.</span></div>
+    </div>
+    <div class="row">
+      <div class="cell label">Gratuity</div>
+      <div class="cell warn"><strong>20% added: $385</strong><span class="sub">Calculated on service charges only, not on alcohol.</span></div>
+      <div class="cell win"><strong>Not added</strong><span class="sub">Optional guest tip jar with QR codes. They will leave it off if you ask.</span></div>
+    </div>
+    <div class="row">
+      <div class="cell label">Quoted service total</div>
+      <div class="cell total">$2,310</div>
+      <div class="cell total">$2,000</div>
+    </div>
+    <div class="row">
+      <div class="cell label">Alcohol (you buy)</div>
+      <div class="cell"><strong>$400 to $600</strong> (their estimate)<span class="sub">Prefer Total Wine. Any discount depends on store promotions. Unopened bottles returnable under store policy.</span></div>
+      <div class="cell"><strong>$500 to $800</strong> (their estimate)<span class="sub">Preferred supplier Tops Liquor (Mesa) typically gives about 10% off. You may buy elsewhere. Unopened bottles usually returnable.</span></div>
+    </div>
+    <div class="row">
+      <div class="cell label">Estimated total</div>
+      <div class="cell total">$2,710 to $2,910</div>
+      <div class="cell total win">$2,450 to $2,800<span class="sub" style="font-family:'Nunito',sans-serif;font-size:0.74rem;">Roughly $100 to $260 lower. Low end assumes the 10% discount.</span></div>
+    </div>
+    <div class="row">
+      <div class="cell label">Real glassware</div>
+      <div class="cell warn">Not yet quoted<span class="sub">Quote includes plastic cups.</span></div>
+      <div class="cell"><strong>+$500 to $600</strong><span class="sub">About 275 to 300 glasses, delivery and pickup. Flutes can be added for a toast.</span></div>
+    </div>
+    <div class="row">
+      <div class="cell label">Optional add-ons</div>
+      <div class="cell">Cactus Spur bar trailer +$250 (needs venue access and placement)</div>
+      <div class="cell">Champagne toast $125 ($2.50 per guest) &middot; Mimosa trunk bar $200</div>
+    </div>
+  </div>
+
+  <!-- WHAT YOU GET -->
+  <div class="group">
+    <div class="group-title"><div class="group-icon" style="background:var(--rose-light)">🍹</div>What You Get</div>
+    <div class="row">
+      <div class="cell label">Bar style</div>
+      <div class="cell">Professional portable bar, complete setup and breakdown</div>
+      <div class="cell win">Styled bar with custom décor matched to the wedding colors, plus custom bar menu signage</div>
+    </div>
+    <div class="row">
+      <div class="cell label">Drinks</div>
+      <div class="cell">Five premium spirits (Ketel One, Bombay gin, Bacardi, Cazadores, Maker's Mark), Hess Chardonnay and Cabernet, one domestic beer and one craft or imported beer. A signature cocktail can be added.</div>
+      <div class="cell">Up to 4 signature cocktails, pre-batched in kegs, plus beer and wine planned with you. The Prickly Pear Margarita is their popular Arizona pick.</div>
+    </div>
+    <div class="row">
+      <div class="cell label">Non-alcoholic</div>
+      <div class="cell">Sodas, tonic, club soda, juices and bottled water. Specialty mocktail possible.</div>
+      <div class="cell">Prickly Pear Lemonade mocktail and a water station</div>
+    </div>
+    <div class="row">
+      <div class="cell label">Extras included</div>
+      <div class="cell">Ice, coolers, fresh lemons and limes, napkins, straws, bar equipment</div>
+      <div class="cell">Ice, fresh garnishes and an upgraded garnish bar, bar tools</div>
+    </div>
+  </div>
+
+  <!-- SAFETY -->
+  <div class="group">
+    <div class="group-title"><div class="group-icon" style="background:var(--sage-light)">🛡️</div>Safety & Service</div>
+    <div class="row">
+      <div class="cell label">Bartenders</div>
+      <div class="cell">Alcohol-service trained</div>
+      <div class="cell">TIPS certified, 1 to 2 bartenders based on guest count</div>
+    </div>
+    <div class="row">
+      <div class="cell label">Insurance</div>
+      <div class="cell win">General and liquor liability insurance. Certificate of insurance available for the venue.</div>
+      <div class="cell">Licensed and insured per their pricing sheet<span class="tag ask">Ask for certificate</span></div>
+    </div>
+    <div class="row">
+      <div class="cell label">Pacing</div>
+      <div class="cell">Open bar with five spirits available all evening<span class="tag ask">Last call not answered</span></div>
+      <div class="cell">Pre-batched recipes keep drink strength consistent<span class="tag ask">Last call not answered</span></div>
+    </div>
+  </div>
+
+  <!-- LOGISTICS -->
+  <div class="group">
+    <div class="group-title"><div class="group-icon" style="background:var(--sky-light)">🚐</div>Logistics</div>
+    <div class="row">
+      <div class="cell label">Arrival</div>
+      <div class="cell win">About 1 hour before service (around 4:00 pm)</div>
+      <div class="cell">1.5 to 2 hours before (around 3:00 to 3:30 pm)<span class="sub">Confirm venue access that early.</span></div>
+    </div>
+    <div class="row">
+      <div class="cell label">Power and water</div>
+      <div class="cell win">None needed. Just a designated space and unloading access.</div>
+      <div class="cell">One 110V outlet within 100 ft, or a quiet generator placed 100 ft away. No water needed.</div>
+    </div>
+    <div class="row">
+      <div class="cell label">Space needed</div>
+      <div class="cell">Space for a self-contained portable bar<span class="sub">Not specified</span></div>
+      <div class="cell">15 ft x 6 ft footprint, just over 6 ft tall</div>
+    </div>
+    <div class="row">
+      <div class="cell label">Date status</div>
+      <div class="cell warn">March 12 not yet confirmed in writing<span class="tag ask">Ask</span></div>
+      <div class="cell win">March 12, 2027 is currently open on their calendar</div>
+    </div>
+  </div>
+
+  <!-- CONTRACT -->
+  <div class="group">
+    <div class="group-title"><div class="group-icon" style="background:var(--lav-light)">📝</div>Contract Terms</div>
+    <div class="row">
+      <div class="cell label">Deposit</div>
+      <div class="cell win">$250, nonrefundable</div>
+      <div class="cell">$400 (20%). Refundable only within 14 days of signing.</div>
+    </div>
+    <div class="row">
+      <div class="cell label">Balance due</div>
+      <div class="cell">1 week before the wedding</div>
+      <div class="cell">30 days before (February 10, 2027)</div>
+    </div>
+    <div class="row">
+      <div class="cell label">Cancellation</div>
+      <div class="cell win">Over 90 days out: full refund of eligible payments. 60 to 90 days: 50% refund. Deposit excluded.</div>
+      <div class="cell warn">On or after Dec 12, 2026: deposit forfeited plus 50% of the remaining balance due. Within 30 days: everything due.</div>
+    </div>
+    <div class="row">
+      <div class="cell label">Practical exposure</div>
+      <div class="cell win">The balance is not paid until a week out, so an early cancellation likely costs about the $250 deposit.</div>
+      <div class="cell warn">Up to about $1,200 from Dec 12 on ($400 deposit + $800, half of the $1,600 balance), based on their terms as written.</div>
+    </div>
+  </div>
+
+  <div class="callout">
+    <strong>Timing note:</strong> Oasis's firmer cancellation terms start on <strong>December 12, 2026</strong>, which is only a few weeks away. If you book with them, it is worth being confident about the date, the venue and the guest count first.
+  </div>
+
+  <!-- QUICK TAKE -->
+  <div class="group">
+    <div class="group-title"><div class="group-icon" style="background:var(--rose-light)">✨</div>Quick Take</div>
+    <div class="take-grid">
+      <div class="take b">
+        <h3>Boozy Bar Trailers fits if you want</h3>
+        <ul>
+          <li>A classic open bar with premium spirits, wine and beer</li>
+          <li>Lower financial risk if plans change</li>
+          <li>A bar with no power or water needs</li>
+          <li>Explicit liquor liability insurance and a certificate on request</li>
+        </ul>
+      </div>
+      <div class="take o">
+        <h3>The Oasis Mobile Bar fits if you want</h3>
+        <ul>
+          <li>The lowest estimated total, with no required gratuity</li>
+          <li>A styled bar with custom décor, signage and mocktail</li>
+          <li>Curated signature cocktails rather than a full spirit list</li>
+          <li>The date confirmed open and today's rate locked in</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- OPEN QUESTIONS -->
+  <div class="group">
+    <div class="group-title"><div class="group-icon" style="background:var(--gold-light)">❓</div>Still to Confirm</div>
+    <div class="open-grid">
+      <div class="open b">
+        <h4>Boozy Bar Trailers</h4>
+        <ul>
+          <li>Written confirmation that March 12 is available</li>
+          <li>Last call, or beer and wine only for the final hour</li>
+          <li>Option to trim the spirit list, and any price change</li>
+          <li>Cost of real glassware</li>
+          <li>Portable bar vs. Cactus Spur trailer (check venue access first)</li>
+        </ul>
+      </div>
+      <div class="open o">
+        <h4>The Oasis Mobile Bar</h4>
+        <ul>
+          <li>Certificate of insurance for The Boho Space</li>
+          <li>Last call, or beer and wine only for the final hour</li>
+          <li>Written quote and booking agreement</li>
+          <li>Whether Premium or Signature plus an extra hour ($1,750) fits better</li>
+          <li>Confirm 3:00 pm arrival is OK with the venue</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <div class="footer-title">Team Sommer 🌸</div>
+    <div class="footer-sub">Making March 12, 2027 unforgettable together</div>
+    <div class="fine">Estimates from vendor replies received November 2026. Alcohol costs are vendor estimates and will change once the menu is final.</div>
+  </div>
+
+</div>
+</body>
+</html>
+
+</body></html>
